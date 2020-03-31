@@ -48,6 +48,11 @@ public class FieldsController {
         return this.playerService.left(userName);
     }
 
+    @PutMapping("/player/{userName}/command/pickup")
+    public Map<String, Boolean> pickUp(String userName){
+        return this.playerService.pickup(userName);
+    }
+
     @GetMapping("/fields/main")
     public List<List<String>> getFields() {
         return this.fieldsService.getFields();

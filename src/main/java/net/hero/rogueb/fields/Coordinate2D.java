@@ -24,4 +24,20 @@ public class Coordinate2D implements  Coordinate {
     public void setY(int y){
         this.y = y;
     }
+
+    @Override
+    public int hashCode() {
+        return x * 31 + y;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        //TODO: java14のinstanceof
+        if(obj instanceof Coordinate2D){
+            Coordinate2D c = (Coordinate2D)obj;
+            return x == c.x && y == c.y;
+        }
+
+        return false;
+    }
 }

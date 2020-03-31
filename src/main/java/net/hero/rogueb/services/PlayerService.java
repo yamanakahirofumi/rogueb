@@ -32,4 +32,8 @@ public class PlayerService {
     public Map<String,Boolean> left(String userName){
         return Map.of("result", Human.getInstance(userName).move(MoveEnum.Left));
     }
+
+    public Map<String, Boolean> pickup(String userName) {
+        return Map.of("result", Human.getInstance(userName).pickUp());
+    }
 }

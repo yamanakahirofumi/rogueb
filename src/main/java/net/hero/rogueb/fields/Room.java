@@ -16,7 +16,7 @@ class Room{
 
     public List<List<String>> getDisplay(){
         return Stream.generate(() ->
-                Stream.generate(() -> " ").limit(((Coordinate2D)this.size).getX()).collect(Collectors.toList())
+                Stream.generate(() -> ".").limit(((Coordinate2D)this.size).getX()).collect(Collectors.toList())
         ).limit(((Coordinate2D)this.size).getY()).collect(Collectors.toList());
     }
 
