@@ -2,10 +2,13 @@ package net.hero.rogueb.bookofadventure;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-@Controller
+@RestController
 @RequestMapping("/api")
 public class BookOfAdventureController {
     private final BookOfAdventureService service;
@@ -15,13 +18,17 @@ public class BookOfAdventureController {
     }
 
     @GetMapping("/user/{userName}/exist")
-    public boolean exist(String userName){
+    public boolean exist(@PathVariable("userName") String userName){
         return this.service.exist(userName);
     }
 
-    @PostMapping("/user/{userName}")
-    public void save(String userName){
+    @PutMapping("/user/{userName}")
+    public void save(@PathVariable("userName") String userName){
 
+    }
+    @PostMapping("/user/{userName}")
+    public int create(@PathVariable("userName") String userName){
+        return this.service.create(userName);
     }
 
 }
