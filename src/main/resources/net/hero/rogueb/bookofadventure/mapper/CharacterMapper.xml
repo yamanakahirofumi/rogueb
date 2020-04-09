@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="net.hero.rogueb.bookofadventure.mapper.CharacterMapper">
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO Player (name, namespace) VALUES (#{name}, #{namespace})
+    </insert>
+    <update id="update">
+        UPDATE Player SET name = #{name}, namespace = #{namespace} WHERE id = #{id}
+    </update>
+
+    <select id="findByid" resultMap="playerDto">
+        SELECT id, name, namespace, L.dungeon_id, L.level, L.x, L.y FROM Player LEFT JOIN Location AS L ON id = L.player_id WHERE id = #{id}
+    </select>
+    <select id="findByName" resultMap="playerDto">
+        SELECT id, name, namespace, L.dungeon_id AS dungeon_id, L.level AS level, L.x AS x, L.y AS y FROM Player LEFT JOIN Location AS L ON id = L.player_id WHERE name = #{name}
+    </select>
+
+    <delete id="deleteLocation">
+        DELETE FROM Location WHERE player_id = #{id}
+    </delete>
+    <insert id="insertLocation">
+        INSERT INTO Location (player_id, dungeon_id, level, x, y) VALUES (#{id}, #{locationDto.dungeonId}, #{locationDto.level}, #{locationDto.x}, #{locationDto.y})
+    </insert>
+
+    <resultMap id="playerDto" type="net.hero.rogueb.bookofadventure.dto.PlayerDto">
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="namespace" property="namespace"/>
+        <association property="locationDto" javaType="net.hero.rogueb.bookofadventure.dto.LocationDto">
+            <result column="dungeon_id" property="dungeonId"/>
+            <result column="level" property="level"/>
+            <result column="x" property="x"/>
+            <result column="y" property="y"/>
+        </association>
+    </resultMap>
+</mapper>

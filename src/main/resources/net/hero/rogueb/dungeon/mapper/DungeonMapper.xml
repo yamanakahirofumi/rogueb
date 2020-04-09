@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="net.hero.rogueb.dungeon.mapper.DungeonMapper">
+    <select id="findByName" resultMap="dungeonDto">
+        SELECT * FROM Dungeon WHERE name = #{name}
+    </select>
+
+    <select id="findById" resultMap="dungeonDto">
+        SELECT * FROM Dungeon WHERE id = #{id}
+    </select>
+
+    <select id="findByIdAndPlayerId" resultMap="dungeonDtoWithPlayer">
+        SELECT D.id AS id, D.name AS name, D.maxLevel AS maxLevel, D.namespace AS namespace, P.id AS dp_id, P.dungeon_id AS d_id, P.player_id AS p_id, P.max_level AS level  FROM Dungeon D LEFT JOIN Dungeon_Player P ON D.id = #{id} AND D.id = P.dungeon_id AND P.player_id = #{playerId}
+    </select>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO Dungeon (name, maxLevel, namespace) VALUES (#{name}, #{maxLevel}, #{namespace})
+    </insert>
+
+    <delete id="deleteDungeonPlayer">
+        DELETE FROM Dungeon_Player WHERE dungeon_id = #{dungeonId} AND player_id = #{playerId}
+    </delete>
+
+    <insert id="insertDungeonPlayer">
+        INSERT INTO Dungeon_Player (dungeon_id, player_id, max_level) VALUES  (#{dungeonId}, #{playerId}, #{level})
+    </insert>
+
+    <resultMap id="dungeonDto" type="net.hero.rogueb.dungeon.dto.DungeonDto">
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="maxLevel" property="maxLevel"/>
+        <result column="namespace" property="namespace"/>
+    </resultMap>
+
+    <resultMap id="dungeonDtoWithPlayer" type="net.hero.rogueb.dungeon.dto.DungeonDto">
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="maxLevel" property="maxLevel"/>
+        <result column="namespace" property="namespace"/>
+        <association property="dungeonPlayerDto" javaType="net.hero.rogueb.dungeon.dto.DungeonPlayerDto">
+            <id column="dp_id" property="id"/>
+            <result column="d_id" property="dungeonId"/>
+            <result column="p_id" property="playerId"/>
+            <result column="level" property="level"/>
+        </association>
+    </resultMap>
+</mapper>

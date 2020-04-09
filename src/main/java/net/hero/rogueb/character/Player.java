@@ -11,4 +11,6 @@ public interface Player {
     void setLocation(Location location);
 
     boolean move(MoveEnum moveEnum);
+
+    boolean pickUp();
 }

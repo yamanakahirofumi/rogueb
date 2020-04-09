@@ -3,6 +3,7 @@ package net.hero.rogueb.controllers;
 import net.hero.rogueb.services.FieldsService;
 import net.hero.rogueb.services.PlayerService;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,28 +25,33 @@ public class FieldsController {
     }
 
     @PostMapping("/player/{userName}")
-    public Map<String, String> createUser(String userName) {
+    public Map<String, String> createUser(@PathVariable("userName") String userName) {
         return this.playerService.create(userName);
     }
 
     @PutMapping("/player/{userName}/command/top")
-    public Map<String,Boolean> top(String userName){
+    public Map<String,Boolean> top(@PathVariable("userName") String userName){
         return this.playerService.top(userName);
     }
 
     @PutMapping("/player/{userName}/command/down")
-    public Map<String,Boolean> down(String userName){
+    public Map<String,Boolean> down(@PathVariable("userName") String userName){
         return this.playerService.down(userName);
     }
 
     @PutMapping("/player/{userName}/command/right")
-    public Map<String,Boolean> right(String userName){
+    public Map<String,Boolean> right(@PathVariable("userName") String userName){
         return this.playerService.right(userName);
     }
 
     @PutMapping("/player/{userName}/command/left")
-    public Map<String,Boolean> left(String userName){
+    public Map<String,Boolean> left(@PathVariable("userName") String userName){
         return this.playerService.left(userName);
+    }
+
+    @PutMapping("/player/{userName}/command/pickup")
+    public Map<String, Boolean> pickUp(@PathVariable("userName") String userName){
+        return this.playerService.pickup(userName);
     }
 
     @GetMapping("/fields/main")
