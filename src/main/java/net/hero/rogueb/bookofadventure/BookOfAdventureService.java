@@ -15,7 +15,7 @@ public class BookOfAdventureService {
     }
 
     public boolean exist(String userName) {
-        return false;
+        return this.characterMapper.countByName(userName) > 0;
     }
 
     public PlayerDto getPlayer(String userName) {

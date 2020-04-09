@@ -11,11 +11,19 @@
     </update>
 
     <select id="findByid" resultMap="playerDto">
-        SELECT id, name, namespace, L.dungeon_id, L.level, L.x, L.y FROM Player LEFT JOIN Location AS L ON id = L.player_id WHERE id = #{id}
+        SELECT
+        <include refid="selectPlayDto"/>
+        FROM Player LEFT JOIN Location AS L ON id = L.player_id WHERE id = #{id}
     </select>
     <select id="findByName" resultMap="playerDto">
-        SELECT id, name, namespace, L.dungeon_id AS dungeon_id, L.level AS level, L.x AS x, L.y AS y FROM Player LEFT JOIN Location AS L ON id = L.player_id WHERE name = #{name}
+        SELECT
+        <include refid="selectPlayDto"/>
+        FROM Player LEFT JOIN Location AS L ON id = L.player_id WHERE name = #{name}
     </select>
+    <select id="countByName">
+        SELECT COUNT(*) FROM Player WHERE name = #{name}
+ß    </select>
+    <sql id="selectPlayDto">id, name, namespace, L.dungeon_id AS dungeon_id, L.level AS level, L.x AS x, L.y AS y </sql>
 
     <delete id="deleteLocation">
         DELETE FROM Location WHERE player_id = #{id}
