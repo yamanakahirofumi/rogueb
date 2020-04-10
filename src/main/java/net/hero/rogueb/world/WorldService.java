@@ -2,8 +2,8 @@ package net.hero.rogueb.world;
 
 import net.hero.rogueb.bookofadventure.BookOfAdventureService;
 import net.hero.rogueb.bookofadventure.dto.PlayerDto;
-import net.hero.rogueb.dungeon.dto.DungeonDto;
 import net.hero.rogueb.dungeon.DungeonService;
+import net.hero.rogueb.dungeon.dto.DungeonDto;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -25,7 +25,6 @@ public class WorldService {
         playerDto = this.bookOfAdventureService.getPlayer(playerName);
         return playerDto;
     }
-
 
     public DungeonDto getStartDungeon() {
         final String dungeonName = "dungeon";

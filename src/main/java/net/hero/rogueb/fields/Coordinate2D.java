@@ -32,12 +32,9 @@ public class Coordinate2D implements  Coordinate {
 
     @Override
     public boolean equals(Object obj) {
-        //TODO: java14のinstanceof
-        if(obj instanceof Coordinate2D){
-            Coordinate2D c = (Coordinate2D)obj;
-            return x == c.x && y == c.y;
+        if(obj instanceof Coordinate2D coordinate2D){
+            return x == coordinate2D.x && y == coordinate2D.y;
         }
-
         return false;
     }
 }
