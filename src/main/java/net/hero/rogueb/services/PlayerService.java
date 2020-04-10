@@ -4,9 +4,8 @@ import net.hero.rogueb.bookofadventure.BookOfAdventureService;
 import net.hero.rogueb.bookofadventure.dto.LocationDto;
 import net.hero.rogueb.bookofadventure.dto.PlayerDto;
 import net.hero.rogueb.character.Human;
-import net.hero.rogueb.character.Player;
-import net.hero.rogueb.dungeon.dto.DungeonDto;
 import net.hero.rogueb.dungeon.DungeonService;
+import net.hero.rogueb.dungeon.dto.DungeonDto;
 import net.hero.rogueb.fields.Coordinate2D;
 import net.hero.rogueb.fields.MoveEnum;
 import net.hero.rogueb.world.WorldService;
@@ -20,7 +19,7 @@ public class PlayerService {
     private final BookOfAdventureService bookOfAdventureService;
     private final DungeonService dungeonService;
 
-    public PlayerService(WorldService worldService,BookOfAdventureService bookOfAdventureService, DungeonService dungeonService) {
+    public PlayerService(WorldService worldService, BookOfAdventureService bookOfAdventureService, DungeonService dungeonService) {
         this.worldService = worldService;
         this.bookOfAdventureService = bookOfAdventureService;
         this.dungeonService = dungeonService;
@@ -36,35 +35,24 @@ public class PlayerService {
     }
 
     public Map<String, Boolean> top(String userName) {
-        PlayerDto playerDto = this.bookOfAdventureService.getPlayer(userName);
-        Coordinate2D move = this.dungeonService.move(playerDto, MoveEnum.Top);
-        playerDto.getLocationDto().setX(move.getX());
-        playerDto.getLocationDto().setY(move.getY());
-        this.bookOfAdventureService.save(playerDto);
-        return Map.of("result", true);
+        return this.move(userName, MoveEnum.Top);
     }
 
     public Map<String, Boolean> down(String userName) {
-        PlayerDto playerDto = this.bookOfAdventureService.getPlayer(userName);
-        Coordinate2D move = this.dungeonService.move(playerDto, MoveEnum.Down);
-        playerDto.getLocationDto().setX(move.getX());
-        playerDto.getLocationDto().setY(move.getY());
-        this.bookOfAdventureService.save(playerDto);
-        return Map.of("result", true);
+        return this.move(userName, MoveEnum.Down);
     }
 
     public Map<String, Boolean> right(String userName) {
-        PlayerDto playerDto = this.bookOfAdventureService.getPlayer(userName);
-        Coordinate2D move = this.dungeonService.move(playerDto, MoveEnum.Right);
-        playerDto.getLocationDto().setX(move.getX());
-        playerDto.getLocationDto().setY(move.getY());
-        this.bookOfAdventureService.save(playerDto);
-        return Map.of("result", true);
+        return this.move(userName, MoveEnum.Right);
     }
 
     public Map<String, Boolean> left(String userName) {
+        return this.move(userName, MoveEnum.Left);
+    }
+
+    public Map<String, Boolean> move(String userName, MoveEnum moveEnum) {
         PlayerDto playerDto = this.bookOfAdventureService.getPlayer(userName);
-        Coordinate2D move = this.dungeonService.move(playerDto, MoveEnum.Left);
+        Coordinate2D move = this.dungeonService.move(playerDto, moveEnum);
         playerDto.getLocationDto().setX(move.getX());
         playerDto.getLocationDto().setY(move.getY());
         this.bookOfAdventureService.save(playerDto);
@@ -72,6 +60,9 @@ public class PlayerService {
     }
 
     public Map<String, Boolean> pickup(String userName) {
-        return Map.of("result", Human.getInstance(userName).pickUp());
+        PlayerDto playerDto = this.bookOfAdventureService.getPlayer(userName);
+        this.dungeonService.pickUp(playerDto);
+        this.bookOfAdventureService.save(playerDto);
+        return Map.of("result", true);
     }
 }

@@ -1,6 +1,7 @@
 package net.hero.rogueb.fields;
 
 import net.hero.rogueb.bookofadventure.dto.PlayerDto;
+import net.hero.rogueb.dungeon.FloorDomain;
 import net.hero.rogueb.object.Thing;
 
 import java.util.HashMap;
@@ -22,6 +23,13 @@ public class Floor {
         this.playerDtoMap = new HashMap<>();
         this.things = new HashMap<>();
         this.space = new Space();
+    }
+
+    public Floor(FloorDomain floorDomain){
+        this.level = floorDomain.getLevel();
+        this.playerDtoMap = new HashMap<>();
+        this.things = new HashMap<>();
+        this.space = new Space(floorDomain.getUpStairs(), floorDomain.getDownStairs());
     }
 
     public Coordinate2D enterFromUpStairs(PlayerDto playerDto) {
@@ -64,5 +72,13 @@ public class Floor {
 
     public void removeThings(Coordinate2D position) {
         this.things.remove(position);
+    }
+
+    public Coordinate2D getUpStairs() {
+        return this.space.getUpStairs();
+    }
+
+    public Coordinate2D getDownStairs() {
+        return this.space.getDownStairs();
     }
 }

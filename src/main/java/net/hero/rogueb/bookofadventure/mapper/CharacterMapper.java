@@ -17,6 +17,8 @@ public interface CharacterMapper {
 
     PlayerDto findByName(String name);
 
+    int countByName(String name);
+
     void deleteLocation(PlayerDto playerDto);
 
     void insertLocation(int id, LocationDto locationDto);

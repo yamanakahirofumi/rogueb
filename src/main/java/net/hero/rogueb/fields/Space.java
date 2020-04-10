@@ -22,6 +22,16 @@ public class Space {
         this.downStairs = this.getRndPosition();
     }
 
+    public Space(Coordinate2D upstairs, Coordinate2D downStairs){
+        this.maxSize = new Coordinate2D(80, 80);
+        this.rooms = new ArrayList<>();
+        Room room = new Room(new Coordinate2D(1, 1), new Coordinate2D(78, 78));
+        this.rooms.add(room);
+        this.upStairs = upstairs;
+        this.downStairs = downStairs;
+    }
+
+
     public Coordinate2D getRndPosition() {
         return new Coordinate2D(1 + Random.rnd(this.maxSize.getX() - 3), 1 + Random.rnd(this.maxSize.getY() -3));
     }
