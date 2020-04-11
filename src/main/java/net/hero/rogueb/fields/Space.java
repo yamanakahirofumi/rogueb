@@ -14,26 +14,25 @@ public class Space {
     private final Coordinate2D downStairs;
 
     public Space() {
-        this.maxSize = new Coordinate2D(80, 80);
+        this.maxSize = new Coordinate2D(80, 40);
         this.rooms = new ArrayList<>();
-        Room room = new Room(new Coordinate2D(1, 1), new Coordinate2D(78, 78));
+        Room room = new Room(new Coordinate2D(1, 1), this.maxSize.minus(2, 2));
         this.rooms.add(room);
         this.upStairs = this.getRndPosition();
         this.downStairs = this.getRndPosition();
     }
 
-    public Space(Coordinate2D upstairs, Coordinate2D downStairs){
-        this.maxSize = new Coordinate2D(80, 80);
+    public Space(Coordinate2D upstairs, Coordinate2D downStairs) {
+        this.maxSize = new Coordinate2D(80, 40);
         this.rooms = new ArrayList<>();
-        Room room = new Room(new Coordinate2D(1, 1), new Coordinate2D(78, 78));
+        Room room = new Room(new Coordinate2D(1, 1), this.maxSize.minus(2, 2));
         this.rooms.add(room);
         this.upStairs = upstairs;
         this.downStairs = downStairs;
     }
 
-
     public Coordinate2D getRndPosition() {
-        return new Coordinate2D(1 + Random.rnd(this.maxSize.getX() - 3), 1 + Random.rnd(this.maxSize.getY() -3));
+        return new Coordinate2D(1 + Random.rnd(this.maxSize.getX() - 3), 1 + Random.rnd(this.maxSize.getY() - 3));
     }
 
     public List<List<String>> getDisplay() {
@@ -42,16 +41,16 @@ public class Space {
         ).limit(this.maxSize.getY()).collect(Collectors.toList());
         for (var r : this.rooms) {
             var display = r.getDisplay();
-            for (var i = 0; i < ((Coordinate2D) r.getSize()).getX(); i++) {
-                var xLine = fields.get(((Coordinate2D) r.getPosition()).getX() + i);
+            for (var i = 0; i < r.size().getY(); i++) {
+                var xLine = fields.get(r.position().getY() + i);
                 var dxLine = display.get(i);
-                for (var j = 0; j < ((Coordinate2D) r.getSize()).getY(); j++) {
-                    xLine.set(((Coordinate2D) r.getPosition()).getY() + j, dxLine.get(j));
+                for (var j = 0; j < r.size().getX(); j++) {
+                    xLine.set(r.position().getX() + j, dxLine.get(j));
                 }
             }
         }
-        fields.get(this.downStairs.getX()).set(this.downStairs.getY(), "<");
-        fields.get(this.upStairs.getX()).set(this.upStairs.getY(), ">");
+        fields.get(this.downStairs.getY()).set(this.downStairs.getX(), "<");
+        fields.get(this.upStairs.getY()).set(this.upStairs.getX(), ">");
         return fields;
     }
 

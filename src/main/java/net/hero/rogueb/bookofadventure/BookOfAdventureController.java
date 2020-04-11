@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/user")
 public class BookOfAdventureController {
     private final BookOfAdventureService service;
 
@@ -17,16 +17,16 @@ public class BookOfAdventureController {
         this.service = service;
     }
 
-    @GetMapping("/user/{userName}/exist")
+    @GetMapping("/name/{userName}/exist")
     public boolean exist(@PathVariable("userName") String userName){
         return this.service.exist(userName);
     }
 
-    @PutMapping("/user/{userName}")
+    @PutMapping("{userName}")
     public void save(@PathVariable("userName") String userName){
 
     }
-    @PostMapping("/user/{userName}")
+    @PostMapping("{userName}")
     public int create(@PathVariable("userName") String userName){
         return this.service.create(userName);
     }

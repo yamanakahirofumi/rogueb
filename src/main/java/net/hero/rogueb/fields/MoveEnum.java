@@ -1,10 +1,10 @@
 package net.hero.rogueb.fields;
 
 public enum MoveEnum {
-    Top(-1,0),
-    Left(0,-1),
-    Down(1,0),
-    Right(0,1),
+    Top(0,-1),
+    Left(-1,0),
+    Down(0,1),
+    Right(1,0),
     ;
 
     private final int x;

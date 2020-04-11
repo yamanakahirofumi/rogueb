@@ -25,8 +25,8 @@ public class PlayerService {
         this.dungeonService = dungeonService;
     }
 
-    public Map<String, String> create(String userName) {
-        PlayerDto playerDto = this.worldService.bornPlayer(userName);
+    public Map<String, String> gotoDungeon(int userId) {
+        PlayerDto playerDto = this.bookOfAdventureService.getPlayer(userId);
         DungeonDto dungeonDto = this.worldService.getStartDungeon();
         LocationDto locationDto = this.dungeonService.gotoDungeon(dungeonDto, playerDto);
         playerDto.setLocationDto(locationDto);
@@ -34,24 +34,24 @@ public class PlayerService {
         return Map.of("key", "Hello World");
     }
 
-    public Map<String, Boolean> top(String userName) {
-        return this.move(userName, MoveEnum.Top);
+    public Map<String, Boolean> top(int userId) {
+        return this.move(userId, MoveEnum.Top);
     }
 
-    public Map<String, Boolean> down(String userName) {
-        return this.move(userName, MoveEnum.Down);
+    public Map<String, Boolean> down(int userId) {
+        return this.move(userId, MoveEnum.Down);
     }
 
-    public Map<String, Boolean> right(String userName) {
-        return this.move(userName, MoveEnum.Right);
+    public Map<String, Boolean> right(int userId) {
+        return this.move(userId, MoveEnum.Right);
     }
 
-    public Map<String, Boolean> left(String userName) {
-        return this.move(userName, MoveEnum.Left);
+    public Map<String, Boolean> left(int userId) {
+        return this.move(userId, MoveEnum.Left);
     }
 
-    public Map<String, Boolean> move(String userName, MoveEnum moveEnum) {
-        PlayerDto playerDto = this.bookOfAdventureService.getPlayer(userName);
+    public Map<String, Boolean> move(int userId, MoveEnum moveEnum) {
+        PlayerDto playerDto = this.bookOfAdventureService.getPlayer(userId);
         Coordinate2D move = this.dungeonService.move(playerDto, moveEnum);
         playerDto.getLocationDto().setX(move.getX());
         playerDto.getLocationDto().setY(move.getY());
@@ -59,8 +59,8 @@ public class PlayerService {
         return Map.of("result", true);
     }
 
-    public Map<String, Boolean> pickup(String userName) {
-        PlayerDto playerDto = this.bookOfAdventureService.getPlayer(userName);
+    public Map<String, Boolean> pickup(int userId) {
+        PlayerDto playerDto = this.bookOfAdventureService.getPlayer(userId);
         this.dungeonService.pickUp(playerDto);
         this.bookOfAdventureService.save(playerDto);
         return Map.of("result", true);

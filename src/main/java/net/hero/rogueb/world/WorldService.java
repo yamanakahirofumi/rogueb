@@ -16,16 +16,6 @@ public class WorldService {
         this.dungeonService = dungeonService;
     }
 
-    public PlayerDto bornPlayer(String playerName) {
-        PlayerDto playerDto = this.bookOfAdventureService.getPlayer(playerName);
-        if (playerDto != null) {
-            throw new RuntimeException();
-        }
-        this.bookOfAdventureService.create(playerName);
-        playerDto = this.bookOfAdventureService.getPlayer(playerName);
-        return playerDto;
-    }
-
     public DungeonDto getStartDungeon() {
         final String dungeonName = "dungeon";
         DungeonDto dungeonDto = this.dungeonService.findByName(dungeonName);

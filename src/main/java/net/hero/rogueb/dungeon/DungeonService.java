@@ -85,7 +85,7 @@ public class DungeonService {
         List<FloorDomain> floorDomainList = this.floorRepository.findByDungeonIdAndLevelAndUserId(locationDto.getDungeonId(), locationDto.getLevel(), playerDto.getId());
         Floor floor = new Floor(floorDomainList.get(0));
         Coordinate2D coordinate2D = new Coordinate2D(locationDto.getX() + moveEnum.getX(), locationDto.getY() + moveEnum.getY());
-        boolean result = !floor.getFields().get(coordinate2D.getX()).get(coordinate2D.getY()).equals("#");
+        boolean result = !floor.getFields().get(coordinate2D.getY()).get(coordinate2D.getX()).equals("#");
         if (result) {
             return coordinate2D;
         }

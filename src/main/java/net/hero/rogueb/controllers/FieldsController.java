@@ -24,38 +24,38 @@ public class FieldsController {
         this.playerService = playerService;
     }
 
-    @PostMapping("/player/{userName}")
-    public Map<String, String> createUser(@PathVariable("userName") String userName) {
-        return this.playerService.create(userName);
+    @PostMapping("/player/{userId}")
+    public Map<String, String> gotoDungeon(@PathVariable("userId") int userId) {
+        return this.playerService.gotoDungeon(userId);
     }
 
-    @PutMapping("/player/{userName}/command/top")
-    public Map<String,Boolean> top(@PathVariable("userName") String userName){
-        return this.playerService.top(userName);
+    @PutMapping("/player/{userId}/command/top")
+    public Map<String,Boolean> top(@PathVariable("userId") int userId){
+        return this.playerService.top(userId);
     }
 
-    @PutMapping("/player/{userName}/command/down")
-    public Map<String,Boolean> down(@PathVariable("userName") String userName){
-        return this.playerService.down(userName);
+    @PutMapping("/player/{userId}/command/down")
+    public Map<String,Boolean> down(@PathVariable("userId") int userId){
+        return this.playerService.down(userId);
     }
 
-    @PutMapping("/player/{userName}/command/right")
-    public Map<String,Boolean> right(@PathVariable("userName") String userName){
-        return this.playerService.right(userName);
+    @PutMapping("/player/{userId}/command/right")
+    public Map<String,Boolean> right(@PathVariable("userId") int userId){
+        return this.playerService.right(userId);
     }
 
-    @PutMapping("/player/{userName}/command/left")
-    public Map<String,Boolean> left(@PathVariable("userName") String userName){
-        return this.playerService.left(userName);
+    @PutMapping("/player/{userId}/command/left")
+    public Map<String,Boolean> left(@PathVariable("userId") int userId){
+        return this.playerService.left(userId);
     }
 
-    @PutMapping("/player/{userName}/command/pickup")
-    public Map<String, Boolean> pickUp(@PathVariable("userName") String userName){
-        return this.playerService.pickup(userName);
+    @PutMapping("/player/{userId}/command/pickup")
+    public Map<String, Boolean> pickUp(@PathVariable("userId") int userId){
+        return this.playerService.pickup(userId);
     }
 
-    @GetMapping("/fields/main")
-    public List<List<String>> getFields() {
-        return this.fieldsService.getFields();
+    @GetMapping("/fields/{userId}")
+    public List<List<String>> getFields(@PathVariable("userId") int userId) {
+        return this.fieldsService.getFields(userId);
     }
 }
