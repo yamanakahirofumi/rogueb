@@ -18,6 +18,10 @@ public class BookOfAdventureService {
         return this.characterMapper.countByName(userName) > 0;
     }
 
+    public PlayerDto getPlayer(int id){
+        return this.characterMapper.findById(id);
+    }
+
     public PlayerDto getPlayer(String userName) {
         return this.characterMapper.findByName(userName);
     }

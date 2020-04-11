@@ -17,10 +17,8 @@ public class FieldsService {
         this.dungeonService = dungeonService;
     }
 
-    public List<List<String>> getFields() {
-        // TODO
-        PlayerDto playerDto = this.bookOfAdventureService.getPlayer("hero");
+    public List<List<String>> getFields(int userId) {
+        PlayerDto playerDto = this.bookOfAdventureService.getPlayer(userId);
         return this.dungeonService.displayData(playerDto);
     }
-
 }

@@ -49,11 +49,11 @@ public class Floor {
         var fields = this.space.getDisplay();
         for (var s : this.things.entrySet()) {
             Coordinate2D coordinate = s.getKey();
-            fields.get(coordinate.getX()).set(coordinate.getY(), s.getValue().getDisplay());
+            fields.get(coordinate.getY()).set(coordinate.getX(), s.getValue().getDisplay());
         }
         for (var p : this.playerDtoMap.entrySet()) {
             Coordinate2D coordinate2D = p.getKey();
-            fields.get(coordinate2D.getX()).set(coordinate2D.getY(), "@");
+            fields.get(coordinate2D.getY()).set(coordinate2D.getX(), "@");
         }
         return fields;
     }

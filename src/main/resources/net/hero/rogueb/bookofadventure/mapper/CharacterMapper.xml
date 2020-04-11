@@ -10,7 +10,7 @@
         UPDATE Player SET name = #{name}, namespace = #{namespace} WHERE id = #{id}
     </update>
 
-    <select id="findByid" resultMap="playerDto">
+    <select id="findById" resultMap="playerDto">
         SELECT
         <include refid="selectPlayDto"/>
         FROM Player LEFT JOIN Location AS L ON id = L.player_id WHERE id = #{id}
@@ -20,9 +20,9 @@
         <include refid="selectPlayDto"/>
         FROM Player LEFT JOIN Location AS L ON id = L.player_id WHERE name = #{name}
     </select>
-    <select id="countByName">
+    <select id="countByName" resultType="int">
         SELECT COUNT(*) FROM Player WHERE name = #{name}
-ß    </select>
+    </select>
     <sql id="selectPlayDto">id, name, namespace, L.dungeon_id AS dungeon_id, L.level AS level, L.x AS x, L.y AS y </sql>
 
     <delete id="deleteLocation">

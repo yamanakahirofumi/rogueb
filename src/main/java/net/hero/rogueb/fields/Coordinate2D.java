@@ -1,10 +1,10 @@
 package net.hero.rogueb.fields;
 
-public class Coordinate2D implements  Coordinate {
+public class Coordinate2D implements Coordinate {
     private int x;
     private int y;
 
-    public Coordinate2D(int x, int y){
+    public Coordinate2D(int x, int y) {
         this.x = x;
         this.y = y;
     }
@@ -17,12 +17,16 @@ public class Coordinate2D implements  Coordinate {
         return y;
     }
 
-    public void setX(int x){
+    public void setX(int x) {
         this.x = x;
     }
 
-    public void setY(int y){
+    public void setY(int y) {
         this.y = y;
+    }
+
+    public Coordinate2D minus(int minusX, int minusY) {
+        return new Coordinate2D(this.x - minusX, this.y - minusY);
     }
 
     @Override
@@ -32,7 +36,7 @@ public class Coordinate2D implements  Coordinate {
 
     @Override
     public boolean equals(Object obj) {
-        if(obj instanceof Coordinate2D coordinate2D){
+        if (obj instanceof Coordinate2D coordinate2D) {
             return x == coordinate2D.x && y == coordinate2D.y;
         }
         return false;
