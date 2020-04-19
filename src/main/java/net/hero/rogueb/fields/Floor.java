@@ -2,34 +2,56 @@ package net.hero.rogueb.fields;
 
 import net.hero.rogueb.bookofadventure.dto.PlayerDto;
 import net.hero.rogueb.dungeon.FloorDomain;
+import net.hero.rogueb.dungeon.ObjectCoodinateDomain;
+import net.hero.rogueb.math.Random;
 import net.hero.rogueb.object.Thing;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class Floor {
 
+    private final String id;
     /**
-     * 階層
+     * 階層数
      */
     private final int level;
+    private final int itemLimitCount;
     private final Space space;
     private final Map<Coordinate2D, PlayerDto> playerDtoMap;
-    private Map<Coordinate2D, Thing> things;
+    private final Map<Coordinate2D, Thing> things;
 
+    /**
+     * 新規作成時
+     *
+     * @param level 階層数
+     */
     public Floor(int level) {
+        this.id = "#new";
         this.level = level;
         this.playerDtoMap = new HashMap<>();
         this.things = new HashMap<>();
         this.space = new Space();
+        this.itemLimitCount = Random.rnd(3);
     }
 
-    public Floor(FloorDomain floorDomain){
+    /**
+     * ロード時
+     *
+     * @param floorDomain 保存したデータ
+     */
+    public Floor(FloorDomain floorDomain, Map<Integer, Thing> thingMap) {
+        this.id = floorDomain.getId();
         this.level = floorDomain.getLevel();
         this.playerDtoMap = new HashMap<>();
         this.things = new HashMap<>();
+        for (var thing : floorDomain.getThingList()) {
+            this.things.put(thing.getPosition(), thingMap.get(thing.getObjectId()));
+        }
         this.space = new Space(floorDomain.getUpStairs(), floorDomain.getDownStairs());
+        this.itemLimitCount = 0;
     }
 
     public Coordinate2D enterFromUpStairs(PlayerDto playerDto) {
@@ -58,6 +80,14 @@ public class Floor {
         return fields;
     }
 
+    public String getId() {
+        return id;
+    }
+
+    public int getLevel() {
+        return level;
+    }
+
     public List<List<String>> getFields() {
         return this.changeDisplay();
     }
@@ -80,5 +110,33 @@ public class Floor {
 
     public Coordinate2D getDownStairs() {
         return this.space.getDownStairs();
+    }
+
+    public int getItemCreateCount() {
+        int count = this.itemLimitCount - this.things.size();
+        return Math.max(count, 0);
+    }
+
+    public void setThings(List<Thing> thingList) {
+        for (var thing : thingList) {
+            while (true) {
+                Coordinate2D rndPosition = this.space.getRndPosition();
+                if (!this.things.containsKey(rndPosition)) {
+                    this.things.put(rndPosition, thing);
+                    break;
+                }
+            }
+        }
+    }
+
+    public List<ObjectCoodinateDomain> getSymbolThings() {
+        List<ObjectCoodinateDomain> symbolThings = new ArrayList<>();
+        for (var thing : this.things.entrySet()) {
+            ObjectCoodinateDomain objectCoodinateDomain = new ObjectCoodinateDomain();
+            objectCoodinateDomain.setPosition(thing.getKey());
+            objectCoodinateDomain.setObjectId(thing.getValue().getId());
+            symbolThings.add(objectCoodinateDomain);
+        }
+        return symbolThings;
     }
 }

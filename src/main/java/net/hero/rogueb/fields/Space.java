@@ -19,7 +19,13 @@ public class Space {
         Room room = new Room(new Coordinate2D(1, 1), this.maxSize.minus(2, 2));
         this.rooms.add(room);
         this.upStairs = this.getRndPosition();
-        this.downStairs = this.getRndPosition();
+        while (true) {
+            var coordinate = this.getRndPosition();
+            if (!this.upStairs.equals(coordinate)) {
+                this.downStairs = coordinate;
+                break;
+            }
+        }
     }
 
     public Space(Coordinate2D upstairs, Coordinate2D downStairs) {

@@ -10,10 +10,13 @@ import net.hero.rogueb.fields.Coordinate2D;
 import net.hero.rogueb.fields.Floor;
 import net.hero.rogueb.fields.MoveEnum;
 import net.hero.rogueb.object.ObjectService;
+import net.hero.rogueb.object.Thing;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Transactional
 @Service
@@ -39,8 +42,7 @@ public class DungeonService {
 
     public List<List<String>> displayData(PlayerDto playerDto) {
         LocationDto locationDto = playerDto.getLocationDto();
-        List<FloorDomain> floorDomainList = this.floorRepository.findByDungeonIdAndLevelAndUserId(locationDto.getDungeonId(), locationDto.getLevel(), playerDto.getId());
-        Floor floor = new Floor(floorDomainList.get(0));
+        Floor floor = this.getFloor(locationDto.getDungeonId(), locationDto.getLevel(), playerDto.getId());
         floor.move(playerDto);
         return floor.getFields();
     }
@@ -59,22 +61,30 @@ public class DungeonService {
 
     private LocationDto down(DungeonDto dungeonDto, int level, PlayerDto playerDto) {
         var locationDto = new LocationDto();
-        Floor floor = new Floor(level);
-        this.objectService.createRing(); // すこし違う
-        Coordinate2D coordinate2D = floor.enterFromUpStairs(playerDto);
-        FloorDomain floorDomain = new FloorDomain();
-        floorDomain.setDungeonId(dungeonDto.getId());
-        floorDomain.setLevel(1);
-        floorDomain.setUserId(playerDto.getId());
-        floorDomain.setDownStairs(floor.getDownStairs());
-        floorDomain.setUpStairs(floor.getUpStairs());
-        this.floorRepository.save(floorDomain);
         locationDto.setLevel(level);
+        Coordinate2D coordinate2D;
+
+        List<FloorDomain> floorDomainList = this.floorRepository.findByDungeonIdAndLevelAndUserId(dungeonDto.getId(), level, playerDto.getId());
+        if (floorDomainList.size() > 0) {
+            FloorDomain floorDomain = floorDomainList.get(0);
+            coordinate2D = floorDomain.getUpStairs();
+        } else {
+            Floor floor = new Floor(level);
+            floor.setThings(this.objectService.createObjects(floor.getItemCreateCount()));
+            coordinate2D = floor.enterFromUpStairs(playerDto);
+            FloorDomain floorDomain = new FloorDomain();
+            floorDomain.setDungeonId(dungeonDto.getId());
+            floorDomain.setLevel(1);
+            floorDomain.setUserId(playerDto.getId());
+            floorDomain.setDownStairs(floor.getDownStairs());
+            floorDomain.setUpStairs(floor.getUpStairs());
+            floorDomain.setThingList(floor.getSymbolThings());
+            this.floorRepository.save(floorDomain);
+        }
         locationDto.setX(coordinate2D.getX());
         locationDto.setY(coordinate2D.getY());
         return locationDto;
     }
-
 
     private void up() {
 
@@ -82,8 +92,7 @@ public class DungeonService {
 
     public Coordinate2D move(PlayerDto playerDto, MoveEnum moveEnum) {
         LocationDto locationDto = playerDto.getLocationDto();
-        List<FloorDomain> floorDomainList = this.floorRepository.findByDungeonIdAndLevelAndUserId(locationDto.getDungeonId(), locationDto.getLevel(), playerDto.getId());
-        Floor floor = new Floor(floorDomainList.get(0));
+        Floor floor = this.getFloor(locationDto.getDungeonId(), locationDto.getLevel(), playerDto.getId());
         Coordinate2D coordinate2D = new Coordinate2D(locationDto.getX() + moveEnum.getX(), locationDto.getY() + moveEnum.getY());
         boolean result = !floor.getFields().get(coordinate2D.getY()).get(coordinate2D.getX()).equals("#");
         if (result) {
@@ -92,18 +101,34 @@ public class DungeonService {
         return new Coordinate2D(locationDto.getX(), locationDto.getY());
     }
 
-    public void pickUp(PlayerDto playerDto){
+    public Thing pickUp(PlayerDto playerDto) {
         LocationDto locationDto = playerDto.getLocationDto();
         Coordinate2D position = new Coordinate2D(locationDto.getX(), locationDto.getY());
-        List<FloorDomain> floorDomainList = this.floorRepository.findByDungeonIdAndLevelAndUserId(locationDto.getDungeonId(), locationDto.getLevel(), playerDto.getId());
-        Floor floor = new Floor(floorDomainList.get(0));
+        Floor floor = this.getFloor(locationDto.getDungeonId(), locationDto.getLevel(), playerDto.getId());
         if (!floor.isObject(position)) {
-            // return false;
+            return null;
         }
-//        boolean result = this.bag.addContents(this.location.floor.getThings(position));
-//        if (result) {
-//            floor.removeThings(position);
-//        }
-//        return result;
+        Thing things = floor.getThings(position);
+        floor.removeThings(position);
+        FloorDomain floorDomain = new FloorDomain();
+        floorDomain.setId(floor.getId());
+        floorDomain.setDungeonId(locationDto.getDungeonId());
+        floorDomain.setLevel(floor.getLevel());
+        floorDomain.setUserId(playerDto.getId());
+        floorDomain.setDownStairs(floor.getDownStairs());
+        floorDomain.setUpStairs(floor.getUpStairs());
+        floorDomain.setThingList(floor.getSymbolThings());
+
+        this.floorRepository.save(floorDomain);
+        return things;
+    }
+
+    private Floor getFloor(int dungeonId, int level, int playerId) {
+        List<FloorDomain> floorDomainList = this.floorRepository.findByDungeonIdAndLevelAndUserId(dungeonId, level, playerId);
+        FloorDomain floorDomain = floorDomainList.get(0);
+        Map<Integer, Thing> objects = this.objectService.getObjects(floorDomain.getThingList().stream()
+                .map(ObjectCoodinateDomain::getObjectId)
+                .collect(Collectors.toList()));
+        return new Floor(floorDomain, objects);
     }
 }

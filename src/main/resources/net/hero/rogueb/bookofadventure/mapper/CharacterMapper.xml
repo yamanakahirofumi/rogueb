@@ -32,6 +32,21 @@
         INSERT INTO Location (player_id, dungeon_id, level, x, y) VALUES (#{id}, #{locationDto.dungeonId}, #{locationDto.level}, #{locationDto.x}, #{locationDto.y})
     </insert>
 
+    <select id="getObjectByPlayerId" resultType="int">
+        SELECT item_id FROM Player_Item WHERE player_id = #{id}
+    </select>
+
+    <delete id="deleteObject">
+        DELETE FROM Player_Item WHERE player_id = #{id}
+    </delete>
+
+    <insert id="insertObject">
+        INSERT INTO Player_Item (player_id, item_id) VALUES
+        <foreach collection="list" item="pi" separator=",">
+            (#{pi.playerId}, #{pi.objectId})
+        </foreach>
+    </insert>
+
     <resultMap id="playerDto" type="net.hero.rogueb.bookofadventure.dto.PlayerDto">
         <id column="id" property="id"/>
         <result column="name" property="name"/>

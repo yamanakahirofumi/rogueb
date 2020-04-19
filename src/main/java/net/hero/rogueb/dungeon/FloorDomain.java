@@ -4,6 +4,9 @@ import net.hero.rogueb.fields.Coordinate2D;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.List;
+import java.util.Map;
+
 @Document
 public class FloorDomain {
 
@@ -19,6 +22,8 @@ public class FloorDomain {
     private Coordinate2D upStairs;
 
     private Coordinate2D downStairs;
+
+    private List<ObjectCoodinateDomain> thingList;
 
     public String getId() {
         return id;
@@ -66,5 +71,13 @@ public class FloorDomain {
 
     public void setDownStairs(Coordinate2D downStairs) {
         this.downStairs = downStairs;
+    }
+
+    public List<ObjectCoodinateDomain> getThingList() {
+        return thingList;
+    }
+
+    public void setThingList(List<ObjectCoodinateDomain> thingList) {
+        this.thingList = thingList;
     }
 }
