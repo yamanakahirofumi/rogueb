@@ -1,4 +1,4 @@
-package net.hero.rogueb.object;
+package net.hero.rogueb.objects;
 
 import org.springframework.web.bind.annotation.RestController;
 

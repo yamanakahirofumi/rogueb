@@ -4,10 +4,10 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="net.hero.rogueb.bookofadventure.mapper.CharacterMapper">
     <insert id="insert" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO Player (name, namespace) VALUES (#{name}, #{namespace})
+        INSERT INTO Player (name, exp, gold, namespace) VALUES (#{name}, 0, 0, #{namespace})
     </insert>
     <update id="update">
-        UPDATE Player SET name = #{name}, namespace = #{namespace} WHERE id = #{id}
+        UPDATE Player SET name = #{name}, exp = #{exp}, gold = #{gold}, namespace = #{namespace} WHERE id = #{id}
     </update>
 
     <select id="findById" resultMap="playerDto">
@@ -23,7 +23,7 @@
     <select id="countByName" resultType="int">
         SELECT COUNT(*) FROM Player WHERE name = #{name}
     </select>
-    <sql id="selectPlayDto">id, name, namespace, L.dungeon_id AS dungeon_id, L.level AS level, L.x AS x, L.y AS y </sql>
+    <sql id="selectPlayDto">id, name, exp, gold, namespace, L.dungeon_id AS dungeon_id, L.level AS level, L.x AS x, L.y AS y </sql>
 
     <delete id="deleteLocation">
         DELETE FROM Location WHERE player_id = #{id}
@@ -50,6 +50,8 @@
     <resultMap id="playerDto" type="net.hero.rogueb.bookofadventure.dto.PlayerDto">
         <id column="id" property="id"/>
         <result column="name" property="name"/>
+        <result column="exp" property="exp"/>
+        <result column="gold" property="gold"/>
         <result column="namespace" property="namespace"/>
         <association property="locationDto" javaType="net.hero.rogueb.bookofadventure.dto.LocationDto">
             <result column="dungeon_id" property="dungeonId"/>

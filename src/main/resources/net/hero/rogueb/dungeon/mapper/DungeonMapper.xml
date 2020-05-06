@@ -32,6 +32,7 @@
         <result column="name" property="name"/>
         <result column="maxLevel" property="maxLevel"/>
         <result column="namespace" property="namespace"/>
+        <result column="itemSeed" property="itemSeed"/>
     </resultMap>
 
     <resultMap id="dungeonDtoWithPlayer" type="net.hero.rogueb.dungeon.dto.DungeonDto">
@@ -39,6 +40,7 @@
         <result column="name" property="name"/>
         <result column="maxLevel" property="maxLevel"/>
         <result column="namespace" property="namespace"/>
+        <result column="itemSeed" property="itemSeed"/>
         <association property="dungeonPlayerDto" javaType="net.hero.rogueb.dungeon.dto.DungeonPlayerDto">
             <id column="dp_id" property="id"/>
             <result column="d_id" property="dungeonId"/>

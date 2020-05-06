@@ -1,4 +1,4 @@
-package net.hero.rogueb.object.mapper;
+package net.hero.rogueb.objects.mapper;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;

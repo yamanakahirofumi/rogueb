@@ -5,10 +5,10 @@ public class PlayerObjectDto {
     private int playerId;
     private int objectId;
 
-    public PlayerObjectDto(){
+    public PlayerObjectDto() {
     }
 
-    public PlayerObjectDto(int playerId, int objectId){
+    public PlayerObjectDto(int playerId, int objectId) {
         this.playerId = playerId;
         this.objectId = objectId;
     }

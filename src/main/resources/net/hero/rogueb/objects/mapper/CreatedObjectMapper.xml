@@ -2,7 +2,7 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="net.hero.rogueb.object.mapper.CreatedObjectMapper">
+<mapper namespace="net.hero.rogueb.objects.mapper.CreatedObjectMapper">
     <select id="countById" resultType="int">
         SELECT COUNT(*) FROM Created_object WHERE id = #{id};
     </select>

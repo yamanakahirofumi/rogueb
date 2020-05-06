@@ -2,7 +2,7 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="net.hero.rogueb.object.mapper.ObjectMapper">
+<mapper namespace="net.hero.rogueb.objects.mapper.ObjectMapper">
     <select id="findById" resultMap="ring">
         SELECT id, name FROM Objectinfo WHERE id = #{id};
     </select>
@@ -10,7 +10,7 @@
         SELECT id, name FROM Objectinfo WHERE type_id = 2;
     </select>
 
-    <resultMap id="ring" type="net.hero.rogueb.object.Ring">
+    <resultMap id="ring" type="net.hero.rogueb.objects.Ring">
         <constructor>
             <idArg column="id" javaType="_int"/>
             <arg column="name" javaType="String"/>

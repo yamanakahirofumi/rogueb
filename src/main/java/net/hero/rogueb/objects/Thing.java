@@ -1,4 +1,4 @@
-package net.hero.rogueb.object;
+package net.hero.rogueb.objects;
 
 public interface Thing {
     int getId();
@@ -8,4 +8,6 @@ public interface Thing {
     String getName();
 
     int getType();
+
+    boolean isMany();
 }

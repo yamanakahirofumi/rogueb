@@ -4,16 +4,18 @@ public class DungeonDto {
     private int id;
     private String name;
     private int maxLevel;
+    private int itemSeed;
     private String namespace;
     private DungeonPlayerDto dungeonPlayerDto;
 
     public DungeonDto() {
     }
 
-    public DungeonDto(String name, int maxLevel, String namespace) {
+    public DungeonDto(String name, int maxLevel, String namespace ,int itemSeed) {
         this.name = name;
         this.maxLevel = maxLevel;
         this.namespace = namespace;
+        this.itemSeed = itemSeed;
     }
 
     public int getId() {
@@ -46,6 +48,14 @@ public class DungeonDto {
 
     public void setNamespace(String namespace) {
         this.namespace = namespace;
+    }
+
+    public int getItemSeed() {
+        return itemSeed;
+    }
+
+    public void setItemSeed(int itemSeed) {
+        this.itemSeed = itemSeed;
     }
 
     public DungeonPlayerDto getDungeonPlayerDto() {

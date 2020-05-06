@@ -6,6 +6,7 @@ import net.hero.rogueb.dungeon.DungeonService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class FieldsService {
@@ -20,5 +21,11 @@ public class FieldsService {
     public List<List<String>> getFields(int userId) {
         PlayerDto playerDto = this.bookOfAdventureService.getPlayer(userId);
         return this.dungeonService.displayData(playerDto);
+    }
+
+    public Map<String, String> getDungeonInfo(int userId) {
+        PlayerDto playerDto = this.bookOfAdventureService.getPlayer(userId);
+        return Map.of("level", String.valueOf(playerDto.getLocationDto().getLevel()),
+                "name", this.dungeonService.getDungeonName(playerDto));
     }
 }

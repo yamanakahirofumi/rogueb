@@ -8,8 +8,9 @@ import net.hero.rogueb.dungeon.DungeonService;
 import net.hero.rogueb.dungeon.dto.DungeonDto;
 import net.hero.rogueb.fields.Coordinate2D;
 import net.hero.rogueb.fields.MoveEnum;
-import net.hero.rogueb.object.ObjectService;
-import net.hero.rogueb.object.Thing;
+import net.hero.rogueb.objects.Gold;
+import net.hero.rogueb.objects.ObjectService;
+import net.hero.rogueb.objects.Thing;
 import net.hero.rogueb.world.WorldService;
 import org.springframework.stereotype.Service;
 
@@ -66,22 +67,57 @@ public class PlayerService {
         return Map.of("result", true);
     }
 
-    public Map<String, Boolean> pickup(int userId) {
+    public Map<String, Object> pickup(int userId) {
         PlayerDto playerDto = this.bookOfAdventureService.getPlayer(userId);
+        return switch (this.dungeonService.whatIsOnMyFeet(playerDto)) {
+            case None -> Map.of("result", false, "message", "NoObjectOnTheFloor");
+            case Gold -> this.pickupGold(playerDto);
+            case Object -> this.pickupObject(playerDto);
+        };
+    }
+
+    private Map<String, Object> pickupGold(PlayerDto playerDto) {
+        Gold gold = this.dungeonService.pickUpGold(playerDto);
+        if (gold == null) {
+            return Map.of("result", false, "message", "NoObjectOnTheFloor");
+        }
+        playerDto.setGold(playerDto.getGold() + gold.getGold());
+        this.bookOfAdventureService.save(playerDto);
+        return Map.of("result", true, "type", 1, "gold", gold.getGold());
+    }
+
+
+    private Map<String, Object> pickupObject(PlayerDto playerDto) {
         Bag bag = new Bag();
-        List<Integer> itemList = this.bookOfAdventureService.getItemList(userId);
+        List<Integer> itemList = this.bookOfAdventureService.getItemList(playerDto.getId());
         Map<Integer, Thing> thingList = this.objectService.getObjects(itemList);
         bag.setContents(new ArrayList<>(thingList.values()));
         if (bag.getEmptySize() <= 0) {
-            return Map.of("result", false);
+            return Map.of("result", false, "message", "BagNoEmpty");
         }
-        Thing thing = this.dungeonService.pickUp(playerDto);
+        Thing thing = this.dungeonService.pickUpObject(playerDto);
         if (thing == null) {
-            return Map.of("result", false);
+            return Map.of("result", false, "message", "NoObjectOnTheFloor");
         }
         List<Integer> itemIdList = bag.getThingIdList();
         itemIdList.add(thing.getId());
-        this.bookOfAdventureService.changeObject(userId, itemIdList);
+        this.bookOfAdventureService.changeObject(playerDto.getId(), itemIdList);
+        return Map.of("result", true, "type", 2, "itemName", thing.getName());
+    }
+
+    public Map<String, Boolean> downStairs(int userId) {
+        PlayerDto playerDto = this.bookOfAdventureService.getPlayer(userId);
+        LocationDto locationDto = this.dungeonService.downStairs(playerDto);
+        playerDto.setLocationDto(locationDto);
+        this.bookOfAdventureService.save(playerDto);
+        return Map.of("result", true);
+    }
+
+    public Map<String, Boolean> upStairs(int userId) {
+        PlayerDto playerDto = this.bookOfAdventureService.getPlayer(userId);
+        LocationDto locationDto = this.dungeonService.upStairs(playerDto);
+        playerDto.setLocationDto(locationDto);
+        this.bookOfAdventureService.save(playerDto);
         return Map.of("result", true);
     }
 }

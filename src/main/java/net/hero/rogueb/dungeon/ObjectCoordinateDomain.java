@@ -2,9 +2,18 @@ package net.hero.rogueb.dungeon;
 
 import net.hero.rogueb.fields.Coordinate2D;
 
-public class ObjectCoodinateDomain {
+public class ObjectCoordinateDomain {
     private Coordinate2D position;
     private int objectId;
+
+    public ObjectCoordinateDomain(){
+
+    }
+
+    public ObjectCoordinateDomain(Coordinate2D position,int objectId){
+        this.position = position;
+        this.objectId = objectId;
+    }
 
     public Coordinate2D getPosition() {
         return position;

@@ -1,8 +1,8 @@
-package net.hero.rogueb.object;
+package net.hero.rogueb.objects;
 
 import net.hero.rogueb.math.Random;
-import net.hero.rogueb.object.mapper.CreatedObjectMapper;
-import net.hero.rogueb.object.mapper.ObjectMapper;
+import net.hero.rogueb.objects.mapper.CreatedObjectMapper;
+import net.hero.rogueb.objects.mapper.ObjectMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;

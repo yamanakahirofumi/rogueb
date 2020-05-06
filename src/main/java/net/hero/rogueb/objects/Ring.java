@@ -1,4 +1,4 @@
-package net.hero.rogueb.object;
+package net.hero.rogueb.objects;
 
 public class Ring implements Thing {
     private final int id;
@@ -27,5 +27,10 @@ public class Ring implements Thing {
     @Override
     public int getType() {
         return 2;
+    }
+
+    @Override
+    public boolean isMany() {
+        return false;
     }
 }

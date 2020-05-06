@@ -2,7 +2,19 @@
 CREATE TABLE Player(
  id INT AUTO_INCREMENT PRIMARY KEY,
  name VARCHAR(64) NOT NULL,
+ exp INT NOT NULL,
+ gold INT NOT NULL,
  namespace TEXT NOT NULL
+);
+
+CREATE TABLE Player_Status(
+  player_id INT PRIMARY KEY,
+  max_hp INT NOT NULL,
+  hp INT NOT NULL,
+  max_mp INT NOT NULL,
+  mp INT NOT NULL,
+  strength INT NOT NULL,
+  current_strength INT NOT NULL
 );
 
 CREATE TABLE Location (
@@ -34,6 +46,7 @@ CREATE TABLE Dungeon (
   id INT AUTO_INCREMENT PRIMARY KEY,
   name VARCHAR(64) NOT NULL,
   maxLevel INT NOT NULL,
+  itemSeed INT NOT NULL,
   namespace TEXT NOT NULL
 );
 
@@ -67,6 +80,13 @@ CREATE TABLE Created_object(
 );
 
 -- Master Data
+-- Dungeon
+INSERT INTO Dungeon
+(name, maxLevel, itemSeed, namespace)
+VALUES
+('dungeon', 2, 3, 'localhost');
+
+-- Object
 INSERT INTO ObjectInfo_type
 (id, name)
 VALUES

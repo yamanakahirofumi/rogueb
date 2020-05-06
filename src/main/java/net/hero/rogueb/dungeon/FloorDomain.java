@@ -5,7 +5,6 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.List;
-import java.util.Map;
 
 @Document
 public class FloorDomain {
@@ -23,7 +22,9 @@ public class FloorDomain {
 
     private Coordinate2D downStairs;
 
-    private List<ObjectCoodinateDomain> thingList;
+    private List<ObjectCoordinateDomain> thingList;
+
+    private List<GoldCoordinateDomain> goldList;
 
     public String getId() {
         return id;
@@ -73,11 +74,19 @@ public class FloorDomain {
         this.downStairs = downStairs;
     }
 
-    public List<ObjectCoodinateDomain> getThingList() {
+    public List<ObjectCoordinateDomain> getThingList() {
         return thingList;
     }
 
-    public void setThingList(List<ObjectCoodinateDomain> thingList) {
+    public void setThingList(List<ObjectCoordinateDomain> thingList) {
         this.thingList = thingList;
+    }
+
+    public List<GoldCoordinateDomain> getGoldList() {
+        return goldList;
+    }
+
+    public void setGoldList(List<GoldCoordinateDomain> goldList) {
+        this.goldList = goldList;
     }
 }

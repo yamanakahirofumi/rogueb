@@ -1,6 +1,6 @@
 package net.hero.rogueb.bag;
 
-import net.hero.rogueb.object.Thing;
+import net.hero.rogueb.objects.Thing;
 
 import java.util.ArrayList;
 import java.util.List;
