@@ -2,7 +2,19 @@
 CREATE TABLE Player(
  id INT AUTO_INCREMENT PRIMARY KEY,
  name VARCHAR(64) NOT NULL,
+ exp INT NOT NULL,
+ gold INT NOT NULL,
  namespace TEXT NOT NULL
+);
+
+CREATE TABLE Player_Status(
+  player_id INT PRIMARY KEY,
+  max_hp INT NOT NULL,
+  hp INT NOT NULL,
+  max_mp INT NOT NULL,
+  mp INT NOT NULL,
+  strength INT NOT NULL,
+  current_strength INT NOT NULL
 );
 
 CREATE TABLE Location (
@@ -10,11 +22,19 @@ CREATE TABLE Location (
   dungeon_id INT NOT NULL,
   level INT NOT NULL,
   x INT NOT NULL,
-  y INT NOT NULL
+  y INT NOT NULL,
+  FOREIGN KEY (player_id) REFERENCES Player(id)
 );
 
--- WOLRD
-CREATE TABLE WORLD (
+CREATE TABLE Player_Item (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  player_id INT NOT NULL,
+  item_id INT NOT NULL,
+  FOREIGN KEY (player_id) REFERENCES Player(id)
+);
+
+-- WORLD
+CREATE TABLE World (
   id INT AUTO_INCREMENT PRIMARY KEY,
   name VARCHAR(64) NOT NULL,
   namespace TEXT NOT NULL,
@@ -26,6 +46,7 @@ CREATE TABLE Dungeon (
   id INT AUTO_INCREMENT PRIMARY KEY,
   name VARCHAR(64) NOT NULL,
   maxLevel INT NOT NULL,
+  itemSeed INT NOT NULL,
   namespace TEXT NOT NULL
 );
 
@@ -44,7 +65,7 @@ CREATE TABLE ObjectInfo_type(
 );
 
 CREATE TABLE ObjectInfo (
-  id INT AUTO_INCREMENT PRIMARY KEY,
+  id INT PRIMARY KEY,
   type_id INT NOT NULL,
   probability INT NOT NULL,
   worth INT NOT NULL ,
@@ -52,9 +73,21 @@ CREATE TABLE ObjectInfo (
   FOREIGN KEY (type_id) REFERENCES ObjectInfo_type(id)
 );
 
+CREATE TABLE Created_object(
+    id INT PRIMARY KEY,
+    count int NOT NULL,
+    FOREIGN KEY (id) REFERENCES ObjectInfo(id)
+);
 
 -- Master Data
-INSERT INTO objectinfo_type
+-- Dungeon
+INSERT INTO Dungeon
+(name, maxLevel, itemSeed, namespace)
+VALUES
+('dungeon', 2, 3, 'localhost');
+
+-- Object
+INSERT INTO ObjectInfo_type
 (id, name)
 VALUES
 (1,'armor'),
@@ -63,7 +96,7 @@ VALUES
 (4,'weapon'),
 (5,'stick');
 
-INSERT INTO objectinfo
+INSERT INTO ObjectInfo
 (type_id, id, name, probability, worth)
 VALUES
 (1,1,'leather armor',20,20),

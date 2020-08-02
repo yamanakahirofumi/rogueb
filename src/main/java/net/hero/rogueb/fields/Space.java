@@ -13,13 +13,20 @@ public class Space {
     private final Coordinate2D upStairs;
     private final Coordinate2D downStairs;
 
-    public Space() {
+    public Space(boolean isMax) {
         this.maxSize = new Coordinate2D(80, 40);
         this.rooms = new ArrayList<>();
         Room room = new Room(new Coordinate2D(1, 1), this.maxSize.minus(2, 2));
         this.rooms.add(room);
         this.upStairs = this.getRndPosition();
-        this.downStairs = this.getRndPosition();
+        Coordinate2D coordinate = null;
+        while (isMax) {
+            coordinate = this.getRndPosition();
+            if (!this.upStairs.equals(coordinate)) {
+                break;
+            }
+        }
+        this.downStairs = coordinate;
     }
 
     public Space(Coordinate2D upstairs, Coordinate2D downStairs) {
@@ -49,8 +56,10 @@ public class Space {
                 }
             }
         }
-        fields.get(this.downStairs.getY()).set(this.downStairs.getX(), "<");
-        fields.get(this.upStairs.getY()).set(this.upStairs.getX(), ">");
+        if (this.downStairs != null) {
+            fields.get(this.downStairs.getY()).set(this.downStairs.getX(), ">");
+        }
+        fields.get(this.upStairs.getY()).set(this.upStairs.getX(), "<");
         return fields;
     }
 

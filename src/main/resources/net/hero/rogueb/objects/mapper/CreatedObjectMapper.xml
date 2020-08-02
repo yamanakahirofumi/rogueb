@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="net.hero.rogueb.objects.mapper.CreatedObjectMapper">
+    <select id="countById" resultType="int">
+        SELECT COUNT(*) FROM Created_object WHERE id = #{id};
+    </select>
+    <update id="updateCount">
+        UPDATE Create_object SET count = count +1 WHERE id = #{id}
+    </update>
+    <insert id="insertCount">
+        INSERT INTO Created_object (id, count) VALUES (#{id},1)
+    </insert>
+</mapper>

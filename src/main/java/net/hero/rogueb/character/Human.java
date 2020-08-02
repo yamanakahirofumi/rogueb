@@ -3,8 +3,8 @@ package net.hero.rogueb.character;
 import net.hero.rogueb.bag.Bag;
 
 public class Human implements Player {
-    private String name;
-    private Bag bag;
+    private final String name;
+    private final Bag bag;
 
     public Human(String name) {
         this.name = name;
@@ -15,5 +15,4 @@ public class Human implements Player {
     public String getName() {
         return name;
     }
-
 }
