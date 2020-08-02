@@ -5,8 +5,11 @@ services:
     environment:
       MONGO_INITDB_ROOT_USERNAME: mongoroot
       MONGO_INITDB_ROOT_PASSWORD: mongopass
+      MONGO_INITDB_DATABASE: test
     ports:
       - 27017:27017
+    volumes:
+      - ./src/main/docker/mongo/init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js:ro
   mongo-express:
     image: mongo-express
     ports:
