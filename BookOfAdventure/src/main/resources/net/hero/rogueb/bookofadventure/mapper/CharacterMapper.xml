@@ -47,13 +47,13 @@
         </foreach>
     </insert>
 
-    <resultMap id="playerDto" type="net.hero.rogueb.bookofadventureclient.o.PlayerDto">
+    <resultMap id="playerDto" type="net.hero.rogueb.bookofadventure.dto.PlayerDto">
         <id column="id" property="id"/>
         <result column="name" property="name"/>
         <result column="exp" property="exp"/>
         <result column="gold" property="gold"/>
         <result column="namespace" property="namespace"/>
-        <association property="locationDto" javaType="net.hero.rogueb.bookofadventureclient.o.LocationDto">
+        <association property="locationDto" javaType="net.hero.rogueb.bookofadventure.dto.LocationDto">
             <result column="dungeon_id" property="dungeonId"/>
             <result column="level" property="level"/>
             <result column="x" property="x"/>
