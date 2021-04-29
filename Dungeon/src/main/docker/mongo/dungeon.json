@@ -1,0 +1,8 @@
+[
+  {
+    "name": "dungeon",
+    "maxLevel": 2,
+    "itemSeed": 3,
+    "namespace": "localhost"
+  }
+]
