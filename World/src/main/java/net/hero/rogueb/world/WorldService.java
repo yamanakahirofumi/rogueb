@@ -1,11 +1,11 @@
 package net.hero.rogueb.world;
 
 import net.hero.rogueb.dungeonclient.DungeonServiceClient;
-import net.hero.rogueb.dungeonclient.o.DungeonDto;
 import net.hero.rogueb.world.mapper.ServiceMapper;
 import net.hero.rogueb.world.o.DungeonInfo;
 import net.hero.rogueb.world.o.ServiceInfo;
 import org.springframework.stereotype.Service;
+import reactor.core.publisher.Mono;
 
 @Service
 public class WorldService {
@@ -18,21 +18,23 @@ public class WorldService {
         this.serviceMapper = serviceMapper;
     }
 
-    public DungeonInfo getStartDungeon() {
+    public Mono<DungeonInfo> getStartDungeon() {
         final String dungeonName = "dungeon";
-        DungeonDto dungeonDto = this.dungeonServiceClient.findByName(dungeonName);
-        if (dungeonDto == null) {
-            int id = this.dungeonServiceClient.save(dungeonName);
-            return new DungeonInfo(id, dungeonName);
-        }
-        return new DungeonInfo(dungeonDto.id(), dungeonName);
+        return this.dungeonServiceClient.findByName(dungeonName)
+                .flatMap(dungeonDto -> {
+                    if(dungeonDto.id() == null){
+                        return Mono.empty();
+                    }
+                    return Mono.just(dungeonDto.id());
+                })
+                .switchIfEmpty(this.dungeonServiceClient.save(dungeonName))
+                .map(id -> new DungeonInfo(id, dungeonName));
     }
 
     public void registerService(ServiceInfo serviceInfo) {
-
     }
 
-    public String getEndPoint(){
+    public String getEndPoint() {
         return this.serviceMapper.findByType(1);
     }
 }

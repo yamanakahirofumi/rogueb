@@ -2,6 +2,7 @@ package net.hero.rogueb.bookofadventureclient;
 
 import net.hero.rogueb.bookofadventureclient.o.PlayerDto;
 import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.List;
@@ -36,12 +37,11 @@ public class BookOfAdventureServiceClient {
                 .bodyToMono(PlayerDto.class);
     }
 
-    public Mono<List<Integer>> getItemList(int playerId) {
+    public Flux<Integer> getItemList(int playerId) {
         return this.webClient.get()
                 .uri(uriBuilder -> uriBuilder.path("/{userId}/items").build(playerId))
                 .retrieve()
-                .bodyToFlux(Integer.class)
-                .collectList();
+                .bodyToFlux(Integer.class);
     }
 
     public Mono<Boolean> exist(String userName) {

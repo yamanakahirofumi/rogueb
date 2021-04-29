@@ -1,4 +1,4 @@
-package net.hero.rogueb.dungeon;
+package net.hero.rogueb.dungeon.domain;
 
 import net.hero.rogueb.dungeon.fields.Coordinate2D;
 

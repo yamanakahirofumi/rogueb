@@ -4,11 +4,12 @@ import net.hero.rogueb.math.Random;
 import net.hero.rogueb.objects.mapper.CreatedObjectMapper;
 import net.hero.rogueb.objects.mapper.ObjectMapper;
 import org.springframework.stereotype.Service;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class ObjectService {
@@ -20,14 +21,13 @@ public class ObjectService {
         this.createdObjectMapper = createdObjectMapper;
     }
 
-    public List<Thing> createObjects(int count) {
-        List<Thing> objectList = new ArrayList<>();
+    public Flux<Thing> createObjects(int count) {
         List<Ring> ringList = this.objectMapper.findRing();
+        List<Thing> objectList = new ArrayList<>();
         for (var i = 0; i < count; i++) {
             Ring ring = ringList.get(Random.rnd(ringList.size()));
             objectList.add(ring);
         }
-
         for (Thing thing : objectList) {
             int id = thing.getId();
             if (this.createdObjectMapper.countById(id) > 0) {
@@ -36,14 +36,15 @@ public class ObjectService {
                 this.createdObjectMapper.insertCount(id);
             }
         }
-        return objectList;
+        return Flux.fromIterable(objectList);
     }
 
-    public List<Thing> getObjects(Collection<Integer> idList) {
-        return idList.stream().map(this.objectMapper::findById).collect(Collectors.toList());
+    public Flux<Thing> getObjects(Collection<Integer> idList) {
+        return Flux.fromIterable(idList)
+                .map(this.objectMapper::findById);
     }
 
-    public Thing getObjectInfo(int id){
-        return this.objectMapper.findById(id);
+    public Mono<Thing> getObjectInfo(int id){
+        return Mono.just(this.objectMapper.findById(id));
     }
 }

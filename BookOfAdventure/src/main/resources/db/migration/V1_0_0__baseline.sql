@@ -19,7 +19,7 @@ CREATE TABLE Player_Status(
 
 CREATE TABLE Location (
   player_id INT PRIMARY KEY,
-  dungeon_id INT NOT NULL,
+  dungeon_id TEXT NOT NULL,
   level INT NOT NULL,
   x INT NOT NULL,
   y INT NOT NULL,

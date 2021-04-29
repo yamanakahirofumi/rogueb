@@ -5,7 +5,7 @@ public enum ThingOverviewType {
     Gold(1),
     Object(2);
 
-    int type;
+    final int type;
 
     ThingOverviewType(int type){
         this.type = type;

@@ -39,27 +39,27 @@ public class Space {
     }
 
     public Coordinate2D getRndPosition() {
-        return new Coordinate2D(1 + Random.rnd(this.maxSize.getX() - 3), 1 + Random.rnd(this.maxSize.getY() - 3));
+        return new Coordinate2D(1 + Random.rnd(this.maxSize.x() - 3), 1 + Random.rnd(this.maxSize.y() - 3));
     }
 
     public List<List<String>> getDisplay() {
         List<List<String>> fields = Stream.generate(() ->
-                Stream.generate(() -> "#").limit(this.maxSize.getX()).collect(Collectors.toList())
-        ).limit(this.maxSize.getY()).collect(Collectors.toList());
+                Stream.generate(() -> "#").limit(this.maxSize.x()).collect(Collectors.toList())
+        ).limit(this.maxSize.y()).collect(Collectors.toList());
         for (var r : this.rooms) {
             var display = r.getDisplay();
-            for (var i = 0; i < r.size().getY(); i++) {
-                var xLine = fields.get(r.position().getY() + i);
+            for (var i = 0; i < r.size().y(); i++) {
+                var xLine = fields.get(r.position().y() + i);
                 var dxLine = display.get(i);
-                for (var j = 0; j < r.size().getX(); j++) {
-                    xLine.set(r.position().getX() + j, dxLine.get(j));
+                for (var j = 0; j < r.size().x(); j++) {
+                    xLine.set(r.position().x() + j, dxLine.get(j));
                 }
             }
         }
         if (this.downStairs != null) {
-            fields.get(this.downStairs.getY()).set(this.downStairs.getX(), ">");
+            fields.get(this.downStairs.y()).set(this.downStairs.x(), ">");
         }
-        fields.get(this.upStairs.getY()).set(this.upStairs.getX(), "<");
+        fields.get(this.upStairs.y()).set(this.upStairs.x(), "<");
         return fields;
     }
 

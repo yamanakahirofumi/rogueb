@@ -1,6 +1,5 @@
 package net.hero.rogueb.bag;
 
-
 import net.hero.rogueb.objectclient.o.ThingSimple;
 
 import java.util.ArrayList;
@@ -28,11 +27,11 @@ public class Bag {
         return result;
     }
 
-    public int getEmptySize(){
+    public int getEmptySize() {
         return this.limitSize - this.size;
     }
 
-    public List<Integer> getThingIdList(){
+    public List<Integer> getThingIdList() {
         return this.contents.stream().map(ThingSimple::id).collect(Collectors.toList());
     }
 

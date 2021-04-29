@@ -6,9 +6,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.util.Collection;
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/objects")
@@ -20,17 +21,17 @@ public class ObjectController {
     }
 
     @GetMapping("/{id}")
-    public Thing getObjectInfo(@PathVariable("id") int id){
+    public Mono<Thing> getObjectInfo(@PathVariable("id") int id){
         return this.objectService.getObjectInfo(id);
     }
 
     @PostMapping("/list")
-    public List<Thing> getObjects(@RequestBody Collection<Integer> idList) {
+    public Flux<Thing> getObjects(@RequestBody Collection<Integer> idList) {
         return this.objectService.getObjects(idList);
     }
 
     @PostMapping("/create/count/{count}")
-    public List<Thing> createObjects(@PathVariable("count") int itemCreateCount) {
+    public Flux<Thing> createObjects(@PathVariable("count") int itemCreateCount) {
         return this.objectService.createObjects(itemCreateCount);
     }
 }

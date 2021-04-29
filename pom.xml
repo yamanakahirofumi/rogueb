@@ -5,7 +5,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.4.1</version>
+        <version>2.5.0-RC1</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>net.hero.rogueb</groupId>
@@ -17,21 +17,34 @@
 
     <modules>
         <module>BookOfAdventure</module>
-        <module>World</module>
-        <module>DungeonClient</module>
-        <module>Dungeon</module>
-        <module>WorldClient</module>
         <module>BookOfAdventureClient</module>
-        <module>Objects</module>
-        <module>ObjectsClient</module>
-        <module>Others</module>
         <module>Commons</module>
         <module>Display</module>
+        <module>Dungeon</module>
+        <module>DungeonClient</module>
+        <module>Objects</module>
+        <module>ObjectsClient</module>
+        <module>PlayerOperations</module>
+        <module>World</module>
+        <module>WorldClient</module>
     </modules>
 
     <properties>
         <java.version>15</java.version>
     </properties>
+
+    <repositories>
+        <repository>
+            <id>spring-milestones</id>
+            <url>https://repo.spring.io/milestone</url>
+        </repository>
+    </repositories>
+    <pluginRepositories>
+        <pluginRepository>
+            <id>spring-milestones</id>
+            <url>https://repo.spring.io/milestone</url>
+        </pluginRepository>
+    </pluginRepositories>
 
     <build>
         <plugins>

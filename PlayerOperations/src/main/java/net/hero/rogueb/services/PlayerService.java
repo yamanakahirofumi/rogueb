@@ -36,7 +36,7 @@ public class PlayerService {
     public Mono<Map<String, String>> gotoDungeon(int userId) {
         Mono<PlayerDto> playerDtoMono = this.bookOfAdventureServiceClient.getPlayer(userId);
         Mono<LocationDto> locationDtoMono = this.worldServiceClient.getStartDungeon()
-                .flatMap(dungeonInfo1 -> this.dungeonServiceClient.gotoDungeon(dungeonInfo1.id(), userId))
+                .flatMap(dungeonInfo -> this.dungeonServiceClient.gotoDungeon(dungeonInfo.id(), userId))
                 .map(this::createLocationDto);
         return Mono.zip(playerDtoMono, locationDtoMono)
                 .doOnNext(tuple -> tuple.getT1().setLocationDto(tuple.getT2()))
@@ -91,6 +91,7 @@ public class PlayerService {
 
     private Mono<Map<String, Object>> pickupObject(PlayerDto playerDto) {
         return this.bookOfAdventureServiceClient.getItemList(playerDto.getId())
+                .collectList()
                 .flatMap(this.objectServiceClient::getObjects)
                 .map(thingMap -> {
                     Bag bag = new Bag();

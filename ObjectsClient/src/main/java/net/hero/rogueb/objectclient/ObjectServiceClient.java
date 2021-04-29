@@ -3,10 +3,10 @@ package net.hero.rogueb.objectclient;
 import net.hero.rogueb.objectclient.o.ThingInfo;
 import net.hero.rogueb.objectclient.o.ThingSimple;
 import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.Collection;
-import java.util.List;
 import java.util.Map;
 
 public class ObjectServiceClient {
@@ -32,13 +32,11 @@ public class ObjectServiceClient {
                 .bodyToMono(ThingInfo.class);
     }
 
-    public List<ThingSimple> createObjects(int itemCreateCount) {
+    public Flux<ThingSimple> createObjects(int itemCreateCount) {
         return this.webClient.post()
                 .uri(uriBuilder -> uriBuilder.path("/create/count/{count}").build(itemCreateCount))
                 .bodyValue(itemCreateCount)
                 .retrieve()
-                .bodyToFlux(ThingSimple.class)
-                .collectList()
-                .block();
+                .bodyToFlux(ThingSimple.class);
     }
 }

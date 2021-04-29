@@ -1,5 +1,5 @@
 CREATE TABLE World_Type (
-  id INT PRIMARY KEY ,
+  id INT PRIMARY KEY,
   name VARCHAR(64) NOT NULL
 );
 
@@ -8,7 +8,7 @@ CREATE TABLE World (
   name VARCHAR(64) NOT NULL,
   namespace TEXT NOT NULL,
   type INT NOT NULL,
-  endpoint VARCHAR(65532) NOT NULL
+  endpoint VARCHAR(65532) NOT NULL,
   FOREIGN KEY (type) REFERENCES World_Type(id)
 );
 
@@ -45,4 +45,5 @@ VALUES
 (200, 'BookOfAdventure'),
 (300, 'Dungeon'),
 (400, 'Objects'),
+(500, 'PlayerOperations'),
 (99999, 'Others');

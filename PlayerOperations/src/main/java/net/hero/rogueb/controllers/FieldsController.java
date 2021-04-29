@@ -1,5 +1,6 @@
 package net.hero.rogueb.controllers;
 
+import net.hero.rogueb.dungeonclient.o.DisplayData;
 import net.hero.rogueb.dungeonclient.o.MoveEnum;
 import net.hero.rogueb.services.FieldsService;
 import net.hero.rogueb.services.PlayerService;
@@ -9,9 +10,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -27,12 +28,12 @@ public class FieldsController {
     }
 
     @GetMapping("/user/name/{userName}/exist")
-    public Mono<Boolean> existPlayer(@PathVariable("userName") String userName){
+    public Mono<Boolean> existPlayer(@PathVariable("userName") String userName) {
         return this.playerService.existPlayer(userName);
     }
 
     @PostMapping("/user/name/{userName}")
-    public Mono<Integer> create(@PathVariable("userName") String userName){
+    public Mono<Integer> create(@PathVariable("userName") String userName) {
         return this.playerService.create(userName);
     }
 
@@ -97,8 +98,13 @@ public class FieldsController {
     }
 
     @GetMapping("/fields/{userId}")
-    public Mono<List<List<String>>> getFields(@PathVariable("userId") int userId) {
+    public Flux<DisplayData> getFields(@PathVariable("userId") int userId) {
         return this.fieldsService.getFields(userId);
+    }
+
+    @GetMapping("/fields/{userId}/now")
+    public Flux<DisplayData> getFieldsNow(@PathVariable("userId") int userId) {
+        return this.fieldsService.getFieldsNow(userId);
     }
 
     @GetMapping("fields/{userId}/info")

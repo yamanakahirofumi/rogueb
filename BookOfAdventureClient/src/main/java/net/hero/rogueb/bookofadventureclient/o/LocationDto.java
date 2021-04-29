@@ -1,16 +1,16 @@
 package net.hero.rogueb.bookofadventureclient.o;
 
 public class LocationDto {
-    private int dungeonId;
+    private String dungeonId;
     private int level;
     private int x;
     private int y;
 
-    public int getDungeonId() {
+    public String getDungeonId() {
         return dungeonId;
     }
 
-    public void setDungeonId(int dungeonId) {
+    public void setDungeonId(String dungeonId) {
         this.dungeonId = dungeonId;
     }
 

@@ -1,28 +1,32 @@
-package net.hero.rogueb.dungeon.dto;
+package net.hero.rogueb.dungeon.domain;
 
-public class DungeonDto {
-    private int id;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+
+@Document
+public class DungeonDomain {
+    @Id
+    private String id;
     private String name;
     private int maxLevel;
     private int itemSeed;
     private String namespace;
-    private DungeonPlayerDto dungeonPlayerDto;
 
-    public DungeonDto() {
+    public DungeonDomain() {
     }
 
-    public DungeonDto(String name, int maxLevel, String namespace ,int itemSeed) {
+    public DungeonDomain(String name, int maxLevel, String namespace, int itemSeed) {
         this.name = name;
         this.maxLevel = maxLevel;
         this.namespace = namespace;
         this.itemSeed = itemSeed;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -56,13 +60,5 @@ public class DungeonDto {
 
     public void setItemSeed(int itemSeed) {
         this.itemSeed = itemSeed;
-    }
-
-    public DungeonPlayerDto getDungeonPlayerDto() {
-        return dungeonPlayerDto;
-    }
-
-    public void setDungeonPlayerDto(DungeonPlayerDto dungeonPlayerDto) {
-        this.dungeonPlayerDto = dungeonPlayerDto;
     }
 }

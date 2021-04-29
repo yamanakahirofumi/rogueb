@@ -3,10 +3,12 @@ package net.hero.rogueb.services;
 import net.hero.rogueb.bookofadventureclient.o.PlayerDto;
 import net.hero.rogueb.bookofadventureclient.BookOfAdventureServiceClient;
 import net.hero.rogueb.dungeonclient.DungeonServiceClient;
+import net.hero.rogueb.dungeonclient.o.DisplayData;
 import org.springframework.stereotype.Service;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.util.List;
+import java.time.Duration;
 import java.util.Map;
 
 @Service
@@ -20,10 +22,15 @@ public class FieldsService {
         this.dungeonServiceClient = dungeonServiceClient;
     }
 
-    public Mono<List<List<String>>> getFields(int userId) {
+    public Flux<DisplayData> getFields(int userId) {
+        return Flux.merge(Flux.just(1), Flux.interval(Duration.ofSeconds(20)))
+                .flatMap(i ->this.getFieldsNow(userId));
+    }
+
+    public Flux<DisplayData> getFieldsNow(int userId){
         return this.bookOfAdventureServiceClient.getPlayer(userId)
                 .map(PlayerDto::getLocationDto)
-                .flatMap(locationDto -> this.dungeonServiceClient.displayData(locationDto.getDungeonId(), userId, locationDto.getLevel(), locationDto.getX(), locationDto.getY()));
+                .flatMapMany(locationDto -> this.dungeonServiceClient.displayData(locationDto.getDungeonId(), userId, locationDto.getLevel(), locationDto.getX(), locationDto.getY()));
     }
 
     public Mono<Map<String, String>> getDungeonInfo(int userId) {

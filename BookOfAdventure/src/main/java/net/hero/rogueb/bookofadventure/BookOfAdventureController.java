@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.util.List;
 
@@ -21,8 +23,8 @@ public class BookOfAdventureController {
     }
 
     @GetMapping("/name/{userName}/exist")
-    public boolean exist(@PathVariable("userName") String userName) {
-        return this.service.exist(userName);
+    public Mono<Boolean> exist(@PathVariable("userName") String userName) {
+        return Mono.just(this.service.exist(userName));
     }
 
     @PutMapping("/{userId}")
@@ -33,8 +35,8 @@ public class BookOfAdventureController {
     }
 
     @PostMapping("/name/{userName}")
-    public int create(@PathVariable("userName") String userName) {
-        return this.service.create(userName);
+    public Mono<Integer> create(@PathVariable("userName") String userName) {
+        return Mono.just(this.service.create(userName));
     }
 
     @PostMapping("/{userId}/items")
@@ -43,12 +45,12 @@ public class BookOfAdventureController {
     }
 
     @GetMapping("/{userId}")
-    public PlayerDto getPlayer(@PathVariable("userId") int userId) {
-        return this.service.getPlayer(userId);
+    public Mono<PlayerDto> getPlayer(@PathVariable("userId") int userId) {
+        return Mono.just(this.service.getPlayer(userId));
     }
 
     @GetMapping("/{userId}/items")
-    public List<Integer> getItemList(@PathVariable("userId") int userId) {
-        return this.service.getItemList(userId);
+    public Flux<Integer> getItemList(@PathVariable("userId") int userId) {
+        return Flux.fromIterable(this.service.getItemList(userId));
     }
 }

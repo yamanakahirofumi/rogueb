@@ -1,180 +1,177 @@
 package net.hero.rogueb.dungeon;
 
-import net.hero.rogueb.dungeon.dto.DungeonDto;
-import net.hero.rogueb.dungeon.dto.DungeonPlayerDto;
+import net.hero.rogueb.dungeon.domain.DungeonDomain;
+import net.hero.rogueb.dungeon.domain.DungeonPlayerDomain;
+import net.hero.rogueb.dungeon.domain.FloorDomain;
+import net.hero.rogueb.dungeon.domain.ObjectCoordinateDomain;
 import net.hero.rogueb.dungeon.fields.Coordinate2D;
+import net.hero.rogueb.dungeon.fields.DisplayData;
 import net.hero.rogueb.dungeon.fields.DungeonLocation;
 import net.hero.rogueb.dungeon.fields.Floor;
 import net.hero.rogueb.dungeon.fields.Gold;
 import net.hero.rogueb.dungeon.fields.ThingOverviewType;
-import net.hero.rogueb.dungeon.mapper.DungeonMapper;
+import net.hero.rogueb.dungeon.repositories.DungeonPlayerRepository;
+import net.hero.rogueb.dungeon.repositories.DungeonRepository;
 import net.hero.rogueb.dungeon.repositories.FloorRepository;
 import net.hero.rogueb.objectclient.ObjectServiceClient;
 import net.hero.rogueb.objectclient.o.ThingSimple;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
-import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 @Transactional
 @Service
 public class DungeonService {
-    private final DungeonMapper dungeonMapper;
+    private final DungeonRepository dungeonRepository;
+    private final DungeonPlayerRepository dungeonPlayerRepository;
     private final FloorRepository floorRepository;
     private final ObjectServiceClient objectServiceClient;
 
-    public DungeonService(DungeonMapper dungeonMapper, FloorRepository floorRepository, ObjectServiceClient objectServiceClient) {
-        this.dungeonMapper = dungeonMapper;
+    public DungeonService(DungeonRepository dungeonRepository,
+                          DungeonPlayerRepository dungeonPlayerRepository,
+                          FloorRepository floorRepository,
+                          ObjectServiceClient objectServiceClient) {
+        this.dungeonRepository = dungeonRepository;
+        this.dungeonPlayerRepository = dungeonPlayerRepository;
         this.floorRepository = floorRepository;
         this.objectServiceClient = objectServiceClient;
     }
 
-    public DungeonDto findByName(String name) {
-        return this.dungeonMapper.findByName(name);
+    public Mono<DungeonDomain> findByName(String name) {
+        return this.dungeonRepository.findByName(name)
+                .switchIfEmpty(Flux.just(new DungeonDomain()))
+                .elementAt(0);
     }
 
-    public int save(String name) {
-        DungeonDto dungeonDto = new DungeonDto(name, 1, "localhost", 3);
-        return this.dungeonMapper.insert(dungeonDto);
+    public Mono<String> save(String name) {
+        return this.dungeonRepository.save(new DungeonDomain(name, 1, "localhost", 3))
+                .map(DungeonDomain::getId);
     }
 
-    public List<List<String>> displayData(DungeonLocation location) {
-        Floor floor = this.getFloor(location);
-        floor.move(location.getCoordinate2D(), location.getPlayerId());
-        return floor.getFields();
+
+    public Flux<DisplayData> displayData(DungeonLocation location) {
+        return this.getFloor(location)
+                .doOnNext(floor -> floor.move(location.getCoordinate2D(), location.getPlayerId()))
+                .flatMapIterable(Floor::getFields);
     }
 
-    public String getDungeonName(int dungeonId) {
-        DungeonDto dungeonDto = this.dungeonMapper.findById(dungeonId);
-        return dungeonDto.getName();
+    public Mono<String> getDungeonName(String dungeonId) {
+        return this.dungeonRepository.findById(dungeonId)
+                .map(DungeonDomain::getName);
     }
 
-    public DungeonLocation gotoDungeon(int dungeonId, int playerId) {
-        DungeonDto dungeonDto = this.dungeonMapper.findById(dungeonId);
-        DungeonLocation dungeonLocation = this.down(dungeonDto, 1, playerId);
-        DungeonPlayerDto dungeonPlayerDto = new DungeonPlayerDto();
-        dungeonPlayerDto.setDungeonId(dungeonDto.getId());
-        dungeonPlayerDto.setPlayerId(playerId);
-        dungeonPlayerDto.setLevel(1);
-        this.dungeonMapper.deleteDungeonPlayer(dungeonPlayerDto);
-        this.dungeonMapper.insertDungeonPlayer(dungeonPlayerDto);
-        return dungeonLocation;
+    public Mono<DungeonLocation> gotoDungeon(String dungeonId, int playerId) {
+        return this.down(dungeonId, 1, playerId);
     }
 
-    private DungeonLocation down(DungeonDto dungeonDto, int level, int playerId) {
-        List<FloorDomain> floorDomainList = this.floorRepository.findByDungeonIdAndLevelAndUserId(dungeonDto.getId(), level, playerId);
-        Coordinate2D coordinate2D;
-        if (floorDomainList.size() > 0) {
-            FloorDomain floorDomain = floorDomainList.get(0);
-            coordinate2D = floorDomain.getUpStairs();
-        } else {
-            Floor floor = new Floor(level, dungeonDto);
-            floor.setObjects(this.objectServiceClient.createObjects(floor.getItemCreateCount()));
-            coordinate2D = floor.enterFromUpStairs(playerId);
-            this.saveFloor(floor, playerId);
-        }
-        return new DungeonLocation(dungeonDto.getId(), playerId, level, coordinate2D);
+    private Mono<DungeonLocation> down(String dungeonId, int level, int playerId) {
+        return this.dungeonPlayerRepository.deleteDungeonPlayerDomainsByDungeonIdAndPlayerId(dungeonId, playerId)
+                .then(this.dungeonPlayerRepository.save(new DungeonPlayerDomain(dungeonId, playerId, level)))
+                .then(this.floorRepository.findByDungeonIdAndLevelAndUserId(dungeonId, level, playerId)
+                        .switchIfEmpty(createNewLevel(dungeonId, level, playerId))
+                        .elementAt(0))
+                .map(FloorDomain::getUpStairs)
+                .map(coordinate2D -> new DungeonLocation(dungeonId, playerId, level, coordinate2D));
     }
 
-    private DungeonLocation up(int dungeonId, int level, int playerId) {
-        List<FloorDomain> floorDomainList = this.floorRepository.findByDungeonIdAndLevelAndUserId(dungeonId, level, playerId);
-        if (floorDomainList.size() < 1) {
-            throw new RuntimeException("Data不整合");
-        }
-        FloorDomain floorDomain = floorDomainList.get(0);
-        return new DungeonLocation(dungeonId, playerId, level, floorDomain.getDownStairs());
+    private Mono<FloorDomain> createNewLevel(String dungeonId, int level, int playerId) {
+        return this.dungeonRepository.findById(dungeonId)
+                .map(dungeonDomain -> new Floor(level, dungeonDomain))
+                .flatMap(floor -> Mono.zip(
+                        Mono.just(floor),
+                        this.objectServiceClient.createObjects(floor.getItemCreateCount()).collectList()))
+                .flatMap(tuple2 -> {
+                    tuple2.getT1().setObjects(tuple2.getT2());
+                    return this.saveFloor(tuple2.getT1(), playerId);
+                });
     }
 
-    public Coordinate2D move(DungeonLocation location, int toX, int toY) {
-        Floor floor = this.getFloor(location);
-        Coordinate2D coordinate2D = new Coordinate2D(toX, toY);
-        boolean result = !floor.getFields().get(coordinate2D.getY()).get(coordinate2D.getX()).equals("#");
-        if (result) {
-            return coordinate2D;
-        }
-        return location.getCoordinate2D();
+    private Mono<DungeonLocation> up(String dungeonId, int level, int playerId) {
+        return this.floorRepository.findByDungeonIdAndLevelAndUserId(dungeonId, level, playerId)
+                .elementAt(0)
+                .map(floorDomain -> new DungeonLocation(dungeonId, playerId, level, floorDomain.getDownStairs()))
+                .switchIfEmpty(Mono.error(new RuntimeException("Data不整合")));
     }
 
-    public DungeonLocation downStairs(DungeonLocation location) {
-        Floor floor = this.getFloor(location);
-        if (!floor.getDownStairs().equals(location.getCoordinate2D())) {
-            return location;
-        }
-        DungeonDto dungeonDto = this.dungeonMapper.findById(location.getDungeonId());
-        if (dungeonDto.getMaxLevel() <= location.getLevel()) {
-            return location;
-        }
-        DungeonLocation newLocation = this.down(dungeonDto, location.getLevel() + 1, location.getPlayerId());
-        DungeonPlayerDto dungeonPlayerDto = new DungeonPlayerDto();
-        dungeonPlayerDto.setDungeonId(location.getDungeonId());
-        dungeonPlayerDto.setPlayerId(location.getPlayerId());
-        dungeonPlayerDto.setLevel(location.getLevel() + 1);
-        this.dungeonMapper.deleteDungeonPlayer(dungeonPlayerDto);
-        this.dungeonMapper.insertDungeonPlayer(dungeonPlayerDto);
-        return newLocation;
+    public Mono<Coordinate2D> move(DungeonLocation location, int toX, int toY) {
+        return this.getFloor(location)
+                .filter(f -> f.getFields().get(toY).data().get(toX).equals("#"))
+                .map(it -> location.getCoordinate2D())
+                .switchIfEmpty(Mono.just(new Coordinate2D(toX, toY)));
     }
 
-    public DungeonLocation upStairs(DungeonLocation location) {
-        Floor floor = this.getFloor(location);
-        if (!floor.getUpStairs().equals(location.getCoordinate2D())) {
-            return location;
-        }
+    public Mono<DungeonLocation> downStairs(DungeonLocation location) {
+        return this.dungeonRepository.findById(location.getDungeonId())
+                .filter(dungeonDomain -> dungeonDomain.getMaxLevel() > location.getLevel())
+                .flatMap(dungeonDomain -> this.getFloor(location))
+                .filter(floor -> floor.getDownStairs().equals(location.getCoordinate2D()))
+                .flatMap(floor -> this.down(location.getDungeonId(), location.getLevel() + 1, location.getPlayerId()))
+                .switchIfEmpty(Mono.just(location));
+    }
+
+    public Mono<DungeonLocation> upStairs(DungeonLocation location) {
         if (location.getLevel() == 1) {
             // TODO:暫定対応
-            return location;
+            return Mono.just(location);
         }
-        return this.up(location.getDungeonId(), location.getLevel() - 1, location.getPlayerId());
+
+        return this.getFloor(location)
+                .filter(floor -> floor.getUpStairs().equals(location.getCoordinate2D()))
+                .flatMap(it -> this.up(location.getDungeonId(), location.getLevel() - 1, location.getPlayerId()))
+                .switchIfEmpty(Mono.just(location));
     }
 
-    public int pickUpObject(DungeonLocation location) {
-        Floor floor = this.getFloor(location);
-        if (!floor.isObject(location.getCoordinate2D())) {
-            return 0;
-        }
-        ThingSimple things = floor.getObject(location.getCoordinate2D());
-        floor.removeObject(location.getCoordinate2D());
-        this.saveFloor(floor, location.getPlayerId());
-
-        return things.id();
+    public Mono<Integer> pickUpObject(DungeonLocation location) {
+        return this.getFloor(location).filter(floor -> floor.isObject(location.getCoordinate2D()))
+                .map(floor -> {
+                    ThingSimple thingSimple = floor.getObject(location.getCoordinate2D());
+                    floor.removeObject(location.getCoordinate2D());
+                    this.saveFloor(floor, location.getPlayerId()).block();
+                    return thingSimple;
+                })
+                .map(ThingSimple::id)
+                .switchIfEmpty(Mono.just(0));
     }
 
-    public Gold pickUpGold(DungeonLocation location) {
-        Floor floor = this.getFloor(location);
-        if (!floor.isGold(location.getCoordinate2D())) {
-            return null;
-        }
-        Gold gold = floor.getGold(location.getCoordinate2D());
-        floor.removeGold(location.getCoordinate2D());
-        this.saveFloor(floor, location.getPlayerId());
-
-        return gold;
+    public Mono<Gold> pickUpGold(DungeonLocation location) {
+        return this.getFloor(location)
+                .filter(floor -> floor.isGold(location.getCoordinate2D()))
+                .map(floor -> {
+                    Gold gold = floor.removeGold(location.getCoordinate2D());
+                    this.saveFloor(floor, location.getPlayerId()).block();
+                    return gold;
+                })
+                .switchIfEmpty(Mono.just(new Gold(0)));
     }
 
 
-    public ThingOverviewType whatIsOnMyFeet(DungeonLocation dungeonLocation) {
-        Floor floor = this.getFloor(dungeonLocation);
-        if (floor.isGold(dungeonLocation.getCoordinate2D())) {
-            return ThingOverviewType.Gold;
-        }
-        if (floor.isObject(dungeonLocation.getCoordinate2D())) {
-            return ThingOverviewType.Object;
-        }
-        return ThingOverviewType.None;
+    public Mono<ThingOverviewType> whatIsOnMyFeet(DungeonLocation dungeonLocation) {
+        return this.getFloor(dungeonLocation)
+                .map(floor -> {
+                    if (floor.isGold(dungeonLocation.getCoordinate2D())) {
+                        return ThingOverviewType.Gold;
+                    } else if (floor.isObject(dungeonLocation.getCoordinate2D())) {
+                        return ThingOverviewType.Object;
+                    }
+                    return ThingOverviewType.None;
+                });
     }
 
-    private Floor getFloor(DungeonLocation location) {
-        List<FloorDomain> floorDomainList = this.floorRepository
-                .findByDungeonIdAndLevelAndUserId(location.getDungeonId(), location.getLevel(), location.getPlayerId());
-        FloorDomain floorDomain = floorDomainList.get(0);
-        Map<Integer, ThingSimple> objects = this.objectServiceClient.getObjects(floorDomain.getThingList().stream()
-                .map(ObjectCoordinateDomain::getObjectId)
-                .collect(Collectors.toList())).block();
-        return new Floor(floorDomain, objects);
+    private Mono<Floor> getFloor(DungeonLocation location) {
+        return this.floorRepository.findByDungeonIdAndLevelAndUserId(location.getDungeonId(), location.getLevel(), location.getPlayerId())
+                .elementAt(0)
+                .flatMap(floorDomain -> Mono.zip(
+                        Mono.just(floorDomain),
+                        this.objectServiceClient.getObjects(floorDomain.getThingList().stream()
+                                .map(ObjectCoordinateDomain::getObjectId)
+                                .collect(Collectors.toList()))))
+                .map(t -> new Floor(t.getT1(), t.getT2()));
     }
 
-    private void saveFloor(Floor floor, int playerId) {
+    private Mono<FloorDomain> saveFloor(Floor floor, int playerId) {
         FloorDomain floorDomain = new FloorDomain();
         floorDomain.setId(floor.getId());
         floorDomain.setDungeonId(floor.getDungeonId());
@@ -185,7 +182,6 @@ public class DungeonService {
         floorDomain.setThingList(floor.getSymbolObjects());
         floorDomain.setGoldList(floor.getSymbolGolds());
 
-        this.floorRepository.save(floorDomain);
-
+        return this.floorRepository.save(floorDomain);
     }
 }

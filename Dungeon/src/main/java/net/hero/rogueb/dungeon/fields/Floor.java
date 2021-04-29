@@ -1,12 +1,13 @@
 package net.hero.rogueb.dungeon.fields;
 
-import net.hero.rogueb.dungeon.FloorDomain;
-import net.hero.rogueb.dungeon.GoldCoordinateDomain;
-import net.hero.rogueb.dungeon.ObjectCoordinateDomain;
-import net.hero.rogueb.dungeon.dto.DungeonDto;
+import net.hero.rogueb.dungeon.domain.DungeonDomain;
+import net.hero.rogueb.dungeon.domain.FloorDomain;
+import net.hero.rogueb.dungeon.domain.GoldCoordinateDomain;
+import net.hero.rogueb.dungeon.domain.ObjectCoordinateDomain;
 import net.hero.rogueb.math.Random;
 import net.hero.rogueb.objectclient.o.ThingSimple;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,7 +16,7 @@ import java.util.stream.Collectors;
 public class Floor {
 
     private final String id;
-    private final int dungeonId;
+    private final String dungeonId;
     /**
      * 階層数
      */
@@ -30,23 +31,25 @@ public class Floor {
      * 新規作成時
      *
      * @param level 階層数
+     * @param dungeonDomain DungeonDomain
      */
-    public Floor(int level, DungeonDto dungeonDto) {
+    public Floor(int level, DungeonDomain dungeonDomain) {
         this.id = null;
-        this.dungeonId = dungeonDto.getId();
+        this.dungeonId = dungeonDomain.getId();
         this.level = level;
         this.playerMap = new HashMap<>();
         this.objects = new HashMap<>();
         this.golds = new HashMap<>();
-        this.space = new Space(level != dungeonDto.getMaxLevel());
+        this.space = new Space(level != dungeonDomain.getMaxLevel());
         this.golds.put(this.space.getRndPosition(), new Gold(Random.rnd(level * 10 + 5)));
-        this.itemLimitCount = Random.rnd(dungeonDto.getItemSeed());
+        this.itemLimitCount = Random.rnd(dungeonDomain.getItemSeed());
     }
 
     /**
      * ロード時
      *
      * @param floorDomain 保存したデータ
+     * @param thingMap ObjectIdがkeyとなっているThingSimpleのMap
      */
     public Floor(FloorDomain floorDomain, Map<Integer, ThingSimple> thingMap) {
         this.id = floorDomain.getId();
@@ -76,21 +79,25 @@ public class Floor {
         return coordinate2D;
     }
 
-    private List<List<String>> changeDisplay() {
+    private List<DisplayData> changeDisplay() {
         var fields = this.space.getDisplay();
         for (var s : this.objects.entrySet()) {
             Coordinate2D coordinate = s.getKey();
-            fields.get(coordinate.getY()).set(coordinate.getX(), s.getValue().display());
+            fields.get(coordinate.y()).set(coordinate.x(), s.getValue().display());
         }
         for (var g : this.golds.entrySet()) {
             Coordinate2D coordinate = g.getKey();
-            fields.get(coordinate.getY()).set(coordinate.getX(), g.getValue().getDisplay());
+            fields.get(coordinate.y()).set(coordinate.x(), g.getValue().getDisplay());
         }
         for (var p : this.playerMap.entrySet()) {
             Coordinate2D coordinate2D = p.getKey();
-            fields.get(coordinate2D.getY()).set(coordinate2D.getX(), "@");
+            fields.get(coordinate2D.y()).set(coordinate2D.x(), "@");
         }
-        return fields;
+        List<DisplayData> result = new ArrayList<>();
+        for (int i = 0; i < fields.size(); i++) {
+            result.add(new DisplayData(new Coordinate2D(0, i) ,fields.get(i)));
+        }
+        return result;
     }
 
     public String getId() {
@@ -101,11 +108,11 @@ public class Floor {
         return level;
     }
 
-    public int getDungeonId() {
+    public String getDungeonId() {
         return dungeonId;
     }
 
-    public List<List<String>> getFields() {
+    public List<DisplayData> getFields() {
         return this.changeDisplay();
     }
 
@@ -129,8 +136,8 @@ public class Floor {
         this.objects.remove(position);
     }
 
-    public void removeGold(Coordinate2D position) {
-        this.golds.remove(position);
+    public Gold removeGold(Coordinate2D position) {
+        return this.golds.remove(position);
     }
 
     public Coordinate2D getUpStairs() {

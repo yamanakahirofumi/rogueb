@@ -1,4 +1,4 @@
-package net.hero.rogueb.dungeon;
+package net.hero.rogueb.dungeon.domain;
 
 import net.hero.rogueb.dungeon.fields.Coordinate2D;
 import org.springframework.data.annotation.Id;
@@ -12,7 +12,7 @@ public class FloorDomain {
     @Id
     private String id;
 
-    private int dungeonId;
+    private String dungeonId;
 
     private int userId;
 
@@ -34,11 +34,11 @@ public class FloorDomain {
         this.id = id;
     }
 
-    public int getDungeonId() {
+    public String getDungeonId() {
         return dungeonId;
     }
 
-    public void setDungeonId(int dungeonId) {
+    public void setDungeonId(String dungeonId) {
         this.dungeonId = dungeonId;
     }
 
