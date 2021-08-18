@@ -1,6 +1,16 @@
 version: '3.1'
 services:
-  mongo:
+  book_mong:
+    image: mongo:4.2
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: mongoroot
+      MONGO_INITDB_ROOT_PASSWORD: mongopass
+      MONGO_INITDB_DATABASE: book
+    ports:
+    - 27018:27017
+    volumes:
+      - ./BookOfAdventure/src/main/docker/mongo/:/docker-entrypoint-initdb.d/:ro
+  dungeon_mongo:
     image: mongo:4.2
     environment:
       MONGO_INITDB_ROOT_USERNAME: mongoroot
@@ -9,11 +19,13 @@ services:
     ports:
       - 27017:27017
     volumes:
-      - ./src/main/docker/mongo/init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js:ro
+      - ./Dungeon/src/main/docker/mongo/:/docker-entrypoint-initdb.d/:ro
   mongo-express:
     image: mongo-express
     ports:
-      - 8081:8081
+      - 8089:8081
     environment:
       ME_CONFIG_MONGODB_ADMINUSERNAME: mongoroot
       ME_CONFIG_MONGODB_ADMINPASSWORD: mongopass
+    depends_on:
+      - dungeon_mongo
