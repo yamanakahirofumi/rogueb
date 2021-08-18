@@ -8,14 +8,16 @@ public class DungeonPlayerDomain {
     @Id
     private String id;
     private String dungeonId;
-    private int playerId;
+    private String playerId;
     private int level;
 
     public DungeonPlayerDomain(){
     }
 
-    public DungeonPlayerDomain(String dungeonId, int playerId, int level){
-
+    public DungeonPlayerDomain(String dungeonId, String playerId, int level){
+        this.dungeonId = dungeonId;
+        this.playerId = playerId;
+        this.level = level;
     }
 
     public String getId() {
@@ -34,11 +36,11 @@ public class DungeonPlayerDomain {
         this.dungeonId = dungeonId;
     }
 
-    public int getPlayerId() {
+    public String getPlayerId() {
         return playerId;
     }
 
-    public void setPlayerId(int playerId) {
+    public void setPlayerId(String playerId) {
         this.playerId = playerId;
     }
 

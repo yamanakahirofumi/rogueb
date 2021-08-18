@@ -13,6 +13,11 @@
 
     <dependencies>
         <dependency>
+            <groupId>net.hero.rogueb</groupId>
+            <artifactId>DungeonBase</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-webflux</artifactId>
             <scope>provided</scope>

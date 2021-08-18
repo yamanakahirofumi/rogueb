@@ -15,4 +15,9 @@ public class Human implements Player {
     public String getName() {
         return name;
     }
+
+    @Override
+    public boolean isMoved(){
+        return true;
+    }
 }

@@ -1,4 +1,4 @@
-package net.hero.rogueb.dungeon.fields;
+package net.hero.rogueb.dungeon.base.o;
 
 public enum ThingOverviewType {
     None(0),

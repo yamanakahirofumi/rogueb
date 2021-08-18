@@ -14,6 +14,11 @@
     <dependencies>
         <dependency>
             <groupId>net.hero.rogueb</groupId>
+            <artifactId>Commons</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>net.hero.rogueb</groupId>
             <artifactId>ObjectsClient</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
@@ -36,6 +41,13 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-webflux</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-devtools</artifactId>
+            <scope>runtime</scope>
+            <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>

@@ -9,7 +9,7 @@ import net.hero.rogueb.dungeon.fields.DisplayData;
 import net.hero.rogueb.dungeon.fields.DungeonLocation;
 import net.hero.rogueb.dungeon.fields.Floor;
 import net.hero.rogueb.dungeon.fields.Gold;
-import net.hero.rogueb.dungeon.fields.ThingOverviewType;
+import net.hero.rogueb.dungeon.base.o.ThingOverviewType;
 import net.hero.rogueb.dungeon.repositories.DungeonPlayerRepository;
 import net.hero.rogueb.dungeon.repositories.DungeonRepository;
 import net.hero.rogueb.dungeon.repositories.FloorRepository;
@@ -63,21 +63,21 @@ public class DungeonService {
                 .map(DungeonDomain::getName);
     }
 
-    public Mono<DungeonLocation> gotoDungeon(String dungeonId, int playerId) {
+    public Mono<DungeonLocation> gotoDungeon(String dungeonId, String playerId) {
         return this.down(dungeonId, 1, playerId);
     }
 
-    private Mono<DungeonLocation> down(String dungeonId, int level, int playerId) {
+    private Mono<DungeonLocation> down(String dungeonId, int level, String playerId) {
         return this.dungeonPlayerRepository.deleteDungeonPlayerDomainsByDungeonIdAndPlayerId(dungeonId, playerId)
                 .then(this.dungeonPlayerRepository.save(new DungeonPlayerDomain(dungeonId, playerId, level)))
                 .then(this.floorRepository.findByDungeonIdAndLevelAndUserId(dungeonId, level, playerId)
                         .switchIfEmpty(createNewLevel(dungeonId, level, playerId))
                         .elementAt(0))
                 .map(FloorDomain::getUpStairs)
-                .map(coordinate2D -> new DungeonLocation(dungeonId, playerId, level, coordinate2D));
+                .map(coordinate -> new DungeonLocation(dungeonId, playerId, level, coordinate));
     }
 
-    private Mono<FloorDomain> createNewLevel(String dungeonId, int level, int playerId) {
+    private Mono<FloorDomain> createNewLevel(String dungeonId, int level, String playerId) {
         return this.dungeonRepository.findById(dungeonId)
                 .map(dungeonDomain -> new Floor(level, dungeonDomain))
                 .flatMap(floor -> Mono.zip(
@@ -89,7 +89,7 @@ public class DungeonService {
                 });
     }
 
-    private Mono<DungeonLocation> up(String dungeonId, int level, int playerId) {
+    private Mono<DungeonLocation> up(String dungeonId, int level, String playerId) {
         return this.floorRepository.findByDungeonIdAndLevelAndUserId(dungeonId, level, playerId)
                 .elementAt(0)
                 .map(floorDomain -> new DungeonLocation(dungeonId, playerId, level, floorDomain.getDownStairs()))
@@ -171,7 +171,7 @@ public class DungeonService {
                 .map(t -> new Floor(t.getT1(), t.getT2()));
     }
 
-    private Mono<FloorDomain> saveFloor(Floor floor, int playerId) {
+    private Mono<FloorDomain> saveFloor(Floor floor, String playerId) {
         FloorDomain floorDomain = new FloorDomain();
         floorDomain.setId(floor.getId());
         floorDomain.setDungeonId(floor.getDungeonId());

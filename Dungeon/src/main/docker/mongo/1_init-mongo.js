@@ -3,7 +3,7 @@ const user = {
     pwd: 'mongop@ss',
     roles: [{
         role: 'readWrite',
-        db: 'test'
+        db: 'dungeon'
     }]
 };
 

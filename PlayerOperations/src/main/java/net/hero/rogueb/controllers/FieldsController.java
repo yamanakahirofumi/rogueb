@@ -1,5 +1,6 @@
 package net.hero.rogueb.controllers;
 
+import net.hero.rogueb.bookofadventureclient.o.PlayerDto;
 import net.hero.rogueb.dungeonclient.o.DisplayData;
 import net.hero.rogueb.dungeonclient.o.MoveEnum;
 import net.hero.rogueb.services.FieldsService;
@@ -33,82 +34,87 @@ public class FieldsController {
     }
 
     @PostMapping("/user/name/{userName}")
-    public Mono<Integer> create(@PathVariable("userName") String userName) {
+    public Mono<String> create(@PathVariable("userName") String userName) {
         return this.playerService.create(userName);
     }
 
-    @PostMapping("/player/{userId}")
-    public Mono<Map<String, String>> gotoDungeon(@PathVariable("userId") int userId) {
+    @GetMapping("/player/{userId}")
+    public Mono<PlayerDto> getPlayerInfo(@PathVariable("userId") String userId){
+        return this.playerService.getPlayerInfo(userId);
+    }
+
+    @PostMapping("/player/{userId}/command/dungeon/default")
+    public Mono<Map<String, String>> gotoDungeon(@PathVariable("userId") String userId) {
         return this.playerService.gotoDungeon(userId);
     }
 
     @PutMapping("/player/{userId}/command/top")
-    public Mono<Map<String, Boolean>> top(@PathVariable("userId") int userId) {
+    public Mono<Map<String, Boolean>> top(@PathVariable("userId") String userId) {
         return this.playerService.move(userId, MoveEnum.Top);
     }
 
     @PutMapping("/player/{userId}/command/down")
-    public Mono<Map<String, Boolean>> down(@PathVariable("userId") int userId) {
+    public Mono<Map<String, Boolean>> down(@PathVariable("userId") String userId) {
         return this.playerService.move(userId, MoveEnum.Down);
     }
 
     @PutMapping("/player/{userId}/command/right")
-    public Mono<Map<String, Boolean>> right(@PathVariable("userId") int userId) {
+    public Mono<Map<String, Boolean>> right(@PathVariable("userId") String userId) {
         return this.playerService.move(userId, MoveEnum.Right);
     }
 
     @PutMapping("/player/{userId}/command/left")
-    public Mono<Map<String, Boolean>> left(@PathVariable("userId") int userId) {
+    public Mono<Map<String, Boolean>> left(@PathVariable("userId") String userId) {
         return this.playerService.move(userId, MoveEnum.Left);
     }
 
     @PutMapping("/player/{userId}/command/top-right")
-    public Mono<Map<String, Boolean>> topRight(@PathVariable("userId") int userId) {
+    public Mono<Map<String, Boolean>> topRight(@PathVariable("userId") String userId) {
         return this.playerService.move(userId, MoveEnum.TopRight);
     }
 
     @PutMapping("/player/{userId}/command/top-left")
-    public Mono<Map<String, Boolean>> topLeft(@PathVariable("userId") int userId) {
+    public Mono<Map<String, Boolean>> topLeft(@PathVariable("userId") String userId) {
         return this.playerService.move(userId, MoveEnum.TopLeft);
     }
 
     @PutMapping("/player/{userId}/command/down-right")
-    public Mono<Map<String, Boolean>> downRight(@PathVariable("userId") int userId) {
+    public Mono<Map<String, Boolean>> downRight(@PathVariable("userId") String userId) {
         return this.playerService.move(userId, MoveEnum.DownRight);
     }
 
     @PutMapping("/player/{userId}/command/down-left")
-    public Mono<Map<String, Boolean>> downLeft(@PathVariable("userId") int userId) {
+    public Mono<Map<String, Boolean>> downLeft(@PathVariable("userId") String userId) {
         return this.playerService.move(userId, MoveEnum.DownLeft);
     }
 
     @PutMapping("/player/{userId}/command/pickup")
-    public Mono<Map<String, Object>> pickUp(@PathVariable("userId") int userId) {
+    public Mono<Map<String, Object>> pickUp(@PathVariable("userId") String userId) {
         return this.playerService.pickup(userId);
     }
 
     @PutMapping("/player/{userId}/command/downStairs")
-    public Mono<Map<String, Boolean>> downStairs(@PathVariable("userId") int userId) {
+    public Mono<Map<String, Boolean>> downStairs(@PathVariable("userId") String userId) {
         return this.playerService.downStairs(userId);
     }
 
     @PutMapping("/player/{userId}/command/upStairs")
-    public Mono<Map<String, Boolean>> upStairs(@PathVariable("userId") int userId) {
+    public Mono<Map<String, Boolean>> upStairs(@PathVariable("userId") String userId) {
         return this.playerService.upStairs(userId);
     }
 
     @GetMapping("/fields/{userId}")
-    public Flux<DisplayData> getFields(@PathVariable("userId") int userId) {
+    public Flux<DisplayData> getFields(@PathVariable("userId") String userId) {
         return this.fieldsService.getFields(userId);
     }
 
     @GetMapping("/fields/{userId}/now")
-    public Flux<DisplayData> getFieldsNow(@PathVariable("userId") int userId) {
+    public Flux<DisplayData> getFieldsNow(@PathVariable("userId") String userId) {
         return this.fieldsService.getFieldsNow(userId);
     }
 
     @GetMapping("fields/{userId}/info")
-    public Mono<Map<String, String>> getDungeonInfo(@PathVariable("userId") int userId) {
+    public Mono<Map<String, String>> getDungeonInfo(@PathVariable("userId") String userId) {
         return this.fieldsService.getDungeonInfo(userId);
     }
 }

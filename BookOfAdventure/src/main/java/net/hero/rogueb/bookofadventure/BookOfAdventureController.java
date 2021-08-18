@@ -1,6 +1,6 @@
 package net.hero.rogueb.bookofadventure;
 
-import net.hero.rogueb.bookofadventure.dto.PlayerDto;
+import net.hero.rogueb.bookofadventure.domain.PlayerDomain;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -12,6 +12,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/user")
@@ -24,33 +25,33 @@ public class BookOfAdventureController {
 
     @GetMapping("/name/{userName}/exist")
     public Mono<Boolean> exist(@PathVariable("userName") String userName) {
-        return Mono.just(this.service.exist(userName));
+        return this.service.exist(userName);
     }
 
-    @PutMapping("/{userId}")
-    public void save(@PathVariable("userId") int userId, @RequestBody PlayerDto playerDto) {
-        if (userId == playerDto.getId()) {
-            this.service.save(playerDto);
-        }
+    @PutMapping("/id/{userId}")
+    public Mono<String> save(@PathVariable("userId") String userId, @RequestBody PlayerDomain playerDomain) {
+        return Mono.just(playerDomain)
+                .filter(it -> userId.equals(it.getId()))
+                .flatMap(this.service::save);
     }
 
     @PostMapping("/name/{userName}")
-    public Mono<Integer> create(@PathVariable("userName") String userName) {
-        return Mono.just(this.service.create(userName));
+    public Mono<String> create(@PathVariable("userName") String userName, @RequestBody Map<String, Object> currentStatus) {
+        return this.service.create(userName, currentStatus);
     }
 
-    @PostMapping("/{userId}/items")
-    public void changeObject(@PathVariable("userId") int playerId, @RequestBody List<Integer> objectIdList) {
-        this.service.changeObject(playerId, objectIdList);
+    @PostMapping("/id/{userId}/items")
+    public Mono<String> changeObject(@PathVariable("userId") String playerId, @RequestBody List<Integer> objectIdList) {
+        return this.service.changeObject(playerId, objectIdList);
     }
 
-    @GetMapping("/{userId}")
-    public Mono<PlayerDto> getPlayer(@PathVariable("userId") int userId) {
-        return Mono.just(this.service.getPlayer(userId));
+    @GetMapping("/id/{userId}")
+    public Mono<PlayerDomain> getPlayer(@PathVariable("userId") String userId) {
+        return this.service.getPlayerById(userId);
     }
 
-    @GetMapping("/{userId}/items")
-    public Flux<Integer> getItemList(@PathVariable("userId") int userId) {
-        return Flux.fromIterable(this.service.getItemList(userId));
+    @GetMapping("/id/{userId}/items")
+    public Flux<Integer> getItemList(@PathVariable("userId") String userId) {
+        return this.service.getItemList(userId);
     }
 }

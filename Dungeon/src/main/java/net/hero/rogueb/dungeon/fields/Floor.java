@@ -23,7 +23,7 @@ public class Floor {
     private final int level;
     private final int itemLimitCount;
     private final Space space;
-    private final Map<Coordinate2D, Integer> playerMap;
+    private final Map<Coordinate2D, String> playerMap;
     private final Map<Coordinate2D, ThingSimple> objects;
     private final Map<Coordinate2D, Gold> golds;
 
@@ -68,13 +68,13 @@ public class Floor {
         this.itemLimitCount = 0;
     }
 
-    public Coordinate2D enterFromUpStairs(int playerId) {
+    public Coordinate2D enterFromUpStairs(String playerId) {
         Coordinate2D coordinate2D = this.space.getUpStairs();
         this.playerMap.put(coordinate2D, playerId);
         return coordinate2D;
     }
 
-    public Coordinate2D move(Coordinate2D coordinate2D, int playerId) {
+    public Coordinate2D move(Coordinate2D coordinate2D, String playerId) {
         this.playerMap.put(coordinate2D, playerId);
         return coordinate2D;
     }

@@ -6,5 +6,5 @@ import reactor.core.publisher.Flux;
 
 public interface FloorRepository extends ReactiveMongoRepository<FloorDomain, String> {
 
-    Flux<FloorDomain> findByDungeonIdAndLevelAndUserId(String dungeonId, int level, int userId);
+    Flux<FloorDomain> findByDungeonIdAndLevelAndUserId(String dungeonId, int level, String userId);
 }

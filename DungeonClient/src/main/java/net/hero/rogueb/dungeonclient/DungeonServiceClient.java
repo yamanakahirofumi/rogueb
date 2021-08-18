@@ -1,16 +1,19 @@
 package net.hero.rogueb.dungeonclient;
 
+import net.hero.rogueb.dungeon.base.o.ThingOverviewType;
 import net.hero.rogueb.dungeonclient.o.Coordinate2D;
 import net.hero.rogueb.dungeonclient.o.DisplayData;
 import net.hero.rogueb.dungeonclient.o.DungeonDto;
 import net.hero.rogueb.dungeonclient.o.DungeonLocation;
 import net.hero.rogueb.dungeonclient.o.Gold;
 import net.hero.rogueb.dungeonclient.o.MoveEnum;
-import net.hero.rogueb.dungeonclient.o.ThingOverviewType;
 import org.springframework.http.MediaType;
 import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.util.UriBuilder;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+
+import java.net.URI;
 
 public class DungeonServiceClient {
     private final WebClient webClient;
@@ -19,59 +22,56 @@ public class DungeonServiceClient {
         this.webClient = WebClient.builder().baseUrl(server + "/api/dungeon").build();
     }
 
-    public Mono<DungeonLocation> gotoDungeon(String dungeonId, int playerId) {
+    public Mono<DungeonLocation> gotoDungeon(String dungeonId, String playerId) {
         return this.webClient.post()
                 .uri(uriBuilder -> uriBuilder.path("/{dungeonId}/go/{playerId}").build(dungeonId, playerId))
                 .retrieve()
                 .bodyToMono(DungeonLocation.class);
     }
 
-    public Mono<Coordinate2D> move(String dungeonId, int playerId, int level, int fromX, int fromY, MoveEnum moveEnum) {
+    public Mono<Coordinate2D> move(DungeonLocation dungeonLocation, MoveEnum moveEnum) {
         return this.webClient.post()
                 .uri(uriBuilder -> uriBuilder
                         .path("/{dungeonId}/move/{playerId}/{level}/{fromX}/{fromY}/{toX}/{toY}")
-                        .build(dungeonId, playerId, level, fromX, fromY, fromX + moveEnum.getX(), fromY + moveEnum.getY()))
+                        .build(dungeonLocation.dungeonId(), dungeonLocation.playerId(), dungeonLocation.level(),
+                                dungeonLocation.coordinate2D().x(), dungeonLocation.coordinate2D().y(),
+                                dungeonLocation.coordinate2D().x() + moveEnum.getX(),
+                                dungeonLocation.coordinate2D().y() + moveEnum.getY()))
                 .retrieve()
                 .bodyToMono(Coordinate2D.class);
     }
 
-    public Mono<ThingOverviewType> whatIsOnMyFeet(String dungeonId, int playerId, int level, int x, int y) {
+    public Mono<ThingOverviewType> whatIsOnMyFeet(DungeonLocation dungeonLocation) {
         return this.webClient.get()
-                .uri(uriBuilder -> uriBuilder
-                        .path("/{dungeonId}/what/{playerId}/{level}/{x}/{y}")
-                        .build(dungeonId, playerId, level, x, y))
+                .uri(uriBuilder -> this.defaultBuild(uriBuilder, "/{dungeonId}/what/{playerId}/{level}/{x}/{y}", dungeonLocation))
                 .retrieve()
                 .bodyToMono(ThingOverviewType.class);
     }
 
-    public Mono<DungeonLocation> upStairs(String dungeonId, int playerId, int level, int x, int y) {
+    public Mono<DungeonLocation> upStairs(DungeonLocation dungeonLocation) {
         return this.webClient.post()
-                .uri(uriBuilder -> uriBuilder.path("/{dungeonId}/upstairs/{playerId}/{level}/{x}/{y}")
-                        .build(dungeonId, playerId, level, x, y))
+                .uri(uriBuilder -> this.defaultBuild(uriBuilder,"/{dungeonId}/upstairs/{playerId}/{level}/{x}/{y}", dungeonLocation))
                 .retrieve()
                 .bodyToMono(DungeonLocation.class);
     }
 
-    public Mono<DungeonLocation> downStairs(String dungeonId, int playerId, int level, int x, int y) {
+    public Mono<DungeonLocation> downStairs(DungeonLocation dungeonLocation) {
         return this.webClient.post()
-                .uri(uriBuilder -> uriBuilder.path("/{dungeonId}/downstairs/{playerId}/{level}/{x}/{y}")
-                        .build(dungeonId, playerId, level, x, y))
+                .uri(uriBuilder -> this.defaultBuild(uriBuilder, "/{dungeonId}/downstairs/{playerId}/{level}/{x}/{y}", dungeonLocation))
                 .retrieve()
                 .bodyToMono(DungeonLocation.class);
     }
 
-    public Mono<Gold> pickUpGold(String dungeonId, int playerId, int level, int x, int y) {
+    public Mono<Gold> pickUpGold(DungeonLocation dungeonLocation) {
         return this.webClient.post()
-                .uri(uriBuilder -> uriBuilder.path("/{dungeonId}/pickup/gold/{playerId}/{level}/{x}/{y}")
-                        .build(dungeonId, playerId, level, x, y))
+                .uri(uriBuilder -> this.defaultBuild(uriBuilder, "/{dungeonId}/pickup/gold/{playerId}/{level}/{x}/{y}", dungeonLocation))
                 .retrieve()
                 .bodyToMono(Gold.class);
     }
 
-    public Mono<Integer> pickUpObject(String dungeonId, int playerId, int level, int x, int y) {
+    public Mono<Integer> pickUpObject(DungeonLocation dungeonLocation) {
         return this.webClient.post()
-                .uri(uriBuilder -> uriBuilder.path("/{dungeonId}/pickup/object/{playerId}/{level}/{x}/{y}")
-                        .build(dungeonId, playerId, level, x, y))
+                .uri(uriBuilder -> this.defaultBuild(uriBuilder,"/{dungeonId}/pickup/object/{playerId}/{level}/{x}/{y}", dungeonLocation))
                 .retrieve()
                 .bodyToMono(Integer.class);
     }
@@ -83,10 +83,9 @@ public class DungeonServiceClient {
                 .bodyToMono(String.class);
     }
 
-    public Flux<DisplayData> displayData(String dungeonId, int userId, int level, int x, int y) {
+    public Flux<DisplayData> displayData(DungeonLocation dungeonLocation) {
         return this.webClient.get()
-                .uri(uriBuilder -> uriBuilder.path("/{dungeonId}/display/{playerId}/{level}/{x}/{y}")
-                        .build(dungeonId, userId, level, x, y))
+                .uri(uriBuilder -> this.defaultBuild(uriBuilder, "/{dungeonId}/display/{playerId}/{level}/{x}/{y}", dungeonLocation))
                 .accept(MediaType.TEXT_EVENT_STREAM)
                 .retrieve()
                 .bodyToFlux(DisplayData.class);
@@ -106,5 +105,10 @@ public class DungeonServiceClient {
                 .retrieve()
                 .bodyToMono(String.class)
                 .defaultIfEmpty("None");
+    }
+
+    private URI defaultBuild(UriBuilder uriBuilder, String path, DungeonLocation dungeonLocation){
+        return uriBuilder.path(path).build(dungeonLocation.dungeonId(), dungeonLocation.playerId(),
+                dungeonLocation.level(), dungeonLocation.coordinate2D().x(), dungeonLocation.coordinate2D().y());
     }
 }

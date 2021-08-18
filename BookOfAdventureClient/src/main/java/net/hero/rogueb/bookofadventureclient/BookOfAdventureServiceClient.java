@@ -6,6 +6,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.List;
+import java.util.Map;
 
 public class BookOfAdventureServiceClient {
     private final WebClient webClient;
@@ -14,32 +15,32 @@ public class BookOfAdventureServiceClient {
         this.webClient = WebClient.builder().baseUrl(url + "/api/user").build();
     }
 
-    public Mono<Void> save(PlayerDto playerDto) {
+    public Mono<String> save(PlayerDto playerDto) {
         return this.webClient.put()
-                .uri(uriBuilder -> uriBuilder.path("/{userId}").build(playerDto.getId()))
+                .uri(uriBuilder -> uriBuilder.path("/id/{userId}").build(playerDto.getId()))
                 .bodyValue(playerDto)
                 .retrieve()
-                .bodyToMono(Void.class);
+                .bodyToMono(String.class);
     }
 
-    public Mono<Void> changeObject(int playerId, List<Integer> objectIdList) {
+    public Mono<String> changeObject(String playerId, List<Integer> objectIdList) {
         return this.webClient.post()
-                .uri(uriBuilder -> uriBuilder.path("{userId}/items").build(playerId))
+                .uri(uriBuilder -> uriBuilder.path("/id/{userId}/items").build(playerId))
                 .bodyValue(objectIdList)
                 .retrieve()
-                .bodyToMono(Void.class);
+                .bodyToMono(String.class);
     }
 
-    public Mono<PlayerDto> getPlayer(int id) {
+    public Mono<PlayerDto> getPlayer(String id) {
         return this.webClient.get()
-                .uri(uriBuilder -> uriBuilder.path("/{userId}").build(id))
+                .uri(uriBuilder -> uriBuilder.path("/id/{userId}").build(id))
                 .retrieve()
                 .bodyToMono(PlayerDto.class);
     }
 
-    public Flux<Integer> getItemList(int playerId) {
+    public Flux<Integer> getItemList(String playerId) {
         return this.webClient.get()
-                .uri(uriBuilder -> uriBuilder.path("/{userId}/items").build(playerId))
+                .uri(uriBuilder -> uriBuilder.path("/id/{userId}/items").build(playerId))
                 .retrieve()
                 .bodyToFlux(Integer.class);
     }
@@ -51,10 +52,11 @@ public class BookOfAdventureServiceClient {
                 .bodyToMono(Boolean.class);
     }
 
-    public Mono<Integer> create(String userName) {
+    public Mono<String> create(String userName, Map<String, Object> playerInfo) {
         return this.webClient.post()
                 .uri(uriBuilder -> uriBuilder.path("/name/{userName}").build(userName))
+                .body(playerInfo, Map.class)
                 .retrieve()
-                .bodyToMono(Integer.class);
+                .bodyToMono(String.class);
     }
 }

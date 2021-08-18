@@ -5,5 +5,5 @@ import org.springframework.data.mongodb.repository.ReactiveMongoRepository;
 import reactor.core.publisher.Mono;
 
 public interface DungeonPlayerRepository extends ReactiveMongoRepository<DungeonPlayerDomain, String> {
-    Mono<Void> deleteDungeonPlayerDomainsByDungeonIdAndPlayerId(String dungeonId, int playerId);
+    Mono<Void> deleteDungeonPlayerDomainsByDungeonIdAndPlayerId(String dungeonId, String playerId);
 }

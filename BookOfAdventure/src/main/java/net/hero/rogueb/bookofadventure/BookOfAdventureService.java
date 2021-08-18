@@ -1,57 +1,70 @@
 package net.hero.rogueb.bookofadventure;
 
-import net.hero.rogueb.bookofadventure.dto.PlayerDto;
-import net.hero.rogueb.bookofadventure.dto.PlayerObjectDto;
-import net.hero.rogueb.bookofadventure.mapper.CharacterMapper;
+import net.hero.rogueb.bookofadventure.domain.PlayerDomain;
+import net.hero.rogueb.bookofadventure.domain.PlayerObjectDomain;
+import net.hero.rogueb.bookofadventure.repository.PlayerObjectRepository;
+import net.hero.rogueb.bookofadventure.repository.PlayerRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Map;
 
 @Transactional
 @Service
 public class BookOfAdventureService {
-    private final CharacterMapper characterMapper;
+    private final PlayerRepository playerRepository;
+    private final PlayerObjectRepository playerObjectRepository;
 
-    public BookOfAdventureService(CharacterMapper characterMapper) {
-        this.characterMapper = characterMapper;
+    public BookOfAdventureService(PlayerRepository playerRepository,
+                                  PlayerObjectRepository playerObjectRepository) {
+        this.playerRepository = playerRepository;
+        this.playerObjectRepository = playerObjectRepository;
     }
 
-    public boolean exist(String userName) {
-        return this.characterMapper.countByName(userName) > 0;
+    public Mono<Boolean> exist(String userName) {
+        return this.playerRepository.existsByName(userName);
     }
 
-    public PlayerDto getPlayer(int id) {
-        return this.characterMapper.findById(id);
+    public Mono<PlayerDomain> getPlayerById(String id) {
+        return this.playerRepository.findById(id);
     }
 
-    public PlayerDto getPlayer(String userName) {
-        return this.characterMapper.findByName(userName);
+    public Flux<PlayerDomain> getPlayer(String userName) {
+        return this.playerRepository.findByName(userName);
     }
 
-    public void save(PlayerDto playerDto) {
-        this.characterMapper.update(playerDto);
-        this.characterMapper.deleteLocation(playerDto);
-        this.characterMapper.insertLocation(playerDto.getId(), playerDto.getLocationDto());
+    public Mono<String> save(PlayerDomain playerDomain) {
+        return this.playerRepository.save(playerDomain)
+                .map(PlayerDomain::getId);
     }
 
-    public int create(String userName) {
-        PlayerDto playerDto = new PlayerDto();
-        playerDto.setName(userName);
-        playerDto.setNamespace("localhost");
-        this.characterMapper.insert(playerDto);
-        return playerDto.getId();
+    public Mono<String> create(String userName, Map<String, Object> currentStatus) {
+        return this.playerRepository.save(this.createPlayerDomain(userName, "localhost", currentStatus))
+                .map(PlayerDomain::getId);
     }
 
-    public List<Integer> getItemList(int playerId) {
-        return this.characterMapper.getObjectByPlayerId(playerId);
+    private PlayerDomain createPlayerDomain(String userName, String nameSpace, Map<String, Object> currentStatus) {
+        PlayerDomain playerDomain = new PlayerDomain();
+        playerDomain.setName(userName);
+        playerDomain.setNamespace(nameSpace);
+        playerDomain.setCurrentStatus(currentStatus);
+        return playerDomain;
     }
 
-    public void changeObject(int playerId, List<Integer> objectIdList) {
-        this.characterMapper.deleteObject(playerId);
-        this.characterMapper.insertObject(objectIdList.stream()
-                .map(it -> new PlayerObjectDto(playerId, it))
-                .collect(Collectors.toList()));
+    public Flux<Integer> getItemList(String playerId) {
+        return this.playerObjectRepository.findByPlayerId(playerId)
+                .flatMapIterable(PlayerObjectDomain::getObjectIdList);
+    }
+
+    public Mono<String> changeObject(String playerId, List<Integer> objectIdList) {
+        return this.playerObjectRepository.findByPlayerId(playerId)
+                .take(1)
+                .doOnNext(it -> it.setObjectIdList(objectIdList))
+                .flatMap(this.playerObjectRepository::save)
+                .map(PlayerObjectDomain::getId)
+                .elementAt(0);
     }
 }

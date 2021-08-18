@@ -14,7 +14,7 @@ public class FloorDomain {
 
     private String dungeonId;
 
-    private int userId;
+    private String userId;
 
     private int level;
 
@@ -42,11 +42,11 @@ public class FloorDomain {
         this.dungeonId = dungeonId;
     }
 
-    public int getUserId() {
+    public String getUserId() {
         return userId;
     }
 
-    public void setUserId(int userId) {
+    public void setUserId(String userId) {
         this.userId = userId;
     }
 

@@ -1,17 +1,22 @@
 package net.hero.rogueb.bookofadventureclient.o;
 
+import java.util.Map;
+
 public class PlayerDto {
-    private int id;
+    private String id;
     private String name;
+    private int exp;
     private int gold;
     private String namespace;
-    private LocationDto locationDto;
+    private Map<String, Object> currentStatus;
+    private Map<String, Object> status;
+    private Map<String, Object> location;
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -21,6 +26,14 @@ public class PlayerDto {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public int getExp() {
+        return exp;
+    }
+
+    public void setExp(int exp) {
+        this.exp = exp;
     }
 
     public int getGold() {
@@ -39,11 +52,27 @@ public class PlayerDto {
         this.namespace = namespace;
     }
 
-    public LocationDto getLocationDto() {
-        return locationDto;
+    public Map<String, Object> getCurrentStatus() {
+        return currentStatus;
     }
 
-    public void setLocationDto(LocationDto locationDto) {
-        this.locationDto = locationDto;
+    public void setCurrentStatus(Map<String, Object> currentStatus) {
+        this.currentStatus = currentStatus;
+    }
+
+    public Map<String, Object> getStatus() {
+        return status;
+    }
+
+    public void setStatus(Map<String, Object> status) {
+        this.status = status;
+    }
+
+    public Map<String, Object> getLocation() {
+        return location;
+    }
+
+    public void setLocation(Map<String, Object> location) {
+        this.location = location;
     }
 }

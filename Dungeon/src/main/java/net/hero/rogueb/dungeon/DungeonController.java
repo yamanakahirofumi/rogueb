@@ -5,7 +5,7 @@ import net.hero.rogueb.dungeon.fields.Coordinate2D;
 import net.hero.rogueb.dungeon.fields.DisplayData;
 import net.hero.rogueb.dungeon.fields.DungeonLocation;
 import net.hero.rogueb.dungeon.fields.Gold;
-import net.hero.rogueb.dungeon.fields.ThingOverviewType;
+import net.hero.rogueb.dungeon.base.o.ThingOverviewType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -26,13 +26,13 @@ public class DungeonController {
 
     @PostMapping("/{dungeonId}/go/{playerId}")
     public Mono<DungeonLocation> gotoDungeon(@PathVariable("dungeonId") String dungeonId,
-                                             @PathVariable("playerId") int playerId) {
+                                             @PathVariable("playerId") String playerId) {
         return this.dungeonService.gotoDungeon(dungeonId, playerId);
     }
 
     @PostMapping("/{dungeonId}/move/{playerId}/{level}/{fromX}/{fromY}/{toX}/{toY}")
     public Mono<Coordinate2D> move(@PathVariable("dungeonId") String dungeonId,
-                                   @PathVariable("playerId") int playerId,
+                                   @PathVariable("playerId") String playerId,
                                    @PathVariable("level") int level,
                                    @PathVariable("fromX") int fromX,
                                    @PathVariable("fromY") int fromY,
@@ -44,7 +44,7 @@ public class DungeonController {
 
     @GetMapping("/{dungeonId}/what/{playerId}/{level}/{x}/{y}")
     public Mono<ThingOverviewType> whatIsOnMyFeet(@PathVariable("dungeonId") String dungeonId,
-                                                  @PathVariable("playerId") int playerId,
+                                                  @PathVariable("playerId") String playerId,
                                                   @PathVariable("level") int level,
                                                   @PathVariable("x") int x,
                                                   @PathVariable("y") int y) {
@@ -54,7 +54,7 @@ public class DungeonController {
 
     @PostMapping("/{dungeonId}/upstairs/{playerId}/{level}/{x}/{y}")
     public Mono<DungeonLocation> upStairs(@PathVariable("dungeonId") String dungeonId,
-                                          @PathVariable("playerId") int playerId,
+                                          @PathVariable("playerId") String playerId,
                                           @PathVariable("level") int level,
                                           @PathVariable("x") int x,
                                           @PathVariable("y") int y) {
@@ -64,7 +64,7 @@ public class DungeonController {
 
     @PostMapping("/{dungeonId}/downstairs/{playerId}/{level}/{x}/{y}")
     public Mono<DungeonLocation> downStairs(@PathVariable("dungeonId") String dungeonId,
-                                            @PathVariable("playerId") int playerId,
+                                            @PathVariable("playerId") String playerId,
                                             @PathVariable("level") int level,
                                             @PathVariable("x") int x,
                                             @PathVariable("y") int y) {
@@ -74,7 +74,7 @@ public class DungeonController {
 
     @PostMapping("/{dungeonId}/pickup/gold/{playerId}/{level}/{x}/{y}")
     public Mono<Gold> pickUpGold(@PathVariable("dungeonId") String dungeonId,
-                                 @PathVariable("playerId") int playerId,
+                                 @PathVariable("playerId") String playerId,
                                  @PathVariable("level") int level,
                                  @PathVariable("x") int x,
                                  @PathVariable("y") int y) {
@@ -84,7 +84,7 @@ public class DungeonController {
 
     @PostMapping("/{dungeonId}/pickup/object/{playerId}/{level}/{x}/{y}")
     public Mono<Integer> pickUpObject(@PathVariable("dungeonId") String dungeonId,
-                                      @PathVariable("playerId") int playerId,
+                                      @PathVariable("playerId") String playerId,
                                       @PathVariable("level") int level,
                                       @PathVariable("x") int x,
                                       @PathVariable("y") int y) {
@@ -99,7 +99,7 @@ public class DungeonController {
 
     @GetMapping("/{dungeonId}/display/{playerId}/{level}/{x}/{y}")
     public Flux<DisplayData> displayData(@PathVariable("dungeonId") String dungeonId,
-                                         @PathVariable("playerId") int playerId,
+                                         @PathVariable("playerId") String playerId,
                                          @PathVariable("level") int level,
                                          @PathVariable("x") int x,
                                          @PathVariable("y") int y) {

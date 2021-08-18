@@ -17,4 +17,9 @@ public record Coordinate2D(int x, int y) implements Coordinate {
         }
         return false;
     }
+
+    @Override
+    public int z() {
+        throw new UnsupportedOperationException("Coordinate2D is not z axis.");
+    }
 }

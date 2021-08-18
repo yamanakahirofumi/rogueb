@@ -2,11 +2,11 @@ package net.hero.rogueb.services;
 
 import net.hero.rogueb.bag.Bag;
 import net.hero.rogueb.bookofadventureclient.BookOfAdventureServiceClient;
-import net.hero.rogueb.bookofadventureclient.o.LocationDto;
 import net.hero.rogueb.bookofadventureclient.o.PlayerDto;
+import net.hero.rogueb.converts.Convert;
 import net.hero.rogueb.dungeonclient.DungeonServiceClient;
-import net.hero.rogueb.dungeonclient.o.DungeonLocation;
 import net.hero.rogueb.dungeonclient.o.MoveEnum;
+import net.hero.rogueb.math.ReproducibleRandom;
 import net.hero.rogueb.objectclient.ObjectServiceClient;
 import net.hero.rogueb.worldclient.WorldServiceClient;
 import org.springframework.stereotype.Service;
@@ -33,44 +33,36 @@ public class PlayerService {
         this.objectServiceClient = objectServiceClient;
     }
 
-    public Mono<Map<String, String>> gotoDungeon(int userId) {
+    public Mono<Map<String, String>> gotoDungeon(String userId) {
         Mono<PlayerDto> playerDtoMono = this.bookOfAdventureServiceClient.getPlayer(userId);
-        Mono<LocationDto> locationDtoMono = this.worldServiceClient.getStartDungeon()
+        Mono<Map<String, Object>> locationDtoMono = this.worldServiceClient.getStartDungeon()
                 .flatMap(dungeonInfo -> this.dungeonServiceClient.gotoDungeon(dungeonInfo.id(), userId))
-                .map(this::createLocationDto);
+                .map(Convert::dungeonLocation2PlayerLocation);
         return Mono.zip(playerDtoMono, locationDtoMono)
-                .doOnNext(tuple -> tuple.getT1().setLocationDto(tuple.getT2()))
+                .doOnNext(tuple -> tuple.getT1().setLocation(tuple.getT2()))
                 .map(Tuple2::getT1)
                 .flatMap(this.bookOfAdventureServiceClient::save)
                 .map(it -> Map.of("key", "Hello World"));
     }
 
-    public Mono<Map<String, Boolean>> move(int userId, MoveEnum moveEnum) {
+    public Mono<Map<String, Boolean>> move(String userId, MoveEnum moveEnum) {
         return this.bookOfAdventureServiceClient.getPlayer(userId)
                 .flatMap(playerDto1 -> Mono.zip(Mono.just(playerDto1),
-                        this.dungeonServiceClient.move(playerDto1.getLocationDto().getDungeonId(),
-                                userId,
-                                playerDto1.getLocationDto().getLevel(),
-                                playerDto1.getLocationDto().getX(),
-                                playerDto1.getLocationDto().getY(),
-                                moveEnum)))
-                .map(tuple2 -> {
-                    tuple2.getT1().getLocationDto().setX(tuple2.getT2().x());
-                    tuple2.getT1().getLocationDto().setY(tuple2.getT2().y());
-                    return tuple2.getT1();
-                })
+                        this.dungeonServiceClient.move(Convert.playDto2DungeonLocation(playerDto1), moveEnum)))
+                .doOnNext(tupple2 -> Convert.changeLocation(tupple2.getT1(), tupple2.getT2()))
+                .map(Tuple2::getT1)
                 .flatMap(this.bookOfAdventureServiceClient::save)
                 .map(it -> Map.of("result", true));
     }
 
-    public Mono<Map<String, Object>> pickup(int userId) {
+    private boolean isMoved(PlayerDto playerDto) {
+        return true;
+    }
+
+    public Mono<Map<String, Object>> pickup(String userId) {
         return this.bookOfAdventureServiceClient.getPlayer(userId)
                 .flatMap(playerDto -> Mono.zip(Mono.just(playerDto),
-                        this.dungeonServiceClient.whatIsOnMyFeet(playerDto.getLocationDto().getDungeonId(),
-                                userId,
-                                playerDto.getLocationDto().getLevel(),
-                                playerDto.getLocationDto().getX(),
-                                playerDto.getLocationDto().getX())))
+                        this.dungeonServiceClient.whatIsOnMyFeet(Convert.playDto2DungeonLocation(playerDto))))
                 .flatMap(tuple -> switch (tuple.getT2()) {
                     case None -> Mono.just(Map.of("result", false, "message", "NoObjectOnTheFloor"));
                     case Gold -> this.pickupGold(tuple.getT1());
@@ -79,9 +71,7 @@ public class PlayerService {
     }
 
     private Mono<Map<String, Object>> pickupGold(PlayerDto playerDto) {
-        LocationDto locationDto = playerDto.getLocationDto();
-        return this.dungeonServiceClient.pickUpGold(locationDto.getDungeonId(),
-                playerDto.getId(), locationDto.getLevel(), locationDto.getX(), locationDto.getY())
+        return this.dungeonServiceClient.pickUpGold(Convert.playDto2DungeonLocation(playerDto))
                 .doOnNext(gold -> playerDto.setGold(playerDto.getGold() + gold.gold()))
                 .doOnNext(gold -> this.bookOfAdventureServiceClient.save(playerDto))
                 .map(gold -> Map.<String, Object>of("result", true, "type", 1, "gold", gold.gold()))
@@ -99,11 +89,7 @@ public class PlayerService {
                     return bag;
                 })
                 .flatMap(bag -> Mono.zip(Mono.just(bag),
-                        this.dungeonServiceClient.pickUpObject(playerDto.getLocationDto().getDungeonId(),
-                                playerDto.getId(),
-                                playerDto.getLocationDto().getLevel(),
-                                playerDto.getLocationDto().getX(),
-                                playerDto.getLocationDto().getY())))
+                        this.dungeonServiceClient.pickUpObject(Convert.playDto2DungeonLocation(playerDto))))
                 .flatMap(tuple2 -> pickUpObjectExecute(playerDto, tuple2));
     }
 
@@ -120,52 +106,42 @@ public class PlayerService {
         }
     }
 
-    public Mono<Map<String, Boolean>> downStairs(int userId) {
+    public Mono<Map<String, Boolean>> downStairs(String userId) {
         return this.bookOfAdventureServiceClient.getPlayer(userId)
                 .flatMap(playerDto -> Mono.zip(Mono.just(playerDto),
-                        this.dungeonServiceClient.downStairs(playerDto.getLocationDto().getDungeonId(),
-                                userId,
-                                playerDto.getLocationDto().getLevel(),
-                                playerDto.getLocationDto().getX(),
-                                playerDto.getLocationDto().getY())))
+                        this.dungeonServiceClient.downStairs(Convert.playDto2DungeonLocation(playerDto))))
                 .map(tuple -> {
-                    tuple.getT1().setLocationDto(this.createLocationDto(tuple.getT2()));
+                    tuple.getT1().setLocation(Convert.dungeonLocation2PlayerLocation(tuple.getT2()));
                     return tuple.getT1();
                 })
                 .flatMap(this.bookOfAdventureServiceClient::save)
                 .map(it -> Map.of("result", true));
     }
 
-    public Mono<Map<String, Boolean>> upStairs(int userId) {
+    public Mono<Map<String, Boolean>> upStairs(String userId) {
         return this.bookOfAdventureServiceClient.getPlayer(userId)
                 .flatMap(playerDto -> Mono.zip(Mono.just(playerDto),
-                        this.dungeonServiceClient.upStairs(playerDto.getLocationDto().getDungeonId(),
-                                userId,
-                                playerDto.getLocationDto().getLevel(),
-                                playerDto.getLocationDto().getX(),
-                                playerDto.getLocationDto().getY())))
+                        this.dungeonServiceClient.upStairs(Convert.playDto2DungeonLocation(playerDto))))
                 .map(tuple -> {
-                    tuple.getT1().setLocationDto(this.createLocationDto(tuple.getT2()));
+                    tuple.getT1().setLocation(Convert.dungeonLocation2PlayerLocation(tuple.getT2()));
                     return tuple.getT1();
                 })
                 .flatMap(this.bookOfAdventureServiceClient::save)
                 .map(it -> Map.of("result", true));
-    }
-
-    private LocationDto createLocationDto(DungeonLocation dungeonLocation) {
-        LocationDto locationDto = new LocationDto();
-        locationDto.setDungeonId(dungeonLocation.dungeonId());
-        locationDto.setLevel(dungeonLocation.level());
-        locationDto.setX(dungeonLocation.coordinate2D().x());
-        locationDto.setY(dungeonLocation.coordinate2D().y());
-        return locationDto;
     }
 
     public Mono<Boolean> existPlayer(String userName) {
         return this.bookOfAdventureServiceClient.exist(userName);
     }
 
-    public Mono<Integer> create(String userName) {
-        return this.bookOfAdventureServiceClient.create(userName);
+    public Mono<String> create(String userName) {
+        ReproducibleRandom r = new ReproducibleRandom(0);
+        Map<String, Object> playerInfo =
+                Map.of("hp", r.next(), "stamina", r.next(), "actionInterval", r.next(), "seed", r.next());
+        return this.bookOfAdventureServiceClient.create(userName, playerInfo);
+    }
+
+    public Mono<PlayerDto> getPlayerInfo(String userId) {
+        return this.bookOfAdventureServiceClient.getPlayer(userId);
     }
 }

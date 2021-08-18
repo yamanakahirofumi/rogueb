@@ -1,5 +1,8 @@
 package net.hero.rogueb.dungeon.fields;
 
+import net.hero.rogueb.dungeon.base.o.PointType;
+import net.hero.rogueb.dungeon.fields.factories.AbstractFactory;
+import net.hero.rogueb.dungeon.fields.factories.D2Factory;
 import net.hero.rogueb.math.Random;
 
 import java.util.ArrayList;
@@ -9,16 +12,19 @@ import java.util.stream.Stream;
 
 public class Space {
     private final Coordinate2D maxSize;
-    private final List<Room> rooms;
+    private final List<List<Point<String>>> spaces;
     private final Coordinate2D upStairs;
     private final Coordinate2D downStairs;
+    private final AbstractFactory<String> factory;
 
     public Space(boolean isMax) {
+        this.factory = new D2Factory();
         this.maxSize = new Coordinate2D(80, 40);
-        this.rooms = new ArrayList<>();
-        Room room = new Room(new Coordinate2D(1, 1), this.maxSize.minus(2, 2));
-        this.rooms.add(room);
+        this.spaces = new ArrayList<>();
+
+        this.createRoom();
         this.upStairs = this.getRndPosition();
+        this.spaces.get(this.upStairs.y()).set(this.upStairs.x(), this.factory.createPoint(PointType.UpStairs));
         Coordinate2D coordinate = null;
         while (isMax) {
             coordinate = this.getRndPosition();
@@ -27,15 +33,38 @@ public class Space {
             }
         }
         this.downStairs = coordinate;
+        if(this.downStairs != null) {
+            this.spaces.get(this.downStairs.y()).set(this.downStairs.x(), this.factory.createPoint(PointType.downStairs));
+        }
     }
 
     public Space(Coordinate2D upstairs, Coordinate2D downStairs) {
+        this.factory = new D2Factory();
         this.maxSize = new Coordinate2D(80, 40);
-        this.rooms = new ArrayList<>();
-        Room room = new Room(new Coordinate2D(1, 1), this.maxSize.minus(2, 2));
-        this.rooms.add(room);
+        this.spaces = new ArrayList<>();
+
+        this.createRoom();
         this.upStairs = upstairs;
+        this.spaces.get(this.upStairs.y()).set(this.upStairs.x(), this.factory.createPoint(PointType.UpStairs));
         this.downStairs = downStairs;
+        if (this.downStairs != null) {
+            this.spaces.get(this.downStairs.y()).set(this.downStairs.x(), this.factory.createPoint(PointType.downStairs));
+        }
+    }
+
+    private void createRoom() {
+        Room room = new Room(new Coordinate2D(1, 1), this.maxSize.minus(2, 2));
+        this.spaces.add(Stream.generate(() ->
+                this.factory.createPoint(PointType.Wall)).limit(this.maxSize.x()).collect(Collectors.toList()));
+        for (int i = 1; i < maxSize.y() - 2; i++) {
+            List<Point<String>> line = new ArrayList<>();
+            line.add(this.factory.createPoint(PointType.Wall));
+            line.addAll(room.getLine(i));
+            line.add(this.factory.createPoint(PointType.Wall));
+            this.spaces.add(line);
+        }
+        this.spaces.add(Stream.generate(() ->
+                this.factory.createPoint(PointType.Wall)).limit(this.maxSize.x()).collect(Collectors.toList()));
     }
 
     public Coordinate2D getRndPosition() {
@@ -43,24 +72,8 @@ public class Space {
     }
 
     public List<List<String>> getDisplay() {
-        List<List<String>> fields = Stream.generate(() ->
-                Stream.generate(() -> "#").limit(this.maxSize.x()).collect(Collectors.toList())
-        ).limit(this.maxSize.y()).collect(Collectors.toList());
-        for (var r : this.rooms) {
-            var display = r.getDisplay();
-            for (var i = 0; i < r.size().y(); i++) {
-                var xLine = fields.get(r.position().y() + i);
-                var dxLine = display.get(i);
-                for (var j = 0; j < r.size().x(); j++) {
-                    xLine.set(r.position().x() + j, dxLine.get(j));
-                }
-            }
-        }
-        if (this.downStairs != null) {
-            fields.get(this.downStairs.y()).set(this.downStairs.x(), ">");
-        }
-        fields.get(this.upStairs.y()).set(this.upStairs.x(), "<");
-        return fields;
+        return this.spaces.stream().map(it -> it.stream().map(Point::display).collect(Collectors.toList()))
+                .collect(Collectors.toList());
     }
 
     public Coordinate2D getDownStairs() {
