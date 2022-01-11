@@ -83,7 +83,7 @@ public class DungeonController {
     }
 
     @PostMapping("/{dungeonId}/pickup/object/{playerId}/{level}/{x}/{y}")
-    public Mono<Integer> pickUpObject(@PathVariable("dungeonId") String dungeonId,
+    public Mono<String> pickUpObject(@PathVariable("dungeonId") String dungeonId,
                                       @PathVariable("playerId") String playerId,
                                       @PathVariable("level") int level,
                                       @PathVariable("x") int x,

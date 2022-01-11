@@ -1,5 +1,5 @@
 const userName = 'mongouser';
-const dbName = 'book';
+const dbName = 'objects';
 
 db = db.getSiblingDB('admin');
 const users = db.getUsers({filter: {user: userName}});

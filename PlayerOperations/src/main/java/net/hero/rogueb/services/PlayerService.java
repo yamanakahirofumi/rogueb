@@ -93,17 +93,22 @@ public class PlayerService {
                 .flatMap(tuple2 -> pickUpObjectExecute(playerDto, tuple2));
     }
 
-    private Mono<Map<String, Object>> pickUpObjectExecute(PlayerDto playerDto, Tuple2<Bag, Integer> t) {
+    private Mono<Map<String, Object>> pickUpObjectExecute(PlayerDto playerDto, Tuple2<Bag, String> t) {
         if (t.getT1().getEmptySize() <= 0) {
             return Mono.just(Map.of("result", false, "message", "BagNoEmpty"));
-        } else if (t.getT2() == 0) {
+        } else if (t.getT2().isEmpty()) {
             return Mono.just(Map.of("result", false, "message", "NoObjectOnTheFloor"));
         } else {
             t.getT1().getThingIdList().add(t.getT2());
             return this.bookOfAdventureServiceClient.changeObject(playerDto.getId(), t.getT1().getThingIdList())
-                    .flatMap(it -> this.objectServiceClient.getObjectInfo(t.getT2()))
+                    .flatMap(it -> this.objectServiceClient.addHistory(t.getT2(), this.createMessageForPickUp(playerDto)))
+                    .flatMap(it -> this.objectServiceClient.getObjectInfo(it.instanceId()))
                     .map(thingInfo -> Map.of("result", true, "type", 2, "itemName", thingInfo.name()));
         }
+    }
+
+    private String createMessageForPickUp(PlayerDto playerDto) {
+        return "player: " + playerDto.getName() + "が取得";
     }
 
     public Mono<Map<String, Boolean>> downStairs(String userId) {

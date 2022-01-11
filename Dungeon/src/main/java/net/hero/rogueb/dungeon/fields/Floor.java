@@ -51,7 +51,7 @@ public class Floor {
      * @param floorDomain 保存したデータ
      * @param thingMap ObjectIdがkeyとなっているThingSimpleのMap
      */
-    public Floor(FloorDomain floorDomain, Map<Integer, ThingSimple> thingMap) {
+    public Floor(FloorDomain floorDomain, Map<String, ThingSimple> thingMap) {
         this.id = floorDomain.getId();
         this.dungeonId = floorDomain.getDungeonId();
         this.level = floorDomain.getLevel();
@@ -167,7 +167,7 @@ public class Floor {
 
     public List<ObjectCoordinateDomain> getSymbolObjects() {
         return this.objects.entrySet().stream()
-                .map(it -> new ObjectCoordinateDomain(it.getKey(), it.getValue().id()))
+                .map(it -> new ObjectCoordinateDomain(it.getKey(), it.getValue().instanceId()))
                 .collect(Collectors.toList());
     }
 

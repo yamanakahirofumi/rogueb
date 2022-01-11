@@ -4,13 +4,13 @@ import net.hero.rogueb.dungeon.fields.Coordinate2D;
 
 public class ObjectCoordinateDomain {
     private Coordinate2D position;
-    private int objectId;
+    private String objectId;
 
     public ObjectCoordinateDomain(){
 
     }
 
-    public ObjectCoordinateDomain(Coordinate2D position,int objectId){
+    public ObjectCoordinateDomain(Coordinate2D position, String objectId){
         this.position = position;
         this.objectId = objectId;
     }
@@ -23,11 +23,11 @@ public class ObjectCoordinateDomain {
         this.position = position;
     }
 
-    public int getObjectId() {
+    public String getObjectId() {
         return objectId;
     }
 
-    public void setObjectId(int objectId) {
+    public void setObjectId(String objectId) {
         this.objectId = objectId;
     }
 }

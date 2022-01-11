@@ -20,18 +20,23 @@ public class ObjectController {
         this.objectService = objectService;
     }
 
-    @GetMapping("/{id}")
-    public Mono<Thing> getObjectInfo(@PathVariable("id") int id){
+    @GetMapping("/instance/{id}")
+    public Mono<ThingInstance> getObjectInfo(@PathVariable("id") String id) {
         return this.objectService.getObjectInfo(id);
     }
 
     @PostMapping("/list")
-    public Flux<Thing> getObjects(@RequestBody Collection<Integer> idList) {
+    public Flux<ThingInstance> getObjects(@RequestBody Collection<String> idList) {
         return this.objectService.getObjects(idList);
     }
 
     @PostMapping("/create/count/{count}")
-    public Flux<Thing> createObjects(@PathVariable("count") int itemCreateCount) {
-        return this.objectService.createObjects(itemCreateCount);
+    public Flux<ThingInstance> createObjects(@PathVariable("count") int itemCreateCount, @RequestBody String description) {
+        return this.objectService.createObjects(itemCreateCount, description);
+    }
+
+    @PostMapping("/instance/{id}/")
+    public Mono<ThingInstance> addHistory(@PathVariable("id") String id, @RequestBody String description) {
+        return this.objectService.addHistory(id, description);
     }
 }

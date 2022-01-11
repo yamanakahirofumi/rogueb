@@ -16,27 +16,35 @@ public class ObjectServiceClient {
         this.webClient = WebClient.builder().baseUrl(server + "/api/objects").build();
     }
 
-    public Mono<Map<Integer, ThingSimple>> getObjects(Collection<Integer> idList) {
+    public Mono<Map<String, ThingSimple>> getObjects(Collection<String> idList) {
         return this.webClient.post()
                 .uri("/list")
                 .bodyValue(idList)
                 .retrieve()
                 .bodyToFlux(ThingSimple.class)
-                .collectMap(ThingSimple::id, it -> it);
+                .collectMap(ThingSimple::instanceId, it -> it);
     }
 
-    public Mono<ThingInfo> getObjectInfo(int id) {
+    public Mono<ThingInfo> getObjectInfo(String id) {
         return this.webClient.get()
-                .uri(uriBuilder -> uriBuilder.path("/{id}").build(id))
+                .uri(uriBuilder -> uriBuilder.path("/instance/{id}").build(id))
                 .retrieve()
                 .bodyToMono(ThingInfo.class);
     }
 
-    public Flux<ThingSimple> createObjects(int itemCreateCount) {
+    public Flux<ThingSimple> createObjects(int itemCreateCount, String description) {
         return this.webClient.post()
                 .uri(uriBuilder -> uriBuilder.path("/create/count/{count}").build(itemCreateCount))
-                .bodyValue(itemCreateCount)
+                .bodyValue(description)
                 .retrieve()
                 .bodyToFlux(ThingSimple.class);
+    }
+
+    public Mono<ThingSimple> addHistory(String id, String description) {
+        return this.webClient.post()
+                .uri(uriBuilder -> uriBuilder.path("/instance/{id}").build(id))
+                .bodyValue(description)
+                .retrieve()
+                .bodyToMono(ThingSimple.class);
     }
 }

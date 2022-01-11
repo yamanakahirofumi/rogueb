@@ -1,0 +1,134 @@
+[
+  {
+    "type": 1,
+    "name": "leather armor",
+    "probability": 20,
+    "worth": 20
+  },
+  {
+    "type": 1,
+    "name": "ring mail",
+    "probability": 15,
+    "worth": 25
+  },
+  {
+    "type": 1,
+    "name": "studded leather armor",
+    "probability": 15,
+    "worth": 20
+  },
+  {
+    "type": 1,
+    "name": "scale mail",
+    "probability": 13,
+    "worth": 30
+  },
+  {
+    "type": 1,
+    "name": "chain mail",
+    "probability": 12,
+    "worth": 75
+  },
+  {
+    "type": 1,
+    "name": "splint mail",
+    "probability": 10,
+    "worth": 80
+  },
+  {
+    "type": 1,
+    "name": "banded mail",
+    "probability": 10,
+    "worth": 90
+  },
+  {
+    "type": 1,
+    "name": "plate mail",
+    "probability": 5,
+    "worth": 150
+  },
+  {
+    "type": 2,
+    "name": "protection",
+    "probability": 9,
+    "worth": 400
+  },
+  {
+    "type": 2,
+    "name": "add strength",
+    "probability": 9,
+    "worth": 400
+  },
+  {
+    "type": 2,
+    "name": "sustain strength",
+    "probability": 5,
+    "worth": 280
+  },
+  {
+    "type": 2,
+    "name": "searching",
+    "probability": 10,
+    "worth": 420
+  },
+  {
+    "type": 2,
+    "name": "see invisible",
+    "probability": 10,
+    "worth": 310
+  },
+  {
+    "type": 2,
+    "name": "adornment",
+    "probability": 1,
+    "worth": 10
+  },
+  {
+    "type": 2,
+    "name": "aggravate monster",
+    "probability": 10,
+    "worth": 10
+  },
+  {
+    "type": 2,
+    "name": "dexterity",
+    "probability": 8,
+    "worth": 440
+  },
+  {
+    "type": 2,
+    "name": "increase damage",
+    "probability": 8,
+    "worth": 400
+  },
+  {
+    "type": 2,
+    "name": "regeneration",
+    "probability": 4,
+    "worth": 460
+  },
+  {
+    "type": 2,
+    "name": "slow digestion",
+    "probability": 9,
+    "worth": 240
+  },
+  {
+    "type": 2,
+    "name": "teleportation",
+    "probability": 5,
+    "worth": 30
+  },
+  {
+    "type": 2,
+    "name": "stealth",
+    "probability": 7,
+    "worth": 470
+  },
+  {
+    "type": 2,
+    "name": "maintain armor",
+    "probability": 5,
+    "worth": 80
+  }
+]

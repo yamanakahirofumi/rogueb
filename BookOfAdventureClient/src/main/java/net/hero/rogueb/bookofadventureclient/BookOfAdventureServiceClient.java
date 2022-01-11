@@ -23,7 +23,7 @@ public class BookOfAdventureServiceClient {
                 .bodyToMono(String.class);
     }
 
-    public Mono<String> changeObject(String playerId, List<Integer> objectIdList) {
+    public Mono<String> changeObject(String playerId, List<String> objectIdList) {
         return this.webClient.post()
                 .uri(uriBuilder -> uriBuilder.path("/id/{userId}/items").build(playerId))
                 .bodyValue(objectIdList)
@@ -38,11 +38,11 @@ public class BookOfAdventureServiceClient {
                 .bodyToMono(PlayerDto.class);
     }
 
-    public Flux<Integer> getItemList(String playerId) {
+    public Flux<String> getItemList(String playerId) {
         return this.webClient.get()
                 .uri(uriBuilder -> uriBuilder.path("/id/{userId}/items").build(playerId))
                 .retrieve()
-                .bodyToFlux(Integer.class);
+                .bodyToFlux(String.class);
     }
 
     public Mono<Boolean> exist(String userName) {
@@ -55,7 +55,7 @@ public class BookOfAdventureServiceClient {
     public Mono<String> create(String userName, Map<String, Object> playerInfo) {
         return this.webClient.post()
                 .uri(uriBuilder -> uriBuilder.path("/name/{userName}").build(userName))
-                .body(playerInfo, Map.class)
+                .bodyValue(playerInfo)
                 .retrieve()
                 .bodyToMono(String.class);
     }

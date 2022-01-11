@@ -1,5 +1,6 @@
 package net.hero.rogueb.dungeon;
 
+import net.hero.rogueb.dungeon.base.o.ThingOverviewType;
 import net.hero.rogueb.dungeon.domain.DungeonDomain;
 import net.hero.rogueb.dungeon.domain.DungeonPlayerDomain;
 import net.hero.rogueb.dungeon.domain.FloorDomain;
@@ -9,7 +10,6 @@ import net.hero.rogueb.dungeon.fields.DisplayData;
 import net.hero.rogueb.dungeon.fields.DungeonLocation;
 import net.hero.rogueb.dungeon.fields.Floor;
 import net.hero.rogueb.dungeon.fields.Gold;
-import net.hero.rogueb.dungeon.base.o.ThingOverviewType;
 import net.hero.rogueb.dungeon.repositories.DungeonPlayerRepository;
 import net.hero.rogueb.dungeon.repositories.DungeonRepository;
 import net.hero.rogueb.dungeon.repositories.FloorRepository;
@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.util.function.Tuple2;
 
 import java.util.stream.Collectors;
 
@@ -79,14 +80,19 @@ public class DungeonService {
 
     private Mono<FloorDomain> createNewLevel(String dungeonId, int level, String playerId) {
         return this.dungeonRepository.findById(dungeonId)
-                .map(dungeonDomain -> new Floor(level, dungeonDomain))
-                .flatMap(floor -> Mono.zip(
-                        Mono.just(floor),
-                        this.objectServiceClient.createObjects(floor.getItemCreateCount()).collectList()))
+                .flatMap(dungeonDomain -> Mono.zip(Mono.just(dungeonDomain), Mono.just(new Floor(level, dungeonDomain))))
+                .flatMap(tuple2 -> Mono.zip(
+                        Mono.just(tuple2.getT2()),
+                        this.objectServiceClient.createObjects(tuple2.getT2().getItemCreateCount(),
+                                this.createMessageForDungeon(tuple2.getT1(), level)).collectList()))
                 .flatMap(tuple2 -> {
                     tuple2.getT1().setObjects(tuple2.getT2());
                     return this.saveFloor(tuple2.getT1(), playerId);
                 });
+    }
+
+    private String createMessageForDungeon(DungeonDomain dungeonDomain, int level) {
+        return "Dungeon: '" + dungeonDomain.getName() + "' Level: '" + level + "'に作成。";
     }
 
     private Mono<DungeonLocation> up(String dungeonId, int level, String playerId) {
@@ -124,26 +130,25 @@ public class DungeonService {
                 .switchIfEmpty(Mono.just(location));
     }
 
-    public Mono<Integer> pickUpObject(DungeonLocation location) {
+    public Mono<String> pickUpObject(DungeonLocation location) {
         return this.getFloor(location).filter(floor -> floor.isObject(location.getCoordinate2D()))
-                .map(floor -> {
-                    ThingSimple thingSimple = floor.getObject(location.getCoordinate2D());
+                .flatMap(floor -> {
                     floor.removeObject(location.getCoordinate2D());
-                    this.saveFloor(floor, location.getPlayerId()).block();
-                    return thingSimple;
+                    return Mono.zip(Mono.just(floor), this.saveFloor(floor, location.getPlayerId()));
                 })
-                .map(ThingSimple::id)
-                .switchIfEmpty(Mono.just(0));
+                .map(it -> it.getT1().getObject(location.getCoordinate2D()))
+                .map(ThingSimple::instanceId)
+                .switchIfEmpty(Mono.just(""));
     }
 
     public Mono<Gold> pickUpGold(DungeonLocation location) {
         return this.getFloor(location)
                 .filter(floor -> floor.isGold(location.getCoordinate2D()))
-                .map(floor -> {
+                .flatMap(floor -> {
                     Gold gold = floor.removeGold(location.getCoordinate2D());
-                    this.saveFloor(floor, location.getPlayerId()).block();
-                    return gold;
+                    return Mono.zip(Mono.just(gold), this.saveFloor(floor, location.getPlayerId()));
                 })
+                .map(Tuple2::getT1)
                 .switchIfEmpty(Mono.just(new Gold(0)));
     }
 
