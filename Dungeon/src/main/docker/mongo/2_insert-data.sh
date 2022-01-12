@@ -1,1 +1,1 @@
-mongoimport  --db dungeon --collection dungeon --drop --file /docker-entrypoint-initdb.d/dungeon.json --jsonArray
+mongoimport  --db dungeon --collection dungeonDomain --drop --file /docker-entrypoint-initdb.d/dungeonDomain.json --jsonArray

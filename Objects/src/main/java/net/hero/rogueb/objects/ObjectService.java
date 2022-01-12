@@ -2,7 +2,6 @@ package net.hero.rogueb.objects;
 
 import net.hero.rogueb.math.Random;
 import net.hero.rogueb.objects.domain.ObjectHistoryDomain;
-import net.hero.rogueb.objects.domain.TypeEnum;
 import net.hero.rogueb.objects.reposiories.HistoryRepository;
 import net.hero.rogueb.objects.reposiories.ObjectRepository;
 import org.springframework.stereotype.Service;
@@ -22,7 +21,7 @@ public class ObjectService {
     }
 
     public Flux<ThingInstance> createObjects(int count, String description) {
-        return this.objectRepository.findAllByType(TypeEnum.RING).collectList()
+        return this.objectRepository.findAll().collectList()
                 .flatMapMany(it -> Flux.range(0, count).map(c -> it.get(Random.rnd(it.size()))))
                 .flatMap(it -> this.recordObject(it, description))
                 .map(ObjectHistoryDomain::changeInstance);

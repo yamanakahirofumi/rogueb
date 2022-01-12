@@ -1,1 +1,2 @@
-mongoimport  --db objects --collection object --drop --file /docker-entrypoint-initdb.d/object.json --jsonArray
+mongoimport  --db objects --collection ringDomain --drop --file /docker-entrypoint-initdb.d/ringDomain.json --jsonArray
+mongoimport  --db objects --collection armorDomain --drop --file /docker-entrypoint-initdb.d/armorDomain.json --jsonArray

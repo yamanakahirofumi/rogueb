@@ -11,8 +11,6 @@ public class RingDomain implements Thing {
     @Id
     private String id;
     private String name;
-    @Field(targetType = FieldType.STRING)
-    private TypeEnum type;
 
     public RingDomain() {
     }
@@ -50,10 +48,6 @@ public class RingDomain implements Thing {
 
     @Override
     public TypeEnum getType() {
-        return type;
-    }
-
-    public void setType(TypeEnum type) {
-        this.type = type;
+        return TypeEnum.RING;
     }
 }

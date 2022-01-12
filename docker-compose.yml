@@ -12,10 +12,11 @@ services:
       - ./BookOfAdventure/src/main/docker/mongo/1_init-mongo.js:/docker-entrypoint-initdb.d/BookOfAdventure-1_init-mongo.js:ro
       - ./Dungeon/src/main/docker/mongo/1_init-mongo.js:/docker-entrypoint-initdb.d/Dungeon-1_init-mongo.js:ro
       - ./Dungeon/src/main/docker/mongo/2_insert-data.sh:/docker-entrypoint-initdb.d/Dungeon-2_insert-data.sh:ro
-      - ./Dungeon/src/main/docker/mongo/dungeon.json:/docker-entrypoint-initdb.d/dungeon.json:ro
+      - ./Dungeon/src/main/docker/mongo/dungeonDomain.json:/docker-entrypoint-initdb.d/dungeonDomain.json:ro
       - ./Objects/src/main/docker/mongo/1_init-mongo.js:/docker-entrypoint-initdb.d/Objects-1_init-mongo.js:ro
       - ./Objects/src/main/docker/mongo/2_insert-data.sh:/docker-entrypoint-initdb.d/Objects-2_insert-data.sh:ro
-      - ./Objects/src/main/docker/mongo/object.json:/docker-entrypoint-initdb.d/object.json:ro
+      - ./Objects/src/main/docker/mongo/armorDomain.json:/docker-entrypoint-initdb.d/armorDomain.json:ro
+      - ./Objects/src/main/docker/mongo/ringDomain.json:/docker-entrypoint-initdb.d/ringDomain.json:ro
   mongo-express:
     image: mongo-express
     ports:
