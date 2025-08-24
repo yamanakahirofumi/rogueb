@@ -1,13 +1,15 @@
 package net.hero.rogueb.objects;
 
+import net.hero.rogueb.objects.domain.TypeEnum;
+
 public interface Thing {
-    int getId();
+    String getId();
 
     String getDisplay();
 
     String getName();
 
-    int getType();
+    TypeEnum getType();
 
     boolean isMany();
 }

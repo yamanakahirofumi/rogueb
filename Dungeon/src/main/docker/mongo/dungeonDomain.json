@@ -3,6 +3,7 @@
     "name": "dungeon",
     "maxLevel": 2,
     "itemSeed": 3,
+    "roomCountSeed": 5,
     "namespace": "localhost"
   }
 ]

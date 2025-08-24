@@ -41,7 +41,7 @@ public class BookOfAdventureController {
     }
 
     @PostMapping("/id/{userId}/items")
-    public Mono<String> changeObject(@PathVariable("userId") String playerId, @RequestBody List<Integer> objectIdList) {
+    public Mono<String> changeObject(@PathVariable("userId") String playerId, @RequestBody List<String> objectIdList) {
         return this.service.changeObject(playerId, objectIdList);
     }
 
@@ -51,7 +51,7 @@ public class BookOfAdventureController {
     }
 
     @GetMapping("/id/{userId}/items")
-    public Flux<Integer> getItemList(@PathVariable("userId") String userId) {
+    public Flux<String> getItemList(@PathVariable("userId") String userId) {
         return this.service.getItemList(userId);
     }
 }

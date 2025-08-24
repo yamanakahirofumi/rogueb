@@ -1,0 +1,72 @@
+[
+  {
+    "name": "protection",
+    "probability": 9,
+    "worth": 400
+  },
+  {
+    "name": "add strength",
+    "probability": 9,
+    "worth": 400
+  },
+  {
+    "name": "sustain strength",
+    "probability": 5,
+    "worth": 280
+  },
+  {
+    "name": "searching",
+    "probability": 10,
+    "worth": 420
+  },
+  {
+    "name": "see invisible",
+    "probability": 10,
+    "worth": 310
+  },
+  {
+    "name": "adornment",
+    "probability": 1,
+    "worth": 10
+  },
+  {
+    "name": "aggravate monster",
+    "probability": 10,
+    "worth": 10
+  },
+  {
+    "name": "dexterity",
+    "probability": 8,
+    "worth": 440
+  },
+  {
+    "name": "increase damage",
+    "probability": 8,
+    "worth": 400
+  },
+  {
+    "name": "regeneration",
+    "probability": 4,
+    "worth": 460
+  },
+  {
+    "name": "slow digestion",
+    "probability": 9,
+    "worth": 240
+  },
+  {
+    "name": "teleportation",
+    "probability": 5,
+    "worth": 30
+  },
+  {
+    "name": "stealth",
+    "probability": 7,
+    "worth": 470
+  },
+  {
+    "name": "maintain armor",
+    "probability": 5,
+    "worth": 80
+  }
+]

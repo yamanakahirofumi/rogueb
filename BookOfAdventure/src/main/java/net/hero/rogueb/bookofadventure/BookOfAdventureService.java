@@ -54,12 +54,12 @@ public class BookOfAdventureService {
         return playerDomain;
     }
 
-    public Flux<Integer> getItemList(String playerId) {
+    public Flux<String> getItemList(String playerId) {
         return this.playerObjectRepository.findByPlayerId(playerId)
                 .flatMapIterable(PlayerObjectDomain::getObjectIdList);
     }
 
-    public Mono<String> changeObject(String playerId, List<Integer> objectIdList) {
+    public Mono<String> changeObject(String playerId, List<String> objectIdList) {
         return this.playerObjectRepository.findByPlayerId(playerId)
                 .take(1)
                 .doOnNext(it -> it.setObjectIdList(objectIdList))

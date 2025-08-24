@@ -2,85 +2,91 @@ package net.hero.rogueb.dungeon.fields;
 
 import net.hero.rogueb.dungeon.base.o.PointType;
 import net.hero.rogueb.dungeon.fields.factories.AbstractFactory;
-import net.hero.rogueb.dungeon.fields.factories.D2Factory;
-import net.hero.rogueb.math.Random;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class Space {
-    private final Coordinate2D maxSize;
-    private final List<List<Point<String>>> spaces;
-    private final Coordinate2D upStairs;
-    private final Coordinate2D downStairs;
-    private final AbstractFactory<String> factory;
+public class Space<T> {
+    private final Coordinate maxSize;
+    private final Coordinate startCoordinate;
+    private final List<List<Tile<T>>> tiles;
+    private final Optional<Coordinate> upStairs;
+    private final Optional<Coordinate> downStairs;
+    private final List<Coordinate> goldCoordinates;
+    private final List<Coordinate> thingCoordinates;
+    private final AbstractFactory<T> factory;
 
-    public Space(boolean isMax) {
-        this.factory = new D2Factory();
-        this.maxSize = new Coordinate2D(80, 40);
-        this.spaces = new ArrayList<>();
+    public Space(boolean isDownStairs, boolean isUpStairs,
+                 Coordinate startCoordinate, Coordinate maxSize,
+                 int goldCount, int itemCount,
+                 AbstractFactory<T> factory) {
+        this.factory = factory;
+        this.maxSize = maxSize;
+        this.startCoordinate = startCoordinate;
 
-        this.createRoom();
-        this.upStairs = this.getRndPosition();
-        this.spaces.get(this.upStairs.y()).set(this.upStairs.x(), this.factory.createPoint(PointType.UpStairs));
-        Coordinate2D coordinate = null;
-        while (isMax) {
-            coordinate = this.getRndPosition();
-            if (!this.upStairs.equals(coordinate)) {
-                break;
+        Room<T> room = new Room<>(this.startCoordinate.plus(this.factory.createCoordinate(List.of(2, 2))),
+                this.maxSize.minus(this.factory.createCoordinate(List.of(4, 4))),
+                isUpStairs, isDownStairs, factory);
+        this.upStairs = Optional.ofNullable(room.upStairs());
+        this.downStairs = Optional.ofNullable(room.downStairs());
+        this.tiles = this.createTiles(room);
+        this.goldCoordinates = new LinkedList<>();
+        while (goldCount <= this.goldCoordinates.size()) {
+            Coordinate c = room.getRndPosition();
+            if (!this.goldCoordinates.contains(c)) {
+                this.goldCoordinates.add(c);
             }
         }
-        this.downStairs = coordinate;
-        if(this.downStairs != null) {
-            this.spaces.get(this.downStairs.y()).set(this.downStairs.x(), this.factory.createPoint(PointType.downStairs));
+        this.thingCoordinates = new LinkedList<>();
+        while (itemCount <= this.thingCoordinates.size()) {
+            Coordinate c = room.getRndPosition();
+            if (!this.goldCoordinates.contains(c) && !this.thingCoordinates.contains(c)) {
+                this.thingCoordinates.add(c);
+            }
         }
     }
 
-    public Space(Coordinate2D upstairs, Coordinate2D downStairs) {
-        this.factory = new D2Factory();
-        this.maxSize = new Coordinate2D(80, 40);
-        this.spaces = new ArrayList<>();
-
-        this.createRoom();
-        this.upStairs = upstairs;
-        this.spaces.get(this.upStairs.y()).set(this.upStairs.x(), this.factory.createPoint(PointType.UpStairs));
-        this.downStairs = downStairs;
-        if (this.downStairs != null) {
-            this.spaces.get(this.downStairs.y()).set(this.downStairs.x(), this.factory.createPoint(PointType.downStairs));
-        }
-    }
-
-    private void createRoom() {
-        Room room = new Room(new Coordinate2D(1, 1), this.maxSize.minus(2, 2));
-        this.spaces.add(Stream.generate(() ->
-                this.factory.createPoint(PointType.Wall)).limit(this.maxSize.x()).collect(Collectors.toList()));
+    private List<List<Tile<T>>> createTiles(Room<T> room) {
+        List<List<Tile<T>>> lists = Stream.generate(
+                        () -> Stream.generate(
+                                () -> this.factory.createPoint(PointType.Wall)).limit(this.maxSize.x()).toList())
+                .limit(this.maxSize.y()).toList();
         for (int i = 1; i < maxSize.y() - 2; i++) {
-            List<Point<String>> line = new ArrayList<>();
+            List<Tile<T>> line = new ArrayList<>();
             line.add(this.factory.createPoint(PointType.Wall));
             line.addAll(room.getLine(i));
             line.add(this.factory.createPoint(PointType.Wall));
-            this.spaces.add(line);
+            this.tiles.add(line);
         }
-        this.spaces.add(Stream.generate(() ->
-                this.factory.createPoint(PointType.Wall)).limit(this.maxSize.x()).collect(Collectors.toList()));
+        return lists;
     }
 
-    public Coordinate2D getRndPosition() {
-        return new Coordinate2D(1 + Random.rnd(this.maxSize.x() - 3), 1 + Random.rnd(this.maxSize.y() - 3));
-    }
-
-    public List<List<String>> getDisplay() {
-        return this.spaces.stream().map(it -> it.stream().map(Point::display).collect(Collectors.toList()))
+    public List<List<T>> getDisplay() {
+        return this.tiles.stream().map(it -> it.stream().map(Tile::display).collect(Collectors.toList()))
                 .collect(Collectors.toList());
     }
 
-    public Coordinate2D getDownStairs() {
-        return downStairs;
+    public Optional<Coordinate> getDownStairs() {
+        return this.downStairs;
     }
 
-    public Coordinate2D getUpStairs() {
-        return upStairs;
+    public Optional<Coordinate> getUpStairs() {
+        return this.upStairs;
+    }
+
+    public List<Coordinate> getGoldCoordinates() {
+        return this.goldCoordinates;
+    }
+
+    public List<Coordinate> getThingCoordinates() {
+        return this.thingCoordinates;
+    }
+
+    public List<List<Tile<T>>> getTiles() {
+        return tiles;
     }
 }

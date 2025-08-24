@@ -1,11 +1,11 @@
 package net.hero.rogueb.dungeon;
 
+import net.hero.rogueb.dungeon.base.o.ThingOverviewType;
 import net.hero.rogueb.dungeon.domain.DungeonDomain;
-import net.hero.rogueb.dungeon.fields.Coordinate2D;
+import net.hero.rogueb.dungeon.fields.Coordinate;
 import net.hero.rogueb.dungeon.fields.DisplayData;
 import net.hero.rogueb.dungeon.fields.DungeonLocation;
 import net.hero.rogueb.dungeon.fields.Gold;
-import net.hero.rogueb.dungeon.base.o.ThingOverviewType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -31,13 +31,13 @@ public class DungeonController {
     }
 
     @PostMapping("/{dungeonId}/move/{playerId}/{level}/{fromX}/{fromY}/{toX}/{toY}")
-    public Mono<Coordinate2D> move(@PathVariable("dungeonId") String dungeonId,
-                                   @PathVariable("playerId") String playerId,
-                                   @PathVariable("level") int level,
-                                   @PathVariable("fromX") int fromX,
-                                   @PathVariable("fromY") int fromY,
-                                   @PathVariable("toX") int toX,
-                                   @PathVariable("toY") int toY) {
+    public Mono<Coordinate> move(@PathVariable("dungeonId") String dungeonId,
+                                 @PathVariable("playerId") String playerId,
+                                 @PathVariable("level") int level,
+                                 @PathVariable("fromX") int fromX,
+                                 @PathVariable("fromY") int fromY,
+                                 @PathVariable("toX") int toX,
+                                 @PathVariable("toY") int toY) {
         DungeonLocation location = new DungeonLocation(dungeonId, playerId, level, fromX, fromY);
         return this.dungeonService.move(location, toX, toY);
     }
@@ -83,11 +83,11 @@ public class DungeonController {
     }
 
     @PostMapping("/{dungeonId}/pickup/object/{playerId}/{level}/{x}/{y}")
-    public Mono<Integer> pickUpObject(@PathVariable("dungeonId") String dungeonId,
-                                      @PathVariable("playerId") String playerId,
-                                      @PathVariable("level") int level,
-                                      @PathVariable("x") int x,
-                                      @PathVariable("y") int y) {
+    public Mono<String> pickUpObject(@PathVariable("dungeonId") String dungeonId,
+                                     @PathVariable("playerId") String playerId,
+                                     @PathVariable("level") int level,
+                                     @PathVariable("x") int x,
+                                     @PathVariable("y") int y) {
         DungeonLocation location = new DungeonLocation(dungeonId, playerId, level, x, y);
         return this.dungeonService.pickUpObject(location);
     }
@@ -98,7 +98,7 @@ public class DungeonController {
     }
 
     @GetMapping("/{dungeonId}/display/{playerId}/{level}/{x}/{y}")
-    public Flux<DisplayData> displayData(@PathVariable("dungeonId") String dungeonId,
+    public Flux<DisplayData<String>> displayData(@PathVariable("dungeonId") String dungeonId,
                                          @PathVariable("playerId") String playerId,
                                          @PathVariable("level") int level,
                                          @PathVariable("x") int x,

@@ -1,5 +1,7 @@
 package net.hero.rogueb.objects;
 
+import net.hero.rogueb.objects.domain.TypeEnum;
+
 public class Gold implements Thing {
     private final int gold;
 
@@ -12,8 +14,8 @@ public class Gold implements Thing {
     }
 
     @Override
-    public int getId() {
-        return -1;
+    public String getId() {
+        return "";
     }
 
     @Override
@@ -27,8 +29,8 @@ public class Gold implements Thing {
     }
 
     @Override
-    public int getType() {
-        return 0;
+    public TypeEnum getType() {
+        return TypeEnum.OTHER;
     }
 
     @Override

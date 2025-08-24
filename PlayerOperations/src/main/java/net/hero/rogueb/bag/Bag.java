@@ -31,8 +31,8 @@ public class Bag {
         return this.limitSize - this.size;
     }
 
-    public List<Integer> getThingIdList() {
-        return this.contents.stream().map(ThingSimple::id).collect(Collectors.toList());
+    public List<String> getThingIdList() {
+        return this.contents.stream().map(ThingSimple::instanceId).collect(Collectors.toList());
     }
 
     public void setContents(List<ThingSimple> contents) {

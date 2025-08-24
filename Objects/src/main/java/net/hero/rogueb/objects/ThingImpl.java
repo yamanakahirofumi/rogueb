@@ -1,13 +1,15 @@
 package net.hero.rogueb.objects;
 
+import net.hero.rogueb.objects.domain.TypeEnum;
+
 public class ThingImpl implements Thing {
-    private final int id;
+    private final String id;
     private final String name;
-    private final int type;
+    private final TypeEnum type;
     private final String display;
     private final boolean many;
 
-    public ThingImpl(int id, String name, int type, String display, boolean many) {
+    public ThingImpl(String id, String name, TypeEnum type, String display, boolean many) {
         this.id = id;
         this.name = name;
         this.type = type;
@@ -16,7 +18,7 @@ public class ThingImpl implements Thing {
     }
 
     @Override
-    public int getId() {
+    public String getId() {
         return this.id;
     }
 
@@ -31,7 +33,7 @@ public class ThingImpl implements Thing {
     }
 
     @Override
-    public int getType() {
+    public TypeEnum getType() {
         return this.type;
     }
 

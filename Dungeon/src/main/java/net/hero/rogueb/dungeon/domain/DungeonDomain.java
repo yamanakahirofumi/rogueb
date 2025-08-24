@@ -10,16 +10,18 @@ public class DungeonDomain {
     private String name;
     private int maxLevel;
     private int itemSeed;
+    private int roomCountSeed;
     private String namespace;
 
     public DungeonDomain() {
     }
 
-    public DungeonDomain(String name, int maxLevel, String namespace, int itemSeed) {
+    public DungeonDomain(String name, int maxLevel, String namespace, int itemSeed, int roomCountSeed) {
         this.name = name;
         this.maxLevel = maxLevel;
         this.namespace = namespace;
         this.itemSeed = itemSeed;
+        this.roomCountSeed = roomCountSeed;
     }
 
     public String getId() {
@@ -60,5 +62,13 @@ public class DungeonDomain {
 
     public void setItemSeed(int itemSeed) {
         this.itemSeed = itemSeed;
+    }
+
+    public int getRoomCountSeed() {
+        return roomCountSeed;
+    }
+
+    public void setRoomCountSeed(int roomCountSeed) {
+        this.roomCountSeed = roomCountSeed;
     }
 }

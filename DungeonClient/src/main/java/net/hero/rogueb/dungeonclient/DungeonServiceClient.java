@@ -69,11 +69,11 @@ public class DungeonServiceClient {
                 .bodyToMono(Gold.class);
     }
 
-    public Mono<Integer> pickUpObject(DungeonLocation dungeonLocation) {
+    public Mono<String> pickUpObject(DungeonLocation dungeonLocation) {
         return this.webClient.post()
                 .uri(uriBuilder -> this.defaultBuild(uriBuilder,"/{dungeonId}/pickup/object/{playerId}/{level}/{x}/{y}", dungeonLocation))
                 .retrieve()
-                .bodyToMono(Integer.class);
+                .bodyToMono(String.class);
     }
 
     public Mono<String> getDungeonName(String dungeonId) {

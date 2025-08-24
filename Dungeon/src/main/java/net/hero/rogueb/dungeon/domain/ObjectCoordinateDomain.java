@@ -1,33 +1,33 @@
 package net.hero.rogueb.dungeon.domain;
 
-import net.hero.rogueb.dungeon.fields.Coordinate2D;
+import net.hero.rogueb.dungeon.fields.Coordinate;
 
 public class ObjectCoordinateDomain {
-    private Coordinate2D position;
-    private int objectId;
+    private Coordinate position;
+    private String objectId;
 
-    public ObjectCoordinateDomain(){
+    public ObjectCoordinateDomain() {
 
     }
 
-    public ObjectCoordinateDomain(Coordinate2D position,int objectId){
+    public ObjectCoordinateDomain(Coordinate position, String objectId) {
         this.position = position;
         this.objectId = objectId;
     }
 
-    public Coordinate2D getPosition() {
+    public Coordinate getPosition() {
         return position;
     }
 
-    public void setPosition(Coordinate2D position) {
+    public void setPosition(Coordinate position) {
         this.position = position;
     }
 
-    public int getObjectId() {
+    public String getObjectId() {
         return objectId;
     }
 
-    public void setObjectId(int objectId) {
+    public void setObjectId(String objectId) {
         this.objectId = objectId;
     }
 }

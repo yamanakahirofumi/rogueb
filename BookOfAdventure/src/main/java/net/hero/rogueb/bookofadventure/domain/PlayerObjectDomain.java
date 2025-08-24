@@ -10,7 +10,7 @@ public class PlayerObjectDomain {
     @Id
     private String id;
     private String playerId;
-    private List<Integer> objectIdList;
+    private List<String> objectIdList;
 
     public String getId() {
         return id;
@@ -28,11 +28,11 @@ public class PlayerObjectDomain {
         this.playerId = playerId;
     }
 
-    public List<Integer> getObjectIdList() {
+    public List<String> getObjectIdList() {
         return objectIdList;
     }
 
-    public void setObjectIdList(List<Integer> objectIdList) {
+    public void setObjectIdList(List<String> objectIdList) {
         this.objectIdList = objectIdList;
     }
 }

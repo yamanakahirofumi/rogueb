@@ -1,6 +1,7 @@
 package net.hero.rogueb.dungeon.domain;
 
-import net.hero.rogueb.dungeon.fields.Coordinate2D;
+import net.hero.rogueb.dungeon.fields.Coordinate;
+import net.hero.rogueb.dungeon.fields.Tile;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -18,13 +19,15 @@ public class FloorDomain {
 
     private int level;
 
-    private Coordinate2D upStairs;
+    private Coordinate upStairs;
 
-    private Coordinate2D downStairs;
+    private Coordinate downStairs;
 
     private List<ObjectCoordinateDomain> thingList;
 
     private List<GoldCoordinateDomain> goldList;
+
+    private List<List<Tile<String>>> tiles;
 
     public String getId() {
         return id;
@@ -58,19 +61,19 @@ public class FloorDomain {
         this.level = level;
     }
 
-    public Coordinate2D getUpStairs() {
+    public Coordinate getUpStairs() {
         return upStairs;
     }
 
-    public void setUpStairs(Coordinate2D upStairs) {
+    public void setUpStairs(Coordinate upStairs) {
         this.upStairs = upStairs;
     }
 
-    public Coordinate2D getDownStairs() {
+    public Coordinate getDownStairs() {
         return downStairs;
     }
 
-    public void setDownStairs(Coordinate2D downStairs) {
+    public void setDownStairs(Coordinate downStairs) {
         this.downStairs = downStairs;
     }
 
@@ -88,5 +91,13 @@ public class FloorDomain {
 
     public void setGoldList(List<GoldCoordinateDomain> goldList) {
         this.goldList = goldList;
+    }
+
+    public List<List<Tile<String>>> getTiles() {
+        return tiles;
+    }
+
+    public void setTiles(List<List<Tile<String>>> tiles) {
+        this.tiles = tiles;
     }
 }

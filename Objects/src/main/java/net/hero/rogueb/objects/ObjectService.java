@@ -1,50 +1,54 @@
 package net.hero.rogueb.objects;
 
 import net.hero.rogueb.math.Random;
-import net.hero.rogueb.objects.mapper.CreatedObjectMapper;
-import net.hero.rogueb.objects.mapper.ObjectMapper;
+import net.hero.rogueb.objects.domain.ObjectHistoryDomain;
+import net.hero.rogueb.objects.reposiories.HistoryRepository;
+import net.hero.rogueb.objects.reposiories.ObjectRepository;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 @Service
 public class ObjectService {
-    private final ObjectMapper objectMapper;
-    private final CreatedObjectMapper createdObjectMapper;
+    private final ObjectRepository objectRepository;
+    private final HistoryRepository historyRepository;
 
-    public ObjectService(ObjectMapper objectMapper, CreatedObjectMapper createdObjectMapper) {
-        this.objectMapper = objectMapper;
-        this.createdObjectMapper = createdObjectMapper;
+    public ObjectService(ObjectRepository objectRepository, HistoryRepository historyRepository) {
+        this.objectRepository = objectRepository;
+        this.historyRepository = historyRepository;
     }
 
-    public Flux<Thing> createObjects(int count) {
-        List<Ring> ringList = this.objectMapper.findRing();
-        List<Thing> objectList = new ArrayList<>();
-        for (var i = 0; i < count; i++) {
-            Ring ring = ringList.get(Random.rnd(ringList.size()));
-            objectList.add(ring);
-        }
-        for (Thing thing : objectList) {
-            int id = thing.getId();
-            if (this.createdObjectMapper.countById(id) > 0) {
-                this.createdObjectMapper.updateCount(id);
-            } else {
-                this.createdObjectMapper.insertCount(id);
-            }
-        }
-        return Flux.fromIterable(objectList);
+    public Flux<ThingInstance> createObjects(int count, String description) {
+        return this.objectRepository.findAll().collectList()
+                .flatMapMany(it -> Flux.range(0, count).map(c -> it.get(Random.rnd(it.size()))))
+                .flatMap(it -> this.recordObject(it, description))
+                .map(ObjectHistoryDomain::changeInstance);
     }
 
-    public Flux<Thing> getObjects(Collection<Integer> idList) {
+    private Mono<ObjectHistoryDomain> recordObject(Thing thing, String description) {
+        ObjectHistoryDomain objectHistoryDomain = new ObjectHistoryDomain(thing, description);
+        return this.historyRepository.save(objectHistoryDomain)
+                .doOnNext(it -> it.setParentId(it.getId()))
+                .flatMap(this.historyRepository::save);
+    }
+
+    public Flux<ThingInstance> getObjects(Collection<String> idList) {
         return Flux.fromIterable(idList)
-                .map(this.objectMapper::findById);
+                .flatMap(this.historyRepository::findByParentIdOrderByCreateDateDesc)
+                .map(ObjectHistoryDomain::changeInstance);
     }
 
-    public Mono<Thing> getObjectInfo(int id){
-        return Mono.just(this.objectMapper.findById(id));
+    public Mono<ThingInstance> getObjectInfo(String id) {
+        return this.historyRepository.findById(id)
+                .map(ObjectHistoryDomain::changeInstance);
+    }
+
+    public Mono<ThingInstance> addHistory(String id, String description) {
+        return this.historyRepository.findByParentIdOrderByCreateDateDesc(id)
+                .map(it -> new ObjectHistoryDomain(it.getThing(), it.getParentId(), description))
+                .flatMap(this.historyRepository::save)
+                .map(ObjectHistoryDomain::changeInstance);
     }
 }
