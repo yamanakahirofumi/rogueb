@@ -1,25 +1,25 @@
 package net.hero.rogueb.dungeon.domain;
 
-import net.hero.rogueb.dungeon.fields.Coordinate2D;
+import net.hero.rogueb.dungeon.fields.Coordinate;
 
 public class GoldCoordinateDomain {
-    private Coordinate2D position;
+    private Coordinate position;
     private int gold;
 
     public GoldCoordinateDomain() {
 
     }
 
-    public GoldCoordinateDomain(Coordinate2D position, int gold) {
+    public GoldCoordinateDomain(Coordinate position, int gold) {
         this.position = position;
         this.gold = gold;
     }
 
-    public Coordinate2D getPosition() {
+    public Coordinate getPosition() {
         return position;
     }
 
-    public void setPosition(Coordinate2D position) {
+    public void setPosition(Coordinate position) {
         this.position = position;
     }
 
