@@ -7,74 +7,118 @@
 
 ## モジュール一覧と役割
 
-以下はプロジェクト直下の主なモジュールです（リポジトリ構成より）。括弧内は代表的な責務の概要です。
+以下はプロジェクト直下の主なモジュールです。括弧内は代表的な責務の概要です。
 
-- Commons: 共通ユーティリティ、共通ドメイン型などの再利用コード
-- DungeonBase: ダンジョン領域に共通化された基底ドメイン／型（例: 共有の列挙や基底クラス）
-- Dungeon: ダンジョンのアプリケーション本体（REST API、ドメインロジック）。Spring WebFlux によりリアクティブな API を公開
-- DungeonClient: Dungeon サービスを呼び出すクライアント（他モジュールや外部からの呼び出し用）
-- World: ワールド（マップや世界状態）に関するドメインと API
-- WorldClient: World サービス呼び出し用クライアント
-- Objects: アイテムやオブジェクトのドメインと API
-- ObjectsClient: Objects サービス呼び出し用クライアント
-- PlayerOperations: プレイヤー操作（移動、拾得、状態更新等）のアプリケーション／API
-- Display: 表示・描画やクライアント表示用のサービス（サーバサイド描画やデータ提供）
-- BookOfAdventure: 記録・図鑑・ログ等の補助的な機能（推定）
-- BookOfAdventureClient: BookOfAdventure 呼び出し用クライアント
+| カテゴリ   | モジュール | 役割/概要                             |
+|--------|---|-----------------------------------|
+| サービス   | Dungeon | ダンジョン ドメイン                        |
+| サービス   | World | ワールド（マップや世界状態）に関するドメイン            |
+| サービス   | Objects | アイテムやオブジェクトのドメイン                  |
+| BFF    | PlayerOperations | プレイヤー操作（移動、拾得、状態更新等）|
+| サービス   | Display | 表示・描画やクライアント表示用のサービス |
+| サービス   | BookOfAdventure | 記録・ログ等のドメイン |
+| クライアント | DungeonClient | Dungeon サービスを呼び出すクライアント           |
+| クライアント | WorldClient | World サービス呼び出し用クライアント             |
+| クライアント | ObjectsClient | Objects サービス呼び出し用クライアント           |
+| クライアント | BookOfAdventureClient | BookOfAdventure 呼び出し用クライアント       |
+| 部品     | Commons | 共通ユーティリティ、共通ドメイン型などの再利用コード        |
+| 部品     | DungeonBase | ダンジョン領域に共通化された基底ドメイン／型（例: 共有の列挙や基底クラス） |
+
+## サービスの責任範囲
+
+### PlayerOperations
+-   **役割**: プレイヤーのアクションを調整します。これはゲームロジック操作の主要なエントリーポイントです。
+-   **相互作用**:
+    -   クライアント（プレイヤー）からのリクエストを受け取ります。
+    -   `World`を呼び出して、開始ダンジョン情報を取得します。
+    -   `Dungeon`を呼び出して、プレイヤーの移動、周囲の確認、およびダンジョン環境との相互作用（例：アイテムの拾得、階段の上り下り）を処理します。
+    -   `BookOfAdventure`を呼び出して、プレイヤーの状態（例：場所、ステータス、インベントリリスト）を作成、取得、更新します。
+    -   `Objects`を呼び出して、アイテムの詳細情報を取得し、その履歴を管理します。
+
+### World
+-   **役割**: サービスレジストリとして機能し、ゲームワールドへのエントリーポイントを提供します。
+-   **相互作用**:
+    -   `PlayerOperations`によって呼び出され、開始ダンジョンを取得します。
+    -   `Dungeon`を呼び出して、新しいダンジョンインスタンスを検索または作成します。
+
+### Dungeon
+-   **役割**: ダンジョン、フロア、部屋、およびアイテムや階段の場所を含む、ゲームワールドの構造とレイアウトを管理します。
+-   **相互作用**:
+    -   `World`によって呼び出され、ダンジョンを作成または検索します。
+    -   `PlayerOperations`によって呼び出され、すべての空間操作（プレイヤーの移動、座標にあるものの確認、フロアの変更）を処理します。
+
+### BookOfAdventure
+-   **役割**: 永続的なプレイヤーデータを管理します。これはプレイヤーのキャラクターシートの「信頼できる情報源」です。
+-   **相互作用**:
+    -   `PlayerOperations`によって呼び出され、新しいプレイヤーを作成し、プレイヤーデータを取得し、アクションが実行された後に更新されたプレイヤーの状態を保存します。
+
+### Objects
+-   **役割**: すべてのゲームアイテム（例：鎧、指輪、金）のライフサイクルとデータを管理します。
+-   **相互作用**:
+    -   `PlayerOperations`によって呼び出され、プレイヤーが所持または発見した特定のアイテムに関する情報を取得します。
+    -   アイテムの履歴を更新するために呼び出されます（例：誰がそれを拾ったか）。
 
 ## コンポーネント間の関係（概略）
 
 以下は、サービス群とクライアント群、共通ライブラリの関係を示す概念図です。
 
 ```mermaid
-graph LR
-  subgraph Clients
-    DnClient[DungeonClient]
-    WClient[WorldClient]
-    OClient[ObjectsClient]
-    PClient["PlayerOperations Client (内部呼び出し想定)"]
-    BAClient[BookOfAdventureClient]
-    DispUI["Display (UI/表示)"]
-  end
+graph TD
+    subgraph Services
+        Dungeon
+        World
+        Objects
+        BFF["PlayerOperations"]
+        BookOfAdventure
+    end
 
-  subgraph Services
-    Dungeon[Dungeon]
-    World[World]
-    Objects[Objects]
-    PlayerOps[PlayerOperations]
-    BookAdv[BookOfAdventure]
-  end
+    subgraph Clients
+        DungeonClient["Dungeon Client"]
+        WorldClient["World Client"]
+        ObjectsClient["Object Client"]
+        BookOfAdventureClient["BookOfAdventure Client"]
+    end
 
-  subgraph Shared
-    Commons[Commons]
-    DnBase[DungeonBase]
-  end
+    subgraph Shared
+        Commons
+        DungeonBase
+    end
+    
+    Rogue_Front --> BFF
 
-  %% クライアント -> サービス
-  DnClient --> Dungeon
-  WClient  --> World
-  OClient  --> Objects
-  BAClient --> BookAdv
-  PClient  --> PlayerOps
+%% 冒険の書周り
+%% なし
 
-  %% UI/表示は複数サービスからデータを集約
-  DispUI --> Dungeon
-  DispUI --> World
-  DispUI --> PlayerOps
-  DispUI --> Objects
+%% ダンジョン周り
+    Dungeon --> BookOfAdventureClient
+    Dungeon --> ObjectsClient
 
-  %% サービス間の連携（例）
-  PlayerOps --> Dungeon
-  PlayerOps --> World
-  Dungeon --> Objects
+%% Objects
+%% なし
 
-  %% 共有ライブラリ依存
-  Dungeon --> DnBase
-  Dungeon --> Commons
-  World --> Commons
-  Objects --> Commons
-  PlayerOps --> Commons
-  BookAdv --> Commons
+%% BFF PlayerOperations
+    BFF --> ObjectsClient
+    BFF --> BookOfAdventureClient
+    BFF --> DungeonClient
+    BFF --> WorldClient
+
+%% World
+    World --> DungeonClient
+
+%% クライアント -> サービス
+    DungeonClient -.-> Dungeon
+    ObjectsClient -.-> Objects
+    BookOfAdventureClient -.-> BookOfAdventure
+    WorldClient -.-> World
+
+%% 共有ライブラリ依存
+    BFF --> Commons
+    Dungeon --> DungeonBase
+    Dungeon --> Commons
+    DungeonClient --> DungeonBase
+    Objects --> Commons
+    
+
 ```
 
 - クライアントモジュールは、対応するサービスモジュールの REST API を呼び出します。
