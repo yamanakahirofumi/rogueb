@@ -15,7 +15,7 @@ PlayerOperationsモジュールは、プレイヤーキャラクターの状態�
 - **説明:** プレイヤーキャラクターの基本的な規約を定義する単純なインターフェースです。
 - **主要なメソッド:**
     - `getName()`: プレイヤーの名前を返します。
-    - `isMoved()`: プレイヤーの移動状態に関連するブール値のフラグ。
+    - `isMoved()`: プレイヤーの移動状態に関連するブール値のフラグ (現在はプレースホルダーとして常に`true`を返します)。
 
 ### `Human`
 - **ファイル:** `PlayerOperations/src/main/java/net/hero/rogueb/character/Human.java`
@@ -28,7 +28,15 @@ PlayerOperationsモジュールは、プレイヤーキャラクターの状態�
 - **ファイル:** `PlayerOperations/src/main/java/net/hero/rogueb/bag/Bag.java`
 - **説明:** プレイヤーのインベントリ、または「バッグ」を表します。プレイヤーが運んでいるアイテムを管理します。
 - **主要なプロパティとメソッド:**
-    - `contents`: `ThingSimple`オブジェクトのリスト。`ThingSimple`は`ObjectsClient`モジュールからのデータ転送オブジェクト（DTO）であり、このモジュールが`Objects`サービスによって管理されるアイテムへの参照を保持していることを示します。
+    - `contents`: `ThingSimple`オブジェクトのリスト。
     - `limitSize`: バッグが保持できるアイテムの最大数。
     - `addContents(ThingSimple thing)`: スペースがあればバッグにアイテムを追加します。
     - `getThingIdList()`: バッグ内のアイテムのインスタンスIDのリストを返します。
+
+### `ThingSimple` (レコード)
+- **ファイル:** `ObjectsClient/src/main/java/net/hero/rogueb/objectclient/o/ThingSimple.java`
+- **説明:** `Objects`サービスから取得したアイテムの基本情報を保持するためのDTO。
+- **フィールド:**
+    - `instanceId`: アイテムのインスタンスID。
+    - `objectId`: アイテムの種類を示すID。
+    - `display`: マップ上での表示文字。
