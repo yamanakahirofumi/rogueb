@@ -33,9 +33,23 @@ Dungeonモジュールは、ダンジョンの構造、内容、状態の管理�
     - `level`: フロアのレベル番号（例：1、2、...）。
     - `upStairs`: 上り階段の`Coordinate`。
     - `downStairs`: 下り階段の`Coordinate`。
-    - `thingList`: フロアに存在するオブジェクト/アイテムのリスト。
-    - `goldList`: フロアに存在する金の山のリスト。
+    - `thingList`: フロアに存在するオブジェクト/アイテムのリスト (`ObjectCoordinateDomain`のリスト)。
+    - `goldList`: フロアに存在する金の山のリスト (`GoldCoordinateDomain`のリスト)。
     - `tiles`: フロアのマップレイアウトを表す2Dリスト（`Tile`オブジェクト）。
+
+### `ObjectCoordinateDomain`
+- **ファイル:** `Dungeon/src/main/java/net/hero/rogueb/dungeon/domain/ObjectCoordinateDomain.java`
+- **説明:** フロア上の特定のアイテムの位置を保持します。
+- **プロパティ:**
+    - `position`: アイテムの座標 (`Coordinate`)。
+    - `objectId`: アイテムのインスタンスID。
+
+### `GoldCoordinateDomain`
+- **ファイル:** `Dungeon/src/main/java/net/hero/rogueb/dungeon/domain/GoldCoordinateDomain.java`
+- **説明:** フロア上の金の山の位置と量を保持します。
+- **プロパティ:**
+    - `position`: 金の座標 (`Coordinate`)。
+    - `gold`: 金の量。
 
 ---
 
@@ -50,12 +64,23 @@ Dungeonモジュールは、ダンジョンの構造、内容、状態の管理�
     - `x()`: X座標を返します。
     - `y()`: Y座標を返します。
     - `z()`: Z座標を返します（多くの場合、フロアレベルに対応）。
+    - `minus(Coordinate)`: 座標の差分を計算します。
+    - `plus(Coordinate)`: 座標の加算を計算します。
+    - `area()`: 面積（x * y）を返します。
+
+### `Coordinate2D` (レコード)
+- **ファイル:** `Dungeon/src/main/java/net/hero/rogueb/dungeon/fields/Coordinate2D.java`
+- **説明:** `Coordinate`インターフェースの2D実装。`z`は常に0を返します。
 
 ### `Tile` (インターフェース)
 - **ファイル:** `Dungeon/src/main/java/net/hero/rogueb/dungeon/fields/Tile.java`
 - **説明:** マップ上の単一のタイルを表します。これはジェネリックインターフェースであり、さまざまな表示表現を可能にします。
 - **メソッド:**
     - `display()`: タイルの表示表現（例：壁の場合は`#`のような文字）を返します。
+
+### `Tile2D` (レコード)
+- **ファイル:** `Dungeon/src/main/java/net/hero/rogueb/dungeon/fields/Tile2D.java`
+- **説明:** `Tile`インターフェースの具体的な実装。表示文字と、タイルの種類を示す`PointType`を保持します。
 
 ### `Gold`
 - **ファイル:** `Dungeon/src/main/java/net/hero/rogueb/dungeon/fields/Gold.java`

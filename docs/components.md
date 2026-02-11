@@ -84,17 +84,52 @@ graph LR
 
 ## データフロー（例: ダンジョン内の移動）
 
-Dungeon モジュール内の REST コントローラは Spring WebFlux を用いてリアクティブなエンドポイントを提供します。たとえば、Dungeon/src/.../DungeonController.java には以下のような API が存在します。
+Dungeon モジュール内の REST コントローラは Spring WebFlux を用いてリアクティブなエンドポイントを提供します。
 
-- POST /api/dungeon/{dungeonId}/move/{playerId}/{level}/{fromX}/{fromY}/{toX}/{toY}
+### Dungeon API
+
+- POST `/api/dungeon/{dungeonId}/go/{playerId}`
+  - 目的: 指定したダンジョンへの入場
+  - 戻り値: `Mono<DungeonLocation>`
+- POST `/api/dungeon/{dungeonId}/move/{playerId}/{level}/{fromX}/{fromY}/{toX}/{toY}`
   - 目的: プレイヤーの移動
-  - 戻り値: Mono<Coordinate>
-- GET /api/dungeon/{dungeonId}/what/{playerId}/{level}/{x}/{y}
+  - 戻り値: `Mono<Coordinate>`
+- GET `/api/dungeon/{dungeonId}/what/{playerId}/{level}/{x}/{y}`
   - 目的: プレイヤー足元の状態確認
-  - 戻り値: Mono<ThingOverviewType>
-- GET /api/dungeon/{dungeonId}/display/{playerId}/{level}/{x}/{y}
-  - 目的: 表示用データの取得
-  - 戻り値: Flux<DisplayData<String>>
+  - 戻り値: `Mono<ThingOverviewType>`
+- POST `/api/dungeon/{dungeonId}/upstairs/{playerId}/{level}/{x}/{y}`
+  - 目的: 階段を上る
+  - 戻り値: `Mono<DungeonLocation>`
+- POST `/api/dungeon/{dungeonId}/downstairs/{playerId}/{level}/{x}/{y}`
+  - 目的: 階段を下りる
+  - 戻り値: `Mono<DungeonLocation>`
+- POST `/api/dungeon/{dungeonId}/pickup/gold/{playerId}/{level}/{x}/{y}`
+  - 目的: 足元の金を拾う
+  - 戻り値: `Mono<Gold>`
+- POST `/api/dungeon/{dungeonId}/pickup/object/{playerId}/{level}/{x}/{y}`
+  - 目的: 足元のアイテムを拾う
+  - 戻り値: `Mono<String>` (アイテムのインスタンスID)
+- GET `/api/dungeon/{dungeonId}/display/{playerId}/{level}/{x}/{y}`
+  - 目的: 周辺の表示用データの取得
+  - 戻り値: `Flux<DisplayData<String>>`
+- GET `/api/dungeon/{dungeonId}/name`
+  - 目的: ダンジョン名の取得
+  - 戻り値: `Mono<String>`
+
+### Objects API
+
+- GET `/api/objects/instance/{id}`
+  - 目的: 特定のアイテムインスタンス情報の取得
+  - 戻り値: `Mono<ThingInstance>`
+- POST `/api/objects/list`
+  - 目的: 複数のアイテムインスタンス情報の一括取得
+  - 戻り値: `Flux<ThingInstance>`
+- POST `/api/objects/create/count/{count}`
+  - 目的: 新しいアイテムインスタンスの生成
+  - 戻り値: `Flux<ThingInstance>`
+- POST `/api/objects/instance/{id}/`
+  - 目的: アイテムインスタンスへの履歴（イベント）追加
+  - 戻り値: `Mono<ThingInstance>`
 
 このやり取りの概念的なシーケンスを以下に示します。
 
