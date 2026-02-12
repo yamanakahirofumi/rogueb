@@ -10,18 +10,23 @@ PlayerOperationsモジュールは、プレイヤーキャラクターの状態�
 
 ## 主要なドメインオブジェクト
 
+### `PlayerDto`
+- **ファイル:** `BookOfAdventureClient/src/main/java/net/hero/rogueb/bookofadventureclient/o/PlayerDto.java`
+- **説明:** **PlayerOperations**におけるプレイヤー状態のやり取りに使用される中心的なDTOです。プレイヤー名、経験値、所持金、および現在のステータスや位置情報を保持します。
+- **詳細:** 詳細な構造については、**[BookOfAdventureモジュール ドメインモデル](./book_of_adventure.md)**を参照してください。
+
 ### `Player` (インターフェース)
 - **ファイル:** `PlayerOperations/src/main/java/net/hero/rogueb/character/Player.java`
-- **説明:** プレイヤーキャラクターの基本的な規約を定義する単純なインターフェースです。
+- **説明:** プレイヤーキャラクターの基本的な規約を定義するインターフェースです。
 - **主要なメソッド:**
     - `getName()`: プレイヤーの名前を返します。
-    - `isMoved()`: プレイヤーの移動状態に関連するブール値のフラグ (現在はプレースホルダーとして常に`true`を返します)。
+    - `isMoved()`: プレイヤーの移動状態に関連するブール値のフラグ。
 
 ### `Human`
 - **ファイル:** `PlayerOperations/src/main/java/net/hero/rogueb/character/Human.java`
-- **説明:** `Player`インターフェースの具体的な実装です。人間のプレイヤーキャラクターを表します。
+- **説明:** `Player`インターフェースの具体的な実装です。
 - **主要なプロパティ:**
-    - `name`: 人間キャラクターの名前。
+    - `name`: キャラクターの名前。
     - `bag`: プレイヤーのインベントリを表す`Bag`クラスのインスタンス。
 
 ### `Bag`
