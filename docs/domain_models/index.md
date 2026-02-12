@@ -18,7 +18,10 @@
   - 武器、指輪、金などのすべてのゲーム内アイテム（`Thing`）を定義および管理します。
 
 - **[PlayerOperationsモジュール](./player_operations.md)**
-  - プレイヤーの状態、キャラクター情報、およびインベントリ（`Bag`）を管理します。
+  - プレイヤーの操作、およびインベントリ（`Bag`）の管理を調整します。
+
+- **[BookOfAdventureモジュール](./book_of_adventure.md)**
+  - プレイヤーの状態、キャラクター情報の永続化を担当します。
 
 ### データベース構造
 
@@ -27,3 +30,6 @@
 
 - **[Objectsモジュール (MongoDB)](./objects_mongodb.md)**
   - `ring`および`objectHistory`コレクションのスキーマ情報。
+
+- **[BookOfAdventureモジュール (MongoDB)](./book_of_adventure_mongodb.md)**
+  - `playerDomain`コレクションのスキーマ情報。
