@@ -40,3 +40,16 @@ PlayerOperationsモジュールは、プレイヤーキャラクターの状態�
     - `instanceId`: アイテムのインスタンスID。
     - `objectId`: アイテムの種類を示すID。
     - `display`: マップ上での表示文字。
+
+### `PlayerDto`
+- **ファイル:** `BookOfAdventureClient/src/main/java/net/hero/rogueb/bookofadventureclient/o/PlayerDto.java`
+- **説明:** プレイヤーのステータスや位置情報などを網羅的に保持するDTO。
+- **フィールド:**
+    - `id`: ユーザーID。
+    - `name`: プレイヤー名。
+    - `exp`: 経験値。
+    - `gold`: 所持金。
+    - `namespace`: 所属するネームスペース。
+    - `currentStatus`: 現在のステータス情報（Map形式）。
+    - `status`: 基本ステータス情報（Map形式）。
+    - `location`: 現在の位置情報（Map形式）。

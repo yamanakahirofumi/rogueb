@@ -115,6 +115,12 @@ Dungeon モジュール内の REST コントローラは Spring WebFlux を用�
 - GET `/api/dungeon/{dungeonId}/name`
   - 目的: ダンジョン名の取得
   - 戻り値: `Mono<String>`
+- GET `/api/dungeon/name/{dungeonName}`
+  - 目的: ダンジョン名によるダンジョン情報の取得
+  - 戻り値: `Mono<DungeonDomain>`
+- PUT `/api/dungeon/name/{dungeonName}`
+  - 目的: ダンジョンの保存または生成
+  - 戻り値: `Mono<String>` (ダンジョンID)
 
 ### Objects API
 
@@ -123,13 +129,61 @@ Dungeon モジュール内の REST コントローラは Spring WebFlux を用�
   - 戻り値: `Mono<ThingInstance>`
 - POST `/api/objects/list`
   - 目的: 複数のアイテムインスタンス情報の一括取得
+  - Body: `Collection<String>` (インスタンスIDのリスト)
   - 戻り値: `Flux<ThingInstance>`
 - POST `/api/objects/create/count/{count}`
   - 目的: 新しいアイテムインスタンスの生成
+  - Body: `String` (説明/コンテキスト)
   - 戻り値: `Flux<ThingInstance>`
 - POST `/api/objects/instance/{id}/`
   - 目的: アイテムインスタンスへの履歴（イベント）追加
+  - Body: `String` (イベント内容)
   - 戻り値: `Mono<ThingInstance>`
+
+### PlayerOperations API
+
+- GET `/api/user/name/{userName}/exist`
+  - 目的: プレイヤーの存在確認
+  - 戻り値: `Mono<Boolean>`
+- POST `/api/user/name/{userName}`
+  - 目的: 新規プレイヤーの作成
+  - 戻り値: `Mono<String>` (ユーザーID)
+- GET `/api/player/{userId}`
+  - 目的: プレイヤー情報の取得
+  - 戻り値: `Mono<PlayerDto>`
+- POST `/api/player/{userId}/command/dungeon/default`
+  - 目的: デフォルトダンジョンへの入場
+  - 戻り値: `Mono<Map<String, String>>`
+- PUT `/api/player/{userId}/command/{direction}`
+  - 目的: プレイヤーの移動（8方向: `top`, `down`, `left`, `right`, `top-right`, `top-left`, `down-right`, `down-left`）
+  - 戻り値: `Mono<Map<String, Boolean>>`
+- PUT `/api/player/{userId}/command/pickup`
+  - 目的: 足元のアイテムを拾う
+  - 戻り値: `Mono<Map<String, Object>>`
+- PUT `/api/player/{userId}/command/downStairs`
+  - 目的: 階段を下りる
+  - 戻り値: `Mono<Map<String, Boolean>>`
+- PUT `/api/player/{userId}/command/upStairs`
+  - 目的: 階段を上る
+  - 戻り値: `Mono<Map<String, Boolean>>`
+- GET `/api/fields/{userId}`
+  - 目的: 視界内のフィールドデータの取得
+  - 戻り値: `Flux<DisplayData>`
+- GET `/api/fields/{userId}/now`
+  - 目的: 視界内の最新フィールドデータの取得
+  - 戻り値: `Flux<DisplayData>`
+- GET `/api/fields/{userId}/info`
+  - 目的: 現在のダンジョン情報の取得
+  - 戻り値: `Mono<Map<String, String>>`
+
+### World API
+
+- GET `/api/world/dungeon/init`
+  - 目的: 初期ダンジョン情報の取得
+  - 戻り値: `Mono<DungeonInfo>`
+- POST `/api/world/service`
+  - 目的: サービスの登録
+  - Body: `ServiceInfo`
 
 このやり取りの概念的なシーケンスを以下に示します。
 

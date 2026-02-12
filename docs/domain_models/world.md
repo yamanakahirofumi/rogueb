@@ -47,3 +47,15 @@ Worldモジュールは以下のテーブルを使用してサービス情報と
 ### `ServiceMapper` (MyBatis)
 - **ファイル:** `World/src/main/java/net/hero/rogueb/world/mapper/ServiceMapper.java`
 - **説明:** `Service`テーブルへのアクセスを担うMapperインターフェース。`findByType`メソッドにより、サービス種別に応じたエンドポイントURLを取得します。
+
+## API エンドポイント
+
+Worldモジュールは、以下のAPIを提供します。
+
+### `GET /api/world/dungeon/init`
+- **目的:** プレイヤーが最初に開始するダンジョンの情報を取得します。
+- **戻り値:** `Mono<DungeonInfo>`
+
+### `POST /api/world/service`
+- **目的:** 新しいサービスインスタンス（DungeonやObjectsなど）をWorldに登録します。
+- **Body:** `ServiceInfo`
