@@ -78,13 +78,43 @@ graph LR
 ```
 
 - クライアントモジュールは、対応するサービスモジュールの REST API を呼び出します。
-- Display は UI/可視化レイヤーとして複数サービスからデータを取得・統合する想定です。
+- Display は UI/可視化レイヤーとして複数サービスからデータを取得・統合する想定です（現在はスケルトンのみ存在）。
 - PlayerOperations はプレイヤーの操作コマンドを受け、Dungeon/World/Objects 等に横断的に指示を行うハブ的役割を持つ想定です。
 - Commons と DungeonBase は各サービスで共有される基本型・ユーティリティ群です。
 
 ## データフロー（例: ダンジョン内の移動）
 
 Dungeon モジュール内の REST コントローラは Spring WebFlux を用いてリアクティブなエンドポイントを提供します。
+
+### World API
+
+- GET `/api/world/dungeon/init`
+  - 目的: 初期のダンジョン情報を取得
+  - 戻り値: `Mono<DungeonInfo>`
+- POST `/api/world/service`
+  - 目的: サービスを登録
+  - 戻り値: `void`
+
+### BookOfAdventure API
+
+- GET `/api/user/name/{userName}/exist`
+  - 目的: ユーザーの存在確認
+  - 戻り値: `Mono<Boolean>`
+- PUT `/api/user/id/{userId}`
+  - 目的: プレイヤー情報を保存
+  - 戻り値: `Mono<String>` (userId)
+- POST `/api/user/name/{userName}`
+  - 目的: 新規プレイヤーを作成
+  - 戻り値: `Mono<String>` (userId)
+- POST `/api/user/id/{userId}/items`
+  - 目的: プレイヤーの所持アイテムを更新
+  - 戻り値: `Mono<String>` (userId)
+- GET `/api/user/id/{userId}`
+  - 目的: プレイヤー情報を取得
+  - 戻り値: `Mono<PlayerDomain>`
+- GET `/api/user/id/{userId}/items`
+  - 目的: プレイヤーの所持アイテム一覧を取得
+  - 戻り値: `Flux<String>`
 
 ### Dungeon API
 
@@ -115,6 +145,12 @@ Dungeon モジュール内の REST コントローラは Spring WebFlux を用�
 - GET `/api/dungeon/{dungeonId}/name`
   - 目的: ダンジョン名の取得
   - 戻り値: `Mono<String>`
+- GET `/api/dungeon/name/{dungeonName}`
+  - 目的: ダンジョンを名前で検索
+  - 戻り値: `Mono<DungeonDomain>`
+- PUT `/api/dungeon/name/{dungeonName}`
+  - 目的: ダンジョンを保存（生成）
+  - 戻り値: `Mono<String>`
 
 ### Objects API
 
@@ -130,6 +166,39 @@ Dungeon モジュール内の REST コントローラは Spring WebFlux を用�
 - POST `/api/objects/instance/{id}/`
   - 目的: アイテムインスタンスへの履歴（イベント）追加
   - 戻り値: `Mono<ThingInstance>`
+
+### PlayerOperations API
+
+- GET `/api/user/name/{userName}/exist`
+  - 目的: プレイヤーの存在確認
+  - 戻り値: `Mono<Boolean>`
+- POST `/api/user/name/{userName}`
+  - 目的: プレイヤー作成
+  - 戻り値: `Mono<String>` (userId)
+- GET `/api/player/{userId}`
+  - 目的: プレイヤー情報取得
+  - 戻り値: `Mono<PlayerDto>`
+- POST `/api/player/{userId}/command/dungeon/default`
+  - 目的: デフォルトダンジョンへの入場
+  - 戻り値: `Mono<Map<String, String>>`
+- PUT `/api/player/{userId}/command/{top|down|right|left|...}`
+  - 目的: プレイヤーの移動
+  - 戻り値: `Mono<Map<String, Boolean>>`
+- PUT `/api/player/{userId}/command/pickup`
+  - 目的: 足元のアイテム/金を拾う
+  - 戻り値: `Mono<Map<String, Object>>`
+- PUT `/api/player/{userId}/command/downStairs`
+  - 目的: 階段を下りる
+  - 戻り値: `Mono<Map<String, Boolean>>`
+- PUT `/api/player/{userId}/command/upStairs`
+  - 目的: 階段を上がる
+  - 戻り値: `Mono<Map<String, Boolean>>`
+- GET `/api/fields/{userId}`
+  - 目的: フィールド表示データの取得
+  - 戻り値: `Flux<DisplayData>`
+- GET `/api/fields/{userId}/info`
+  - 目的: ダンジョン情報の取得
+  - 戻り値: `Mono<Map<String, String>>`
 
 このやり取りの概念的なシーケンスを以下に示します。
 
@@ -151,6 +220,18 @@ sequenceDiagram
 
 - すべての呼び出しはリアクティブストリーム（Mono/Flux）で非同期に処理されます。
 - ドメイン層（Domain）はゲームロジックと整合性チェックを担います。
+
+## インフラ構成
+
+### データベース
+- **MongoDB**: ゲームの状態（ダンジョン、フロア、アイテムインスタンス、プレイヤーの冒険記録）を管理します。
+  - `BookOfAdventure`, `Dungeon`, `Objects` モジュールで使用。
+- **RDB (H2/MySQL)**: サービスディスカバリ情報を管理します。
+  - `World` モジュールで使用。MyBatis と Flyway (マイグレーション) を利用。
+
+### 開発環境
+- `docker-compose.yml` により、MongoDB および Mongo Express (管理ツール) を起動可能です。
+- 各マイクロサービスは独立して実行可能な Spring Boot アプリケーションです。
 
 ## Dungeon モジュールの簡易構成
 
