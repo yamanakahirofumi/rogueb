@@ -26,3 +26,12 @@
     - `goldList` (Array): フロア上の金のリスト (`GoldCoordinateDomain`オブジェクトの配列)。
     - `tiles` (Array): 2次元のタイル情報（`Tile`オブジェクトの配列の配列）。
     - `_class` (String): Spring Data MongoDBが使用するクラス情報。
+
+## `dungeonPlayerDomain` コレクション
+- **説明:** `DungeonPlayerDomain`クラスに対応します。プレイヤーのダンジョン内での現在の階層情報を保持します。
+- **フィールド:**
+    - `_id` (String): ドキュメントの一意なID。
+    - `dungeonId` (String): ダンジョンのID。
+    - `playerId` (String): プレイヤーのID。
+    - `level` (Integer): 現在の階層レベル。
+    - `_class` (String): Spring Data MongoDBが使用するクラス情報（例: `net.hero.rogueb.dungeon.domain.DungeonPlayerDomain`）。

@@ -44,9 +44,11 @@ Objectsモジュールは、武器、防具、ポーション、指輪など、�
 
 ### `ObjectHistoryDomain`
 - **ファイル:** `Objects/src/main/java/net/hero/rogueb/objects/domain/ObjectHistoryDomain.java`
-- **説明:** このエンティティは、オブジェクトインスタンスがいつ作成され、ドロップされ、拾われたかなど、そのライフサイクルや履歴を追跡する可能性があります。これはロギングやデバッグに役立ちます。
+- **説明:** このエンティティは、オブジェクトインスタンスがいつ作成され、ドロップされ、拾われたかなど、そのライフサイクルや履歴を追跡します。これはロギングやデバッグに役立ちます。
 - **主要なプロパティ:**
     - `id`: 履歴エントリの一意なID。
-    - `thingInstanceId`: この履歴エントリが関連する`ThingInstance`のID。
-    - `event`: 発生したイベントの説明。
-    - `timestamp`: イベントが発生した日時。
+    - `thing`: 対象となった`Thing`オブジェクトの情報。
+    - `parentId`: 親となるオブジェクトのID（もしあれば）。
+    - `description`: 発生したイベントの説明。
+    - `createDate`: イベントが発生した日時。
+    - `zoneId`: タイムゾーン情報。

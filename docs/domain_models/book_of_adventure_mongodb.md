@@ -14,3 +14,11 @@
     - `status` (Map): 固定または基本のステータス情報。
     - `location` (Map): `dungeonId`, `level`, `x`, `y` を含む位置情報マップ。
     - `_class` (String): Spring Data MongoDBが使用するクラス情報（例: `net.hero.rogueb.bookofadventure.domain.PlayerDomain`）。
+
+## `playerObjectDomain` コレクション
+- **説明:** `PlayerObjectDomain`クラスに対応します。プレイヤーの所持アイテム一覧を保持します。
+- **フィールド:**
+    - `_id` (String): ドキュメントの一意なID。
+    - `playerId` (String): プレイヤーのID。
+    - `objectIdList` (Array): アイテムのインスタンスIDの配列。
+    - `_class` (String): Spring Data MongoDBが使用するクラス情報（例: `net.hero.rogueb.bookofadventure.domain.PlayerObjectDomain`）。
