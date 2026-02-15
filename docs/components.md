@@ -137,6 +137,7 @@ Dungeon モジュール内の REST コントローラは Spring WebFlux を用�
   - 戻り値: `Mono<DungeonInfo>`
 - POST `/api/world/service`
   - 目的: サービスを登録
+  - リクエストボディ: `ServiceInfo serviceInfo`
   - 戻り値: `void`
 
 ### BookOfAdventure API
@@ -149,9 +150,11 @@ Dungeon モジュール内の REST コントローラは Spring WebFlux を用�
   - 戻り値: `Mono<String>` (userId)
 - POST `/api/user/name/{userName}`
   - 目的: 新規プレイヤーを作成
+  - リクエストボディ: `Map<String, Object> currentStatus`
   - 戻り値: `Mono<String>` (userId)
 - POST `/api/user/id/{userId}/items`
   - 目的: プレイヤーの所持アイテムを更新
+  - リクエストボディ: `List<String> objectIdList`
   - 戻り値: `Mono<String>` (userId)
 - GET `/api/user/id/{userId}`
   - 目的: プレイヤー情報を取得
@@ -203,12 +206,15 @@ Dungeon モジュール内の REST コントローラは Spring WebFlux を用�
   - 戻り値: `Mono<ThingInstance>`
 - POST `/api/objects/list`
   - 目的: 複数のアイテムインスタンス情報の一括取得
+  - リクエストボディ: `Collection<String> idList`
   - 戻り値: `Flux<ThingInstance>`
 - POST `/api/objects/create/count/{count}`
   - 目的: 新しいアイテムインスタンスの生成
+  - リクエストボディ: `String description`
   - 戻り値: `Flux<ThingInstance>`
 - POST `/api/objects/instance/{id}/`
   - 目的: アイテムインスタンスへの履歴（イベント）追加
+  - リクエストボディ: `String description`
   - 戻り値: `Mono<ThingInstance>`
 
 ### PlayerOperations API
@@ -239,6 +245,9 @@ Dungeon モジュール内の REST コントローラは Spring WebFlux を用�
   - 戻り値: `Mono<Map<String, Boolean>>`
 - GET `/api/fields/{userId}`
   - 目的: フィールド表示データの取得
+  - 戻り値: `Flux<DisplayData>`
+- GET `/api/fields/{userId}/now`
+  - 目的: フィールド表示データの即時取得
   - 戻り値: `Flux<DisplayData>`
 - GET `/api/fields/{userId}/info`
   - 目的: ダンジョン情報の取得
