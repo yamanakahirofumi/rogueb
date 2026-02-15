@@ -25,6 +25,14 @@ PlayerOperationsモジュールはこのサービスを利用して、プレイ�
     - `status`: 基本ステータスを保持するマップ。
     - `location`: 現在の位置情報（ダンジョンID、レベル、座標）を保持するマップ。
 
+### `PlayerObjectDomain`
+- **ファイル:** `BookOfAdventure/src/main/java/net/hero/rogueb/bookofadventure/domain/PlayerObjectDomain.java`
+- **説明:** プレイヤーが所持しているアイテム（インベントリ）のリストを管理します。
+- **主要なプロパティ:**
+    - `id`: 一意な識別子。
+    - `playerId`: プレイヤーのID。
+    - `objectIdList`: プレイヤーが所持しているアイテムのインスタンスIDのリスト。
+
 ---
 
 ## データ転送オブジェクト (DTO)

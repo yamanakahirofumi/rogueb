@@ -51,6 +51,15 @@ Dungeonモジュールは、ダンジョンの構造、内容、状態の管理�
     - `position`: 金の座標 (`Coordinate`)。
     - `gold`: 金の量。
 
+### `DungeonPlayerDomain`
+- **ファイル:** `Dungeon/src/main/java/net/hero/rogueb/dungeon/domain/DungeonPlayerDomain.java`
+- **説明:** 特定のダンジョンにおけるプレイヤーの現在の状態（主に滞在フロア）を管理します。
+- **主要なプロパティ:**
+    - `id`: 一意な識別子。
+    - `dungeonId`: プレイヤーが滞在しているダンジョンのID。
+    - `playerId`: プレイヤーのID。
+    - `level`: プレイヤーが現在滞在しているフロアのレベル。
+
 ---
 
 ## 値オブジェクトとフィールド
