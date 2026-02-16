@@ -97,3 +97,18 @@ Dungeonモジュールは、ダンジョンの構造、内容、状態の管理�
 - **主要なプロパティ/メソッド:**
     - `gold`: 金の量。
     - `getDisplay()`: マップ上に表示するための文字（例：`$`）を返します。
+
+### `DisplayData` (レコード)
+- **ファイル:** `Dungeon/src/main/java/net/hero/rogueb/dungeon/fields/DisplayData.java`
+- **説明:** 座標と、その座標に関連付けられた表示用データのリストを保持するジェネリックレコード。主に周辺視界の描画データ伝達に使用されます。
+- **フィールド:**
+    - `position`: データの中心となる座標 (`Coordinate`)。
+    - `data`: 表示する文字列やその他のデータのリスト。
+
+### `ThingOverviewType` (列挙型)
+- **ファイル:** `DungeonBase/src/main/java/net/hero/rogueb/dungeon/base/o/ThingOverviewType.java`
+- **説明:** プレイヤーの足元にあるものの種類を示す列挙型。
+- **値:**
+    - `None`: 何もない。
+    - `Gold`: 金がある。
+    - `Object`: アイテムがある。

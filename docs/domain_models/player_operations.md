@@ -45,3 +45,22 @@ PlayerOperationsモジュールは、プレイヤーキャラクターの状態�
     - `instanceId`: アイテムのインスタンスID。
     - `objectId`: アイテムの種類を示すID。
     - `display`: マップ上での表示文字。
+
+---
+
+## 主要なサービス
+
+### `FieldsService`
+- **ファイル:** `PlayerOperations/src/main/java/net/hero/rogueb/services/FieldsService.java`
+- **説明:** プレイヤー周辺のフィールド情報をリアクティブに提供するサービス。
+- **主要な機能:**
+    - `getFields(userId)`: `Flux.interval(Duration.ofSeconds(20))` を用いて20秒間隔での定期更新、または即時更新 (`getFieldsNow`) を提供します。
+
+---
+
+## 値オブジェクトと列挙型
+
+### `MoveEnum` (列挙型)
+- **ファイル:** `DungeonClient/src/main/java/net/hero/rogueb/dungeonclient/o/MoveEnum.java`
+- **説明:** プレイヤーの移動方向を定義する列挙型。
+- **値:** `Top`, `Down`, `Left`, `Right`, `TopLeft`, `TopRight`, `DownLeft`, `DownRight`
