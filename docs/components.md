@@ -2,7 +2,7 @@
 
 このドキュメントは、マルチモジュール構成の rogueb リポジトリにおける主要コンポーネントの役割と、コンポーネント間の関係を示します。図は mermaid.js を用いて表現しています。
 
-- 技術スタックの例: Spring Boot / Spring WebFlux (Reactor Mono/Flux), Java, Maven マルチモジュール
+- 技術スタック: Spring Boot 3.5.5 / Spring WebFlux (Reactor Mono/Flux), Java 21, Maven マルチモジュール
 - 通信形態: 主に REST（非同期・リアクティブ）、モジュール間の共有ライブラリ参照
 
 ## モジュール一覧と役割

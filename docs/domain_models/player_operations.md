@@ -62,5 +62,13 @@ PlayerOperationsモジュールは、プレイヤーキャラクターの状態�
 
 ### `MoveEnum` (列挙型)
 - **ファイル:** `DungeonClient/src/main/java/net/hero/rogueb/dungeonclient/o/MoveEnum.java`
-- **説明:** プレイヤーの移動方向を定義する列挙型。
-- **値:** `Top`, `Down`, `Left`, `Right`, `TopLeft`, `TopRight`, `DownLeft`, `DownRight`
+- **説明:** プレイヤーの移動方向を定義する列挙型。各値は X, Y の移動量（オフセット）を持ちます。
+- **値:**
+    - `Top`: (0, -1)
+    - `Down`: (0, 1)
+    - `Left`: (-1, 0)
+    - `Right`: (1, 0)
+    - `TopLeft`: (-1, -1)
+    - `TopRight`: (1, -1)
+    - `DownLeft`: (-1, 1)
+    - `DownRight`: (1, 1)

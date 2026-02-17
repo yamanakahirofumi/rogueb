@@ -40,4 +40,13 @@ PlayerOperationsモジュールはこのサービスを利用して、プレイ�
 ### `PlayerDto`
 - **ファイル:** `BookOfAdventureClient/src/main/java/net/hero/rogueb/bookofadventureclient/o/PlayerDto.java`
 - **説明:** 他のサービス（特にPlayerOperations）との間でプレイヤーの状態をやり取りするための主要なDTOです。`PlayerDomain`とほぼ同じ構造を持ちます。
+- **主要なプロパティ:**
+    - `id`: プレイヤーの一意な識別子。
+    - `name`: プレイヤーの名前。
+    - `exp`: 累積経験値。
+    - `gold`: 所持金額。
+    - `namespace`: プレイヤーが属する論理的な領域。
+    - `currentStatus`: 現在のステータス（HP、スタミナなど）を保持するマップ。
+    - `status`: 基本ステータスを保持するマップ。
+    - `location`: 現在の位置情報（`dungeonId`, `level`, `x`, `y`）を保持するマップ。
 - **用途:** `PlayerService`でのビジネスロジック処理や、APIのレスポンスとして使用されます。
