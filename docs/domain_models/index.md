@@ -33,3 +33,13 @@
 
 - **[BookOfAdventureモジュール (MongoDB)](./book_of_adventure_mongodb.md)**
   - `playerDomain`コレクションのスキーマ情報。
+
+---
+
+## 共通の規約
+
+### MongoDB コレクションの命名規則
+本プロジェクトでは、Spring Data MongoDB を使用しており、`@Document` アノテーションで明示的にコレクション名を指定していない場合、コレクション名はドメインクラス名の最初の文字を小文字にしたもの（camelCase）になります。
+
+- 例: `PlayerDomain` クラス → `playerDomain` コレクション
+- 例: `RingDomain` クラス → `ringDomain` コレクション

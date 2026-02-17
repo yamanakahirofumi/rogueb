@@ -107,8 +107,8 @@ Dungeonモジュールは、ダンジョンの構造、内容、状態の管理�
 
 ### `ThingOverviewType` (列挙型)
 - **ファイル:** `DungeonBase/src/main/java/net/hero/rogueb/dungeon/base/o/ThingOverviewType.java`
-- **説明:** プレイヤーの足元にあるものの種類を示す列挙型。
+- **説明:** プレイヤーの足元にあるものの種類を示す列挙型。内部的に整数値のタイプを持ちます。
 - **値:**
-    - `None`: 何もない。
-    - `Gold`: 金がある。
-    - `Object`: アイテムがある。
+    - `None` (0): 何もない。
+    - `Gold` (1): 金がある。
+    - `Object` (2): アイテムがある。
