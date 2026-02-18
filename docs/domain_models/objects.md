@@ -17,8 +17,19 @@ Objectsモジュールは、武器、防具、ポーション、指輪など、�
     - `getId()`: オブジェクトのタイプの一意な識別子を返します（例：「レザーアーマー」のID）。
     - `getDisplay()`: マップ上でオブジェクトを表すために使用される文字を返します（例：防具の場合は`[`、武器の場合は`）`）。
     - `getName()`: オブジェクトの名前を返します（例：「ショートソード」）。
-    - `getType()`: オブジェクトのカテゴリを示す`TypeEnum`値を返します（例：`WEAPON`、`ARMOR`、`RING`）。
+    - `getType()`: オブジェクトのカテゴリを示す`TypeEnum`値を返します。
     - `isMany()`: オブジェクトがスタック可能かどうかを示すブール値。
+
+### `TypeEnum` (列挙型)
+- **ファイル:** `Objects/src/main/java/net/hero/rogueb/objects/domain/TypeEnum.java`
+- **説明:** オブジェクトのカテゴリを定義する列挙型。
+- **値:**
+    - `ARMOR`: 防具
+    - `RING`: 指輪
+    - `SCROLL`: 巻物
+    - `WEAPON`: 武器
+    - `STICK`: 杖
+    - `OTHER`: その他
 
 ### `ThingInstance` (レコード)
 - **ファイル:** `Objects/src/main/java/net/hero/rogueb/objects/ThingInstance.java`
@@ -44,11 +55,14 @@ Objectsモジュールは、武器、防具、ポーション、指輪など、�
 
 ### `ObjectHistoryDomain`
 - **ファイル:** `Objects/src/main/java/net/hero/rogueb/objects/domain/ObjectHistoryDomain.java`
-- **説明:** このエンティティは、オブジェクトインスタンスがいつ作成され、ドロップされ、拾われたかなど、そのライフサイクルや履歴を追跡します。これはロギングやデバッグに役立ちます。
+- **説明:** オブジェクトインスタンスのライフサイクルや履歴を追跡するためのエンティティです。
+- **インスタンス管理の仕組み:**
+    - `Objects`モジュールでは、単独の「インスタンス」テーブルは持たず、この履歴情報の初回のIDを`parentId`として利用することでインスタンスを識別します。
+    - `ObjectService`は、特定の`parentId`を持つ最新の履歴レコードを取得することで、そのインスタンスの現在の状態（`ThingInstance`）を復元します。
 - **主要なプロパティ:**
     - `id`: 履歴エントリの一意なID。
     - `thing`: 対象となった`Thing`オブジェクトの情報。
-    - `parentId`: 親となるオブジェクトのID（もしあれば）。
-    - `description`: 発生したイベントの説明。
+    - `parentId`: インスタンスを識別するためのID（初回の履歴レコードの`id`がセットされます）。
+    - `description`: 発生したイベント（作成、拾得など）の説明。
     - `createDate`: イベントが発生した日時。
     - `zoneId`: タイムゾーン情報。
