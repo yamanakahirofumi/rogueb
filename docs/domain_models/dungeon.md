@@ -91,6 +91,15 @@ Dungeonモジュールは、ダンジョンの構造、内容、状態の管理�
 - **ファイル:** `Dungeon/src/main/java/net/hero/rogueb/dungeon/fields/Tile2D.java`
 - **説明:** `Tile`インターフェースの具体的な実装。表示文字と、タイルの種類を示す`PointType`を保持します。
 
+### `PointType` (列挙型)
+- **ファイル:** `DungeonBase/src/main/java/net/hero/rogueb/dungeon/base/o/PointType.java`
+- **説明:** タイルの種類を定義する列挙型。
+- **値:**
+    - `Wall`: 壁
+    - `UpStairs`: 上り階段
+    - `downStairs`: 下り階段
+    - `floor`: 床
+
 ### `Gold`
 - **ファイル:** `Dungeon/src/main/java/net/hero/rogueb/dungeon/fields/Gold.java`
 - **説明:** フロア上の金の山を表す値オブジェクト。
