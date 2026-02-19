@@ -26,13 +26,13 @@
 ### データベース構造
 
 - **[Dungeonモジュール (MongoDB)](./dungeon_mongodb.md)**
-  - `dungeon`および`floor`コレクションのスキーマ情報。
+  - `dungeonDomain`, `floorDomain`, `dungeonPlayerDomain`コレクションのスキーマ情報。
 
 - **[Objectsモジュール (MongoDB)](./objects_mongodb.md)**
-  - `ring`および`objectHistory`コレクションのスキーマ情報。
+  - `ringDomain`および`objectHistoryDomain`コレクションのスキーマ情報。
 
 - **[BookOfAdventureモジュール (MongoDB)](./book_of_adventure_mongodb.md)**
-  - `playerDomain`コレクションのスキーマ情報。
+  - `playerDomain`および`playerObjectDomain`コレクションのスキーマ情報。
 
 ---
 

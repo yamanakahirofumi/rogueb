@@ -231,8 +231,8 @@ Dungeon モジュール内の REST コントローラは Spring WebFlux を用�
 - POST `/api/player/{userId}/command/dungeon/default`
   - 目的: デフォルトダンジョンへの入場
   - 戻り値: `Mono<Map<String, String>>`
-- PUT `/api/player/{userId}/command/{top|down|right|left|...}`
-  - 目的: プレイヤーの移動
+- PUT `/api/player/{userId}/command/{top|down|right|left|top-right|top-left|down-right|down-left}`
+  - 目的: プレイヤーの移動（8方向）
   - 戻り値: `Mono<Map<String, Boolean>>`
 - PUT `/api/player/{userId}/command/pickup`
   - 目的: 足元のアイテム/金を拾う
