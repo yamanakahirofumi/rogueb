@@ -33,14 +33,28 @@ Worldモジュールは以下のテーブルを使用してサービス情報と
 
 ### `World` テーブル
 - サービスの論理的なグループ（ワールド）を管理します。
-- カラム: `id`, `name`, `namespace`, `type`, `endpoint`
+- カラム:
+    - `id` (INT, AUTO_INCREMENT): 一意な識別子。
+    - `name` (VARCHAR(64)): ワールド名。
+    - `namespace` (TEXT): 論理的な名前空間。
+    - `type` (INT): ワールドの種類（`World_Type` への外部キー）。
+    - `endpoint` (VARCHAR(65532)): エンドポイントURL。
 
 ### `Service` テーブル
 - 各モジュールの実体（エンドポイント）を管理します。
-- カラム: `id`, `service_type`, `world_id`, `endpoint`
+- カラム:
+    - `id` (INT, AUTO_INCREMENT): 一意な識別子。
+    - `service_type` (INT): サービスの種類（`Service_Type` への外部キー）。
+    - `world_id` (INT): 所属するワールドのID（`World` への外部キー）。
+    - `endpoint` (VARCHAR(65532)): サービスのエンドポイントURL。
 
-### `World_Type`, `Service_Type` テーブル
-- それぞれの種類を定義するマスターテーブルです。
+### `World_Type` テーブル (マスターデータ)
+- ワールドの種類を定義します。
+- 値の例: `1: Self`, `2: From`, `20: To`, `22: Mutual`, `30: Known`, `99: Unknown`
+
+### `Service_Type` テーブル (マスターデータ)
+- サービスの種類を定義します。
+- 値の例: `100: World`, `200: BookOfAdventure`, `300: Dungeon`, `400: Objects`, `500: PlayerOperations`
 
 ## 実装の詳細
 
