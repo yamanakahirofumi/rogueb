@@ -42,6 +42,26 @@ Worldモジュールは以下のテーブルを使用してサービス情報と
 ### `World_Type`, `Service_Type` テーブル
 - それぞれの種類を定義するマスターテーブルです。
 
+#### `World_Type` 定義
+| ID | 名称 | 説明 |
+|---|---|---|
+| 1 | Self | 自サービス |
+| 2 | From | 呼び出し元 |
+| 20 | To | 呼び出し先 |
+| 22 | Mutual | 相互参照 |
+| 30 | Known | 既知のサービス |
+| 99 | Unknown | 不明 |
+
+#### `Service_Type` 定義
+| ID | 名称 | モジュール名 |
+|---|---|---|
+| 100 | World | World |
+| 200 | BookOfAdventure | BookOfAdventure |
+| 300 | Dungeon | Dungeon |
+| 400 | Objects | Objects |
+| 500 | PlayerOperations | PlayerOperations |
+| 99999 | Others | その他 |
+
 ## 実装の詳細
 
 ### `ServiceMapper` (MyBatis)
