@@ -15,6 +15,7 @@
 ## 2. 機能・仕様 (`docs/features/`)
 - [コンポーネント構成](features/components.md)：各モジュールの役割と相互作用
 - [ドメインモデル](features/domain_models/index.md)：各サービスのコアエンティティとデータ構造
+- [アイテム識別システム](features/Item-Identification-System.md)：アイテムの識別状態とプロセスに関する仕様
 
 ## 3. 一般的な技術・開発設定 (`docs/tech/`)
 - [アーキテクチャ設計](tech/Architecture.md)：システムのパッケージ構造と主要クラスの責務
