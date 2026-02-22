@@ -173,22 +173,22 @@ Dungeon モジュール内の REST コントローラは Spring WebFlux を用�
   - 戻り値: `Mono<Coordinate>`
 - GET `/api/dungeon/{dungeonId}/what/{playerId}/{level}/{x}/{y}`
   - 目的: プレイヤー足元の状態確認
-  - 戻り値: `Mono<ThingOverviewType>`
+  - 戻り値: `Mono<ThingOverviewType>` (0: None, 1: Gold, 2: Object)
 - POST `/api/dungeon/{dungeonId}/upstairs/{playerId}/{level}/{x}/{y}`
   - 目的: 階段を上る
-  - 戻り値: `Mono<DungeonLocation>`
+  - 戻り値: `Mono<DungeonLocation>` (移動先の位置情報)
 - POST `/api/dungeon/{dungeonId}/downstairs/{playerId}/{level}/{x}/{y}`
   - 目的: 階段を下りる
-  - 戻り値: `Mono<DungeonLocation>`
+  - 戻り値: `Mono<DungeonLocation>` (移動先の位置情報)
 - POST `/api/dungeon/{dungeonId}/pickup/gold/{playerId}/{level}/{x}/{y}`
   - 目的: 足元の金を拾う
-  - 戻り値: `Mono<Gold>`
+  - 戻り値: `Mono<Gold>` (拾った金額を含むオブジェクト)
 - POST `/api/dungeon/{dungeonId}/pickup/object/{playerId}/{level}/{x}/{y}`
   - 目的: 足元のアイテムを拾う
-  - 戻り値: `Mono<String>` (アイテムのインスタンスID)
+  - 戻り値: `Mono<String>` (拾ったアイテムのインスタンスID)
 - GET `/api/dungeon/{dungeonId}/display/{playerId}/{level}/{x}/{y}`
   - 目的: 周辺の表示用データの取得
-  - 戻り値: `Flux<DisplayData<String>>`
+  - 戻り値: `Flux<DisplayData<String>>` (座標ごとの表示文字リスト。1つの座標に複数レイヤーがある場合は複数の文字が含まれる)
 - GET `/api/dungeon/{dungeonId}/name`
   - 目的: ダンジョン名の取得
   - 戻り値: `Mono<String>`
@@ -231,18 +231,22 @@ Dungeon モジュール内の REST コントローラは Spring WebFlux を用�
 - POST `/api/player/{userId}/command/dungeon/default`
   - 目的: デフォルトダンジョンへの入場
   - 戻り値: `Mono<Map<String, String>>`
-- PUT `/api/player/{userId}/command/{top|down|right|left|top-right|top-left|down-right|down-left}`
-  - 目的: プレイヤーの移動（斜め移動はハイフン繋ぎのパスを使用）
-  - 戻り値: `Mono<Map<String, Boolean>>`
+- PUT `/api/player/{userId}/command/{direction}`
+  - 目的: プレイヤーの移動
+  - パス変数 `{direction}`: `top`, `down`, `right`, `left`, `top-right`, `top-left`, `down-right`, `down-left`（斜め移動はハイフン繋ぎを使用）
+  - 戻り値: `Mono<Map<String, Boolean>>` (例: `{"result": true}`)
 - PUT `/api/player/{userId}/command/pickup`
   - 目的: 足元のアイテム/金を拾う
   - 戻り値: `Mono<Map<String, Object>>`
+    - 金の場合: `{"result": true, "type": 1, "gold": 金額}`
+    - アイテムの場合: `{"result": true, "type": 2, "itemName": "アイテム名"}`
+    - 失敗時: `{"result": false, "message": "エラーメッセージ"}`
 - PUT `/api/player/{userId}/command/downStairs`
   - 目的: 階段を下りる
-  - 戻り値: `Mono<Map<String, Boolean>>`
+  - 戻り値: `Mono<Map<String, Boolean>>` (例: `{"result": true}`)
 - PUT `/api/player/{userId}/command/upStairs`
   - 目的: 階段を上がる
-  - 戻り値: `Mono<Map<String, Boolean>>`
+  - 戻り値: `Mono<Map<String, Boolean>>` (例: `{"result": true}`)
 - GET `/api/fields/{userId}`
   - 目的: フィールド表示データの取得
   - 戻り値: `Flux<DisplayData>`
@@ -255,20 +259,66 @@ Dungeon モジュール内の REST コントローラは Spring WebFlux を用�
 
 このやり取りの概念的なシーケンスを以下に示します。
 
+### プレイヤー作成と初期ダンジョン入場
+
 ```mermaid
 sequenceDiagram
   autonumber
-  participant Client as DungeonClient / UI
-  participant API as DungeonController (WebFlux)
+  participant Client as UI / Frontend
+  participant PO as PlayerOperations
+  participant BA as BookOfAdventure
+  participant W as World
+  participant D as Dungeon
+
+  Note over Client, D: プレイヤー作成
+  Client->>PO: POST /api/user/name/{userName}
+  PO->>BA: POST /api/user/name/{userName} (with initial status)
+  BA-->>PO: Mono<userId>
+  PO-->>Client: Mono<userId>
+
+  Note over Client, D: ダンジョン入場
+  Client->>PO: POST /api/player/{userId}/command/dungeon/default
+  PO->>W: GET /api/world/dungeon/init (Start Dungeon)
+  W-->>PO: Mono<DungeonInfo>
+  PO->>D: POST /api/dungeon/{dungeonId}/go/{userId}
+  D-->>PO: Mono<DungeonLocation>
+  PO->>BA: GET /api/user/id/{userId} (PlayerDto)
+  BA-->>PO: Mono<PlayerDto>
+  PO->>BA: PUT /api/user/id/{userId} (Update Location)
+  BA-->>PO: Mono<userId>
+  PO-->>Client: Mono<Map<String, String>>
+```
+
+### ダンジョン内での移動
+
+```mermaid
+sequenceDiagram
+  autonumber
+  participant Client as UI / Frontend
+  participant PO as PlayerOperations
+  participant BA as BookOfAdventure
+  participant D as Dungeon
+
+  Client->>PO: PUT /api/player/{userId}/command/{direction}
+  PO->>BA: GET /api/user/id/{userId} (PlayerDto)
+  BA-->>PO: Mono<PlayerDto>
+  PO->>D: POST /api/dungeon/{id}/move/{playerId}/...
+  D-->>PO: Mono<Coordinate>
+  PO->>BA: PUT /api/user/id/{userId} (Update Position)
+  BA-->>PO: Mono<userId>
+  PO-->>Client: 200 OK
+```
+
+### ダンジョン内部の処理 (Dungeon モジュール内)
+
+```mermaid
+sequenceDiagram
+  autonumber
   participant Svc as DungeonService
   participant Dom as Domain (DungeonDomain / FloorDomain 等)
 
-  Client->>API: POST /api/dungeon/{id}/move/{playerId}/... (toX,toY)
-  API->>Svc: move(DungeonLocation, toX, toY)
   Svc->>Dom: validate & update position
   Dom-->>Svc: Mono<Coordinate>
-  Svc-->>API: Mono<Coordinate>
-  API-->>Client: 200 OK + Coordinate (reactive)
 ```
 
 - すべての呼び出しはリアクティブストリーム（Mono/Flux）で非同期に処理されます。

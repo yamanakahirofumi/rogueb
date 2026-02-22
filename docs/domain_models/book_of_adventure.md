@@ -22,10 +22,10 @@ PlayerOperationsモジュールはこのサービスを利用して、プレイ�
     - `gold`: 所持金。
     - `namespace`: プレイヤーが属する論理的な領域。
     - `currentStatus`: 現在のステータスを保持するマップ。
-        - キー: `hp`, `stamina`, `actionInterval`, `seed`
-    - `status`: 基本ステータスを保持するマップ。
+        - キー: `hp` (ヒットポイント), `stamina` (スタミナ), `actionInterval` (行動間隔), `seed` (乱数シード)
+    - `status`: 基本ステータスを保持するマップ（成長や永続的なバフの影響を受ける前の値）。
     - `location`: 現在の位置情報を保持するマップ。
-        - キー: `dungeonId`, `level`, `x`, `y`
+        - キー: `dungeonId` (ダンジョンID), `level` (階層), `x` (X座標), `y` (Y座標)
 
 ### `PlayerObjectDomain`
 - **ファイル:** `BookOfAdventure/src/main/java/net/hero/rogueb/bookofadventure/domain/PlayerObjectDomain.java`
@@ -49,8 +49,8 @@ PlayerOperationsモジュールはこのサービスを利用して、プレイ�
     - `gold`: 所持金額。
     - `namespace`: プレイヤーが属する論理的な領域。
     - `currentStatus`: 現在のステータスを保持するマップ。
-        - キー: `hp`, `stamina`, `actionInterval`, `seed`
+        - キー: `hp` (ヒットポイント), `stamina` (スタミナ), `actionInterval` (行動間隔), `seed` (乱数シード)
     - `status`: 基本ステータスを保持するマップ。
     - `location`: 現在の位置情報を保持するマップ。
-        - キー: `dungeonId`, `level`, `x`, `y`
+        - キー: `dungeonId` (ダンジョンID), `level` (階層), `x` (X座標), `y` (Y座標)
 - **用途:** `PlayerService`でのビジネスロジック処理や、APIのレスポンスとして使用されます。

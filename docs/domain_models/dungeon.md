@@ -107,12 +107,27 @@ Dungeonモジュールは、ダンジョンの構造、内容、状態の管理�
     - `gold`: 金の量。
     - `getDisplay()`: マップ上に表示するための文字（例：`$`）を返します。
 
-### `DisplayData` (レコード)
-- **ファイル:** `Dungeon/src/main/java/net/hero/rogueb/dungeon/fields/DisplayData.java`
-- **説明:** 座標と、その座標に関連付けられた表示用データのリストを保持するジェネリックレコード。主に周辺視界の描画データ伝達に使用されます。
+### `DungeonLocation` (レコード)
+- **ファイル:** `Dungeon/src/main/java/net/hero/rogueb/dungeon/fields/DungeonLocation.java` (内部) / `DungeonClient/src/main/java/net/hero/rogueb/dungeonclient/o/DungeonLocation.java` (DTO)
+- **説明:** 特定のダンジョン内の特定のフロアおよび座標におけるエンティティ（プレイヤー等）の位置を特定するための情報。
 - **フィールド:**
-    - `position`: データの中心となる座標 (`Coordinate`)。
-    - `data`: 表示する文字列やその他のデータのリスト。
+    - `dungeonId`: ダンジョンのID。
+    - `playerId`: プレイヤーのID。
+    - `level`: フロアのレベル。
+    - `coordinate2D` / `x, y`: 具体的な座標。
+
+### `DisplayData` (レコード)
+- **ファイル:** `Dungeon/src/main/java/net/hero/rogueb/dungeon/fields/DisplayData.java` (内部) / `DungeonClient/src/main/java/net/hero/rogueb/dungeonclient/o/DisplayData.java` (DTO)
+- **説明:** 座標と、その座標に関連付けられた表示用データのリストを保持するレコード。主に周辺視界の描画データ伝達に使用されます。
+- **フィールド:**
+    - `position`: データの中心となる座標 (`Coordinate` または `Coordinate2D`)。
+    - `data`: 表示する文字列のリスト。1つの座標に床、アイテム、プレイヤーが重なっている場合、複数の文字が含まれます。
+
+### `Gold`
+- **ファイル:** `Dungeon/src/main/java/net/hero/rogueb/dungeon/fields/Gold.java` (内部) / `DungeonClient/src/main/java/net/hero/rogueb/dungeonclient/o/Gold.java` (DTO)
+- **説明:** フロア上の金の山を表すオブジェクト。クライアント向け DTO では単純な金額のみを保持します。
+- **主要なプロパティ (DTO):**
+    - `gold`: 金の量。
 
 ### `ThingOverviewType` (列挙型)
 - **ファイル:** `DungeonBase/src/main/java/net/hero/rogueb/dungeon/base/o/ThingOverviewType.java`
