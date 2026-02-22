@@ -17,8 +17,9 @@ Spring Boot 3.5.5, Java 21, Spring WebFlux を使用しており、リアクテ�
 
 システムの詳細な仕様については、`docs/` フォルダ配下のドキュメントを参照してください。
 
-- [コンポーネント概要とAPI仕様](docs/components.md)
-- [ドメインモデルの詳細](docs/domain_models/index.md)
+- [ドキュメント一覧](docs/README.md)
+- [コンポーネント構成](docs/features/components.md)
+- [ドメインモデル](docs/features/domain_models/index.md)
 
 ## 開発の始め方
 
