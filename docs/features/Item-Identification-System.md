@@ -44,13 +44,57 @@
 ## 5. データ構造への影響案
 
 ### 5.1 Objects モジュール
-- `ThingInstance` または `ObjectHistoryDomain` に識別状態を保持するフィールドを追加することを検討。
-- プレイヤーまたはワールドごとに「どの外見が何であるか」の対応テーブルを管理する仕組みが必要です。
+- **`ObjectHistoryDomain` へのフィールド追加**:
+  - `isIdentified` (boolean): 特定のアイテムインスタンスが識別されているかどうかを保持します。
+- **`IdentificationMapDomain` (新規)**:
+  - ワールドごとの外見マッピングを管理します。
+  - フィールド: `id`, `worldId`, `typeId`, `appearanceName`
+- **`PlayerKnowledgeDomain` (新規)**:
+  - プレイヤー（ユーザー）ごとのアイテム知識を管理します。
+  - フィールド: `id`, `userId`, `worldId`, `typeId`, `isIdentified`
 
 ### 5.2 PlayerOperations モジュール
-- プレイヤーにアイテム情報を返却する際、知識情報に基づいて表示名を差し替えるロジックを実装します。
+- **名称解決ロジックの実装**:
+  - アイテム情報を取得する際、以下の優先順位で名称を決定します。
+    1. インスタンス自体が識別済み、または `PlayerKnowledgeDomain` で該当の `typeId` が識別済みの場合 → 本来の名称 (`Thing.getName()`) を使用。
+    2. 未識別の場合 → `IdentificationMapDomain` から `appearanceName` を取得して使用。
+    3. マッピングが存在しないカテゴリ（武器・防具等）の場合 → 本来の名称を使用。
 
-## 6. 今後の検討事項
+## 6. 詳細な識別フロー
+
+以下の図は、プレイヤーがアイテムを発見または識別した際のモジュール間連携を示します。
+
+```mermaid
+sequenceDiagram
+    participant P as Player
+    participant PO as PlayerOperations
+    participant OBJ as Objects
+    participant BA as BookOfAdventure
+
+    Note over P, BA: アイテム情報の取得 (表示名決定)
+    PO->>BA: GET /api/user/id/{userId} (知識情報の確認)
+    BA-->>PO: PlayerKnowledge List
+    PO->>OBJ: GET /api/objects/instance/{id}
+    OBJ-->>PO: ThingInstance (True Data)
+    alt 識別済み
+        PO-->>P: 本来の名称を表示
+    else 未識別
+        PO->>OBJ: GET /api/objects/appearance/{worldId}/{typeId}
+        OBJ-->>PO: appearanceName (例: "青い指輪")
+        PO-->>P: 外見名を表示
+    end
+
+    Note over P, BA: 識別アクション (識別の巻物使用等)
+    P->>PO: 識別アクション実行
+    PO->>OBJ: POST /api/objects/instance/{id}/identify
+    OBJ->>OBJ: ObjectHistoryDomain.isIdentified = true
+    PO->>BA: POST /api/user/id/{userId}/knowledge
+    Note right of BA: typeId を「識別済み」として記録
+    BA-->>PO: 200 OK
+    PO-->>P: 「それは ○○ だった！」
+```
+
+## 7. 今後の検討事項
 - 一度識別したアイテムの外見知識を、次回のプレイ（別キャラクター）に引き継ぐか。
 - 呪われたアイテムの識別制限（識別するまで呪われていることがわからない等）。
 - 「店」での未識別アイテムの販売価格設定。

@@ -15,6 +15,9 @@
 ## 2. 機能・仕様 (`docs/features/`)
 - [コンポーネント構成](features/components.md)：各モジュールの役割と相互作用
 - [ドメインモデル](features/domain_models/index.md)：各サービスのコアエンティティとデータ構造
+- [ゲーム機能概要](features/Game-Features.md)：ゲームの全体コンセプトと基本操作
+- [動作環境](features/System-Requirements.md)：必要な技術スタックとスペック
+- [開発ロードマップ](features/Development-Roadmap.md)：開発フェーズと優先順位
 - [アイテム識別システム](features/Item-Identification-System.md)：アイテムの識別状態とプロセスに関する仕様
 
 ## 3. 一般的な技術・開発設定 (`docs/tech/`)
@@ -31,6 +34,8 @@
 - [TODOリストの書き方ルール](tech/TODO-Rule.md)：検討事項の追加・更新ルール
 
 ## 4. 特定機能の実装方法 (`docs/implementation/`)
+- [実装詳細](implementation/Implementation-Details.md)：座標系やモジュール間連携の詳細
+- [JUnit 5 利用ルール](implementation/JUnit-Rule.md)：テストの実装方針と記述例
 
 
 ## 5. 検討事項（TODOリスト）
