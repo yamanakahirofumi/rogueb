@@ -16,7 +16,9 @@
 - [コンポーネント構成](features/components.md)：各モジュールの役割と相互作用
 - [ドメインモデル](features/domain_models/index.md)：各サービスのコアエンティティとデータ構造
 - [ゲーム機能概要](features/Game-Features.md)：ゲームの全体コンセプトと基本操作
+- [機能仕様書](features/Functional-Specification.md)：二種類のダンジョン、モンスター、経済システムなどの詳細仕様
 - [動作環境](features/System-Requirements.md)：必要な技術スタックとスペック
+- [UI-UX 設計](features/UI-UX-Design.md)：画面構成、操作フィードバック、デザイン規約
 - [開発ロードマップ](features/Development-Roadmap.md)：開発フェーズと優先順位
 - [アイテム識別システム](features/Item-Identification-System.md)：アイテムの識別状態とプロセスに関する仕様
 
@@ -36,6 +38,7 @@
 ## 4. 特定機能の実装方法 (`docs/implementation/`)
 - [実装詳細](implementation/Implementation-Details.md)：座標系やモジュール間連携の詳細
 - [JUnit 5 利用ルール](implementation/JUnit-Rule.md)：テストの実装方針と記述例
+- [最適化戦略](implementation/Optimization-Strategy.md)：通信、DB、計算処理におけるパフォーマンス向上のための指針
 
 
 ## 5. 検討事項（TODOリスト）
