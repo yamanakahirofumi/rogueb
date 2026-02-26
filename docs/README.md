@@ -21,6 +21,7 @@
 - [UI-UX 設計](features/UI-UX-Design.md)：画面構成、操作フィードバック、デザイン規約
 - [開発ロードマップ](features/Development-Roadmap.md)：開発フェーズと優先順位
 - [アイテム識別システム](features/Item-Identification-System.md)：アイテムの識別状態とプロセスに関する仕様
+- [戦闘システム](features/Combat-System.md)：ダメージ計算、状態異常、戦闘アクションの詳細仕様
 
 ## 3. 一般的な技術・開発設定 (`docs/tech/`)
 - [アーキテクチャ設計](tech/Architecture.md)：システムのパッケージ構造と主要クラスの責務
