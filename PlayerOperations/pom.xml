@@ -15,27 +15,27 @@
         <dependency>
             <groupId>net.hero.rogueb</groupId>
             <artifactId>Commons</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>net.hero.rogueb</groupId>
             <artifactId>ObjectsClient</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>net.hero.rogueb</groupId>
             <artifactId>BookOfAdventureClient</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>net.hero.rogueb</groupId>
             <artifactId>DungeonClient</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>net.hero.rogueb</groupId>
             <artifactId>WorldClient</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
+            <version>${project.version}</version>
         </dependency>
 
         <dependency>
