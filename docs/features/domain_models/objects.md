@@ -63,6 +63,16 @@ Objectsモジュールは、武器、防具、ポーション、指輪など、�
     - `id`: 履歴エントリの一意なID。
     - `thing`: 対象となった`Thing`オブジェクトの情報。
     - `parentId`: インスタンスを識別するためのID（初回の履歴レコードの`id`がセットされます）。
+    - `isIdentified`: 特定のアイテムインスタンスが識別されているかどうかを保持します。
     - `description`: 発生したイベント（作成、拾得など）の説明。
     - `createDate`: イベントが発生した日時。
     - `zoneId`: タイムゾーン情報。
+
+### `IdentificationMapDomain`
+- **ファイル:** `Objects/src/main/java/net/hero/rogueb/objects/domain/IdentificationMapDomain.java`
+- **説明:** ワールドごとのアイテムの外見マッピング（未識別名）を管理します。
+- **主要なプロパティ:**
+    - `id`: マッピングの一意なID。
+    - `worldId`: 対象のワールドID。
+    - `typeId`: 対象のアイテムタイプID。
+    - `appearanceName`: 未識別時に表示される外見名（例：「青い指輪」）。
