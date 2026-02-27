@@ -35,6 +35,16 @@ PlayerOperationsモジュールはこのサービスを利用して、プレイ�
     - `playerId`: プレイヤーのID。
     - `objectIdList`: プレイヤーが所持しているアイテムのインスタンスIDのリスト。
 
+### `PlayerKnowledgeDomain`
+- **ファイル:** `BookOfAdventure/src/main/java/net/hero/rogueb/bookofadventure/domain/PlayerKnowledgeDomain.java`
+- **説明:** プレイヤー（ユーザー）ごとのアイテム知識（識別状況）を管理します。
+- **主要なプロパティ:**
+    - `id`: 一意な識別子。
+    - `userId`: プレイヤー（ユーザー）のID。
+    - `worldId`: ワールドのID。
+    - `typeId`: アイテムタイプのID。
+    - `isIdentified`: そのアイテムタイプが識別されているかどうかを示すブール値。
+
 ---
 
 ## データ転送オブジェクト (DTO)
