@@ -35,6 +35,7 @@ Dungeonモジュールは、ダンジョンの構造、内容、状態の管理�
     - `downStairs`: 下り階段の`Coordinate`。
     - `thingList`: フロアに存在するオブジェクト/アイテムのリスト (`ObjectCoordinateDomain`のリスト)。
     - `goldList`: フロアに存在する金の山のリスト (`GoldCoordinateDomain`のリスト)。
+    - `monsterList`: フロアに存在するモンスターのリスト (`MonsterCoordinateDomain`のリスト)。
     - `tiles`: フロアのマップレイアウトを表す2Dリスト（`Tile`オブジェクト）。
 
 ### `ObjectCoordinateDomain`
