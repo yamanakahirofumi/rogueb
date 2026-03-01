@@ -24,6 +24,7 @@
     - `downStairs` (Object): 下り階段の座標 (`Coordinate`オブジェクト)。
     - `thingList` (Array): フロア上のアイテムのリスト (`ObjectCoordinateDomain`オブジェクトの配列)。
     - `goldList` (Array): フロア上の金のリスト (`GoldCoordinateDomain`オブジェクトの配列)。
+    - `monsterList` (Array): フロア上のモンスターのリスト (`MonsterCoordinateDomain`オブジェクトの配列)。
     - `tiles` (Array): 2次元のタイル情報（`Tile`オブジェクトの配列の配列）。
     - `_class` (String): Spring Data MongoDBが使用するクラス情報。
 
