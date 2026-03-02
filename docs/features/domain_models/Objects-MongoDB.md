@@ -2,14 +2,14 @@
 
 このドキュメントは、**Objects**モジュールのドメインオブジェクトがMongoDBにどのように永続化されるかについて説明します。
 
-## `ringDomain` コレクション
+## 1. `ringDomain` コレクション
 - **説明:** `RingDomain`クラスに対応します。各ドキュメントは指輪の「種類」を表します。
 - **フィールド:**
     - `_id` (String): ドキュメントの一意なID。
     - `name` (String): 指輪の名前。
     - `_class` (String): Spring Data MongoDBが使用するクラス情報（例: `net.hero.rogueb.objects.domain.RingDomain`）。
 
-## `objectHistoryDomain` コレクション
+## 2. `objectHistoryDomain` コレクション
 - **説明:** `ObjectHistoryDomain`クラスに対応します。オブジェクトのライフサイクルイベントを記録します。
 - **フィールド:**
     - `_id` (String): ドキュメントの一意なID。
@@ -21,7 +21,7 @@
     - `zoneId` (String): タイムゾーン情報。
     - `_class` (String): Spring Data MongoDBが使用するクラス情報。
 
-## `identificationMapDomain` コレクション
+## 3. `identificationMapDomain` コレクション
 - **説明:** `IdentificationMapDomain`クラスに対応します。ワールドごとのアイテムタイプと外見（未識別名）の対応を管理します。
 - **フィールド:**
     - `_id` (String): ドキュメントの一意なID。

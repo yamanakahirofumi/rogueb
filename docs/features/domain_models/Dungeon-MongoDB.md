@@ -2,7 +2,7 @@
 
 このドキュメントは、**Dungeon**モジュールのドメインオブジェクトがMongoDBにどのように永続化されるかについて説明します。
 
-## `dungeonDomain` コレクション
+## 1. `dungeonDomain` コレクション
 - **説明:** `DungeonDomain`クラスに対応します。各ドキュメントは一つのダンジョンを表します。
 - **フィールド:**
     - `_id` (String): ドキュメントの一意なID。
@@ -13,7 +13,7 @@
     - `namespace` (String): 論理的な名前空間。
     - `_class` (String): Spring Data MongoDBが使用するクラス情報（例: `net.hero.rogueb.dungeon.domain.DungeonDomain`）。
 
-## `floorDomain` コレクション
+## 2. `floorDomain` コレクション
 - **説明:** `FloorDomain`クラスに対応します。各ドキュメントはダンジョン内の一つのフロアを表します。
 - **フィールド:**
     - `_id` (String): ドキュメントの一意なID。
@@ -28,7 +28,7 @@
     - `tiles` (Array): 2次元のタイル情報（`Tile`オブジェクトの配列の配列）。
     - `_class` (String): Spring Data MongoDBが使用するクラス情報。
 
-## `dungeonPlayerDomain` コレクション
+## 3. `dungeonPlayerDomain` コレクション
 - **説明:** `DungeonPlayerDomain`クラスに対応します。プレイヤーのダンジョン内での現在の階層情報を保持します。
 - **フィールド:**
     - `_id` (String): ドキュメントの一意なID。
