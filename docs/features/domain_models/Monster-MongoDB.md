@@ -2,7 +2,7 @@
 
 このドキュメントは、**Monster**モジュールのドメインオブジェクトがMongoDBにどのように永続化されるかについて説明します。
 
-## `monsterDomain` コレクション
+## 1. `monsterDomain` コレクション
 - **説明:** `MonsterDomain`クラスに対応します。モンスターの種族ごとの基本情報を保持します。
 - **フィールド:**
     - `_id` (String): 種族の一意な識別子（例：「スライム」「オーク」）。
@@ -15,7 +15,7 @@
     - `type` (String): モンスターの属性やカテゴリ。
     - `_class` (String): Spring Data MongoDBが使用するクラス情報。
 
-## `monsterInstanceDomain` コレクション
+## 2. `monsterInstanceDomain` コレクション
 - **説明:** `MonsterInstanceDomain`クラスに対応します。特定のモンスター個体の状態を保持します。
 - **フィールド:**
     - `_id` (String): 個体の一意な識別子（instanceId）。

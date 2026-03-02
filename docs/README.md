@@ -13,8 +13,8 @@
 ---
 
 ## 2. 機能・仕様 (`docs/features/`)
-- [コンポーネント構成](features/components.md)：各モジュールの役割と相互作用
-- [ドメインモデル](features/domain_models/index.md)：各サービスのコアエンティティとデータ構造
+- [コンポーネント構成](features/Components.md)：各モジュールの役割と相互作用
+- [ドメインモデル](features/domain_models/Index.md)：各サービスのコアエンティティとデータ構造
 - [ゲーム機能概要](features/Game-Features.md)：ゲームの全体コンセプトと基本操作
 - [機能仕様書](features/Functional-Specification.md)：二種類のダンジョン、モンスター、経済システムなどの詳細仕様
 - [動作環境](features/System-Requirements.md)：必要な技術スタックとスペック
@@ -22,7 +22,7 @@
 - [開発ロードマップ](features/Development-Roadmap.md)：開発フェーズと優先順位
 - [アイテム識別システム](features/Item-Identification-System.md)：アイテムの識別状態とプロセスに関する仕様
 - [戦闘システム](features/Combat-System.md)：ダメージ計算、状態異常、戦闘アクションの詳細仕様
-- [モンスター](features/domain_models/monster.md)：モンスターの種族と個体管理に関するドメインモデル
+- [モンスター](features/domain_models/Monster.md)：モンスターの種族と個体管理に関するドメインモデル
 
 ## 3. 一般的な技術・開発設定 (`docs/tech/`)
 - [アーキテクチャ設計](tech/Architecture.md)：システムのパッケージ構造と主要クラスの責務
