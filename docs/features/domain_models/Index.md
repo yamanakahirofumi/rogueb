@@ -26,6 +26,9 @@
 - **[BookOfAdventureモジュール](./Book-Of-Adventure.md)**
   - プレイヤーの状態、キャラクター情報の永続化を担当します。
 
+- **[経済システム](./Economic-System.md)**
+  - アイテムの流通量、動的な価格計算、およびショップ管理を担当します。
+
 ### データベース構造
 
 - **[Dungeonモジュール (MongoDB)](./Dungeon-MongoDB.md)**
