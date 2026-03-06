@@ -2,7 +2,7 @@
 
 このドキュメントは、マルチモジュール構成の rogueb リポジトリにおける主要コンポーネントの役割と、コンポーネント間の関係を示します。図は mermaid.js を用いて表現しています。
 
-- 技術スタック: Spring Boot 3.5.5 / Spring WebFlux (Reactor Mono/Flux), Java 21, Maven マルチモジュール
+- 技術スタック: Spring Boot 3.5.5 (Target) / Spring WebFlux (Reactor Mono/Flux), Java 21, Maven マルチモジュール
 - 通信形態: 主に REST（非同期・リアクティブ）、モジュール間の共有ライブラリ参照
 
 ## モジュール一覧と役割
@@ -15,8 +15,10 @@
 | サービス   | World | ワールド（マップや世界状態）に関するドメイン            |
 | サービス   | Objects | アイテムやオブジェクトのドメイン                  |
 | BFF    | PlayerOperations | プレイヤー操作（移動、拾得、状態更新等）|
-| サービス   | Display | 表示・描画やクライアント表示用のサービス |
+| サービス   | Display | (スケルトンのみ) 表示・描画やクライアント表示用のサービス |
 | サービス   | BookOfAdventure | 記録・ログ等のドメイン |
+| サービス   | Monster | (実装予定) モンスターの種族・個体管理ドメイン |
+| サービス   | EconomicSystem | (実装予定) アイテム流通量・価格計算・ショップ管理 |
 | クライアント | DungeonClient | Dungeon サービスを呼び出すクライアント           |
 | クライアント | WorldClient | World サービス呼び出し用クライアント             |
 | クライアント | ObjectsClient | Objects サービス呼び出し用クライアント           |
