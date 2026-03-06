@@ -7,7 +7,7 @@
 | 分類 | 技術・ツール | バージョン | 備考 |
 | :--- | :--- | :--- | :--- |
 | 言語 | Java | 21 (LTS) | |
-| フレームワーク | Spring Boot | 3.5.5 | WebFlux (Reactive) |
+| フレームワーク | Spring Boot | 3.5.5 (Target) | WebFlux (Reactive). pom.xml reflects 4.0.3 tentatively |
 | データベース | MongoDB | - | Reactive Streams |
 | データベース | H2 Database | - | Worldモジュール等で使用 |
 | ORM / DB Library | Spring Data MongoDB | - | |

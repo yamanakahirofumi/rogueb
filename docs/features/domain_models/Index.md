@@ -17,7 +17,7 @@
 - **[Objectsモジュール](./Objects.md)**
   - 武器、指輪、金などのすべてのゲーム内アイテム（`Thing`）を定義および管理します。
 
-- **[Monsterモジュール](./Monster.md)**
+- **[Monsterモジュール (実装予定)](./Monster.md)**
   - モンスターの種族、個体状態、およびダンジョン内での配置を管理します。
 
 - **[PlayerOperationsモジュール](./Player-Operations.md)**
@@ -26,7 +26,7 @@
 - **[BookOfAdventureモジュール](./Book-Of-Adventure.md)**
   - プレイヤーの状態、キャラクター情報の永続化を担当します。
 
-- **[経済システム](./Economic-System.md)**
+- **[経済システム (実装予定)](./Economic-System.md)**
   - アイテムの流通量、動的な価格計算、およびショップ管理を担当します。
 
 ### データベース構造
@@ -37,7 +37,7 @@
 - **[Objectsモジュール (MongoDB)](./Objects-MongoDB.md)**
   - `ring`および`objectHistory`コレクションのスキーマ情報。
 
-- **[Monsterモジュール (MongoDB)](./Monster-MongoDB.md)**
+- **[Monsterモジュール (MongoDB) (実装予定)](./Monster-MongoDB.md)**
   - `monsterDomain`および`monsterInstanceDomain`コレクションのスキーマ情報。
 
 - **[BookOfAdventureモジュール (MongoDB)](./Book-Of-Adventure-MongoDB.md)**
