@@ -5,7 +5,7 @@
 - 技術スタック: Spring Boot 3.5.5 (Target) / Spring WebFlux (Reactor Mono/Flux), Java 21, Maven マルチモジュール
 - 通信形態: 主に REST（非同期・リアクティブ）、モジュール間の共有ライブラリ参照
 
-## モジュール一覧と役割
+## 1. モジュール一覧と役割
 
 以下はプロジェクト直下の主なモジュールです。括弧内は代表的な責務の概要です。
 
@@ -26,7 +26,7 @@
 | 部品     | Commons | 共通ユーティリティ、共通ドメイン型などの再利用コード        |
 | 部品     | DungeonBase | ダンジョン領域に共通化された基底ドメイン／型（例: 共有の列挙や基底クラス） |
 
-## サービスの責任範囲
+## 2. サービスの責任範囲
 
 ### PlayerOperations
 -   **役割**: プレイヤーのアクションを調整します。これはゲームロジック操作の主要なエントリーポイントです。
@@ -59,8 +59,22 @@
 -   **相互作用**:
     -   `PlayerOperations`によって呼び出され、プレイヤーが所持または発見した特定のアイテムに関する情報を取得します。
     -   アイテムの履歴を更新するために呼び出されます（例：誰がそれを拾ったか）。
+    -   `EconomicSystem`を呼び出して、アイテム生成時に流通制限（maxLimit）を超えていないかを確認します。
 
-## コンポーネント間の関係（概略）
+### Monster
+-   **役割**: モンスターの種族データおよび個体インスタンスの状態を管理します。
+-   **相互作用**:
+    -   `Dungeon`によって呼び出され、フロア生成時に配置するモンスターの情報を取得します。
+    -   `PlayerOperations`によって呼び出され、戦闘時のステータス参照や捕獲処理を行います。
+
+### EconomicSystem
+-   **役割**: 世界全体のアイテム流通量、動的な基本価格の算出、およびショップの状態を管理します。
+-   **相互作用**:
+    -   `Objects`によって呼び出され、アイテムの標準価格に基づき現在の基本価格を算出します。
+    -   `PlayerOperations`によって呼び出され、ショップの在庫確認や売買処理を実行します。
+    -   `BookOfAdventure`を呼び出して、売買に伴うゴールドの増減を反映します。
+
+## 3. コンポーネント間の関係（概略）
 
 以下は、サービス群とクライアント群、共通ライブラリの関係を示す概念図です。
 
@@ -72,6 +86,8 @@ graph TD
         Objects
         BFF["PlayerOperations"]
         BookOfAdventure
+        Monster
+        EconomicSystem
     end
 
     subgraph Clients
@@ -79,6 +95,8 @@ graph TD
         WorldClient["World Client"]
         ObjectsClient["Object Client"]
         BookOfAdventureClient["BookOfAdventure Client"]
+        MonsterClient["Monster Client"]
+        EconomicSystemClient["EconomicSystem Client"]
     end
 
     subgraph Shared
@@ -94,15 +112,18 @@ graph TD
 %% ダンジョン周り
     Dungeon --> BookOfAdventureClient
     Dungeon --> ObjectsClient
+    Dungeon --> MonsterClient
 
 %% Objects
-%% なし
+    Objects --> EconomicSystemClient
 
 %% BFF PlayerOperations
     BFF --> ObjectsClient
     BFF --> BookOfAdventureClient
     BFF --> DungeonClient
     BFF --> WorldClient
+    BFF --> MonsterClient
+    BFF --> EconomicSystemClient
 
 %% World
     World --> DungeonClient
@@ -112,6 +133,8 @@ graph TD
     ObjectsClient -.-> Objects
     BookOfAdventureClient -.-> BookOfAdventure
     WorldClient -.-> World
+    MonsterClient -.-> Monster
+    EconomicSystemClient -.-> EconomicSystem
 
 %% 共有ライブラリ依存
     BFF --> Commons
@@ -128,7 +151,7 @@ graph TD
 - PlayerOperations はプレイヤーの操作コマンドを受け、Dungeon/World/Objects 等に横断的に指示を行うハブ的役割を持つ想定です。
 - Commons と DungeonBase は各サービスで共有される基本型・ユーティリティ群です。
 
-## データフロー（例: ダンジョン内の移動）
+## 4. データフロー（例: ダンジョン内の移動）
 
 Dungeon モジュール内の REST コントローラは Spring WebFlux を用いてリアクティブなエンドポイントを提供します。
 
@@ -326,7 +349,7 @@ sequenceDiagram
 - すべての呼び出しはリアクティブストリーム（Mono/Flux）で非同期に処理されます。
 - ドメイン層（Domain）はゲームロジックと整合性チェックを担います。
 
-## インフラ構成
+## 5. インフラ構成
 
 ### データベース
 - **MongoDB**: ゲームの状態（ダンジョン、フロア、アイテムインスタンス、プレイヤーの冒険記録）を管理します。
@@ -338,7 +361,7 @@ sequenceDiagram
 - `docker-compose.yml` により、MongoDB および Mongo Express (管理ツール) を起動可能です。
 - 各マイクロサービスは独立して実行可能な Spring Boot アプリケーションです。
 
-## Dungeon モジュールの簡易構成
+## 6. Dungeon モジュールの簡易構成
 
 参考として、Dungeon モジュールの一部（抜粋）:
 
@@ -355,7 +378,7 @@ graph TD
   Domain --> Fields
 ```
 
-## 注意事項と拡張のヒント
+## 7. 注意事項と拡張のヒント
 
 - クライアント／サービス間の API 契約は、Commons に置く共通 DTO で整備すると依存が明確になります。
 - PlayerOperations から Dungeon/World/Objects を跨ぐ操作は、サーガ/トランザクション的な整合戦略を検討してください。

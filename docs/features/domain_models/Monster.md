@@ -19,7 +19,7 @@
     - `baseAtk`: 基本攻撃力。
     - `baseDef`: 基本防御力。
     - `display`: マップ上で表示される文字（例：スライムは `s`）。
-    - `expValue`: 倒した際に得られる経験値。
+    - `expValue`: 倒した際に得られる基本経験値。
     - `type`: モンスターの属性やカテゴリ（例：ドラゴン系、アンデッド系）。
 
 ### `MonsterInstanceDomain`
