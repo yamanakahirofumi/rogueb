@@ -10,6 +10,10 @@
     - `baseHp` (Integer): 基本体力。
     - `baseAtk` (Integer): 基本攻撃力。
     - `baseDef` (Integer): 基本防御力。
+    - `baseMagicAtk` (Integer): 基本魔法攻撃力。
+    - `baseMagicDef` (Integer): 基本魔法防御力。
+    - `baseDex` (Integer): 基本器用さ。
+    - `baseMnd` (Integer): 基本精神力。
     - `display` (String): マップ上で表示される文字。
     - `expValue` (Integer): 倒した際に得られる経験値。
     - `type` (String): モンスターの属性やカテゴリ。
