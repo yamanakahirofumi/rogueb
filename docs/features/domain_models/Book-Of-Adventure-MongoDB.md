@@ -10,8 +10,10 @@
     - `exp` (Integer): 累積経験値。
     - `gold` (Integer): 所持金額。
     - `namespace` (String): 所属するワールドやネームスペース。
-    - `currentStatus` (Map): 現在の変動するステータス（HPなど）。
+    - `currentStatus` (Map): 現在の変動するステータス。
+        - キー: `hp`, `mp`, `stamina`, `actionInterval`, `seed`
     - `status` (Map): 固定または基本のステータス情報。
+        - キー: `atk`, `def`, `magicAtk`, `magicDef`, `dex`, `maxMp`, `attribute`, `mnd`
     - `location` (Map): `dungeonId`, `level`, `x`, `y` を含む位置情報マップ。
     - `_class` (String): Spring Data MongoDBが使用するクラス情報（例: `net.hero.rogueb.bookofadventure.domain.PlayerDomain`）。
 
