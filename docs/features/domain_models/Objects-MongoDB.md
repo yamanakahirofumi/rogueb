@@ -16,6 +16,7 @@
     - `thing` (Object): イベントの対象となった`Thing`オブジェクトの情報。
     - `parentId` (String): インスタンスを識別するためのID。初回の履歴レコードの`id`がセットされ、以降の更新でも同じ値を引き継ぐことで同一インスタンスであることを示します。
     - `isIdentified` (Boolean): インスタンスが識別済みかどうか。
+    - `tier` (Integer): インスタンスのティア。
     - `description` (String): イベントの詳細な説明。
     - `createDate` (Date): イベントの発生日時。
     - `zoneId` (String): タイムゾーン情報。

@@ -25,7 +25,12 @@
     - `thingList` (Array): フロア上のアイテムのリスト (`ObjectCoordinateDomain`オブジェクトの配列)。
     - `goldList` (Array): フロア上の金のリスト (`GoldCoordinateDomain`オブジェクトの配列)。
     - `monsterList` (Array): (実装予定) フロア上のモンスターのリスト (`MonsterCoordinateDomain`オブジェクトの配列)。
+        - `position` (Object): 座標 (`Coordinate`)。
+        - `instanceId` (String): モンスターのインスタンス ID。
     - `trapList` (Array): (実装予定) フロア上のトラップのリスト (`TrapCoordinateDomain`オブジェクトの配列)。
+        - `position` (Object): 座標 (`Coordinate`)。
+        - `trapId` (Integer): トラップの種別 ID（[トラップシステム](../Trap-System.md) の ID に対応）。
+        - `isRevealed` (Boolean): 露出フラグ。
     - `tiles` (Array): 2次元のタイル情報（`Tile`オブジェクトの配列の配列）。
     - `_class` (String): Spring Data MongoDBが使用するクラス情報。
 

@@ -17,7 +17,13 @@
     - `baseMnd` (Integer): 基本精神力。
     - `display` (String): マップ上で表示される文字。
     - `expValue` (Integer): 倒した際に得られる経験値。
-    - `type` (String): モンスターの属性やカテゴリ。
+    - `type` (String): モンスターのカテゴリ。
+    - `attribute` (String): モンスターの属性（Fire, Water, Wind, Earth, None）。
+    - `dropTable` (Array): `MonsterDropSlot` オブジェクトの配列。
+        - `typeId` (String)
+        - `weight` (Integer)
+        - `minCount` (Integer)
+        - `maxCount` (Integer)
     - `_class` (String): Spring Data MongoDBが使用するクラス情報。
 
 ## 2. `monsterInstanceDomain` コレクション
