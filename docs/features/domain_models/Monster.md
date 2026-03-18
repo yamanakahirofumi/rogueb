@@ -46,9 +46,16 @@
     - `currentHp`: 現在の体力。
     - `currentMp`: 現在の魔法力。
     - `experience`: 累積経験値（捕獲後の成長に使用）。
-    - `statusEffects`: 付与されている状態異常のリスト。
+    - `statusEffects`: 付与されている状態異常 (`StatusEffectDomain`) のリスト。
     - `ownerId`: 所有しているプレイヤーの ID（捕獲済みの場合）。
     - `isWild`: 野生状態かどうかを示すフラグ。
+
+### `StatusEffectDomain` (値オブジェクト)
+- **説明:** モンスターやプレイヤーに付与される状態異常を定義します。
+- **プロパティ:**
+    - `type`: 状態異常の種類（例: `Poison`, `Confusion`, `Paralysis`, `Sleep`, `Seal`）。
+    - `remainingTurns`: 残りの継続ターン数または歩数。
+    - `value`: 効果に関連する補助的な数値（例: 毒のダメージ量）。
 
 ### `MonsterCoordinateDomain`
 - **説明:** ダンジョンのフロア上におけるモンスターの位置を保持します。
