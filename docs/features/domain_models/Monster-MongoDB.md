@@ -35,7 +35,10 @@
     - `currentHp` (Integer): 現在の体力。
     - `currentMp` (Integer): 現在の魔法力。
     - `experience` (Long): 累積経験値。
-    - `statusEffects` (Array): 付与されている状態異常のリスト。
+    - `statusEffects` (Array): 付与されている状態異常の配列。
+        - `type` (String)
+        - `remainingTurns` (Integer)
+        - `value` (Integer)
     - `ownerId` (String): 所有しているプレイヤーのID。
     - `isWild` (Boolean): 野生状態かどうかを示すフラグ。
     - `_class` (String): Spring Data MongoDBが使用するクラス情報。

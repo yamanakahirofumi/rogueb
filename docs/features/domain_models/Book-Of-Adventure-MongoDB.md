@@ -11,10 +11,15 @@
     - `gold` (Integer): 所持金額。
     - `namespace` (String): 所属するワールドやネームスペース。
     - `currentStatus` (Map): 現在の変動するステータス。
-        - キー: `hp`, `mp`, `stamina`, `actionInterval`, `seed`
+        - キー: `hp`, `mp`, `stamina`, `actionInterval`, `seed`, `subStep`
     - `status` (Map): 固定または基本のステータス情報。
         - キー: `atk`, `def`, `magicAtk`, `magicDef`, `dex`, `maxMp`, `attribute`, `mnd`
     - `location` (Map): `dungeonId`, `level`, `x`, `y` を含む位置情報マップ。
+    - `equipment` (Map): `weapon`, `armor`, `ring1`, `ring2` をキーとし、アイテムインスタンス ID を値とするマップ。
+    - `statusEffects` (Array): 付与されている状態異常の配列。
+        - `type` (String)
+        - `remainingTurns` (Integer)
+        - `value` (Integer)
     - `_class` (String): Spring Data MongoDBが使用するクラス情報（例: `net.hero.rogueb.bookofadventure.domain.PlayerDomain`）。
 
 ## 2. `playerObjectDomain` コレクション
