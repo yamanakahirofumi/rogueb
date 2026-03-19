@@ -11,6 +11,11 @@
     - `itemSeed` (Integer): アイテム生成用シード値。
     - `roomCountSeed` (Integer): 部屋数生成用シード値。
     - `namespace` (String): 論理的な名前空間。
+    - `deathPenalty` (Object): デスペナルティの設定 (`DeathPenaltyDomain`)。
+        - `itemForfeitureType` (String)
+        - `goldLossType` (String)
+        - `goldLossValue` (Double)
+        - `statusResetType` (String)
     - `_class` (String): Spring Data MongoDBが使用するクラス情報（例: `net.hero.rogueb.dungeon.domain.DungeonDomain`）。
 
 ## 2. `floorDomain` コレクション
@@ -24,10 +29,10 @@
     - `downStairs` (Object): 下り階段の座標 (`Coordinate`オブジェクト)。
     - `thingList` (Array): フロア上のアイテムのリスト (`ObjectCoordinateDomain`オブジェクトの配列)。
     - `goldList` (Array): フロア上の金のリスト (`GoldCoordinateDomain`オブジェクトの配列)。
-    - `monsterList` (Array): (実装予定) フロア上のモンスターのリスト (`MonsterCoordinateDomain`オブジェクトの配列)。
+    - `monsterList` (Array): フロア上のモンスターのリスト (`MonsterCoordinateDomain`オブジェクトの配列)。
         - `position` (Object): 座標 (`Coordinate`)。
         - `instanceId` (String): モンスターのインスタンス ID。
-    - `trapList` (Array): (実装予定) フロア上のトラップのリスト (`TrapCoordinateDomain`オブジェクトの配列)。
+    - `trapList` (Array): フロア上のトラップのリスト (`TrapCoordinateDomain`オブジェクトの配列)。
         - `position` (Object): 座標 (`Coordinate`)。
         - `trapId` (Integer): トラップの種別 ID（[トラップシステム](../Trap-System.md) の ID に対応）。
         - `isRevealed` (Boolean): 露出フラグ。
