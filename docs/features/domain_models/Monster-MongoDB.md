@@ -42,3 +42,13 @@
     - `ownerId` (String): 所有しているプレイヤーのID。
     - `isWild` (Boolean): 野生状態かどうかを示すフラグ。
     - `_class` (String): Spring Data MongoDBが使用するクラス情報。
+
+## 3. インデックス推奨事項
+
+### `monsterDomain`
+- `{"name": 1}`: 名前による検索。
+- `{"type": 1}`: カテゴリ（種族系）による検索。
+
+### `monsterInstanceDomain`
+- `{"ownerId": 1}`: プレイヤーが所持するモンスターを検索する場合に必須。
+- `{"isWild": 1}`: 野生モンスターのみを抽出する場合に使用します。

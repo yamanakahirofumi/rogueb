@@ -39,3 +39,16 @@
     - `typeId` (String): アイテムタイプID。
     - `isIdentified` (Boolean): 識別済みかどうか。
     - `_class` (String): Spring Data MongoDBが使用するクラス情報（例: `net.hero.rogueb.bookofadventure.domain.PlayerKnowledgeDomain`）。
+
+## 4. インデックス推奨事項
+
+### `playerDomain`
+- `{"name": 1}`: プレイヤー名によるユニーク検索に必須。
+- `{"namespace": 1}`: ワールド内や特定の領域のプレイヤーを一覧する場合。
+
+### `playerObjectDomain`
+- `{"playerId": 1}`: プレイヤーの所持アイテムを検索するために必須。
+
+### `playerKnowledgeDomain`
+- `{"userId": 1, "worldId": 1}`: ユーザーが特定のワールドで持っている知識を一覧するために必須。
+- `{"userId": 1, "worldId": 1, "typeId": 1}`: ユニークインデックス。
