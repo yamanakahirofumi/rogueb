@@ -22,6 +22,12 @@
     - `zoneId` (String): タイムゾーン情報。
     - `_class` (String): Spring Data MongoDBが使用するクラス情報。
 
+### インデックス推奨事項と肥大化対策
+- `{"parentId": 1, "createDate": -1}`: インスタンスの最新の状態を復元するために必須のインデックスです。
+- **肥大化対策**: `ObjectHistoryDomain` はアイテムの全履歴を保持するため、時間の経過とともにデータ量が膨大になります。
+    - **TTL インデックス**: 古い履歴（例：1年以上前）を自動的に削除することを検討します。ただし、アイテムがまだ存在する場合は、最初のレコード（parentId の元）と最新のレコードを保持する必要があります。
+    - **アーカイブ戦略**: 使用されなくなったアイテム（持ち主がいない、破壊された等）の履歴を別のコレクションやコールドストレージへ移動するバッチ処理を検討します。
+
 ## 3. `identificationMapDomain` コレクション
 - **説明:** `IdentificationMapDomain`クラスに対応します。ワールドごとのアイテムタイプと外見（未識別名）の対応を管理します。
 - **フィールド:**
@@ -30,3 +36,6 @@
     - `typeId` (String): アイテムタイプID。
     - `appearanceName` (String): 外見名。
     - `_class` (String): Spring Data MongoDBが使用するクラス情報（例: `net.hero.rogueb.objects.domain.IdentificationMapDomain`）。
+
+### インデックス推奨事項
+- `{"worldId": 1, "typeId": 1}`: ユニークインデックス。特定のワールドにおけるアイテムの外見マッピングを一意に保つために必須です。

@@ -44,6 +44,9 @@
 - **[BookOfAdventureモジュール (MongoDB)](./Book-Of-Adventure-MongoDB.md)**
   - `playerDomain`コレクションのスキーマ情報。
 
+- **[経済システム (MongoDB)](./Economic-System-MongoDB.md)**
+  - `itemCirculationDomain`, `shopDomain`, `transactionHistoryDomain` コレクションのスキーマ情報。
+
 ---
 
 ## 2. 共通の規約

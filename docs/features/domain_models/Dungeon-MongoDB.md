@@ -47,3 +47,17 @@
     - `playerId` (String): プレイヤーのID。
     - `level` (Integer): 現在の階層レベル。
     - `_class` (String): Spring Data MongoDBが使用するクラス情報（例: `net.hero.rogueb.dungeon.domain.DungeonPlayerDomain`）。
+
+## 4. インデックス推奨事項
+
+### `dungeonDomain`
+- `{"name": 1}`: ダンジョンを名前で検索する場合。
+- `{"namespace": 1}`: ネームスペースによるグルーピングを行う場合。
+
+### `floorDomain`
+- `{"dungeonId": 1, "level": 1}`: 特定のダンジョンの特定の階層を検索するために必須です。
+- `{"userId": 1, "dungeonId": 1}`: ユーザーごとのダンジョンインスタンスを管理する場合に使用します。
+
+### `dungeonPlayerDomain`
+- `{"playerId": 1}`: プレイヤーの現在の滞在ダンジョンを特定するために使用します。
+- `{"dungeonId": 1}`: 特定のダンジョンにいるプレイヤーを一覧表示するために使用します。

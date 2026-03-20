@@ -14,7 +14,7 @@
 
 ## 2. 機能・仕様 (`docs/features/`)
 - [コンポーネント構成](features/Components.md)：各モジュールの役割と相互作用
-- [ドメインモデル](features/domain_models/Index.md)：各サービスのコアエンティティとデータ構造
+- [ドメインモデル一覧](features/domain_models/Index.md)：各サービスのコアエンティティとデータ構造
 - [ゲーム機能概要](features/Game-Features.md)：ゲームの全体コンセプトと基本操作
 - [機能仕様書](features/Functional-Specification.md)：二種類のダンジョン、モンスター、経済システムなどの詳細仕様
 - [動作環境](features/System-Requirements.md)：必要な技術スタックとスペック
@@ -24,8 +24,15 @@
 - [トラップシステム](features/Trap-System.md)：ダンジョン内の罠の種類と効果に関する仕様
 - [モンスタードロップシステム](features/Monster-Drop-System.md)：モンスター撃破時のドロップと流通制限に関する仕様
 - [戦闘システム](features/Combat-System.md)：ダメージ計算、状態異常、戦闘アクションの詳細仕様
-- [モンスター](features/domain_models/Monster.md)：モンスターの種族と個体管理に関するドメインモデル
-- [経済システム](features/domain_models/Economic-System.md)：流通管理、価格計算、ショップ経営に関するドメインモデル
+
+### 2.1 主要ドメインモデル
+- [Dungeon](features/domain_models/Dungeon.md) / [MongoDB](features/domain_models/Dungeon-MongoDB.md)
+- [World](features/domain_models/World.md)
+- [Objects](features/domain_models/Objects.md) / [MongoDB](features/domain_models/Objects-MongoDB.md)
+- [Monster](features/domain_models/Monster.md) / [MongoDB](features/domain_models/Monster-MongoDB.md)
+- [BookOfAdventure](features/domain_models/Book-Of-Adventure.md) / [MongoDB](features/domain_models/Book-Of-Adventure-MongoDB.md)
+- [PlayerOperations](features/domain_models/Player-Operations.md)
+- [経済システム](features/domain_models/Economic-System.md) / [MongoDB](features/domain_models/Economic-System-MongoDB.md)
 
 ## 3. 一般的な技術・開発設定 (`docs/tech/`)
 - [アーキテクチャ設計](tech/Architecture.md)：システムのパッケージ構造と主要クラスの責務
