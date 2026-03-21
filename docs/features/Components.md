@@ -17,8 +17,8 @@
 | BFF    | PlayerOperations | プレイヤー操作（移動、拾得、状態更新等）|
 | サービス   | Display | (スケルトンのみ) 表示・描画やクライアント表示用のサービス |
 | サービス   | BookOfAdventure | 記録・ログ等のドメイン |
-| サービス   | Monster | (実装予定) モンスターの種族・個体管理ドメイン |
-| サービス   | EconomicSystem | (実装予定) アイテム流通量・価格計算・ショップ管理 |
+| サービス   | Monster | モンスターの種族・個体管理ドメイン |
+| サービス   | EconomicSystem | アイテム流通量・価格計算・ショップ管理 |
 | クライアント | DungeonClient | Dungeon サービスを呼び出すクライアント           |
 | クライアント | WorldClient | World サービス呼び出し用クライアント             |
 | クライアント | ObjectsClient | Objects サービス呼び出し用クライアント           |

@@ -81,3 +81,7 @@ AIによる生成が困難な、感性やバランス調整が必要な事項で
 ### [x] MongoDB のインデックス最適化および設計の具体化
 - **概要**: `Objects` や `Dungeon` モジュールにおける検索クエリの高速化と、履歴データの肥大化対策。
 - **解決策**: 各モジュールの MongoDB 設計ドキュメント（`Dungeon-MongoDB.md`, `Objects-MongoDB.md` 等）にインデックス推奨事項と肥大化対策（TTL等）を追記。
+
+### [x] ドキュメントの不整合解消および技術スタック情報の更新
+- **概要**: 実装状況とドキュメントの乖離（Planned表記の残り、DungeonLocationの型不一致）の解消、および pom.xml とドキュメントのバージョン乖離の明記。
+- **解決策**: `Components.md`, `Dungeon.md`, `Tech-Stack.md` を更新。また、`DungeonLocation` を record にリファクタリングし、コーディング規約への準拠を強化。
