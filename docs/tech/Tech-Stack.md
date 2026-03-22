@@ -6,8 +6,8 @@
 
 | 分類 | 技術・ツール | バージョン | 備考 |
 | :--- | :--- | :--- | :--- |
-| 言語 | Java | 21 (LTS) | (pom.xml uses 17) |
-| フレームワーク | Spring Boot | 3.5.5 (Target) | WebFlux (Reactive). (pom.xml uses 4.0.3) |
+| 言語 | Java | 21 (LTS) | |
+| フレームワーク | Spring Boot | 4.0.3 | WebFlux (Reactive) |
 | データベース | MongoDB | - | Reactive Streams |
 | データベース | H2 Database | - | Worldモジュール等で使用 |
 | ORM / DB Library | Spring Data MongoDB | - | |

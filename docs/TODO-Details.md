@@ -87,5 +87,5 @@ AIによる生成が困難な、感性やバランス調整が必要な事項で
 - **解決策**: `Components.md`, `Dungeon.md`, `Tech-Stack.md` を更新。また、`DungeonLocation` を record にリファクタリングし、コーディング規約への準拠を強化。
 
 ### [x] Dungeonモジュールのリファクタリングと技術スタックの現代化
-- **概要**: Dungeonモジュールのコード品質向上、Java 21/Spring Boot 3.5.5へのアップデート、および record の適切な利用。
+- **概要**: Dungeonモジュールのコード品質向上、Java 21/Spring Boot 4.0.3へのアップデート、および record の適切な利用。
 - **解決策**: `DungeonLocation` の冗長なアクセッサ削除、`Floor.java` の巨大メソッド分解、`Coordinate2D.java` の一貫性向上、および `pom.xml` の更新を実施。
