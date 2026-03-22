@@ -61,7 +61,7 @@ public class DungeonService {
 
     public Flux<DisplayData<String>> displayData(DungeonLocation location) {
         return this.getFloor(location)
-                .doOnNext(floor -> floor.move(location.getCoordinate(), location.getPlayerId()))
+                .doOnNext(floor -> floor.move(location.coordinate(), location.playerId()))
                 .flatMapIterable(Floor::getFields);
     }
 
@@ -106,50 +106,50 @@ public class DungeonService {
     public Mono<Coordinate> move(DungeonLocation location, int toX, int toY) {
         return this.getFloor(location)
                 .filter(f -> f.getFields().get(toY).data().get(toX).equals("#"))
-                .map(it -> location.getCoordinate())
+                .map(it -> location.coordinate())
                 .switchIfEmpty(Mono.just(this.factory.createCoordinate(List.of(toX, toY))));
     }
 
     public Mono<DungeonLocation> downStairs(DungeonLocation location) {
-        return this.dungeonRepository.findById(location.getDungeonId())
-                .filter(dungeonDomain -> dungeonDomain.getMaxLevel() > location.getLevel())
+        return this.dungeonRepository.findById(location.dungeonId())
+                .filter(dungeonDomain -> dungeonDomain.getMaxLevel() > location.level())
                 .flatMap(dungeonDomain -> this.getFloor(location))
                 .filter(floor -> floor.getDownStairs().isPresent())
-                .filter(floor -> floor.getDownStairs().get().equals(location.getCoordinate()))
-                .flatMap(floor -> this.down(location.getDungeonId(), location.getLevel() + 1, location.getPlayerId()))
+                .filter(floor -> floor.getDownStairs().get().equals(location.coordinate()))
+                .flatMap(floor -> this.down(location.dungeonId(), location.level() + 1, location.playerId()))
                 .switchIfEmpty(Mono.just(location));
     }
 
     public Mono<DungeonLocation> upStairs(DungeonLocation location) {
-        if (location.getLevel() == 1) {
+        if (location.level() == 1) {
             // TODO:暫定対応
             return Mono.just(location);
         }
 
         return this.getFloor(location)
                 .filter(floor -> floor.getUpStairs().isPresent())
-                .filter(floor -> floor.getUpStairs().get().equals(location.getCoordinate()))
-                .flatMap(it -> this.up(location.getDungeonId(), location.getLevel() - 1, location.getPlayerId()))
+                .filter(floor -> floor.getUpStairs().get().equals(location.coordinate()))
+                .flatMap(it -> this.up(location.dungeonId(), location.level() - 1, location.playerId()))
                 .switchIfEmpty(Mono.just(location));
     }
 
     public Mono<String> pickUpObject(DungeonLocation location) {
-        return this.getFloor(location).filter(floor -> floor.isObject(location.getCoordinate()))
+        return this.getFloor(location).filter(floor -> floor.isObject(location.coordinate()))
                 .flatMap(floor -> {
-                    floor.removeObject(location.getCoordinate());
-                    return Mono.zip(Mono.just(floor), this.saveFloor(floor, location.getPlayerId()));
+                    floor.removeObject(location.coordinate());
+                    return Mono.zip(Mono.just(floor), this.saveFloor(floor, location.playerId()));
                 })
-                .map(it -> it.getT1().getObject(location.getCoordinate()))
+                .map(it -> it.getT1().getObject(location.coordinate()))
                 .map(ThingSimple::instanceId)
                 .switchIfEmpty(Mono.just(""));
     }
 
     public Mono<Gold> pickUpGold(DungeonLocation location) {
         return this.getFloor(location)
-                .filter(floor -> floor.isGold(location.getCoordinate()))
+                .filter(floor -> floor.isGold(location.coordinate()))
                 .flatMap(floor -> {
-                    Gold gold = floor.removeGold(location.getCoordinate());
-                    return Mono.zip(Mono.just(gold), this.saveFloor(floor, location.getPlayerId()));
+                    Gold gold = floor.removeGold(location.coordinate());
+                    return Mono.zip(Mono.just(gold), this.saveFloor(floor, location.playerId()));
                 })
                 .map(Tuple2::getT1)
                 .switchIfEmpty(Mono.just(new Gold(0)));
@@ -159,9 +159,9 @@ public class DungeonService {
     public Mono<ThingOverviewType> whatIsOnMyFeet(DungeonLocation dungeonLocation) {
         return this.getFloor(dungeonLocation)
                 .map(floor -> {
-                    if (floor.isGold(dungeonLocation.getCoordinate())) {
+                    if (floor.isGold(dungeonLocation.coordinate())) {
                         return ThingOverviewType.Gold;
-                    } else if (floor.isObject(dungeonLocation.getCoordinate())) {
+                    } else if (floor.isObject(dungeonLocation.coordinate())) {
                         return ThingOverviewType.Object;
                     }
                     return ThingOverviewType.None;
@@ -169,7 +169,7 @@ public class DungeonService {
     }
 
     private Mono<Floor<String>> getFloor(DungeonLocation location) {
-        return this.floorRepository.findByDungeonIdAndLevelAndUserId(location.getDungeonId(), location.getLevel(), location.getPlayerId())
+        return this.floorRepository.findByDungeonIdAndLevelAndUserId(location.dungeonId(), location.level(), location.playerId())
                 .elementAt(0)
                 .flatMap(floorDomain -> Mono.zip(
                         Mono.just(floorDomain),
