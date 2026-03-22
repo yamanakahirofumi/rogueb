@@ -35,6 +35,12 @@ public class Floor<T> {
     private final Map<Coordinate, Gold> golds;
     private final AbstractFactory<T> factory;
 
+    private record RoomCoordinate(Coordinate position, Coordinate size) {
+        long getArea() {
+            return size.area();
+        }
+    }
+
     /**
      * 新規作成時
      *
@@ -97,17 +103,25 @@ public class Floor<T> {
     private List<Space<T>> createSpaces(int maxItemCount, int roomCountSeed, boolean downStairsFlag) {
         int roomCount = Random.rnd(roomCountSeed);
 
-        // 部屋分け
-        record RoomCoordinate(Coordinate position, Coordinate size) {
-            long getArea() {
-                return RoomCoordinate.this.size.area();
-            }
-        }
+        List<RoomCoordinate> roomCoordinateList = splitRooms(roomCount);
+
+        initializeTilesWithWalls();
+
+        List<Coordinate> roomCenters = new LinkedList<>();
+        List<Space<T>> spaces = carveRoomsAndCreateSpaces(roomCoordinateList, maxItemCount, downStairsFlag, roomCenters);
+
+        connectRoomsWithCorridors(roomCenters);
+
+        placeStairs(spaces);
+
+        return spaces;
+    }
+
+    private List<RoomCoordinate> splitRooms(int roomCount) {
         List<RoomCoordinate> roomCoordinateList = new LinkedList<>();
         roomCoordinateList.add(new RoomCoordinate(this.factory.createCoordinate(List.of(0, 0)), this.size));
 
         for (int i = 0; i < roomCount; i++) {
-            // 縦横の判断と閾値
             Optional<RoomCoordinate> max = roomCoordinateList.stream().reduce((c1, c2) -> {
                 if (c1.getArea() > c2.getArea()) {
                     return c1;
@@ -141,30 +155,10 @@ public class Floor<T> {
                         size.minus(splitCoordinate)));
             }
         }
+        return roomCoordinateList;
+    }
 
-        // 部屋付属品作成
-        int size = roomCoordinateList.size();
-        // mutable flags list
-        List<Boolean> upStairsFlags = new LinkedList<>(IntStream.range(0, size)
-                .mapToObj(it -> Boolean.FALSE)
-                .toList());
-        upStairsFlags.set(Random.rnd(size), Boolean.TRUE);
-        List<Boolean> downStairsFlags = new LinkedList<>(IntStream.range(0, size)
-                .mapToObj(it -> Boolean.FALSE)
-                .toList());
-        if (downStairsFlag && size > 0) {
-            downStairsFlags.set(Random.rnd(size), Boolean.TRUE);
-        }
-        List<Integer> itemCountList = new LinkedList<>();
-        int itemCount = Math.max(0, maxItemCount);
-        for (int i = 1; i < size; i++) {
-            int roomItemCount = itemCount > 0 ? Random.rnd(itemCount) : 0;
-            itemCount = itemCount - roomItemCount;
-            itemCountList.add(roomItemCount);
-        }
-        itemCountList.add(itemCount);
-
-        // initialize full-floor tiles with walls
+    private void initializeTilesWithWalls() {
         this.tiles.clear();
         for (int y = 0; y < this.size.y(); y++) {
             List<Tile<T>> row = new LinkedList<>();
@@ -173,13 +167,38 @@ public class Floor<T> {
             }
             this.tiles.add(row);
         }
+    }
 
-        // 部屋作成と床の掘削（Spaceは座標の提供に使用）
+    private List<Space<T>> carveRoomsAndCreateSpaces(List<RoomCoordinate> roomCoordinateList, int maxItemCount, boolean downStairsFlag, List<Coordinate> roomCenters) {
+        int size = roomCoordinateList.size();
+        List<Boolean> upStairsFlags = new LinkedList<>(IntStream.range(0, size)
+                .mapToObj(it -> Boolean.FALSE)
+                .toList());
+        if (size > 0) {
+            upStairsFlags.set(Random.rnd(size), Boolean.TRUE);
+        }
+
+        List<Boolean> downStairsFlags = new LinkedList<>(IntStream.range(0, size)
+                .mapToObj(it -> Boolean.FALSE)
+                .toList());
+        if (downStairsFlag && size > 0) {
+            downStairsFlags.set(Random.rnd(size), Boolean.TRUE);
+        }
+
+        List<Integer> itemCountList = new LinkedList<>();
+        int itemCount = Math.max(0, maxItemCount);
+        for (int i = 0; i < size - 1; i++) {
+            int roomItemCount = itemCount > 0 ? Random.rnd(itemCount) : 0;
+            itemCount = itemCount - roomItemCount;
+            itemCountList.add(roomItemCount);
+        }
+        if (size > 0) {
+            itemCountList.add(itemCount);
+        }
+
         List<Space<T>> spaces = new LinkedList<>();
-        List<Coordinate> roomCenters = new LinkedList<>();
         for (int i = 0; i < size; i++) {
             var rc = roomCoordinateList.get(i);
-            // carve inner room area: start+2, size-4 to align with Room/Space logic
             Coordinate innerPos = this.factory.createCoordinate(List.of(rc.position().x() + 2, rc.position().y() + 2));
             Coordinate innerSize = this.factory.createCoordinate(List.of(Math.max(0, rc.size().x() - 4), Math.max(0, rc.size().y() - 4)));
             for (int yy = 0; yy < innerSize.y(); yy++) {
@@ -191,7 +210,6 @@ public class Floor<T> {
                     this.tiles.get(y).set(x, this.factory.createPoint(net.hero.rogueb.dungeon.base.o.PointType.floor));
                 }
             }
-            // center for corridor connection (clamp to bounds)
             int cx = Math.min(this.size.x() - 1, Math.max(0, innerPos.x() + Math.max(0, innerSize.x() - 1) / 2));
             int cy = Math.min(this.size.y() - 1, Math.max(0, innerPos.y() + Math.max(0, innerSize.y() - 1) / 2));
             roomCenters.add(this.factory.createCoordinate(List.of(cx, cy)));
@@ -199,14 +217,15 @@ public class Floor<T> {
             Space<T> e = new Space<>(downStairsFlags.get(i), upStairsFlags.get(i), rc.position(), rc.size(), 1, itemCountList.get(i), this.factory);
             spaces.add(e);
         }
+        return spaces;
+    }
 
-        // 部屋繋ぎ：隣接する部屋の中心を直交経路で接続
+    private void connectRoomsWithCorridors(List<Coordinate> roomCenters) {
         for (int i = 0; i + 1 < roomCenters.size(); i++) {
             Coordinate a = roomCenters.get(i);
             Coordinate b = roomCenters.get(i + 1);
             int x = a.x();
             int y = a.y();
-            // horizontal tunnel
             int stepX = (b.x() >= x) ? 1 : -1;
             while (x != b.x()) {
                 if (y >= 0 && y < this.size.y() && x >= 0 && x < this.size.x()) {
@@ -214,7 +233,6 @@ public class Floor<T> {
                 }
                 x += stepX;
             }
-            // vertical tunnel
             int stepY = (b.y() >= y) ? 1 : -1;
             while (y != b.y()) {
                 if (y >= 0 && y < this.size.y() && x >= 0 && x < this.size.x()) {
@@ -222,13 +240,13 @@ public class Floor<T> {
                 }
                 y += stepY;
             }
-            // ensure destination cell is floor
             if (y >= 0 && y < this.size.y() && x >= 0 && x < this.size.x()) {
                 this.tiles.get(y).set(x, this.factory.createPoint(net.hero.rogueb.dungeon.base.o.PointType.floor));
             }
         }
+    }
 
-        // 階段の配置（表示用タイルを設定）
+    private void placeStairs(List<Space<T>> spaces) {
         for (Space<T> sp : spaces) {
             sp.getUpStairs().ifPresent(c -> {
                 if (c.y() >= 0 && c.y() < this.size.y() && c.x() >= 0 && c.x() < this.size.x()) {
@@ -241,8 +259,6 @@ public class Floor<T> {
                 }
             });
         }
-
-        return spaces;
     }
 
     public Coordinate enterFromUpStairs(String playerId) {

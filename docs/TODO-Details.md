@@ -85,3 +85,7 @@ AIによる生成が困難な、感性やバランス調整が必要な事項で
 ### [x] ドキュメントの不整合解消および技術スタック情報の更新
 - **概要**: 実装状況とドキュメントの乖離（Planned表記の残り、DungeonLocationの型不一致）の解消、および pom.xml とドキュメントのバージョン乖離の明記。
 - **解決策**: `Components.md`, `Dungeon.md`, `Tech-Stack.md` を更新。また、`DungeonLocation` を record にリファクタリングし、コーディング規約への準拠を強化。
+
+### [x] Dungeonモジュールのリファクタリングと技術スタックの現代化
+- **概要**: Dungeonモジュールのコード品質向上、Java 21/Spring Boot 3.5.5へのアップデート、および record の適切な利用。
+- **解決策**: `DungeonLocation` の冗長なアクセッサ削除、`Floor.java` の巨大メソッド分解、`Coordinate2D.java` の一貫性向上、および `pom.xml` の更新を実施。
