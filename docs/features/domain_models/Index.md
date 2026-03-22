@@ -20,6 +20,7 @@
 - **[Monsterモジュール](./Monster.md)**
   - モンスターの種族、個体状態、およびダンジョン内での配置を管理します。
   - **[モンスタードロップシステム](../Monster-Drop-System.md)**: ドロップテーブルと流通制限のロジック。
+  - **[モンスター繁殖システム](../Monster-Breeding-System.md)**: モンスターの繁殖、継承、および孵化の仕組み。
 
 - **[PlayerOperationsモジュール](./Player-Operations.md)**
   - プレイヤーの操作、およびインベントリ（`Bag`）の管理を調整します。
