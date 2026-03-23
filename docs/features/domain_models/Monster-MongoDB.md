@@ -39,6 +39,7 @@
         - `type` (String)
         - `remainingTurns` (Integer)
         - `value` (Integer)
+    - `metadata` (Object): 個体固有の動的データ（Map<String, Object>）。
     - `ownerId` (String): 所有しているプレイヤーのID。
     - `isWild` (Boolean): 野生状態かどうかを示すフラグ。
     - `_class` (String): Spring Data MongoDBが使用するクラス情報。
