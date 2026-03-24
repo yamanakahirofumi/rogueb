@@ -7,6 +7,8 @@
 「卵」は `Objects` モジュールで管理される `Thing` の一種として扱われますが、孵化に必要な固有のメタデータを保持します。
 
 ### 2.1 卵のプロパティ
+これらの情報は、`ThingInstance.metadata` に格納されます。
+
 - **孵化対象種族 (`typeId`)**: 孵化した際に生まれるモンスターの種族 ID (`MonsterDomain.id`)。
 - **親個体情報 (`parentAId`, `parentBId`)**: 繁殖に使用した両親のインスタンス ID。継承ロジックで使用します。
 - **必要歩数 (`incubationSteps`)**: 孵化までに必要な `subStep`（内部歩数カウンタ）の総量。

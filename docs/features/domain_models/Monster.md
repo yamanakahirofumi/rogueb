@@ -47,6 +47,7 @@
     - `currentMp`: 現在の魔法力。
     - `experience`: 累積経験値（捕獲後の成長に使用）。
     - `statusEffects`: 付与されている状態異常 (`StatusEffectDomain`) のリスト。
+    - `metadata`: 個体固有の動的データ（Map<String, Object>）。ニックネームや特殊な成長記録などに使用。
     - `ownerId`: 所有しているプレイヤーの ID（捕獲済みの場合）。
     - `isWild`: 野生状態かどうかを示すフラグ。
 

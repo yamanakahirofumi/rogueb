@@ -17,6 +17,7 @@
     - `parentId` (String): インスタンスを識別するためのID。初回の履歴レコードの`id`がセットされ、以降の更新でも同じ値を引き継ぐことで同一インスタンスであることを示します。
     - `isIdentified` (Boolean): インスタンスが識別済みかどうか。
     - `tier` (Integer): インスタンスのティア。
+    - `metadata` (Object): インスタンス固有の動的データ（Map<String, Object>）。
     - `description` (String): イベントの詳細な説明。
     - `createDate` (Date): イベントの発生日時。
     - `zoneId` (String): タイムゾーン情報。
