@@ -24,6 +24,7 @@
 - [トラップシステム](features/Trap-System.md)：ダンジョン内の罠の種類と効果に関する仕様
 - [モンスタードロップシステム](features/Monster-Drop-System.md)：モンスター撃破時のドロップと流通制限に関する仕様
 - [モンスター繁殖システム](features/Monster-Breeding-System.md)：モンスターの繁殖、継承、および孵化に関する仕様
+- [スキル・魔法システム](features/Skill-And-Magic-System.md)：スキル、魔法のカテゴリ、コスト、および効果に関する仕様
 - [戦闘システム](features/Combat-System.md)：ダメージ計算、状態異常、戦闘アクションの詳細仕様
 
 ### 2.1 主要ドメインモデル
