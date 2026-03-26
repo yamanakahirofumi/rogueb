@@ -42,6 +42,7 @@
 - [エラーハンドリング方針](tech/Error-Handling-Policy.md)：基本方針と各ケースでの対応
 - [ロギング方針](tech/Logging-Policy.md)：デバッグおよび保守のためのログ出力指針
 - [技術スタック](tech/Tech-Stack.md)：使用している言語、ライブラリ、ツールなどの情報
+- [DB 比較ガイド](tech/Database-Comparison-Guide.md)：MongoDB と RDB の特性比較と選定基準
 - [CI 設定](tech/CI-Setting.md)：GitHub Actions を利用した自動ビルドとテストの設定について
 - [テストルール](tech/Test-Rule.md)：テストケース作成の一般的なガイドライン
 - [品質方針](tech/Quality-Policy.md)：フェーズ（仕様未確定/確定）に応じた品質の考え方と到達目標
