@@ -16,6 +16,7 @@
         - キー: `atk`, `def`, `magicAtk`, `magicDef`, `dex`, `maxHp`, `maxMp`, `attribute`, `mnd`
     - `location` (Map): `dungeonId`, `level`, `x`, `y` を含む位置情報マップ。
     - `equipment` (Map): `weapon`, `armor`, `ring1`, `ring2` をキーとし、アイテムインスタンス ID を値とするマップ。
+    - `skillIds` (Array): 習得しているスキル ID の配列。
     - `statusEffects` (Array): 付与されている状態異常の配列。
         - `type` (String)
         - `remainingTurns` (Integer)
