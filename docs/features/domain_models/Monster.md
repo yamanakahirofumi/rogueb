@@ -27,7 +27,15 @@
     - `expValue`: 倒した際に得られる基本経験値。
     - `type`: モンスターのカテゴリ（例：ドラゴン系、アンデッド系）。
     - `attribute`: モンスターの属性（Fire, Water, Wind, Earth, None）。
+    - `baseActionInterval`: 基本行動間隔。
+    - `skillTable`: `MonsterSkillSlot` のリスト（習得可能なスキル）。
     - `dropTable`: `MonsterDropSlot` のリスト。
+
+### `MonsterSkillSlot` (値オブジェクト)
+- **説明:** モンスターが習得するスキルとその条件を定義します。
+- **プロパティ:**
+    - `skillId`: スキルの ID (`SkillAndMagicSystem` の ID)。
+    - `level`: そのスキルを習得するレベル。
 
 ### `MonsterDropSlot` (値オブジェクト)
 - **説明:** モンスターがドロップするアイテムの設定を定義します。
@@ -46,6 +54,8 @@
     - `currentHp`: 現在の体力。
     - `currentMp`: 現在の魔法力。
     - `experience`: 累積経験値（捕獲後の成長に使用）。
+    - `skillIds`: 習得しているスキル ID のリスト。
+    - `inheritedStatus`: 継承されたステータス補正（Map<String, Integer>）。繁殖個体の場合に使用。
     - `statusEffects`: 付与されている状態異常 (`StatusEffectDomain`) のリスト。
     - `metadata`: 個体固有の動的データ（Map<String, Object>）。ニックネームや特殊な成長記録などに使用。
     - `ownerId`: 所有しているプレイヤーの ID（捕獲済みの場合）。
@@ -70,7 +80,10 @@
 
 ### 3.1 ステータス成長の計算式
 モンスターのレベルに応じた各ステータスは、以下の式で算出されます。
-`現在のステータス = 基本ステータス * (1 + (レベル - 1) * 0.1)`
+
+`現在のステータス = (基本ステータス + 継承補正) * (1 + (レベル - 1) * 0.1)`
+
+- **継承補正**: 繁殖によって生まれた個体の場合、`inheritedStatus` に保持されている値が基本ステータスに加算されます。野生個体の場合は 0 です。
 - HP および MP は、この式で算出された値を最大値として扱います。
 
 ### 3.2 レベルアップに必要な経験値

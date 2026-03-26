@@ -19,6 +19,10 @@
     - `expValue` (Integer): 倒した際に得られる経験値。
     - `type` (String): モンスターのカテゴリ。
     - `attribute` (String): モンスターの属性（Fire, Water, Wind, Earth, None）。
+    - `baseActionInterval` (Integer): 基本行動間隔。
+    - `skillTable` (Array): `MonsterSkillSlot` オブジェクトの配列。
+        - `skillId` (Integer)
+        - `level` (Integer)
     - `dropTable` (Array): `MonsterDropSlot` オブジェクトの配列。
         - `typeId` (String)
         - `weight` (Integer)
@@ -35,6 +39,8 @@
     - `currentHp` (Integer): 現在の体力。
     - `currentMp` (Integer): 現在の魔法力。
     - `experience` (Long): 累積経験値。
+    - `skillIds` (Array): 習得しているスキル ID の配列。
+    - `inheritedStatus` (Map): 継承されたステータス補正。
     - `statusEffects` (Array): 付与されている状態異常の配列。
         - `type` (String)
         - `remainingTurns` (Integer)
