@@ -53,6 +53,7 @@
 
 ## 4. 特定機能の実装方法 (`docs/implementation/`)
 - [実装詳細](implementation/Implementation-Details.md)：座標系やモジュール間連携の詳細
+- [リアルタイム同期プロトコル](implementation/Real-time-Synchronization.md)：SSE を用いた状態同期の仕様
 - [JUnit 5 利用ルール](implementation/JUnit-Rule.md)：テストの実装方針と記述例
 - [最適化戦略](implementation/Optimization-Strategy.md)：通信、DB、計算処理におけるパフォーマンス向上のための指針
 
