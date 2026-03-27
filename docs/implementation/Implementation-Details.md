@@ -23,7 +23,10 @@ Spring WebFlux および Project Reactor を採用しており、すべてのサ
 - **Mono**: 単一の値を返す非同期ストリーム
 - **Flux**: 複数の値を返す非同期ストリーム
 
-## 4. モジュール間連携
+## 4. リアルタイム同期 (SSE)
+マルチプレイヤー間の状態同期は Server-Sent Events (SSE) を用いて行われます。詳細は [リアルタイム同期プロトコル](./Real-time-Synchronization.md) を参照してください。
+
+## 5. モジュール間連携
 BFF である `PlayerOperations` が、各ドメインサービス（Dungeon, Objects 等）をオーケストレーションします。
 
 1. `PlayerOperations` がリクエストを受信
