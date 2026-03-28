@@ -38,6 +38,7 @@
     - `level` (Integer): 現在のレベル。
     - `currentHp` (Integer): 現在の体力。
     - `currentMp` (Integer): 現在の魔法力。
+    - `subStep` (Integer): 内部歩数カウンタ。
     - `experience` (Long): 累積経験値。
     - `skillIds` (Array): 習得しているスキル ID の配列。
     - `inheritedStatus` (Map): 継承されたステータス補正。

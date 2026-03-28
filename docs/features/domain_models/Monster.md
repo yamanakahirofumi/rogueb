@@ -53,6 +53,7 @@
     - `level`: 現在のレベル。
     - `currentHp`: 現在の体力。
     - `currentMp`: 現在の魔法力。
+    - `subStep`: 内部歩数カウンタ（状態異常の継続判定や自然回復のタイミング計算に使用）。
     - `experience`: 累積経験値（捕獲後の成長に使用）。
     - `skillIds`: 習得しているスキル ID のリスト。
     - `inheritedStatus`: 継承されたステータス補正（Map<String, Integer>）。繁殖個体の場合に使用。
