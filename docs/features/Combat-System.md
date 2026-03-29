@@ -92,7 +92,9 @@
 
 ### 4.1 行動間隔 (Action Interval)
 `WaitTime (ms) = 基本行動間隔 (actionInterval) * 行動負荷係数`
-- **基本行動間隔**: プレイヤーの `currentStatus.actionInterval` に基づきます。
+- **基本行動間隔**:
+    - プレイヤー: `currentStatus.actionInterval` に基づきます。
+    - モンスター: `MonsterDomain.baseActionInterval` に基づきます。
 - **行動負荷係数**: アクションごとに以下の係数が適用されます。
 
 | アクション | 係数 | 備考 |

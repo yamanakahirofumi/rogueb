@@ -31,7 +31,15 @@
     - `objectIdList` (Array): アイテムのインスタンスIDの配列。
     - `_class` (String): Spring Data MongoDBが使用するクラス情報（例: `net.hero.rogueb.bookofadventure.domain.PlayerObjectDomain`）。
 
-## 3. `playerKnowledgeDomain` コレクション
+## 3. `playerMonsterDomain` コレクション
+- **説明:** `PlayerMonsterDomain`クラスに対応します。プレイヤーの所持モンスター一覧を保持します。
+- **フィールド:**
+    - `_id` (String): ドキュメントの一意なID。
+    - `playerId` (String): プレイヤーのID。
+    - `monsterIdList` (Array): モンスターのインスタンスIDの配列。
+    - `_class` (String): Spring Data MongoDBが使用するクラス情報。
+
+## 4. `playerKnowledgeDomain` コレクション
 - **説明:** `PlayerKnowledgeDomain`クラスに対応します。プレイヤーごとのアイテム識別状況を保持します。
 - **フィールド:**
     - `_id` (String): ドキュメントの一意なID。
@@ -49,6 +57,9 @@
 
 ### `playerObjectDomain`
 - `{"playerId": 1}`: プレイヤーの所持アイテムを検索するために必須。
+
+### `playerMonsterDomain`
+- `{"playerId": 1}`: プレイヤーの所持モンスターを検索するために必須。
 
 ### `playerKnowledgeDomain`
 - `{"userId": 1, "worldId": 1}`: ユーザーが特定のワールドで持っている知識を一覧するために必須。
