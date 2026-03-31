@@ -16,7 +16,6 @@
         - `goldLossType` (String)
         - `goldLossValue` (Double)
         - `statusResetType` (String)
-    - `entryFee` (Integer): 入場料。
     - `clearReward` (Object): クリア報酬。
         - `gold` (Integer)
         - `itemInstanceIds` (Array)
