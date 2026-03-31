@@ -16,6 +16,9 @@
         - `goldLossType` (String)
         - `goldLossValue` (Double)
         - `statusResetType` (String)
+    - `clearReward` (Object): クリア報酬。
+        - `gold` (Integer)
+        - `itemInstanceIds` (Array)
     - `_class` (String): Spring Data MongoDBが使用するクラス情報（例: `net.hero.rogueb.dungeon.domain.DungeonDomain`）。
 
 ## 2. `floorDomain` コレクション
