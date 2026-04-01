@@ -65,7 +65,7 @@
 ### `StatusEffectDomain` (値オブジェクト)
 - **説明:** モンスターやプレイヤーに付与される状態異常を定義します。
 - **プロパティ:**
-    - `type`: 状態異常の種類（例: `Poison`, `Confusion`, `Paralysis`, `Sleep`, `Seal`）。
+    - `type`: 状態異常の種類（例: `Poison`, `Confusion`, `Paralysis`, `Sleep`, `Seal`, `Anger`）。
     - `remainingTurns`: 残りの継続ターン数または歩数。
     - `value`: 効果に関連する補助的な数値（例: 毒のダメージ量）。
 

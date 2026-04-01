@@ -20,6 +20,7 @@ Worldモジュールは、ゲームワールドのためのサービスディス
 - **フィールド:**
     - `id`: ダンジョンの一意な識別子。
     - `name`: ダンジョンの表示名。
+    - `entryFee`: ダンジョンの入場料。
 
 ### `ServiceInfo`
 - **ファイル:** `World/src/main/java/net/hero/rogueb/world/o/ServiceInfo.java`
