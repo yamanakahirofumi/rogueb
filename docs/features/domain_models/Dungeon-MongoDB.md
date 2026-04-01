@@ -7,6 +7,8 @@
 - **フィールド:**
     - `_id` (String): ドキュメントの一意なID。
     - `name` (String): ダンジョンの名前。
+    - `adminId` (String): 管理者のユーザー ID。
+    - `entryFee` (Integer): 入場料。
     - `maxLevel` (Integer): 最大フロア数。
     - `itemSeed` (Integer): アイテム生成用シード値。
     - `roomCountSeed` (Integer): 部屋数生成用シード値。
