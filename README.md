@@ -1,7 +1,7 @@
 # rogueb (Rogue Backend Services)
 
 `rogueb` は、マイクロサービスアーキテクチャを採用したローグライクゲームのバックエンドサービス群です。
-Spring Boot 3.5.5, Java 21, Spring WebFlux を使用しており、リアクティブな設計となっています。
+Spring Boot 4.0.3, Java 21, Spring WebFlux を使用しており、リアクティブな設計となっています。
 
 ## 採用理由と目的
 このアーキテクチャを採用する目的は以下の通りです：
