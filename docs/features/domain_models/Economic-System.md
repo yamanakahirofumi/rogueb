@@ -63,8 +63,8 @@
 ## 4. 価格算出アルゴリズム（概要）
 基本価格 `basePrice` は、`Objects` モジュールで定義される `Thing.getStandardPrice()`（標準価格）を元に動的に計算されます。
 
-- **算出式**: `basePrice = 標準価格 * (1 + (1 - (currentCount / maxLimit)))`
-- **価格変動**: 希少なアイテム（`currentCount` が少ない）ほど、価格は高騰し、最大で標準価格の 2 倍となります。
+- **算出式**: `basePrice = 標準価格 * (1 + (1 - min(1.0, currentCount / maxLimit)))`
+- **価格変動**: 希少なアイテム（`currentCount` が少ない）ほど、価格は高騰し、最大で標準価格の 2 倍となります。`currentCount` が `maxLimit` に達している場合、価格は標準価格（1.0倍）となります。
 - **管理者の役割**: 管理者はこの `basePrice` を参考に、自身のショップでの販売価格 (`ShopDomain.inventory` 内の価格) を自由に設定できます。
 
 ## 5. サーキュレーション制限（存在上限）の挙動

@@ -28,6 +28,12 @@
         - `weight` (Integer)
         - `minCount` (Integer)
         - `maxCount` (Integer)
+    - `evolutionTable` (Array): `MonsterEvolutionSlot` オブジェクトの配列。
+        - `targetMonsterId` (String)
+        - `requiredLevel` (Integer)
+        - `requiredItemId` (String)
+        - `requiredStats` (Map)
+        - `resetLevel` (Boolean)
     - `_class` (String): Spring Data MongoDBが使用するクラス情報。
 
 ## 2. `monsterInstanceDomain` コレクション

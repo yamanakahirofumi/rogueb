@@ -30,6 +30,7 @@
     - `baseActionInterval`: 基本行動間隔。
     - `skillTable`: `MonsterSkillSlot` のリスト（習得可能なスキル）。
     - `dropTable`: `MonsterDropSlot` のリスト。
+    - `evolutionTable`: `MonsterEvolutionSlot` のリスト。詳細は [モンスター進化システム](../Monster-Evolution-System.md) を参照。
 
 ### `MonsterSkillSlot` (値オブジェクト)
 - **説明:** モンスターが習得するスキルとその条件を定義します。
