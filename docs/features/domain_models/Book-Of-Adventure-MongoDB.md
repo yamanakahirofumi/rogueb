@@ -13,7 +13,7 @@
     - `currentStatus` (Map): 現在の変動するステータス。
         - キー: `hp`, `mp`, `stamina`, `actionInterval`, `seed`, `subStep`
     - `status` (Map): 固定または基本のステータス情報。
-        - キー: `atk`, `def`, `magicAtk`, `magicDef`, `dex`, `maxHp`, `maxMp`, `attribute`, `mnd`
+        - キー: `atk`, `def`, `magicAtk`, `magicDef`, `dex`, `maxHp`, `maxMp`, `attribute`, `mnd`, `maxStamina`
     - `location` (Map): `dungeonId`, `level`, `x`, `y` を含む位置情報マップ。
     - `equipment` (Map): `weapon`, `armor`, `ring1`, `ring2` をキーとし、アイテムインスタンス ID を値とするマップ。
     - `skillIds` (Array): 習得しているスキル ID の配列。
