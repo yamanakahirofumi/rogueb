@@ -10,7 +10,7 @@
     - `typeId` (String): アイテムタイプの ID（`Thing.getId()` に対応）。
     - `currentCount` (Integer): 現在世界内に存在する総数。
     - `maxLimit` (Integer): 世界内に同時に存在できる最大数。
-    - `basePrice` (Double): 流通量に基づき算出された現在の基本市場価格。
+    - `basePrice` (Double): 流通量に基づき算出された現在の基本市場価格（標準価格の 0.1 〜 2.0 倍）。
     - `_class` (String): Spring Data MongoDB が使用するクラス情報。
 
 ### インデックス推奨事項
