@@ -28,6 +28,7 @@
 - [戦闘システム](features/Combat-System.md)：ダメージ計算、状態異常、戦闘アクションの詳細仕様
 - [モンスター捕獲システム](features/Monster-Capture-System.md)：モンスターの捕獲、アイテム、および成功率に関する仕様
 - [モンスター進化システム](features/Monster-Evolution-System.md)：進化の条件、プロセス、およびステータス・スキルの継承
+- [ダンジョン構築・運営システム](features/Dungeon-Construction-System.md)：建築資材、建築モード、および管理者介入に関する仕様
 
 ### 2.1 主要ドメインモデル
 - [Dungeon](features/domain_models/Dungeon.md) / [MongoDB](features/domain_models/Dungeon-MongoDB.md)
