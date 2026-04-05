@@ -54,7 +54,7 @@ public class DungeonService {
     }
 
     public Mono<String> save(String name) {
-        return this.dungeonRepository.save(new DungeonDomain(name, 1, "localhost", 3, 5))
+        return this.dungeonRepository.save(new DungeonDomain(name, 1, "localhost", 3, 7, 5))
                 .map(DungeonDomain::getId);
     }
 

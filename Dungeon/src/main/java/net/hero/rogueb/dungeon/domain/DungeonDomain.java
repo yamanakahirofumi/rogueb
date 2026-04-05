@@ -10,17 +10,19 @@ public class DungeonDomain {
     private String name;
     private int maxLevel;
     private int itemSeed;
+    private int monsterSeed;
     private int roomCountSeed;
     private String namespace;
 
     public DungeonDomain() {
     }
 
-    public DungeonDomain(String name, int maxLevel, String namespace, int itemSeed, int roomCountSeed) {
+    public DungeonDomain(String name, int maxLevel, String namespace, int itemSeed, int monsterSeed, int roomCountSeed) {
         this.name = name;
         this.maxLevel = maxLevel;
         this.namespace = namespace;
         this.itemSeed = itemSeed;
+        this.monsterSeed = monsterSeed;
         this.roomCountSeed = roomCountSeed;
     }
 
@@ -62,6 +64,14 @@ public class DungeonDomain {
 
     public void setItemSeed(int itemSeed) {
         this.itemSeed = itemSeed;
+    }
+
+    public int getMonsterSeed() {
+        return monsterSeed;
+    }
+
+    public void setMonsterSeed(int monsterSeed) {
+        this.monsterSeed = monsterSeed;
     }
 
     public int getRoomCountSeed() {
