@@ -34,10 +34,15 @@
     - `upStairs` (Object): 上り階段の座標 (`Coordinate`オブジェクト)。
     - `downStairs` (Object): 下り階段の座標 (`Coordinate`オブジェクト)。
     - `thingList` (Array): フロア上のアイテムのリスト (`ObjectCoordinateDomain`オブジェクトの配列)。
+        - `position` (Object): 座標 (`Coordinate`)。
+        - `instanceId` (String): アイテムのインスタンス ID。
     - `goldList` (Array): フロア上の金のリスト (`GoldCoordinateDomain`オブジェクトの配列)。
     - `monsterList` (Array): フロア上のモンスターのリスト (`MonsterCoordinateDomain`オブジェクトの配列)。
         - `position` (Object): 座標 (`Coordinate`)。
         - `instanceId` (String): モンスターのインスタンス ID。
+    - `shopList` (Array): フロア上のショップのリスト。
+        - `position` (Object): 座標 (`Coordinate`)。
+        - `shopId` (String): ショップの ID。
     - `trapList` (Array): フロア上のトラップのリスト (`TrapCoordinateDomain`オブジェクトの配列)。
         - `position` (Object): 座標 (`Coordinate`)。
         - `trapId` (Integer): トラップの種別 ID（[トラップシステム](../Trap-System.md) の ID に対応）。
