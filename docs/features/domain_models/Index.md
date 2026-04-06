@@ -34,13 +34,16 @@
 - **[BookOfAdventureモジュール](./Book-Of-Adventure.md)**
   - プレイヤーの状態、キャラクター情報の永続化を担当します。
 
-- **[経済システム](./Economic-System.md)**
+- **[EconomicSystemモジュール](./Economic-System.md)**
   - アイテムの流通量、動的な価格計算、およびショップ管理を担当します。
 
 ### データベース構造
 
 - **[Dungeonモジュール (MongoDB)](./Dungeon-MongoDB.md)**
   - `dungeon`および`floor`コレクションのスキーマ情報。
+
+- **[Worldモジュール (RDB)](./World.md#3-データベース構造-rdb)**
+  - ワールド情報およびサービス管理のためのリレーショナルデータベース構造。
 
 - **[Objectsモジュール (MongoDB)](./Objects-MongoDB.md)**
   - `ring`および`objectHistory`コレクションのスキーマ情報。
@@ -51,7 +54,7 @@
 - **[BookOfAdventureモジュール (MongoDB)](./Book-Of-Adventure-MongoDB.md)**
   - `playerDomain`コレクションのスキーマ情報。
 
-- **[経済システム (MongoDB)](./Economic-System-MongoDB.md)**
+- **[EconomicSystemモジュール (MongoDB)](./Economic-System-MongoDB.md)**
   - `itemCirculationDomain`, `shopDomain`, `transactionHistoryDomain` コレクションのスキーマ情報。
 
 ---

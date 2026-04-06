@@ -64,17 +64,10 @@
     - `isWild`: 野生状態かどうかを示すフラグ。
 
 ### `StatusEffectDomain` (値オブジェクト)
-- **説明:** モンスターやプレイヤーに付与される状態異常を定義します。
-- **プロパティ:**
-    - `type`: 状態異常の種類（例: `Poison`, `Confusion`, `Paralysis`, `Sleep`, `Seal`, `Anger`）。
-    - `remainingTurns`: 残りの継続ターン数または歩数。
-    - `value`: 効果に関連する補助的な数値（例: 毒のダメージ量）。
+- **説明:** [BookOfAdventureモジュール](./Book-Of-Adventure.md#statuseffectdomain-値オブジェクト) にて定義。プレイヤーやモンスターに付与される状態異常を表します。
 
 ### `MonsterCoordinateDomain`
-- **説明:** ダンジョンのフロア上におけるモンスターの位置を保持します。
-- **プロパティ:**
-    - `position`: モンスターの座標 (`Coordinate`)。
-    - `instanceId`: モンスターのインスタンス ID。
+- **説明:** [Dungeonモジュール](./Dungeon.md#monstercoordinatedomain) にて定義。フロア上のモンスターの位置を保持します。
 
 ---
 

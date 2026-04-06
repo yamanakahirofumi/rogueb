@@ -121,3 +121,11 @@ AIによる生成が困難な、感性やバランス調整が必要な事項で
     - `Economic-System.md`: 市場価格の算出式を供給過多時にも対応できるよう `max(0.1, ...)` を用いた形式に更新。
     - `Dungeon.md`, `DungeonDomain.java`: 再現性のあるモンスター配置のため `monsterSeed` を追加。
     - `Combat-System.md`: モンスターの自然回復率の記述をプレイヤーと統一。
+
+### [x] 仕様ドキュメントの整理と命名規則の統一
+- **概要**: モジュール名の表記揺れの解消、重複したドメイン定義の削除、および最新の実装状況に合わせた命名の更新。
+- **解決策**:
+    - `Index.md`: 「経済システム」を `EconomicSystemモジュール` に統一し、Worldモジュールの RDB 構造へのリンクを追加。
+    - `Monster.md`: 他モジュールと重複していた `StatusEffectDomain` 等の定義を削除し、リンクによる参照に集約。
+    - `Player-Operations.md`: `ThingSimple` の `objectId` を `typeId` に更新。
+    - `Trap-System.md`: 表内の句読点等の軽微な不整合を修正。
