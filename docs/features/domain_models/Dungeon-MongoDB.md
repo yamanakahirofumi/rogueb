@@ -19,6 +19,9 @@
         - `goldLossType` (String)
         - `goldLossValue` (Double)
         - `statusResetType` (String)
+    - `clearCondition` (Object): クリア条件 (`ClearConditionDomain`)。
+        - `type` (String)
+        - `targetValue` (String)
     - `clearReward` (Object): クリア報酬。
         - `gold` (Integer)
         - `itemInstanceIds` (Array)
