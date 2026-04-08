@@ -15,12 +15,12 @@
     - `roomCountSeed` (Integer): 部屋数生成用シード値。
     - `namespace` (String): 論理的な名前空間。
     - `deathPenalty` (Object): デスペナルティの設定 (`DeathPenaltyDomain`)。
-        - `itemForfeitureType` (String)
-        - `goldLossType` (String)
+        - `itemForfeitureType` (String): `NONE`, `RANDOM`, `ALL`
+        - `goldLossType` (String): `NONE`, `FIXED`, `PERCENTAGE`, `ALL`
         - `goldLossValue` (Double)
-        - `statusResetType` (String)
+        - `statusResetType` (String): `NONE`, `EXP_REDUCTION`, `LEVEL_RESET`
     - `clearCondition` (Object): クリア条件 (`ClearConditionDomain`)。
-        - `type` (String)
+        - `type` (String): `FLOOR_REACHED`, `BOSS_DEFEATED`, `ITEM_ACQUIRED`
         - `targetValue` (String)
     - `clearReward` (Object): クリア報酬。
         - `gold` (Integer)
