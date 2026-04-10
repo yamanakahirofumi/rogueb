@@ -28,6 +28,8 @@
     - `type`: モンスターのカテゴリ（例：ドラゴン系、アンデッド系）。
     - `attribute`: モンスターの属性（Fire, Water, Wind, Earth, None）。
     - `baseActionInterval`: 基本行動間隔。
+    - `placementCost`: ダンジョン配置時のコスト。
+    - `baseIncubationSteps`: 孵化に必要な基本歩数。
     - `skillTable`: `MonsterSkillSlot` のリスト（習得可能なスキル）。
     - `dropTable`: `MonsterDropSlot` のリスト。
     - `evolutionTable`: `MonsterEvolutionSlot` のリスト。詳細は [モンスター進化システム](../Monster-Evolution-System.md) を参照。
