@@ -34,7 +34,7 @@
         - `targetMonsterId` (String)
         - `requiredLevel` (Integer)
         - `requiredItemId` (String)
-        - `requiredStats` (Map)
+        - `requiredStats` (Map): `hp`, `mp`, `atk`, `def`, `magicAtk`, `magicDef`, `dex`, `mnd`
         - `resetLevel` (Boolean)
     - `_class` (String): Spring Data MongoDBが使用するクラス情報。
 
