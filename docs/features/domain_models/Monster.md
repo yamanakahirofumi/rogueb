@@ -48,6 +48,16 @@
     - `minCount`: ドロップする個数の最小値。
     - `maxCount`: ドロップする個数の最大値。
 
+### `MonsterEvolutionSlot` (値オブジェクト)
+- **説明:** モンスターの進化条件と進化先を定義します。
+- **プロパティ:**
+    - `targetMonsterId`: 進化先の種族 ID。
+    - `requiredLevel`: 必要なレベル。
+    - `requiredItemId`: 必要なアイテムのタイプ ID（任意）。
+    - `requiredStats`: 必要なステータス条件（Map<String, Integer>、任意）。
+        - 有効なキー: `hp`, `mp`, `atk`, `def`, `magicAtk`, `magicDef`, `dex`, `mnd`
+    - `resetLevel`: 進化後にレベルを 1 に戻すかどうか (boolean)。
+
 ### `MonsterInstanceDomain`
 - **説明:** 特定のモンスター個体を表します。ダンジョン内の野生モンスター、またはプレイヤーが所持しているモンスターとして存在します。
 - **主要なプロパティ:**

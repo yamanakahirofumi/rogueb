@@ -9,6 +9,9 @@
     - `name` (String): プレイヤー名。
     - `exp` (Integer): 累積経験値。
     - `gold` (Integer): 所持金額。
+    - `totalPkCount` (Integer): 累計 PK 数。
+    - `currentKillStreak` (Integer): 現在の連続 PK 数。
+    - `bounty` (Integer): 賞金額。
     - `namespace` (String): 所属するワールドやネームスペース。
     - `currentStatus` (Map): 現在の変動するステータス。
         - キー: `hp`, `mp`, `stamina`, `actionInterval`, `seed`, `subStep`

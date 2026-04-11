@@ -135,3 +135,12 @@ AIによる生成が困難な、感性やバランス調整が必要な事項で
 - **解決策**:
     - `Dungeon.md`: `MonsterCoordinateDomain` および `ShopCoordinateDomain` の詳細定義を追加。
     - `Monster.md`, `Monster-MongoDB.md`: ダンジョン構築および繁殖システムで必要となる `placementCost` と `baseIncubationSteps` を `MonsterDomain` に追加。
+
+### [x] ドメインモデル定義の拡張（乱入・PK・進化・アイテム属性）
+- **概要**: モンスター化・PKシステムや進化システム、および戦闘システムの実装に必要となるドメイン属性の追加。
+- **解決策**:
+    - `Dungeon.md`, `Dungeon-MongoDB.md`: 乱入許可フラグ `isIntrusionEnabled` を追加。
+    - `Book-Of-Adventure.md`, `Book-Of-Adventure-MongoDB.md`: PK 関連の統計・賞金属性 (`totalPkCount`, `currentKillStreak`, `bounty`) を追加。
+    - `Objects.md`: `Thing` および `ThingInstance` に属性 (`attribute`) を追加し、`standardPrice` 等の定義漏れを解消。
+    - `Monster.md`: 進化スロット `MonsterEvolutionSlot` の詳細定義を追加。
+    - `Monster-MongoDB.md`: `skillTable`, `dropTable`, `evolutionTable` の内部フィールド定義を詳細化。
