@@ -129,3 +129,9 @@ AIによる生成が困難な、感性やバランス調整が必要な事項で
     - `Monster.md`: 他モジュールと重複していた `StatusEffectDomain` 等の定義を削除し、リンクによる参照に集約。
     - `Player-Operations.md`: `ThingSimple` の `objectId` を `typeId` に更新。
     - `Trap-System.md`: 表内の句読点等の軽微な不整合を修正。
+
+### [x] ドメインモデル定義の不足解消および一貫性向上
+- **概要**: 実装や他仕様との整合性を保つため、不足していたドメイン属性や座標定義の追加。
+- **解決策**:
+    - `Dungeon.md`: `MonsterCoordinateDomain` および `ShopCoordinateDomain` の詳細定義を追加。
+    - `Monster.md`, `Monster-MongoDB.md`: ダンジョン構築および繁殖システムで必要となる `placementCost` と `baseIncubationSteps` を `MonsterDomain` に追加。

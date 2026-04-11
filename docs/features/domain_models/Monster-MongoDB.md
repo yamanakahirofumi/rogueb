@@ -20,6 +20,8 @@
     - `type` (String): モンスターのカテゴリ。
     - `attribute` (String): モンスターの属性（Fire, Water, Wind, Earth, None）。
     - `baseActionInterval` (Integer): 基本行動間隔。
+    - `placementCost` (Integer): 配置コスト。
+    - `baseIncubationSteps` (Integer): 基本孵化歩数。
     - `skillTable` (Array): `MonsterSkillSlot` オブジェクトの配列。
         - `skillId` (Integer)
         - `level` (Integer)
