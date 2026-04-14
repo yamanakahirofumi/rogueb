@@ -49,10 +49,24 @@
     - `meta_sprite_data`: Base64 エンコードされたスプライト画像データ（任意）。
 - **パラメータ**: 攻撃力 (`atk`)、防御力 (`def`)、属性 (`attribute`)、ティア (`tier`)、標準価格 (`standardPrice`)。
 - **特殊効果 (`meta_effects`)**:
-    - 標準化されたエフェクト ID (例: `HEAL_HP`, `ADD_STATUS`, `STAT_BOOST`)。
+    - 標準化されたエフェクト ID。詳細は後述の「標準化エフェクトリスト」を参照してください。
     - パラメータマップ (例: `{"amount": 50}`, `{"status": "POISON", "chance": 0.5}`)。
 
-### 4.2 動作保証 (Behavioral Guarantees)
+### 4.2 標準化エフェクトリスト (Standardized Effect List)
+未知のアイテムの効果を移動先サーバーで再現するための、共通エフェクト ID の定義です。
+
+| エフェクト ID | 概要 | 必須パラメータ | 備考 |
+| :--- | :--- | :--- | :--- |
+| `HEAL_HP` | HP を回復する | `amount` (固定値) または `ratio` (割合 0.0-1.0) | ポーション、食料等 |
+| `HEAL_MP` | MP を回復する | `amount` または `ratio` | ポーション等 |
+| `ADD_STATUS` | 状態異常を付与する | `status` (種類), `chance` (確率 0.0-1.0), `turns` (持続) | 武器、巻物、杖等 |
+| `REMOVE_STATUS` | 状態異常を解除する | `status` (種類) | 薬草、巻物等 |
+| `STAT_BOOST` | ステータスを永続/一時強化 | `stat` (種類), `value` (加算値) | 装備品（パッシブ）、薬等 |
+| `TELEPORT` | 別の座標へワープする | なし（ランダム） または `range` (範囲) | 巻物、杖、トラップ等 |
+| `EXPLOSION` | 周囲に爆発ダメージ | `damage` (固定値) または `ratio` (割合) | 巻物、杖等 |
+| `REVEAL_MAP` | マップの視界を広げる | `type` (`FLOOR`, `TRAP`, `MONSTER`) | 巻物等 |
+
+### 4.3 動作保証 (Behavioral Guarantees)
 - **カテゴリベースの振る舞い**: `TypeEnum` (WEAPON, POTION 等) に基づき、移動先サーバーの標準ロジックで動作します。
 - **スクリプト制限**: 独自の複雑なスクリプトを持つアイテムは、セキュリティ上の理由から、移動先サーバーでは標準的な効果に置換されるか、使用不可となる場合があります。
 
