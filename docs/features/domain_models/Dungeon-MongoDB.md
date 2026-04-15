@@ -10,6 +10,8 @@
     - `adminId` (String): 管理者のユーザー ID。
     - `entryFee` (Integer): 入場料。
     - `maxLevel` (Integer): 最大フロア数。
+    - `rank` (String): ダンジョンランク。
+    - `dungeonExp` (Long): 累計経験値。
     - `itemSeed` (Integer): アイテム生成用シード値。
     - `monsterSeed` (Integer): モンスター生成用シード値。
     - `roomCountSeed` (Integer): 部屋数生成用シード値。
