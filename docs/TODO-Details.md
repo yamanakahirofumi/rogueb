@@ -144,3 +144,7 @@ AIによる生成が困難な、感性やバランス調整が必要な事項で
     - `Objects.md`: `Thing` および `ThingInstance` に属性 (`attribute`) を追加し、`standardPrice` 等の定義漏れを解消。
     - `Monster.md`: 進化スロット `MonsterEvolutionSlot` の詳細定義を追加。
     - `Monster-MongoDB.md`: `skillTable`, `dropTable`, `evolutionTable` の内部フィールド定義を詳細化。
+
+### [x] モンスター忠誠度システムの詳細仕様策定およびドメイン拡張
+- **概要**: モンスターの懐き具合（忠誠度）の増減、影響、およびデータ構造の定義。
+- **解決策**: [モンスター忠誠度システム](./features/Monster-Loyalty-System.md) にて、増加・減少条件、戦闘や進化への影響を策定済み。また、`Monster.md` および `Monster-MongoDB.md` に `loyalty` 属性を追加。

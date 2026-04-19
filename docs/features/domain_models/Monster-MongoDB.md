@@ -57,6 +57,7 @@
     - `metadata` (Object): 個体固有の動的データ（Map<String, Object>）。
     - `ownerId` (String): 所有しているプレイヤーのID。
     - `isWild` (Boolean): 野生状態かどうかを示すフラグ。
+    - `loyalty` (Integer): プレイヤーに対する忠誠度。
     - `_class` (String): Spring Data MongoDBが使用するクラス情報。
 
 ## 3. インデックス推奨事項
