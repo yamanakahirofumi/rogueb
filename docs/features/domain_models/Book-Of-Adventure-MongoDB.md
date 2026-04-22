@@ -7,6 +7,7 @@
 - **フィールド:**
     - `_id` (String): ユーザーID（通常はシステムが生成するUUID）。
     - `name` (String): プレイヤー名。
+    - `level` (Integer): レベル。
     - `exp` (Integer): 累積経験値。
     - `gold` (Integer): 所持金額。
     - `totalPkCount` (Integer): 累計 PK 数。
