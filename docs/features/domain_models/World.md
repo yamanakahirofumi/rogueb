@@ -36,7 +36,7 @@ Worldモジュールは以下のテーブルを使用してサービス情報と
 
 #### `World` テーブル
 - サービスの論理的なグループ（ワールド）を管理します。
-- カラム: `id`, `name`, `namespace`, `type`, `endpoint`, `item_carry_policy`, `level_sync_policy`
+- カラム: `id`, `name`, `namespace`, `type`, `endpoint`, `public_key`, `item_carry_policy`, `level_sync_policy`
 
 #### `Service` テーブル
 - 各モジュールの実体（エンドポイント）を管理します。
@@ -63,6 +63,7 @@ Worldモジュールは以下のテーブルを使用してサービス情報と
 | 300 | Dungeon | Dungeon |
 | 400 | Objects | Objects |
 | 500 | PlayerOperations | PlayerOperations |
+| 600 | EconomicSystem | EconomicSystem |
 | 99999 | Others | その他 |
 
 ### 3.2 トラストポリシー (Trust Policies)
