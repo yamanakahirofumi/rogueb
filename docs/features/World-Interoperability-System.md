@@ -68,6 +68,7 @@
 | `IDENTIFY` | アイテムを識別する | なし | 巻物等 |
 | `REMOVE_CURSE` | 呪いを解除する | なし | 巻物等 |
 | `DEAL_DAMAGE` | 対象に直接ダメージ | `damage` または `ratio` | 杖、巻物等 |
+| `HOLY_DAMAGE` | 聖なるダメージを与える | `value` (ダメージ量) | 聖なる武器等 |
 
 ### 4.3 動作保証 (Behavioral Guarantees)
 - **カテゴリベースの振る舞い**: `TypeEnum` (WEAPON, POTION 等) に基づき、移動先サーバーの標準ロジックで動作します。
