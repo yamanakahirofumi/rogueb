@@ -59,9 +59,10 @@
 | :--- | :--- | :--- | :--- |
 | `HEAL_HP` | HP を回復する | `amount` (固定値) または `ratio` (割合 0.0-1.0) | ポーション、食料等 |
 | `HEAL_MP` | MP を回復する | `amount` または `ratio` | ポーション等 |
+| `HEAL_STAMINA` | スタミナを回復する | `amount` または `ratio` | 食料、薬等 |
 | `ADD_STATUS` | 状態異常を付与する | `status` (種類), `chance` (確率 0.0-1.0), `turns` (持続) | 武器、巻物、杖等 |
 | `REMOVE_STATUS` | 状態異常を解除する | `status` (種類) | 薬草、巻物等 |
-| `STAT_BOOST` | ステータスを永続/一時強化 | `stat` (種類), `value` (加算値) | 装備品（パッシブ）、薬等 |
+| `STAT_BOOST` | ステータスを永続/一時強化 | `stat` (種類), `value` (加算値) | 装備品（パッシブ）、薬等。`stat` は `atk`, `def`, `magicAtk`, `magicDef`, `dex`, `mnd` のいずれか。 |
 | `TELEPORT` | 別の座標へワープする | なし（ランダム） または `range` (範囲) | 巻物、杖、トラップ等 |
 | `EXPLOSION` | 周囲に爆発ダメージ | `damage` (固定値) または `ratio` (割合) | 巻物、杖等 |
 | `REVEAL_MAP` | マップの視界を広げる | `type` (`FLOOR`, `TRAP`, `MONSTER`) | 巻物等 |
