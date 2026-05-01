@@ -55,7 +55,7 @@
     - `requiredLevel`: 必要なレベル。
     - `requiredItemId`: 必要なアイテムのタイプ ID（任意）。
     - `requiredStats`: 必要なステータス条件（Map<String, Integer>、任意）。
-        - 有効なキー: `hp`, `mp`, `atk`, `def`, `magicAtk`, `magicDef`, `dex`, `mnd`
+        - 有効なキー: `hp`, `mp`, `atk`, `def`, `magicAtk`, `magicDef`, `dex`, `mnd`, `loyalty`
     - `resetLevel`: 進化後にレベルを 1 に戻すかどうか (boolean)。
 
 ### `MonsterInstanceDomain`
