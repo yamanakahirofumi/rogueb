@@ -3,16 +3,28 @@ package net.hero.rogueb.dungeon.domain;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.List;
+
 @Document
 public class DungeonDomain {
     @Id
     private String id;
     private String name;
+    private String adminId;
+    private int entryFee;
     private int maxLevel;
+    private String rank;
+    private long dungeonExp;
     private int itemSeed;
     private int monsterSeed;
     private int roomCountSeed;
     private String namespace;
+    private boolean isIntrusionEnabled;
+    private List<EnvironmentalEffect> environmentalEffects;
+    private long lastActivityDate;
+    private DeathPenaltyDomain deathPenalty;
+    private ClearConditionDomain clearCondition;
+    private ClearRewardDomain clearReward;
 
     public DungeonDomain() {
     }
@@ -80,5 +92,85 @@ public class DungeonDomain {
 
     public void setRoomCountSeed(int roomCountSeed) {
         this.roomCountSeed = roomCountSeed;
+    }
+
+    public String getAdminId() {
+        return adminId;
+    }
+
+    public void setAdminId(String adminId) {
+        this.adminId = adminId;
+    }
+
+    public int getEntryFee() {
+        return entryFee;
+    }
+
+    public void setEntryFee(int entryFee) {
+        this.entryFee = entryFee;
+    }
+
+    public String getRank() {
+        return rank;
+    }
+
+    public void setRank(String rank) {
+        this.rank = rank;
+    }
+
+    public long getDungeonExp() {
+        return dungeonExp;
+    }
+
+    public void setDungeonExp(long dungeonExp) {
+        this.dungeonExp = dungeonExp;
+    }
+
+    public boolean isIntrusionEnabled() {
+        return isIntrusionEnabled;
+    }
+
+    public void setIntrusionEnabled(boolean intrusionEnabled) {
+        this.isIntrusionEnabled = intrusionEnabled;
+    }
+
+    public List<EnvironmentalEffect> getEnvironmentalEffects() {
+        return environmentalEffects;
+    }
+
+    public void setEnvironmentalEffects(List<EnvironmentalEffect> environmentalEffects) {
+        this.environmentalEffects = environmentalEffects;
+    }
+
+    public long getLastActivityDate() {
+        return lastActivityDate;
+    }
+
+    public void setLastActivityDate(long lastActivityDate) {
+        this.lastActivityDate = lastActivityDate;
+    }
+
+    public DeathPenaltyDomain getDeathPenalty() {
+        return deathPenalty;
+    }
+
+    public void setDeathPenalty(DeathPenaltyDomain deathPenalty) {
+        this.deathPenalty = deathPenalty;
+    }
+
+    public ClearConditionDomain getClearCondition() {
+        return clearCondition;
+    }
+
+    public void setClearCondition(ClearConditionDomain clearCondition) {
+        this.clearCondition = clearCondition;
+    }
+
+    public ClearRewardDomain getClearReward() {
+        return clearReward;
+    }
+
+    public void setClearReward(ClearRewardDomain clearReward) {
+        this.clearReward = clearReward;
     }
 }
