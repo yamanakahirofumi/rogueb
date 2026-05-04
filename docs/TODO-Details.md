@@ -148,3 +148,10 @@ AIによる生成が困難な、感性やバランス調整が必要な事項で
 ### [x] モンスター忠誠度システムの詳細仕様策定およびドメイン拡張
 - **概要**: モンスターの懐き具合（忠誠度）の増減、影響、およびデータ構造の定義。
 - **解決策**: [モンスター忠誠度システム](./features/Monster-Loyalty-System.md) にて、増加・減少条件、戦闘や進化への影響を策定済み。また、`Monster.md` および `Monster-MongoDB.md` に `loyalty` 属性を追加。
+
+### [x] ドメイン定義とコード（Java）の同期
+- **概要**: `PlayerDomain` および `DungeonDomain` において、仕様（Markdown）と実際の Java コード間で不足していた属性の同期。
+- **解決策**:
+    - `PlayerDomain`, `PlayerDto`: `level`, `totalPkCount`, `currentKillStreak`, `bounty`, `equipment`, `skillIds`, `statusEffects` を追加。
+    - `DungeonDomain`: `rank`, `dungeonExp`, `entryFee`, `environmentalEffects`, `lastActivityDate`, `deathPenalty`, `clearCondition`, `clearReward` を追加。
+    - `Dungeon.md`: `EnvironmentalEffect` の説明を補足。
