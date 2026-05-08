@@ -28,6 +28,7 @@
     - `type`: モンスターのカテゴリ。特効（Slayer）の判定に使用されます。
         - 有効な値: `SLIME`, `BEAST`, `UNDEAD`, `DRAGON`, `DEMON`, `SPIRIT`, `HUMANOID`
     - `attribute`: モンスターの属性（Fire, Water, Wind, Earth, Holy, Dark, None）。
+    - `traits`: モンスターの種族固有の特性（パッシブ能力）のリスト（例：`Regeneration`, `StatusImmunity` 等）。
     - `baseActionInterval`: 基本行動間隔。
     - `placementCost`: ダンジョン配置時のコスト。
     - `baseIncubationSteps`: 孵化に必要な基本歩数。
@@ -72,6 +73,7 @@
     - `skillIds`: 習得しているスキル ID のリスト。
     - `inheritedStatus`: 継承されたステータス補正（Map<String, Integer>）。繁殖個体の場合に使用。
     - `statusEffects`: 付与されている状態異常 (`StatusEffectDomain`) のリスト。
+    - `traits`: 個体固有の特性（パッシブ能力）のリスト。通常は種族特性を継承しますが、突然変異や強化によって変化する場合があります。
     - `metadata`: 個体固有の動的データ（Map<String, Object>）。ニックネームや特殊な成長記録などに使用。
     - `ownerId`: 所有しているプレイヤーの ID（捕獲済みの場合）。
     - `isWild`: 野生状態かどうかを示すフラグ（`state` が `WILD` の場合のみ `true`）。
