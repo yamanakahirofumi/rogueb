@@ -19,6 +19,7 @@
     - `expValue` (Integer): 倒した際に得られる経験値。
     - `type` (String): モンスターのカテゴリ。
     - `attribute` (String): モンスターの属性（Fire, Water, Wind, Earth, None）。
+    - `traits` (Array): 特性（パッシブ能力）のリスト (Stringの配列)。
     - `baseActionInterval` (Integer): 基本行動間隔。
     - `placementCost` (Integer): 配置コスト。
     - `baseIncubationSteps` (Integer): 基本孵化歩数。
@@ -54,6 +55,7 @@
         - `type` (String)
         - `remainingTurns` (Integer)
         - `value` (Integer)
+    - `traits` (Array): 個体固有の特性（パッシブ能力）のリスト。
     - `metadata` (Object): 個体固有の動的データ（Map<String, Object>）。
     - `ownerId` (String): 所有しているプレイヤーのID。
     - `isWild` (Boolean): 野生状態かどうかを示すフラグ。

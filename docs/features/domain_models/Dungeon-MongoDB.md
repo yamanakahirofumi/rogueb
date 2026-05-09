@@ -17,6 +17,10 @@
     - `roomCountSeed` (Integer): 部屋数生成用シード値。
     - `namespace` (String): 論理的な名前空間。
     - `isIntrusionEnabled` (Boolean): 乱入許可フラグ。
+    - `interventionPoints` (Integer): 介入ポイント。
+    - `environmentalEffects` (Array): 環境効果のリスト (Stringの配列: `DARKNESS`, `MIASMA` 等)。
+    - `lastActivityDate` (Long): 最終アクティビティ日時のタイムスタンプ。
+    - `lastBossDefeatDate` (Long): 最終ボス撃破日時のタイムスタンプ。
     - `deathPenalty` (Object): デスペナルティの設定 (`DeathPenaltyDomain`)。
         - `itemForfeitureType` (String): `NONE`, `RANDOM`, `ALL`
         - `goldLossType` (String): `NONE`, `FIXED`, `PERCENTAGE`, `ALL`
