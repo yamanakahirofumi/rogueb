@@ -155,3 +155,10 @@ AIによる生成が困難な、感性やバランス調整が必要な事項で
     - `PlayerDomain`, `PlayerDto`: `level`, `totalPkCount`, `currentKillStreak`, `bounty`, `equipment`, `skillIds`, `statusEffects` を追加。
     - `DungeonDomain`: `rank`, `dungeonExp`, `entryFee`, `environmentalEffects`, `lastActivityDate`, `deathPenalty`, `clearCondition`, `clearReward` を追加。
     - `Dungeon.md`: `EnvironmentalEffect` の説明を補足。
+
+### [x] 仕様ドキュメントの構造整理および用語の統一
+- **概要**: ドキュメント内のセクション番号の重複解消、およびモジュール間で齟齬があったアイテム名称の統一。
+- **解決策**:
+    - `Dungeon-Rank-System.md`: 重複していたセクション番号を修正。
+    - `Monster-PK-System.md`: ドロップアイテム名称を `Objects.md` の定義（賞金稼ぎの証）に統一。
+    - `Combat-System.md`: 「不可視」状態の看破ルールについて他ドキュメントへの参照を追加。
