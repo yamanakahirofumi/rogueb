@@ -155,24 +155,25 @@
 
 初期の開発・テストにおいて標準的に使用されるモンスターのパラメータを定義します。
 
-| ID | 名称 | カテゴリ | ティア | 属性 | コスト | EXP | HP | MP | ATK | DEF | MATK | MDEF | DEX | MND | 表示 | 進化先 (Lv) |
-| :--- | :--- | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :--- |
-| `slime` | スライム | `SLIME` | 1 | None | 10 | 5 | 10 | 0 | 5 | 5 | 2 | 2 | 5 | 5 | `s` | - |
-| `kobold` | コボルト | `HUMANOID` | 1 | None | 25 | 12 | 15 | 0 | 8 | 6 | 2 | 4 | 10 | 6 | `k` | - |
-| `orc` | オーク | `HUMANOID` | 2 | None | 80 | 45 | 40 | 10 | 18 | 15 | 5 | 8 | 12 | 10 | `O` | - |
-| `dragon` | ドラゴン | `DRAGON` | 3 | Fire | 250 | 120 | 100 | 30 | 35 | 25 | 20 | 15 | 15 | 12 | `D` | `ancient_dragon` (30) |
-| `lich` | リッチ | `UNDEAD` | 4 | None | 600 | 300 | 150 | 100 | 20 | 20 | 45 | 40 | 18 | 30 | `L` | - |
-| `wolf` | ウルフ | `BEAST` | 1 | None | 35 | 18 | 20 | 0 | 12 | 8 | 2 | 5 | 15 | 8 | `w` | - |
-| `eagle` | イーグル | `BEAST` | 1 | Wind | 40 | 20 | 18 | 10 | 10 | 7 | 5 | 8 | 18 | 10 | `e` | - |
-| `zombie` | ゾンビ | `UNDEAD` | 1 | None | 30 | 15 | 30 | 0 | 10 | 10 | 0 | 2 | 4 | 12 | `z` | `lich` (20) |
-| `skeleton` | スケルトン | `UNDEAD` | 1 | None | 35 | 20 | 25 | 0 | 14 | 8 | 0 | 4 | 12 | 6 | `S` | - |
-| `fire_spirit` | ファイアスピリット | `SPIRIT` | 2 | Fire | 120 | 60 | 35 | 50 | 10 | 10 | 25 | 20 | 15 | 15 | `f` | - |
-| `water_spirit` | ウォータースピリット | `SPIRIT` | 2 | Water | 120 | 60 | 35 | 50 | 10 | 10 | 25 | 20 | 15 | 15 | `u` | - |
-| `dragon_slime` | ドラゴンスライム | `DRAGON` | 2 | Fire | 150 | 80 | 50 | 20 | 20 | 18 | 15 | 15 | 12 | 12 | `D` | - |
-| `griffin` | グリフォン | `BEAST` | 3 | Wind | 300 | 150 | 80 | 30 | 30 | 22 | 15 | 18 | 20 | 15 | `G` | - |
-| `mist_spirit` | ミストスピリット | `SPIRIT` | 3 | Water | 350 | 180 | 70 | 80 | 15 | 15 | 35 | 30 | 25 | 20 | `m` | - |
-| `ancient_dragon` | 古代龍 | `DRAGON` | 5 | Fire | 2500 | 1000 | 300 | 100 | 80 | 60 | 50 | 40 | 25 | 20 | `A` | - |
-| `town_guardian` | 拠点衛兵 | `HUMANOID` | - | None | - | 0 | 500 | 200 | 100 | 100 | 80 | 80 | 50 | 50 | `G` | - |
+| ID | 名称 | カテゴリ | ティア | 属性 | コスト | EXP | HP | MP | ATK | DEF | MATK | MDEF | DEX | MND | 表示 | 特性 (Traits) | 進化先 (Lv) |
+| :--- | :--- | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :--- | :--- |
+| `slime` | スライム | `SLIME` | 1 | None | 10 | 5 | 10 | 0 | 5 | 5 | 2 | 2 | 5 | 5 | `s` | `SLIME_BODY` | - |
+| `kobold` | コボルト | `HUMANOID` | 1 | None | 25 | 12 | 15 | 0 | 8 | 6 | 2 | 4 | 10 | 6 | `k` | - | - |
+| `orc` | オーク | `HUMANOID` | 2 | None | 80 | 45 | 40 | 10 | 18 | 15 | 5 | 8 | 12 | 10 | `O` | - | - |
+| `dragon` | ドラゴン | `DRAGON` | 3 | Fire | 250 | 120 | 100 | 30 | 35 | 25 | 20 | 15 | 15 | 12 | `D` | `FIRE_IMMUNITY` | `ancient_dragon` (30) |
+| `lich` | リッチ | `UNDEAD` | 4 | None | 600 | 300 | 150 | 100 | 20 | 20 | 45 | 40 | 18 | 30 | `L` | `UNDEAD_SOUL`, `STATUS_IMMUNITY` | - |
+| `wolf` | ウルフ | `BEAST` | 1 | None | 35 | 18 | 20 | 0 | 12 | 8 | 2 | 5 | 15 | 8 | `w` | - | - |
+| `eagle` | イーグル | `BEAST` | 1 | Wind | 40 | 20 | 18 | 10 | 10 | 7 | 5 | 8 | 18 | 10 | `e` | `FLIGHT` | - |
+| `zombie` | ゾンビ | `UNDEAD` | 1 | None | 30 | 15 | 30 | 0 | 10 | 10 | 0 | 2 | 4 | 12 | `z` | `UNDEAD_SOUL` | `lich` (20) |
+| `skeleton` | スケルトン | `UNDEAD` | 1 | None | 35 | 20 | 25 | 0 | 14 | 8 | 0 | 4 | 12 | 6 | `S` | `UNDEAD_SOUL` | - |
+| `fire_spirit` | ファイアスピリット | `SPIRIT` | 2 | Fire | 120 | 60 | 35 | 50 | 10 | 10 | 25 | 20 | 15 | 15 | `f` | `FIRE_IMMUNITY` | - |
+| `water_spirit` | ウォータースピリット | `SPIRIT` | 2 | Water | 120 | 60 | 35 | 50 | 10 | 10 | 25 | 20 | 15 | 15 | `u` | - | - |
+| `dragon_slime` | ドラゴンスライム | `DRAGON` | 2 | Fire | 150 | 80 | 50 | 20 | 20 | 18 | 15 | 15 | 12 | 12 | `D` | `SLIME_BODY`, `FIRE_IMMUNITY` | - |
+| `griffin` | グリフォン | `BEAST` | 3 | Wind | 300 | 150 | 80 | 30 | 30 | 22 | 15 | 18 | 20 | 15 | `G` | `FLIGHT` | - |
+| `mist_spirit` | ミストスピリット | `SPIRIT` | 3 | Water | 350 | 180 | 70 | 80 | 15 | 15 | 35 | 30 | 25 | 20 | `m` | - | - |
+| `ancient_dragon` | 古代龍 | `DRAGON` | 5 | Fire | 2500 | 1000 | 300 | 100 | 80 | 60 | 50 | 40 | 25 | 20 | `A` | `FIRE_IMMUNITY`, `STATUS_IMMUNITY` | - |
+| `town_guardian` | 拠点衛兵 | `HUMANOID` | - | None | - | 0 | 500 | 200 | 100 | 100 | 80 | 80 | 50 | 50 | `G` | `STATUS_IMMUNITY`, `SEE_INVISIBILITY` | - |
+| `bounty_hunter` | 賞金稼ぎ | `HUMANOID` | 4 | None | - | 0 | (Scaling) | (Scaling) | (Scaling) | (Scaling) | (Scaling) | (Scaling) | (Scaling) | (Scaling) | `H` | `TRACKING`, `SEE_INVISIBILITY` | - |
 
 ## 6. 今後の拡張
 - **モンスター固有スキル**: 種族ごとに異なる特殊能力（火を吹く、分裂するなど）。
