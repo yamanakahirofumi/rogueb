@@ -176,6 +176,7 @@
 | `bounty_hunter` | 賞金稼ぎ | `HUMANOID` | 4 | None | - | 0 | (Scaling) | (Scaling) | (Scaling) | (Scaling) | (Scaling) | (Scaling) | (Scaling) | (Scaling) | `H` | `TRACKING`, `SEE_INVISIBILITY` | - |
 
 - **賞金稼ぎ (Rank S) の補正**: ランク S の賞金稼ぎは、1.1 倍のステータス補正を受け、追加の特性として `REGENERATION_II`（毎ターン 5% 回復）および `STATUS_IMMUNITY`（全状態異常無効）を保持します。
+- **エリート個体 (Elite) の補正**: ダンジョンランク A 以上で出現するエリート個体は、通常のモンスターと比較して **1.2 倍** のステータス補正（HP, MP, ATK, DEF, MATK, MDEF, DEX, MND）を受けます。
 
 ## 6. 今後の拡張
 - **モンスター固有スキル**: 種族ごとに異なる特殊能力（火を吹く、分裂するなど）。
