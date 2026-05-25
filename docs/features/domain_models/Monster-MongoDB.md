@@ -59,6 +59,7 @@
     - `metadata` (Object): 個体固有の動的データ（Map<String, Object>）。
     - `ownerId` (String): 所有しているプレイヤーのID。
     - `isWild` (Boolean): 野生状態かどうかを示すフラグ。
+    - `state` (String): モンスター個体の現在の所在・状態（`WILD`, `PARTY`, `STORAGE`, `PLACED`）。
     - `loyalty` (Integer): プレイヤーに対する忠誠度。
     - `lastLoyaltyUpdate` (Long): 最終忠誠度更新タイムスタンプ。
     - `_class` (String): Spring Data MongoDBが使用するクラス情報。
