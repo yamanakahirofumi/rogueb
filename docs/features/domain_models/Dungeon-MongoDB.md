@@ -47,6 +47,8 @@
         - `position` (Object): 座標 (`Coordinate`)。
         - `instanceId` (String): アイテムのインスタンス ID。
     - `goldList` (Array): フロア上の金のリスト (`GoldCoordinateDomain`オブジェクトの配列)。
+        - `position` (Object): 座標 (`Coordinate`)。
+        - `gold` (Integer): 金の量。
     - `monsterList` (Array): フロア上のモンスターのリスト (`MonsterCoordinateDomain`オブジェクトの配列)。
         - `position` (Object): 座標 (`Coordinate`)。
         - `instanceId` (String): モンスターのインスタンス ID。
@@ -57,7 +59,9 @@
         - `position` (Object): 座標 (`Coordinate`)。
         - `trapId` (Integer): トラップの種別 ID（[トラップシステム](../Trap-System.md) の ID に対応）。
         - `isRevealed` (Boolean): 露出フラグ。
-    - `tiles` (Array): 2次元のタイル情報（`Tile`オブジェクトの配列の配列）。
+    - `tiles` (Array): 2次元のタイル情報（`Tile2D` オブジェクトの配列の配列）。
+        - `display` (String): 表示文字（例: `#`, `.`）。
+        - `pointType` (String): タイルの種類 (`Wall`, `UpStairs`, `downStairs`, `floor`)。
     - `_class` (String): Spring Data MongoDBが使用するクラス情報。
 
 ## 3. `dungeonPlayerDomain` コレクション
