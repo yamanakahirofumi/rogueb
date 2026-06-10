@@ -17,8 +17,8 @@
 | BFF    | PlayerOperations | プレイヤー操作（移動、拾得、状態更新等）|
 | サービス   | Display | (スケルトンのみ) 表示・描画やクライアント表示用のサービス |
 | サービス   | BookOfAdventure | 記録・ログ等のドメイン |
-| サービス   | Monster | モンスターの種族・個体管理ドメイン |
-| サービス   | EconomicSystem | アイテム流通量・価格計算・ショップ管理 |
+| サービス   | Monster | モンスターの種族・個体管理ドメイン (※未実装) |
+| サービス   | EconomicSystem | アイテム流通量・価格計算・ショップ管理 (※未実装) |
 | クライアント | DungeonClient | Dungeon サービスを呼び出すクライアント           |
 | クライアント | WorldClient | World サービス呼び出し用クライアント             |
 | クライアント | ObjectsClient | Objects サービス呼び出し用クライアント           |
@@ -153,6 +153,7 @@ graph TD
 ```
 
 - クライアントモジュールは、対応するサービスモジュールの REST API を呼び出します。
+- ※ **Monster** および **EconomicSystem** モジュールは、ドキュメント上の定義のみであり、現在はルート `pom.xml` への追加および物理ディレクトリの作成は行われていません。
 - Display は UI/可視化レイヤーとして複数サービスからデータを取得・統合する想定です（現在はスケルトンのみ存在）。
 - PlayerOperations はプレイヤーの操作コマンドを受け、Dungeon/World/Objects 等に横断的に指示を行うハブ的役割を持つ想定です。
 - Commons と DungeonBase は各サービスで共有される基本型・ユーティリティ群です。
