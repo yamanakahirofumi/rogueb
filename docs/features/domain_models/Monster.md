@@ -85,6 +85,7 @@
         - `PLACED`: 管理者によってダンジョン内に配置されている状態。
     - `loyalty`: プレイヤーに対する忠誠度（懐き具合）。詳細は [モンスター忠誠度システム](../Monster-Loyalty-System.md) を参照。
     - `lastLoyaltyUpdate`: 最後に忠誠度が更新された（時間経過による減少判定が行われた）タイムスタンプ (Long)。
+    - `lastBreedingTime`: 最後に繁殖を行ったタイムスタンプ (Long)。[モンスター繁殖システム](../Monster-Breeding-System.md) におけるクールタイム判定に使用。
 
 ### `StatusEffectDomain` (値オブジェクト)
 - **説明:** [BookOfAdventureモジュール](./Book-Of-Adventure.md#statuseffectdomain-値オブジェクト) にて定義。プレイヤーやモンスターに付与される状態異常を表します。
