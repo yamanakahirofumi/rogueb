@@ -12,7 +12,7 @@
 
 ### 2.2 特殊条件
 - **特定のステータス**: 特定のステータス（例：攻撃力が 100 以上）が条件となる場合があります。
-- **場所**: 特定のダンジョンや施設内でのみ進化可能な場合があります。
+- **場所・ランク制限**: 特定のダンジョンや施設内でのみ進化可能な場合があります。また、管理されたダンジョン内では、そのダンジョンの[ランク上限](./Dungeon-Rank-System.md)を超えるティアの種族へ進化させることはできません。
 - **忠誠度**: プレイヤーに対する忠誠度が一定以上である必要がある場合があります。
 
 ## 3. 進化のプロセス
@@ -67,7 +67,7 @@ sequenceDiagram
 ### `MonsterEvolutionSlot` (値オブジェクト)
 - `targetMonsterId`: 進化先の種族 ID。
 - `requiredLevel`: 必要なレベル。
-- `requiredItemId`: 必要なアイテムのタイプ ID（任意）。
+- `requiredItemId`: 必要なアイテムのタイプ ID（任意）。例：高ティア進化における「賞金稼ぎの証 (`bounty_hunter_proof`)」。
 - `requiredStats`: 必要なステータス条件（Map<String, Integer>、任意）。
     - 有効なキー: `hp`, `mp`, `atk`, `def`, `magicAtk`, `magicDef`, `dex`, `mnd`, `loyalty`
 - `resetLevel`: 進化後にレベルを 1 に戻すかどうか (boolean)。
