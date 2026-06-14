@@ -11,7 +11,9 @@
 
 - **孵化対象種族 (`typeId`)**: 孵化した際に生まれるモンスターの種族 ID (`MonsterDomain.id`)。
 - **親個体情報 (`parentAId`, `parentBId`)**: 繁殖に使用した両親のインスタンス ID。継承ロジックで使用します。
-- **必要歩数 (`incubationSteps`)**: 孵化までに必要な `subStep`（内部歩数カウンタ）の総量。
+- **必要歩数 (`incubationSteps`)**: 孵化までに必要な `subStep`（内部歩数カウンタ）の総量。以下の式で算出されます。
+  `incubationSteps = ChildSpecies.baseIncubationSteps * 乱数係数(0.9 ~ 1.1)`
+  - 種族ごとの基本歩数にランダムな微変動を加えることで、個体ごとの孵化タイミングに多様性を持たせます。
 - **現在の蓄積歩数 (`currentSteps`)**: 現在までにプレイヤーが移動・行動して蓄積された歩数。
 
 ### 2.2 卵の状態
