@@ -40,6 +40,9 @@
 - **[EconomicSystemモジュール](./Economic-System.md)**
   - アイテムの流通量、動的な価格計算、およびショップ管理を担当します。
 
+- **[標準メタデータ仕様](../Standard-Metadata-Specification.md)**
+  - 各インスタンスの `metadata` フィールドにおける予約済みキーの定義。
+
 ### データベース構造
 
 - **[Dungeonモジュール (MongoDB)](./Dungeon-MongoDB.md)**

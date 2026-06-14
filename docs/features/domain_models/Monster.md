@@ -75,7 +75,7 @@
     - `statusEffects`: 付与されている状態異常 (`StatusEffectDomain`) のリスト。
     - `traits`: 個体固有の特性（パッシブ能力）のリスト。詳細は [モンスター特性システム](../Monster-Trait-System.md) を参照。
     - `metadata`: 個体固有の動的データ（Map<String, Object>）。ニックネームや特殊な成長記録などに使用。
-        - **[世界間連携システム](../World-Interoperability-System.md)**: 未知のモンスターを持ち込んだ際の種族継承データ (`inheritanceData`) 等が格納されます。詳細は「4.4 未知のモンスターの持ち込み」を参照してください。
+        - 予約済みキーの詳細は **[標準メタデータ仕様](../Standard-Metadata-Specification.md)** を参照してください。
     - `ownerId`: 所有しているプレイヤーの ID（捕獲済みの場合）。
     - `isWild`: 野生状態かどうかを示すフラグ（`state` が `WILD` の場合のみ `true`）。
     - `state`: モンスター個体の現在の所在・状態。

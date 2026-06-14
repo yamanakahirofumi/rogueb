@@ -21,6 +21,7 @@
 - [UI-UX 設計](features/UI-UX-Design.md)：画面構成、操作フィードバック、デザイン規約
 - [開発ロードマップ](features/Development-Roadmap.md)：開発フェーズと優先順位
 - [アイテム識別システム](features/Item-Identification-System.md)：アイテムの識別状態とプロセスに関する仕様
+- [標準メタデータ仕様](features/Standard-Metadata-Specification.md)：予約済みメタデータキーとエフェクトの定義
 - [トラップシステム](features/Trap-System.md)：ダンジョン内の罠の種類と効果に関する仕様
 - [モンスタードロップシステム](features/Monster-Drop-System.md)：モンスター撃破時のドロップと流通制限に関する仕様
 - [モンスター繁殖システム](features/Monster-Breeding-System.md)：モンスターの繁殖、継承、および孵化に関する仕様
