@@ -35,7 +35,8 @@
 ### 3.1 繁殖・ライフサイクル
 | キー | 型 | 意味 | 有効範囲 / 例 |
 | :--- | :--- | :--- | :--- |
-| `incubationSteps` | Integer | 孵化に必要な残り歩数 | 0 〜 10000 |
+| `incubationSteps` | Integer | 孵化に必要な総歩数 | 0 〜 10000 |
+| `currentSteps` | Integer | 現在の蓄積歩数 | 0 〜 10000 |
 | `parentAId` | String | 親 A のインスタンス ID | UUID 形式 |
 | `parentBId` | String | 親 B のインスタンス ID | UUID 形式 |
 | `typeId` | String | 卵から生まれる種族 ID | `slime`, `dragon` 等 |
@@ -77,10 +78,16 @@
 | :--- | :--- | :--- | :--- |
 | `HEAL_HP` | `amount` | Integer | 固定回復量 |
 | | `ratio` | Double | 割合回復 (0.0 - 1.0) |
+| `HEAL_MP` | `amount` | Integer | 固定回復量 |
+| | `ratio` | Double | 割合回復 (0.0 - 1.0) |
+| `HEAL_STAMINA` | `amount` | Integer | 固定回復量 |
 | `ADD_STATUS` | `status` | String | 状態異常の種類 (`POISON` 等) |
 | | `chance` | Double | 付与確率 (0.0 - 1.0) |
 | | `turns` | Integer | 持続ターン数 |
+| `REMOVE_STATUS` | `status` | String | 解除する状態異常の種類 |
 | `DEAL_DAMAGE` | `damage` | Integer | 直接ダメージ量 |
+| `EXPLOSION` | `damage` | Integer | 爆発ダメージ量 |
+| | `range` | Integer | 爆発範囲 (1: 周囲 8 マス) |
 | `TELEPORT` | `range` | Integer | ワープ範囲（任意） |
 
 ---
