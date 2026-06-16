@@ -164,21 +164,24 @@
 
 | ID | 名称 | カテゴリ | ティア | 属性 | コスト | EXP | HP | MP | ATK | DEF | MATK | MDEF | DEX | MND | 表示 | 特性 (Traits) | 初期スキル | 間隔 (ms) | 孵化 (歩) | 進化先 (Lv) |
 | :--- | :--- | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :--- | :---: | :---: | :---: | :--- |
-| `slime` | スライム | `SLIME` | 1 | None | 10 | 5 | 10 | 0 | 5 | 5 | 2 | 2 | 5 | 5 | `s` | `SLIME_BODY` | - | 1000 | 500 | `dragon_slime` (Lv 15 + `fire_stone`) |
-| `kobold` | コボルト | `HUMANOID` | 1 | None | 25 | 12 | 15 | 0 | 8 | 6 | 2 | 4 | 10 | 6 | `k` | - | - | 1000 | 1000 | - |
-| `orc` | オーク | `HUMANOID` | 2 | None | 80 | 45 | 40 | 10 | 18 | 15 | 5 | 8 | 12 | 10 | `O` | `AGGRESSIVE` | 101 | 1000 | 1500 | - |
-| `dragon` | ドラゴン | `DRAGON` | 3 | Fire | 250 | 120 | 100 | 30 | 35 | 25 | 20 | 15 | 15 | 12 | `D` | `FIRE_IMMUNITY` | 201 | 1500 | 5000 | `ancient_dragon` (Lv 30 + `bounty_hunter_proof`) |
-| `lich` | リッチ | `UNDEAD` | 4 | None | 600 | 300 | 150 | 100 | 20 | 20 | 45 | 40 | 18 | 30 | `L` | `UNDEAD_SOUL`, `STATUS_IMMUNITY`, `MIASMA_RESISTANCE` | 202, 307 | 1200 | 5000 | - |
-| `wolf` | ウルフ | `BEAST` | 1 | None | 35 | 18 | 20 | 0 | 12 | 8 | 2 | 5 | 15 | 8 | `w` | `TRACKING` | - | 1000 | 1000 | - |
-| `eagle` | イーグル | `BEAST` | 1 | Wind | 40 | 20 | 18 | 10 | 10 | 7 | 5 | 8 | 18 | 10 | `e` | `FLIGHT` | - | 1000 | 1000 | - |
-| `zombie` | ゾンビ | `UNDEAD` | 1 | None | 30 | 15 | 30 | 0 | 10 | 10 | 0 | 2 | 4 | 12 | `z` | `UNDEAD_SOUL`, `MIASMA_RESISTANCE` | - | 1000 | 1500 | `lich` (Lv 20) |
-| `skeleton` | スケルトン | `UNDEAD` | 1 | None | 35 | 20 | 25 | 0 | 14 | 8 | 0 | 4 | 12 | 6 | `S` | `UNDEAD_SOUL`, `MIASMA_RESISTANCE` | - | 1000 | 1500 | - |
-| `fire_spirit` | ファイアスピリット | `SPIRIT` | 2 | Fire | 120 | 60 | 35 | 50 | 10 | 10 | 25 | 20 | 15 | 15 | `f` | `FIRE_IMMUNITY` | 201 | 1000 | 2000 | - |
-| `water_spirit` | ウォータースピリット | `SPIRIT` | 2 | Water | 120 | 60 | 35 | 50 | 10 | 10 | 25 | 20 | 15 | 15 | `u` | - | 202 | 1000 | 2000 | - |
-| `dragon_slime` | ドラゴンスライム | `DRAGON` | 2 | Fire | 150 | 80 | 50 | 20 | 20 | 18 | 15 | 15 | 12 | 12 | `D` | `SLIME_BODY`, `FIRE_IMMUNITY` | 201 | 1000 | 2500 | - |
-| `griffin` | グリフォン | `BEAST` | 3 | Wind | 300 | 150 | 80 | 30 | 30 | 22 | 15 | 18 | 20 | 15 | `G` | `FLIGHT` | 401 | 1200 | 3000 | - |
+| `slime` | スライム | `SLIME` | 1 | None | 10 | 5 | 10 | 0 | 5 | 5 | 2 | 2 | 5 | 5 | `s` | `SLIME_BODY` | 302, 101 | 1000 | 500 | `dragon_slime` (Lv 15 + `fire_stone`) |
+| `kobold` | コボルト | `HUMANOID` | 1 | None | 25 | 12 | 15 | 0 | 8 | 6 | 2 | 4 | 10 | 6 | `k` | - | 101 | 1000 | 1000 | - |
+| `orc` | オーク | `HUMANOID` | 2 | None | 80 | 45 | 40 | 10 | 18 | 15 | 5 | 8 | 12 | 10 | `O` | `AGGRESSIVE` | 101, 102 | 1000 | 1500 | - |
+| `dragon` | ドラゴン | `DRAGON` | 3 | Fire | 250 | 120 | 100 | 30 | 35 | 25 | 20 | 15 | 15 | 12 | `D` | `FIRE_IMMUNITY` | 201, 403 | 1500 | 5000 | `ancient_dragon` (Lv 30 + `bounty_hunter_proof`) |
+| `lich` | リッチ | `UNDEAD` | 4 | None | 600 | 300 | 150 | 100 | 20 | 20 | 45 | 40 | 18 | 30 | `L` | `UNDEAD_SOUL`, `STATUS_IMMUNITY`, `MIASMA_RESISTANCE` | 202, 307, 305, 309 | 1200 | 5000 | - |
+| `wolf` | ウルフ | `BEAST` | 1 | None | 35 | 18 | 20 | 0 | 12 | 8 | 2 | 5 | 15 | 8 | `w` | `TRACKING` | 101 | 1000 | 1000 | - |
+| `eagle` | イーグル | `BEAST` | 1 | Wind | 40 | 20 | 18 | 10 | 10 | 7 | 5 | 8 | 18 | 10 | `e` | `FLIGHT` | 401 | 1000 | 1000 | - |
+| `zombie` | ゾンビ | `UNDEAD` | 1 | None | 30 | 15 | 30 | 0 | 10 | 10 | 0 | 2 | 4 | 12 | `z` | `UNDEAD_SOUL`, `MIASMA_RESISTANCE` | 302 | 1000 | 1500 | `lich` (Lv 20) |
+| `skeleton` | スケルトン | `UNDEAD` | 1 | None | 35 | 20 | 25 | 0 | 14 | 8 | 0 | 4 | 12 | 6 | `S` | `UNDEAD_SOUL`, `MIASMA_RESISTANCE` | 101 | 1000 | 1500 | - |
+| `fire_spirit` | ファイアスピリット | `SPIRIT` | 2 | Fire | 120 | 60 | 35 | 50 | 10 | 10 | 25 | 20 | 15 | 15 | `f` | `FIRE_IMMUNITY` | 201, 302 | 1000 | 2000 | - |
+| `water_spirit` | ウォータースピリット | `SPIRIT` | 2 | Water | 120 | 60 | 35 | 50 | 10 | 10 | 25 | 20 | 15 | 15 | `u` | - | 202, 304 | 1000 | 2000 | - |
+| `dragon_slime` | ドラゴンスライム | `DRAGON` | 2 | Fire | 150 | 80 | 50 | 20 | 20 | 18 | 15 | 15 | 12 | 12 | `D` | `SLIME_BODY`, `FIRE_IMMUNITY` | 201, 302 | 1000 | 2500 | - |
+| `griffin` | グリフォン | `BEAST` | 3 | Wind | 300 | 150 | 80 | 30 | 30 | 22 | 15 | 18 | 20 | 15 | `G` | `FLIGHT` | 401, 102 | 1200 | 3000 | - |
 | `mist_spirit` | ミストスピリット | `SPIRIT` | 3 | Water | 350 | 180 | 70 | 80 | 15 | 15 | 35 | 30 | 25 | 20 | `m` | - | 202, 302, 304 | 1200 | 3000 | - |
-| `ancient_dragon` | 古代龍 | `DRAGON` | 5 | Fire | 2500 | 1000 | 300 | 100 | 80 | 60 | 50 | 40 | 25 | 20 | `A` | `FIRE_IMMUNITY`, `STATUS_IMMUNITY`, `MIASMA_RESISTANCE` | 201, 401, 403 | 1500 | 10000 | - |
+| `ancient_dragon` | 古代龍 | `DRAGON` | 5 | Fire | 2500 | 1000 | 300 | 100 | 80 | 60 | 50 | 40 | 25 | 20 | `A` | `FIRE_IMMUNITY`, `STATUS_IMMUNITY`, `MIASMA_RESISTANCE` | 201, 401, 403, 308 | 1500 | 10000 | - |
+| `demon` | デーモン | `DEMON` | 3 | Dark | 350 | 180 | 100 | 50 | 30 | 25 | 35 | 30 | 20 | 25 | `&` | `FIRE_IMMUNITY` | 201, 305 | 1200 | 5000 | - |
+| `wind_spirit` | ウィンドスピリット | `SPIRIT` | 2 | Wind | 120 | 60 | 35 | 50 | 10 | 10 | 25 | 20 | 15 | 15 | `v` | - | 401, 309 | 1000 | 2000 | - |
+| `earth_spirit` | アーススピリット | `SPIRIT` | 2 | Earth | 120 | 60 | 40 | 50 | 12 | 15 | 20 | 25 | 12 | 18 | `g` | - | 203, 101 | 1000 | 2000 | - |
 | `town_guardian` | 拠点衛兵 | `HUMANOID` | - | None | - | 0 | 500 | 200 | 100 | 100 | 80 | 80 | 50 | 50 | `G` | `STATUS_IMMUNITY`, `SEE_INVISIBILITY` | 303 | 800 | - | - |
 | `bounty_hunter` | 賞金稼ぎ | `HUMANOID` | 4 | None | - | 0 | (Scaling) | (Scaling) | (Scaling) | (Scaling) | (Scaling) | (Scaling) | (Scaling) | (Scaling) | `H` | `TRACKING`, `SEE_INVISIBILITY` | - | 1000 | - | - |
 
@@ -206,6 +209,9 @@
 | `griffin` | `401`: ウィンドブレス (1), `102`: 回転斬り (20) |
 | `mist_spirit` | `202`: アイスブレス (1), `302`: ポイズンガス (1), `304`: スリープクラウド (1) |
 | `ancient_dragon` | `201`: ファイアボール (1), `401`: ウィンドブレス (1), `403`: トルネード (1), `308`: ヘイスト (50) |
+| `demon` | `201`: ファイアボール (1), `305`: コンフューズ (15) |
+| `wind_spirit` | `401`: ウィンドブレス (1), `309`: インビジブル (20) |
+| `earth_spirit` | `203`: アースニードル (1), `101`: パワーアタック (10) |
 | `town_guardian` | `303`: 捕縛 (1) |
 | `bounty_hunter` | `101`: パワーアタック (1), `303`: 捕縛 (1) |
 
