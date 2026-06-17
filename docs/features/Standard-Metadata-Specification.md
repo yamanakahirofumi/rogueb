@@ -81,6 +81,8 @@
 | `HEAL_MP` | `amount` | Integer | 固定回復量 |
 | | `ratio` | Double | 割合回復 (0.0 - 1.0) |
 | `HEAL_STAMINA` | `amount` | Integer | 固定回復量 |
+| `MODIFY_LOYALTY` | `amount` | Integer | 忠誠度の増減量 |
+| `LEVEL_UP` | `amount` | Integer | レベルの上昇量 |
 | `ADD_STATUS` | `status` | String | 状態異常の種類 (`POISON` 等) |
 | | `chance` | Double | 付与確率 (0.0 - 1.0) |
 | | `turns` | Integer | 持続ターン数 |
