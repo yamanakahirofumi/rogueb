@@ -60,32 +60,32 @@
         - 有効なキー: `hp`, `mp`, `atk`, `def`, `magicAtk`, `magicDef`, `dex`, `mnd`, `loyalty`
     - `resetLevel`: 進化後にレベルを 1 に戻すかどうか (boolean)。
 
-### `MonsterInstanceDomain`
+### `MonsterInstance`
 - **説明:** 特定のモンスター個体を表します。ダンジョン内の野生モンスター、またはプレイヤーが所持しているモンスターとして存在します。
 - **主要なプロパティ:**
-    - `instanceId`: 個体の一意な識別子。
-    - `monsterId`: `MonsterDomain` の ID（種族 ID）。
-    - `level`: 現在のレベル。
-    - `currentHp`: 現在の体力。
-    - `currentMp`: 現在の魔法力。
-    - `subStep`: 内部歩数カウンタ（状態異常の継続判定や自然回復のタイミング計算に使用）。
-    - `experience`: 累積経験値（捕獲後の成長に使用）。
-    - `skillIds`: 習得しているスキル ID のリスト。
-    - `inheritedStatus`: 継承されたステータス補正（Map<String, Integer>）。繁殖個体の場合に使用。
-    - `statusEffects`: 付与されている状態異常 (`StatusEffectDomain`) のリスト。
-    - `traits`: 個体固有の特性（パッシブ能力）のリスト。詳細は [モンスター特性システム](../Monster-Trait-System.md) を参照。特性は「能力強化」「耐性・無効」「特殊・行動」のカテゴリに分類されています。
-    - `metadata`: 個体固有の動的データ（Map<String, Object>）。ニックネームや特殊な成長記録などに使用。
-        - 予約済みキーの詳細は **[標準メタデータ仕様](../Standard-Metadata-Specification.md)** を参照してください。
-    - `ownerId`: 所有しているプレイヤーの ID（捕獲済みの場合）。
-    - `isWild`: 野生状態かどうかを示すフラグ（`state` が `WILD` の場合のみ `true`）。
-    - `state`: モンスター個体の現在の所在・状態。
-        - `WILD`: 野生状態。ダンジョン等に自然発生した個体。
-        - `PARTY`: プレイヤーのパーティ（手持ち）に入っている状態。
-        - `STORAGE`: 預かり所（倉庫）に保管されている状態。
-        - `PLACED`: 管理者によってダンジョン内に配置されている状態。
-    - `loyalty`: プレイヤーに対する忠誠度（懐き具合）。詳細は [モンスター忠誠度システム](../Monster-Loyalty-System.md) を参照。
-    - `lastLoyaltyUpdate`: 最後に忠誠度が更新された（時間経過による減少判定が行われた）タイムスタンプ (Long)。
-    - `lastBreedingTime`: 最後に繁殖を行ったタイムスタンプ (Long)。[モンスター繁殖システム](../Monster-Breeding-System.md) におけるクールタイム判定に使用。
+    - `instanceId`: 個体の一意な識別子.
+    - `monsterId`: `MonsterDomain` の ID（種族 ID）.
+    - `level`: 現在のレベル.
+    - `currentHp`: 現在の体力.
+    - `currentMp`: 現在の魔法力.
+    - `subStep`: 内部歩数カウンタ（状態異常の継続判定や自然回復のタイミング計算に使用）.
+    - `experience`: 累積経験値（捕獲後の成長に使用）.
+    - `skillIds`: 習得しているスキル ID のリスト.
+    - `inheritedStatus`: 継承されたステータス補正（Map<String, Integer>）. 繁殖個体の場合に使用.
+    - `statusEffects`: 付与されている状態異常 (`StatusEffectDomain`) のリスト.
+    - `traits`: 個体固有の特性（パッシブ能力）のリスト。詳細は [モンスター特性システム](../Monster-Trait-System.md) を参照。特性は「能力強化」「耐性・無効」「特殊・行動」のカテゴリに分類されています.
+    - `metadata`: 個体固有の動的データ（Map<String, Object>）。ニックネームや特殊な成長記録などに使用.
+        - 予約済みキーの詳細は **[標準メタデータ仕様](../Standard-Metadata-Specification.md)** を参照してください.
+    - `ownerId`: 所有しているプレイヤーの ID（捕獲済みの場合）.
+    - `isWild`: 野生状態かどうかを示すフラグ（`state` が `WILD` の場合のみ `true`）.
+    - `state`: モンスター個体の現在の所在・状態.
+        - `WILD`: 野生状態。ダンジョン等に自然発生した個体.
+        - `PARTY`: プレイヤーのパーティ（手持ち）に入っている状態.
+        - `STORAGE`: 預かり所（倉庫）に保管されている状態.
+        - `PLACED`: 管理者によってダンジョン内に配置されている状態.
+    - `loyalty`: プレイヤーに対する忠誠度（懐き具合）。詳細は [モンスター忠誠度システム](../Monster-Loyalty-System.md) を参照.
+    - `lastLoyaltyUpdate`: 最後に忠誠度が更新された（時間経過による減少判定が行われた）タイムスタンプ (Long).
+    - `lastBreedingTime`: 最後に繁殖を行ったタイムスタンプ (Long)。[モンスター繁殖システム](../Monster-Breeding-System.md) におけるクールタイム判定に使用.
 
 ### `StatusEffectDomain` (値オブジェクト)
 - **説明:** [BookOfAdventureモジュール](./Book-Of-Adventure.md#statuseffectdomain-値オブジェクト) にて定義。プレイヤーやモンスターに付与される状態異常を表します。
@@ -148,11 +148,11 @@
 - プレイヤーの移動に伴い、モンスターの AI（移動・攻撃ロジック）が実行されます。
 
 ### 4.2 BookOfAdventure モジュールとの連携
-- プレイヤーがモンスターを捕獲した場合、そのモンスターの `MonsterInstanceDomain` はプレイヤーの所持モンスターとして `BookOfAdventure` に保存されます。
+- プレイヤーがモンスターを捕獲した場合、そのモンスターの `MonsterInstance` はプレイヤーの所持モンスターとして `BookOfAdventure` に保存されます。
 - 繁殖（Breeding）によって新しいモンスターが生成される際も、このモジュールを通じて永続化されます。
 
 ### 4.3 Combat システムとの連携
-- 戦闘発生時、`MonsterInstanceDomain` のステータスと `MonsterDomain` の基本性能を用いてダメージ計算が行われます。詳細は [戦闘システム](../Combat-System.md) を参照してください。
+- 戦闘発生時、`MonsterInstance` のステータスと `MonsterDomain` の基本性能を用いてダメージ計算が行われます。詳細は [戦闘システム](../Combat-System.md) を参照してください。
 - プレイヤーによるモンスターの捕獲処理が行われます。詳細は [モンスター捕獲システム](../Monster-Capture-System.md) を参照してください。
 - モンスターの死亡時、プレイヤーへの経験値付与やアイテムドロップの判定が行われます。詳細は [モンスタードロップシステム](../Monster-Drop-System.md) を参照してください。
 
@@ -164,26 +164,26 @@
 
 | ID | 名称 | カテゴリ | ティア | 属性 | コスト | EXP | HP | MP | ATK | DEF | MATK | MDEF | DEX | MND | 表示 | 特性 (Traits) | 初期スキル | 間隔 (ms) | 孵化 (歩) | 進化先 (Lv) |
 | :--- | :--- | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :--- | :---: | :---: | :---: | :--- |
-| `slime` | スライム | `SLIME` | 1 | None | 10 | 5 | 10 | 0 | 5 | 5 | 2 | 2 | 5 | 5 | `s` | `SLIME_BODY` | - | 1000 | 500 | `dragon_slime` (Lv 15 + `fire_stone`) |
-| `kobold` | コボルト | `HUMANOID` | 1 | None | 25 | 12 | 15 | 0 | 8 | 6 | 2 | 4 | 10 | 6 | `k` | - | - | 1000 | 1000 | - |
-| `orc` | オーク | `HUMANOID` | 2 | None | 80 | 45 | 40 | 10 | 18 | 15 | 5 | 8 | 12 | 10 | `O` | `AGGRESSIVE` | 101 | 1000 | 1500 | - |
-| `dragon` | ドラゴン | `DRAGON` | 3 | Fire | 250 | 120 | 100 | 30 | 35 | 25 | 20 | 15 | 15 | 12 | `D` | `FIRE_IMMUNITY` | 201 | 1500 | 5000 | `ancient_dragon` (Lv 30 + `bounty_hunter_proof`) |
-| `lich` | リッチ | `UNDEAD` | 4 | None | 600 | 300 | 150 | 100 | 20 | 20 | 45 | 40 | 18 | 30 | `L` | `UNDEAD_SOUL`, `STATUS_IMMUNITY`, `MIASMA_RESISTANCE` | 202, 307 | 1200 | 5000 | - |
-| `wolf` | ウルフ | `BEAST` | 1 | None | 35 | 18 | 20 | 0 | 12 | 8 | 2 | 5 | 15 | 8 | `w` | `TRACKING` | - | 1000 | 1000 | - |
-| `eagle` | イーグル | `BEAST` | 1 | Wind | 40 | 20 | 18 | 10 | 10 | 7 | 5 | 8 | 18 | 10 | `e` | `FLIGHT` | - | 1000 | 1000 | - |
-| `zombie` | ゾンビ | `UNDEAD` | 1 | None | 30 | 15 | 30 | 0 | 10 | 10 | 0 | 2 | 4 | 12 | `z` | `UNDEAD_SOUL`, `MIASMA_RESISTANCE` | - | 1000 | 1500 | `lich` (Lv 20) |
-| `skeleton` | スケルトン | `UNDEAD` | 1 | None | 35 | 20 | 25 | 0 | 14 | 8 | 0 | 4 | 12 | 6 | `S` | `UNDEAD_SOUL`, `MIASMA_RESISTANCE` | - | 1000 | 1500 | - |
-| `fire_spirit` | ファイアスピリット | `SPIRIT` | 2 | Fire | 120 | 60 | 35 | 50 | 10 | 10 | 25 | 20 | 15 | 15 | `f` | `FIRE_IMMUNITY` | 201 | 1000 | 2000 | - |
-| `water_spirit` | ウォータースピリット | `SPIRIT` | 2 | Water | 120 | 60 | 35 | 50 | 10 | 10 | 25 | 20 | 15 | 15 | `u` | - | 202 | 1000 | 2000 | - |
-| `wind_spirit` | ウィンドスピリット | `SPIRIT` | 2 | Wind | 120 | 60 | 35 | 50 | 10 | 10 | 25 | 20 | 15 | 15 | `W` | - | 401 | 1000 | 2000 | - |
-| `earth_spirit` | アーススピリット | `SPIRIT` | 2 | Earth | 120 | 60 | 40 | 40 | 15 | 15 | 15 | 15 | 10 | 20 | `t` | - | 203 | 1000 | 2000 | - |
-| `dragon_slime` | ドラゴンスライム | `DRAGON` | 2 | Fire | 150 | 80 | 50 | 20 | 20 | 18 | 15 | 15 | 12 | 12 | `D` | `SLIME_BODY`, `FIRE_IMMUNITY` | 201 | 1000 | 2500 | - |
-| `griffin` | グリフォン | `BEAST` | 3 | Wind | 300 | 150 | 80 | 30 | 30 | 22 | 15 | 18 | 20 | 15 | `G` | `FLIGHT` | 401 | 1200 | 3000 | - |
-| `demon` | デーモン | `DEMON` | 3 | Dark | 300 | 150 | 120 | 50 | 35 | 25 | 30 | 30 | 12 | 15 | `v` | - | 201 | 1500 | 5000 | - |
-| `mist_spirit` | ミストスピリット | `SPIRIT` | 3 | Water | 350 | 180 | 70 | 80 | 15 | 15 | 35 | 30 | 25 | 20 | `m` | - | 202, 302, 304 | 1200 | 3000 | - |
-| `ancient_dragon` | 古代龍 | `DRAGON` | 5 | Fire | 2500 | 1000 | 300 | 100 | 80 | 60 | 50 | 40 | 25 | 20 | `A` | `FIRE_IMMUNITY`, `STATUS_IMMUNITY`, `MIASMA_RESISTANCE` | 201, 401, 403 | 1500 | 10000 | - |
-| `town_guardian` | 拠点衛兵 | `HUMANOID` | - | None | - | 0 | 500 | 200 | 100 | 100 | 80 | 80 | 50 | 50 | `G` | `STATUS_IMMUNITY`, `SEE_INVISIBILITY` | 303 | 800 | - | - |
-| `bounty_hunter` | 賞金稼ぎ | `HUMANOID` | 4 | None | - | 0 | (Scaling) | (Scaling) | (Scaling) | (Scaling) | (Scaling) | (Scaling) | (Scaling) | (Scaling) | `H` | `TRACKING`, `SEE_INVISIBILITY` | - | 1000 | - | - |
+| `slime` | [スライム](#species-slime) | `SLIME` | 1 | None | 10 | 5 | 10 | 0 | 5 | 5 | 2 | 2 | 5 | 5 | `s` | `SLIME_BODY` | - | 1000 | 500 | `dragon_slime` (Lv 15 + `fire_stone`) |
+| `kobold` | [コボルト](#species-kobold) | `HUMANOID` | 1 | None | 25 | 12 | 15 | 0 | 8 | 6 | 2 | 4 | 10 | 6 | `k` | - | - | 1000 | 1000 | - |
+| `orc` | [オーク](#species-orc) | `HUMANOID` | 2 | None | 80 | 45 | 40 | 10 | 18 | 15 | 5 | 8 | 12 | 10 | `O` | `AGGRESSIVE` | 101 | 1000 | 1500 | - |
+| `dragon` | [ドラゴン](#species-dragon) | `DRAGON` | 3 | Fire | 250 | 120 | 100 | 30 | 35 | 25 | 20 | 15 | 15 | 12 | `D` | `FIRE_IMMUNITY` | 201 | 1500 | 5000 | `ancient_dragon` (Lv 30 + `bounty_hunter_proof`) |
+| `lich` | [リッチ](#species-lich) | `UNDEAD` | 4 | None | 600 | 300 | 150 | 100 | 20 | 20 | 45 | 40 | 18 | 30 | `L` | `UNDEAD_SOUL`, `STATUS_IMMUNITY`, `MIASMA_RESISTANCE` | 202, 307 | 1200 | 5000 | - |
+| `wolf` | [ウルフ](#species-wolf) | `BEAST` | 1 | None | 35 | 18 | 20 | 0 | 12 | 8 | 2 | 5 | 15 | 8 | `w` | `TRACKING` | - | 1000 | 1000 | - |
+| `eagle` | [イーグル](#species-eagle) | `BEAST` | 1 | Wind | 40 | 20 | 18 | 10 | 10 | 7 | 5 | 8 | 18 | 10 | `e` | `FLIGHT` | - | 1000 | 1000 | - |
+| `zombie` | [ゾンビ](#species-zombie) | `UNDEAD` | 1 | None | 30 | 15 | 30 | 0 | 10 | 10 | 0 | 2 | 4 | 12 | `z` | `UNDEAD_SOUL`, `MIASMA_RESISTANCE` | - | 1000 | 1500 | `lich` (Lv 20) |
+| `skeleton` | [スケルトン](#species-skeleton) | `UNDEAD` | 1 | None | 35 | 20 | 25 | 0 | 14 | 8 | 0 | 4 | 12 | 6 | `S` | `UNDEAD_SOUL`, `MIASMA_RESISTANCE` | - | 1000 | 1500 | - |
+| `fire_spirit` | [ファイアスピリット](#species-fire_spirit) | `SPIRIT` | 2 | Fire | 120 | 60 | 35 | 50 | 10 | 10 | 25 | 20 | 15 | 15 | `F` | `FIRE_IMMUNITY` | 201 | 1000 | 2000 | - |
+| `water_spirit` | [ウォータースピリット](#species-water_spirit) | `SPIRIT` | 2 | Water | 120 | 60 | 35 | 50 | 10 | 10 | 25 | 20 | 15 | 15 | `U` | - | 202 | 1000 | 2000 | - |
+| `wind_spirit` | [ウィンドスピリット](#species-wind_spirit) | `SPIRIT` | 2 | Wind | 120 | 60 | 35 | 50 | 10 | 10 | 25 | 20 | 15 | 15 | `W` | - | 401 | 1000 | 2000 | - |
+| `earth_spirit` | [アーススピリット](#species-earth_spirit) | `SPIRIT` | 2 | Earth | 120 | 60 | 40 | 40 | 15 | 15 | 15 | 15 | 10 | 20 | `T` | - | 203 | 1000 | 2000 | - |
+| `dragon_slime` | [ドラゴンスライム](#species-dragon_slime) | `DRAGON` | 2 | Fire | 150 | 80 | 50 | 20 | 20 | 18 | 15 | 15 | 12 | 12 | `d` | `SLIME_BODY`, `FIRE_IMMUNITY` | 201 | 1000 | 2500 | - |
+| `griffin` | [グリフォン](#species-griffin) | `BEAST` | 3 | Wind | 300 | 150 | 80 | 30 | 30 | 22 | 15 | 18 | 20 | 15 | `G` | `FLIGHT` | 401 | 1200 | 3000 | - |
+| `demon` | [デーモン](#species-demon) | `DEMON` | 3 | Dark | 300 | 150 | 120 | 50 | 35 | 25 | 30 | 30 | 12 | 15 | `V` | - | 201 | 1500 | 5000 | - |
+| `mist_spirit` | [ミストスピリット](#species-mist_spirit) | `SPIRIT` | 3 | Water | 350 | 180 | 70 | 80 | 15 | 15 | 35 | 30 | 25 | 20 | `M` | - | 202, 302, 304 | 1200 | 3000 | - |
+| `ancient_dragon` | [古代龍](#species-ancient_dragon) | `DRAGON` | 5 | Fire | 2500 | 1000 | 300 | 100 | 80 | 60 | 50 | 40 | 25 | 20 | `A` | `FIRE_IMMUNITY`, `STATUS_IMMUNITY`, `MIASMA_RESISTANCE` | 201, 401, 403 | 1500 | 10000 | - |
+| `town_guardian` | [拠点衛兵](#species-town_guardian) | `HUMANOID` | - | None | - | 0 | 500 | 200 | 100 | 100 | 80 | 80 | 50 | 50 | `g` | `STATUS_IMMUNITY`, `SEE_INVISIBILITY` | 303 | 800 | - | - |
+| `bounty_hunter` | [賞金稼ぎ](#species-bounty_hunter) | `HUMANOID` | 4 | None | - | 0 | (Scaling) | (Scaling) | (Scaling) | (Scaling) | (Scaling) | (Scaling) | (Scaling) | (Scaling) | `H` | `TRACKING`, `SEE_INVISIBILITY` | - | 1000 | - | [詳細](../Monster-PK-System.md#742-賞金稼ぎ-npc-bounty-hunter) |
 
 - **賞金稼ぎ (Rank S) の補正**: ランク S の賞金稼ぎは、1.1 倍のステータス補正を受け、追加の特性として `REGENERATION_II`（毎ターン 5% 回復）および `STATUS_IMMUNITY`（全状態異常無効）を保持します。
 - **エリート個体 (Elite) の補正**: ダンジョンランク A 以上で出現するエリート個体は、通常のモンスターと比較して **1.2 倍** のステータス補正（HP, MP, ATK, DEF, MATK, MDEF, DEX, MND）を受けます。
@@ -194,26 +194,26 @@
 
 | 種族 ID | 習得スキル (Lv) |
 | :--- | :--- |
-| `slime` | `302`: ポイズンガス (10), `101`: パワーアタック (20) |
-| `kobold` | `101`: パワーアタック (8) |
-| `orc` | `101`: パワーアタック (1), `102`: 回転斬り (15) |
-| `dragon` | `201`: ファイアボール (1), `403`: トルネード (25) |
-| `lich` | `202`: アイスブレス (1), `307`: サイレス (1), `305`: コンフューズ (20), `309`: インビジブル (40) |
-| `wolf` | `101`: パワーアタック (10) |
-| `eagle` | `401`: ウィンドブレス (15) |
-| `zombie` | `302`: ポイズンガス (12) |
-| `skeleton` | `101`: パワーアタック (5) |
-| `fire_spirit` | `201`: ファイアボール (1), `302`: ポイズンガス (15) |
-| `water_spirit` | `202`: アイスブレス (1), `304`: スリープクラウド (15) |
-| `wind_spirit` | `401`: ウィンドブレス (1), `309`: インビジブル (20) |
-| `earth_spirit` | `203`: アースニードル (1), `101`: パワーアタック (10) |
-| `dragon_slime` | `201`: ファイアボール (1), `302`: ポイズンガス (10) |
-| `demon` | `201`: ファイアボール (1), `305`: コンフューズ (15) |
-| `griffin` | `401`: ウィンドブレス (1), `102`: 回転斬り (20) |
-| `mist_spirit` | `202`: アイスブレス (1), `302`: ポイズンガス (1), `304`: スリープクラウド (1) |
-| `ancient_dragon` | `201`: ファイアボール (1), `401`: ウィンドブレス (1), `403`: トルネード (1), `308`: ヘイスト (50) |
-| `town_guardian` | `303`: 捕縛 (1) |
-| `bounty_hunter` | `101`: パワーアタック (1), `303`: 捕縛 (1) |
+| <a id="species-slime"></a>`slime` | `302`: ポイズンガス (10), `101`: パワーアタック (20) |
+| <a id="species-kobold"></a>`kobold` | `101`: パワーアタック (8) |
+| <a id="species-orc"></a>`orc` | `101`: パワーアタック (1), `102`: 回転斬り (15) |
+| <a id="species-dragon"></a>`dragon` | `201`: ファイアボール (1), `403`: トルネード (25) |
+| <a id="species-lich"></a>`lich` | `202`: アイスブレス (1), `307`: サイレス (1), `305`: コンフューズ (20), `309`: インビジブル (40) |
+| <a id="species-wolf"></a>`wolf` | `101`: パワーアタック (10) |
+| <a id="species-eagle"></a>`eagle` | `401`: ウィンドブレス (15) |
+| <a id="species-zombie"></a>`zombie` | `302`: ポイズンガス (12) |
+| <a id="species-skeleton"></a>`skeleton` | `101`: パワーアタック (5) |
+| <a id="species-fire_spirit"></a>`fire_spirit` | `201`: ファイアボール (1), `302`: ポイズンガス (15) |
+| <a id="species-water_spirit"></a>`water_spirit` | `202`: アイスブレス (1), `304`: スリープクラウド (15) |
+| <a id="species-wind_spirit"></a>`wind_spirit` | `401`: ウィンドブレス (1), `309`: インビジブル (20) |
+| <a id="species-earth_spirit"></a>`earth_spirit` | `203`: アースニードル (1), `101`: パワーアタック (10) |
+| <a id="species-dragon_slime"></a>`dragon_slime` | `201`: ファイアボール (1), `302`: ポイズンガス (10) |
+| <a id="species-demon"></a>`demon` | `201`: ファイアボール (1), `305`: コンフューズ (15) |
+| <a id="species-griffin"></a>`griffin` | `401`: ウィンドブレス (1), `102`: 回転斬り (20) |
+| <a id="species-mist_spirit"></a>`mist_spirit` | `202`: アイスブレス (1), `302`: ポイズンガス (1), `304`: スリープクラウド (1) |
+| <a id="species-ancient_dragon"></a>`ancient_dragon` | `201`: ファイアボール (1), `401`: ウィンドブレス (1), `403`: トルネード (1), `308`: ヘイスト (50) |
+| <a id="species-town_guardian"></a>`town_guardian` | `303`: 捕縛 (1) |
+| <a id="species-bounty_hunter"></a>`bounty_hunter` | `101`: パワーアタック (1), `303`: 捕縛 (1) |
 
 ## 6. 今後の拡張
 - **モンスター固有スキル**: 種族ごとに異なる特殊能力（分裂、自己爆発など）。
