@@ -21,6 +21,8 @@
 | `maxHp` | Integer | 最大 HP 補正 | -9999 〜 9999 |
 | `maxMp` | Integer | 最大 MP 補正 | -9999 〜 9999 |
 | `maxStamina` | Integer | 最大スタミナ補正 | -100 〜 100 |
+| `isCursed` | Boolean | 呪われているかどうか | `true` / `false` |
+| `isIdentified` | Boolean | 識別済みかどうか | `true` / `false` |
 
 ### 2.2 特殊効果・カテゴリキー
 | キー | 型 | 意味 | 有効範囲 / 例 |
@@ -92,6 +94,13 @@
 | `EXPLOSION` | `damage` | Integer | 爆発ダメージ量 |
 | | `range` | Integer | 爆発範囲 (1: 周囲 8 マス) |
 | `TELEPORT` | `range` | Integer | ワープ範囲（任意） |
+| `HUNGER_ACCELERATION` | `multiplier` | Double | スタミナ消費速度の倍率 |
+| `ACTION_FAILURE_RATE` | `chance` | Double | 行動失敗確率 (0.0 - 1.0) |
+| `LOCK_EXPERIENCE` | - | - | 経験値獲得の封印 |
+| `LOCK_SKILL` | - | - | スキル・魔法使用の封印 |
+| `SWAP_POSITION` | `range` | Integer | 対象との位置入れ替え射程 |
+| `IDENTIFY` | - | - | アイテムの識別 |
+| `REMOVE_CURSE` | - | - | アイテムの解呪 |
 
 ---
 
