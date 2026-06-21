@@ -40,6 +40,9 @@
 - **[EconomicSystemモジュール](./Economic-System.md)**
   - アイテムの流通量、動的な価格計算、およびショップ管理を担当します。
 
+- **[倉庫システム](../Storage-System.md)**
+  - プレイヤー個別のアイテム保管（倉庫）に関する仕様。
+
 - **[標準メタデータ仕様](../Standard-Metadata-Specification.md)**
   - `ThingInstance` および `MonsterInstanceDomain` の `metadata` フィールドにおける予約済みキーの定義。
 
@@ -62,6 +65,9 @@
 
 - **[EconomicSystemモジュール (MongoDB)](./Economic-System-MongoDB.md)**
   - `itemCirculationDomain`, `shopDomain`, `transactionHistoryDomain` コレクションのスキーマ情報。
+
+- **[倉庫システム (MongoDB)](./Storage-MongoDB.md)**
+  - `playerStorageDomain` コレクションのスキーマ情報。
 
 ---
 
