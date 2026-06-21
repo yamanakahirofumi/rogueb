@@ -28,6 +28,7 @@
 - [モンスター忠誠度システム](features/Monster-Loyalty-System.md)：プレイヤーとの絆、増減メカニズム、および影響に関する仕様
 - [モンスター特性システム](features/Monster-Trait-System.md)：モンスターが保持するパッシブ能力（特性）に関する仕様
 - [スキル・魔法システム](features/Skill-And-Magic-System.md)：スキル、魔法のカテゴリ、コスト、および効果に関する仕様
+- [倉庫システム](features/Storage-System.md)：プレイヤー個別のアイテム保管に関する仕様
 - [戦闘システム](features/Combat-System.md)：ダメージ計算、状態異常、戦闘アクションの詳細仕様
 - [モンスター捕獲システム](features/Monster-Capture-System.md)：モンスターの捕獲、アイテム、および成功率に関する仕様
 - [モンスター進化システム](features/Monster-Evolution-System.md)：進化の条件、プロセス、およびステータス・スキルの継承
@@ -43,6 +44,7 @@
 - [BookOfAdventure](features/domain_models/Book-Of-Adventure.md) / [MongoDB](features/domain_models/Book-Of-Adventure-MongoDB.md)
 - [PlayerOperations](features/domain_models/Player-Operations.md)
 - [経済システム](features/domain_models/Economic-System.md) / [MongoDB](features/domain_models/Economic-System-MongoDB.md)
+- [倉庫システム](features/Storage-System.md) / [MongoDB](features/domain_models/Storage-MongoDB.md)
 
 ## 3. 一般的な技術・開発設定 (`docs/tech/`)
 - [アーキテクチャ設計](tech/Architecture.md)：システムのパッケージ構造と主要クラスの責務
