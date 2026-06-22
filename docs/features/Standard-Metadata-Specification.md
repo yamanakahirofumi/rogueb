@@ -101,6 +101,15 @@
 | `SWAP_POSITION` | `range` | Integer | 対象との位置入れ替え射程 |
 | `IDENTIFY` | - | - | アイテムの識別 |
 | `REMOVE_CURSE` | - | - | アイテムの解呪 |
+| `REVEAL_TRAPS` | - | - | 隠蔽された罠の露出 |
+| `MAPPING` | - | - | フロアマップの全開示 |
+| `TRANSFORM_MONSTER` | `monsterId` | String | 指定した種族への変身 |
+| `CAPTURE_MONSTER` | `multiplier` | Double | 捕獲成功率の倍率補正 |
+| `DRAIN_STAMINA` | `amount` | Integer | スタミナの減少量 |
+| `DRAIN_MP` | `amount` | Integer | MP の減少量 |
+| `MOVE_FLOOR` | `relativeLevel` | Integer | 相対的な階層移動（1: 下の階層へ） |
+| `SUMMON_MONSTER` | `count` | Integer | モンスターの召喚数 |
+| `UNEQUIP_ALL` | - | - | 装備中の全アイテムの解除 |
 
 ---
 
