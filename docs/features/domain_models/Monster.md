@@ -206,7 +206,7 @@
 | <a id="species-fire_spirit"></a>`fire_spirit` | `201`: ファイアボール (1), `302`: ポイズンガス (15) |
 | <a id="species-water_spirit"></a>`water_spirit` | `202`: アイスブレス (1), `304`: スリープクラウド (15) |
 | <a id="species-wind_spirit"></a>`wind_spirit` | `401`: ウィンドブレス (1), `309`: インビジブル (20) |
-| <a id="species-earth_spirit"></a>`earth_spirit` | `203`: アースニードル (1), `101`: パワーアタック (10) |
+| <a id="species-earth_spirit"></a>`earth_spirit` | `203`: アースニードル (1), `101`: パワーアタック (10), `404`: クエイク (30) |
 | <a id="species-dragon_slime"></a>`dragon_slime` | `201`: ファイアボール (1), `302`: ポイズンガス (10) |
 | <a id="species-demon"></a>`demon` | `201`: ファイアボール (1), `305`: コンフューズ (15) |
 | <a id="species-griffin"></a>`griffin` | `401`: ウィンドブレス (1), `102`: 回転斬り (20) |
