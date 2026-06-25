@@ -23,6 +23,8 @@
 | `maxStamina` | Integer | 最大スタミナ補正 | -100 〜 100 |
 | `isCursed` | Boolean | 呪われているかどうか | `true` / `false` |
 | `isIdentified` | Boolean | 識別済みかどうか | `true` / `false` |
+| `charges` | Integer | 残り使用回数（杖等で使用） | 0 〜 99 |
+| `maxCharges` | Integer | 最大使用回数（杖等で使用） | 1 〜 99 |
 
 ### 2.2 特殊効果・カテゴリキー
 | キー | 型 | 意味 | 有効範囲 / 例 |

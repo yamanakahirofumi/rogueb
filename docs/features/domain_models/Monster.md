@@ -164,14 +164,14 @@
 
 | ID | 名称 | カテゴリ | ティア | 属性 | コスト | EXP | HP | MP | ATK | DEF | MATK | MDEF | DEX | MND | 表示 | 特性 (Traits) | 初期スキル | 間隔 (ms) | 孵化 (歩) | 進化先 (Lv) |
 | :--- | :--- | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :--- | :---: | :---: | :---: | :--- |
-| `slime` | [スライム](#species-slime) | `SLIME` | 1 | None | 10 | 5 | 10 | 0 | 5 | 5 | 2 | 2 | 5 | 5 | `s` | `SLIME_BODY` | - | 1000 | 500 | `dragon_slime` (Lv 15 + `fire_stone`) |
+| `slime` | [スライム](#species-slime) | `SLIME` | 1 | None | 10 | 5 | 10 | 0 | 5 | 5 | 2 | 2 | 5 | 5 | `s` | `SLIME_BODY` | - | 1000 | 500 | `dragon_slime` (Lv 15 + `fire_stone`, Reset: No) |
 | `kobold` | [コボルト](#species-kobold) | `HUMANOID` | 1 | None | 25 | 12 | 15 | 0 | 8 | 6 | 2 | 4 | 10 | 6 | `k` | - | - | 1000 | 1000 | - |
 | `orc` | [オーク](#species-orc) | `HUMANOID` | 2 | None | 80 | 45 | 40 | 10 | 18 | 15 | 5 | 8 | 12 | 10 | `O` | `AGGRESSIVE` | 101 | 1000 | 1500 | - |
-| `dragon` | [ドラゴン](#species-dragon) | `DRAGON` | 3 | Fire | 250 | 120 | 100 | 30 | 35 | 25 | 20 | 15 | 15 | 12 | `D` | `FIRE_IMMUNITY` | 201 | 1500 | 5000 | `ancient_dragon` (Lv 30 + `bounty_hunter_proof`) |
+| `dragon` | [ドラゴン](#species-dragon) | `DRAGON` | 3 | Fire | 250 | 120 | 100 | 30 | 35 | 25 | 20 | 15 | 15 | 12 | `D` | `FIRE_IMMUNITY` | 201 | 1500 | 5000 | `ancient_dragon` (Lv 30 + `bounty_hunter_proof`, Reset: Yes) |
 | `lich` | [リッチ](#species-lich) | `UNDEAD` | 4 | None | 600 | 300 | 150 | 100 | 20 | 20 | 45 | 40 | 18 | 30 | `L` | `UNDEAD_SOUL`, `STATUS_IMMUNITY`, `MIASMA_RESISTANCE` | 202, 307 | 1200 | 5000 | - |
 | `wolf` | [ウルフ](#species-wolf) | `BEAST` | 1 | None | 35 | 18 | 20 | 0 | 12 | 8 | 2 | 5 | 15 | 8 | `w` | `TRACKING` | - | 1000 | 1000 | - |
 | `eagle` | [イーグル](#species-eagle) | `BEAST` | 1 | Wind | 40 | 20 | 18 | 10 | 10 | 7 | 5 | 8 | 18 | 10 | `e` | `FLIGHT` | - | 1000 | 1000 | - |
-| `zombie` | [ゾンビ](#species-zombie) | `UNDEAD` | 1 | None | 30 | 15 | 30 | 0 | 10 | 10 | 0 | 2 | 4 | 12 | `z` | `UNDEAD_SOUL`, `MIASMA_RESISTANCE` | - | 1000 | 1500 | `lich` (Lv 20) |
+| `zombie` | [ゾンビ](#species-zombie) | `UNDEAD` | 1 | None | 30 | 15 | 30 | 0 | 10 | 10 | 0 | 2 | 4 | 12 | `z` | `UNDEAD_SOUL`, `MIASMA_RESISTANCE` | - | 1000 | 1500 | `lich` (Lv 20, Reset: Yes) |
 | `skeleton` | [スケルトン](#species-skeleton) | `UNDEAD` | 1 | None | 35 | 20 | 25 | 0 | 14 | 8 | 0 | 4 | 12 | 6 | `S` | `UNDEAD_SOUL`, `MIASMA_RESISTANCE` | - | 1000 | 1500 | - |
 | `fire_spirit` | [ファイアスピリット](#species-fire_spirit) | `SPIRIT` | 2 | Fire | 120 | 60 | 35 | 50 | 10 | 10 | 25 | 20 | 15 | 15 | `F` | `FIRE_IMMUNITY` | 201 | 1000 | 2000 | - |
 | `water_spirit` | [ウォータースピリット](#species-water_spirit) | `SPIRIT` | 2 | Water | 120 | 60 | 35 | 50 | 10 | 10 | 25 | 20 | 15 | 15 | `U` | - | 202 | 1000 | 2000 | - |
