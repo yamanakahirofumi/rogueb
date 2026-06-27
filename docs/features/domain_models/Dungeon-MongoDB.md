@@ -19,6 +19,9 @@
     - `isIntrusionEnabled` (Boolean): 乱入許可フラグ。
     - `interventionPoints` (Integer): 介入ポイント。
     - `environmentalEffects` (Array): 環境効果のリスト (Stringの配列: `DARKNESS`, `MIASMA` 等)。
+    - `customRules` (Array): ランク S で設定可能な独自ルールのリスト。
+        - `ruleId` (String): ルールの ID。
+        - `parameters` (Map): パラメータ (String キーと Object 値のマップ)。
     - `lastActivityDate` (Long): 最終アクティビティ日時のタイムスタンプ。
     - `lastBossDefeatDate` (Long): 最終ボス撃破日時のタイムスタンプ。
     - `deathPenalty` (Object): デスペナルティの設定 (`DeathPenaltyDomain`)。
