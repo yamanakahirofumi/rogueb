@@ -44,6 +44,8 @@
     - `dungeonId` (String): 関連する`dungeonDomain`のID。
     - `userId` (String): このフロアが割り当てられているユーザーのID。
     - `level` (Integer): フロアの階層レベル。
+    - `width` (Integer): フロアの幅。
+    - `height` (Integer): フロアの高さ。
     - `upStairs` (Object): 上り階段の座標 (`Coordinate`オブジェクト)。
     - `downStairs` (Object): 下り階段の座標 (`Coordinate`オブジェクト)。
     - `thingList` (Array): フロア上のアイテムのリスト (`ObjectCoordinateDomain`オブジェクトの配列)。
