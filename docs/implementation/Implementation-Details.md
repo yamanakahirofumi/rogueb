@@ -26,7 +26,12 @@ Spring WebFlux および Project Reactor を採用しており、すべてのサ
 ## 4. リアルタイム同期 (SSE)
 マルチプレイヤー間の状態同期は Server-Sent Events (SSE) を用いて行われます。詳細は [リアルタイム同期プロトコル](Real-time-Synchronization.md) を参照してください。
 
-## 5. モジュール間連携
+## 5. データ整合性戦略
+複数サービスにまたがる更新の整合性は、結果整合性に基づいて確保されます。詳細は以下のドキュメントを参照してください。
+
+- **[分散システムにおけるデータ整合性確保の仕様](Distributed-Consistency.md)**
+
+## 6. モジュール間連携
 BFF である `PlayerOperations` が、各ドメインサービス（Dungeon, Objects 等）をオーケストレーションします。
 
 1. `PlayerOperations` がリクエストを受信
