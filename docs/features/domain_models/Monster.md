@@ -142,6 +142,16 @@
 ### 3.6 基本AIアルゴリズム
 野生モンスターは、自身のターンにおいて行動タイプ（`aiType`）に基づいたアルゴリズムに従って行動を決定します。詳細は [モンスターAI詳細仕様](../Monster-AI-Specification.md) を参照してください。
 
+### 3.7 モンスター表示文字の規約 (Monster Display Character Convention)
+マップ上でモンスターを表す表示文字（`display`）は、原則として以下の規約に従って割り当てられます。
+
+- **ティア 1 〜 2**: 小文字（例: スライム `s`、ドラゴンスライム `d`）。
+- **ティア 3 以上 / ユニーク**: 大文字（例: ドラゴン `D`、古代龍 `A`、賞金稼ぎ `H`）。
+- **競合の解決**: 同じ文字を使用する種族が複数存在し、かつ同じティア区分である場合は、一方が大文字（または別の文字）を使用することで重複を避けます。
+  - 例: スライム（Tier 1）が `s` を使用するため、スケルトン（Tier 1）は `S` を使用します。
+  - 例: ウルフ（Tier 1）が `w` を使用するため、ウィンドスピリット（Tier 2）は `W` を使用します。
+
+### 3.8 基本AIアルゴリズム
 基本（`NORMAL`）タイプの場合、以下の優先順位で行動を決定します。
 
 1. **攻撃範囲内の確認**: 隣接 8 方向（または特殊射程内）にプレイヤーが存在する場合、攻撃アクションを実行します。
@@ -175,17 +185,17 @@
 | :--- | :--- | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :--- | :---: | :---: | :---: | :--- |
 | `slime` | [スライム](#species-slime) | `SLIME` | 1 | None | 10 | 5 | 10 | 0 | 5 | 5 | 2 | 2 | 5 | 5 | `s` | `SLIME_BODY` | - | 1000 | 500 | `dragon_slime` (Lv 15 + `fire_stone`, Reset: No) |
 | `kobold` | [コボルト](#species-kobold) | `HUMANOID` | 1 | None | 25 | 12 | 15 | 0 | 8 | 6 | 2 | 4 | 10 | 6 | `k` | - | - | 1000 | 1000 | - |
-| `orc` | [オーク](#species-orc) | `HUMANOID` | 2 | None | 80 | 45 | 40 | 10 | 18 | 15 | 5 | 8 | 12 | 10 | `O` | `AGGRESSIVE` | 101 | 1000 | 1500 | - |
+| `orc` | [オーク](#species-orc) | `HUMANOID` | 2 | None | 80 | 45 | 40 | 10 | 18 | 15 | 5 | 8 | 12 | 10 | `o` | `AGGRESSIVE` | 101 | 1000 | 1500 | - |
 | `dragon` | [ドラゴン](#species-dragon) | `DRAGON` | 3 | Fire | 250 | 120 | 100 | 30 | 35 | 25 | 20 | 15 | 15 | 12 | `D` | `FIRE_IMMUNITY` | 201 | 1500 | 5000 | `ancient_dragon` (Lv 30 + `bounty_hunter_proof`, Reset: Yes) |
 | `lich` | [リッチ](#species-lich) | `UNDEAD` | 4 | None | 600 | 300 | 150 | 100 | 20 | 20 | 45 | 40 | 18 | 30 | `L` | `UNDEAD_SOUL`, `STATUS_IMMUNITY`, `MIASMA_RESISTANCE` | 202, 307 | 1200 | 5000 | - |
 | `wolf` | [ウルフ](#species-wolf) | `BEAST` | 1 | None | 35 | 18 | 20 | 0 | 12 | 8 | 2 | 5 | 15 | 8 | `w` | `TRACKING` | - | 1000 | 1000 | - |
 | `eagle` | [イーグル](#species-eagle) | `BEAST` | 1 | Wind | 40 | 20 | 18 | 10 | 10 | 7 | 5 | 8 | 18 | 10 | `e` | `FLIGHT` | - | 1000 | 1000 | - |
 | `zombie` | [ゾンビ](#species-zombie) | `UNDEAD` | 1 | None | 30 | 15 | 30 | 0 | 10 | 10 | 0 | 2 | 4 | 12 | `z` | `UNDEAD_SOUL`, `MIASMA_RESISTANCE` | - | 1000 | 1500 | `lich` (Lv 20, Reset: Yes) |
 | `skeleton` | [スケルトン](#species-skeleton) | `UNDEAD` | 1 | None | 35 | 20 | 25 | 0 | 14 | 8 | 0 | 4 | 12 | 6 | `S` | `UNDEAD_SOUL`, `MIASMA_RESISTANCE` | - | 1000 | 1500 | - |
-| `fire_spirit` | [ファイアスピリット](#species-fire_spirit) | `SPIRIT` | 2 | Fire | 120 | 60 | 35 | 50 | 10 | 10 | 25 | 20 | 15 | 15 | `F` | `FIRE_IMMUNITY` | 201 | 1000 | 2000 | - |
-| `water_spirit` | [ウォータースピリット](#species-water_spirit) | `SPIRIT` | 2 | Water | 120 | 60 | 35 | 50 | 10 | 10 | 25 | 20 | 15 | 15 | `U` | - | 202 | 1000 | 2000 | - |
+| `fire_spirit` | [ファイアスピリット](#species-fire_spirit) | `SPIRIT` | 2 | Fire | 120 | 60 | 35 | 50 | 10 | 10 | 25 | 20 | 15 | 15 | `f` | `FIRE_IMMUNITY` | 201 | 1000 | 2000 | - |
+| `water_spirit` | [ウォータースピリット](#species-water_spirit) | `SPIRIT` | 2 | Water | 120 | 60 | 35 | 50 | 10 | 10 | 25 | 20 | 15 | 15 | `u` | - | 202 | 1000 | 2000 | - |
 | `wind_spirit` | [ウィンドスピリット](#species-wind_spirit) | `SPIRIT` | 2 | Wind | 120 | 60 | 35 | 50 | 10 | 10 | 25 | 20 | 15 | 15 | `W` | - | 401 | 1000 | 2000 | - |
-| `earth_spirit` | [アーススピリット](#species-earth_spirit) | `SPIRIT` | 2 | Earth | 120 | 60 | 40 | 40 | 15 | 15 | 15 | 15 | 10 | 20 | `T` | - | 203 | 1000 | 2000 | - |
+| `earth_spirit` | [アーススピリット](#species-earth_spirit) | `SPIRIT` | 2 | Earth | 120 | 60 | 40 | 40 | 15 | 15 | 15 | 15 | 10 | 20 | `t` | - | 203 | 1000 | 2000 | - |
 | `dragon_slime` | [ドラゴンスライム](#species-dragon_slime) | `DRAGON` | 2 | Fire | 150 | 80 | 50 | 20 | 20 | 18 | 15 | 15 | 12 | 12 | `d` | `SLIME_BODY`, `FIRE_IMMUNITY` | 201 | 1000 | 2500 | - |
 | `griffin` | [グリフォン](#species-griffin) | `BEAST` | 3 | Wind | 300 | 150 | 80 | 30 | 30 | 22 | 15 | 18 | 20 | 15 | `G` | `FLIGHT` | 401 | 1200 | 3000 | - |
 | `demon` | [デーモン](#species-demon) | `DEMON` | 3 | Dark | 300 | 150 | 120 | 50 | 35 | 25 | 30 | 30 | 12 | 15 | `V` | - | 201 | 1500 | 5000 | - |
