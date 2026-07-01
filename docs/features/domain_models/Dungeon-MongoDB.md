@@ -19,7 +19,7 @@
     - `isIntrusionEnabled` (Boolean): 乱入許可フラグ。
     - `interventionPoints` (Integer): 介入ポイント。
     - `environmentalEffects` (Array): 環境効果のリスト (Stringの配列: `DARKNESS`, `MIASMA` 等)。
-    - `customRules` (Array): ランク S で設定可能な独自ルールのリスト。
+    - `customRules` (Array): ランク S で設定可能な独自ルールのリスト。詳細は [ダンジョン独自ルール詳細仕様](../Dungeon-Custom-Rule-Specification.md) を参照。
         - `ruleId` (String): ルールの ID。
         - `parameters` (Map): パラメータ (String キーと Object 値のマップ)。
     - `lastActivityDate` (Long): 最終アクティビティ日時のタイムスタンプ。
