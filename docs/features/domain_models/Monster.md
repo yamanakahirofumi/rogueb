@@ -184,17 +184,17 @@
 | ID | 名称 | カテゴリ | ティア | 属性 | コスト | EXP | HP | MP | ATK | DEF | MATK | MDEF | DEX | MND | 表示 | 特性 (Traits) | 初期スキル | 間隔 (ms) | 孵化 (歩) | 進化先 (Lv) |
 | :--- | :--- | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :--- | :---: | :---: | :---: | :--- |
 | `slime` | [スライム](#species-slime) | `SLIME` | 1 | None | 10 | 5 | 10 | 0 | 5 | 5 | 2 | 2 | 5 | 5 | `s` | `SLIME_BODY` | - | 1000 | 500 | `dragon_slime` (Lv 15 + `fire_stone`, Reset: No) |
-| `kobold` | [コボルト](#species-kobold) | `HUMANOID` | 1 | None | 25 | 12 | 15 | 0 | 8 | 6 | 2 | 4 | 10 | 6 | `k` | - | - | 1000 | 1000 | - |
-| `orc` | [オーク](#species-orc) | `HUMANOID` | 2 | None | 80 | 45 | 40 | 10 | 18 | 15 | 5 | 8 | 12 | 10 | `o` | `AGGRESSIVE` | 101 | 1000 | 1500 | - |
+| `kobold` | [コボルト](#species-kobold) | `HUMANOID` | 1 | None | 25 | 12 | 15 | 0 | 8 | 6 | 2 | 4 | 10 | 6 | `k` | - | - | 1000 | 1000 | `orc` (Lv 15, Reset: No) |
+| `orc` | [オーク](#species-orc) | `HUMANOID` | 2 | None | 80 | 45 | 40 | 10 | 18 | 15 | 5 | 8 | 12 | 10 | `o` | `AGGRESSIVE` | 101 | 1000 | 1500 | `demon` (Lv 25 + `dark_stone`, Reset: Yes) |
 | `dragon` | [ドラゴン](#species-dragon) | `DRAGON` | 3 | Fire | 250 | 120 | 100 | 30 | 35 | 25 | 20 | 15 | 15 | 12 | `D` | `FIRE_IMMUNITY` | 201 | 1500 | 5000 | `ancient_dragon` (Lv 30 + `bounty_hunter_proof`, Reset: Yes) |
 | `lich` | [リッチ](#species-lich) | `UNDEAD` | 4 | None | 600 | 300 | 150 | 100 | 20 | 20 | 45 | 40 | 18 | 30 | `L` | `UNDEAD_SOUL`, `STATUS_IMMUNITY`, `MIASMA_RESISTANCE` | 202, 307 | 1200 | 5000 | - |
-| `wolf` | [ウルフ](#species-wolf) | `BEAST` | 1 | None | 35 | 18 | 20 | 0 | 12 | 8 | 2 | 5 | 15 | 8 | `w` | `TRACKING` | - | 1000 | 1000 | - |
-| `eagle` | [イーグル](#species-eagle) | `BEAST` | 1 | Wind | 40 | 20 | 18 | 10 | 10 | 7 | 5 | 8 | 18 | 10 | `e` | `FLIGHT` | - | 1000 | 1000 | - |
+| `wolf` | [ウルフ](#species-wolf) | `BEAST` | 1 | None | 35 | 18 | 20 | 0 | 12 | 8 | 2 | 5 | 15 | 8 | `w` | `TRACKING` | - | 1000 | 1000 | `orc` (Lv 18, Reset: Yes) |
+| `eagle` | [イーグル](#species-eagle) | `BEAST` | 1 | Wind | 40 | 20 | 18 | 10 | 10 | 7 | 5 | 8 | 18 | 10 | `e` | `FLIGHT` | - | 1000 | 1000 | `griffin` (Lv 20 + `wind_stone`, Reset: No) |
 | `zombie` | [ゾンビ](#species-zombie) | `UNDEAD` | 1 | None | 30 | 15 | 30 | 0 | 10 | 10 | 0 | 2 | 4 | 12 | `z` | `UNDEAD_SOUL`, `MIASMA_RESISTANCE` | - | 1000 | 1500 | `lich` (Lv 20, Reset: Yes) |
 | `skeleton` | [スケルトン](#species-skeleton) | `UNDEAD` | 1 | None | 35 | 20 | 25 | 0 | 14 | 8 | 0 | 4 | 12 | 6 | `S` | `UNDEAD_SOUL`, `MIASMA_RESISTANCE` | - | 1000 | 1500 | - |
-| `fire_spirit` | [ファイアスピリット](#species-fire_spirit) | `SPIRIT` | 2 | Fire | 120 | 60 | 35 | 50 | 10 | 10 | 25 | 20 | 15 | 15 | `f` | `FIRE_IMMUNITY` | 201 | 1000 | 2000 | - |
-| `water_spirit` | [ウォータースピリット](#species-water_spirit) | `SPIRIT` | 2 | Water | 120 | 60 | 35 | 50 | 10 | 10 | 25 | 20 | 15 | 15 | `u` | - | 202 | 1000 | 2000 | - |
-| `wind_spirit` | [ウィンドスピリット](#species-wind_spirit) | `SPIRIT` | 2 | Wind | 120 | 60 | 35 | 50 | 10 | 10 | 25 | 20 | 15 | 15 | `W` | - | 401 | 1000 | 2000 | - |
+| `fire_spirit` | [ファイアスピリット](#species-fire_spirit) | `SPIRIT` | 2 | Fire | 120 | 60 | 35 | 50 | 10 | 10 | 25 | 20 | 15 | 15 | `f` | `FIRE_IMMUNITY` | 201 | 1000 | 2000 | `mist_spirit` (Lv 20 + `water_stone`, Reset: No) |
+| `water_spirit` | [ウォータースピリット](#species-water_spirit) | `SPIRIT` | 2 | Water | 120 | 60 | 35 | 50 | 10 | 10 | 25 | 20 | 15 | 15 | `u` | - | 202 | 1000 | 2000 | `mist_spirit` (Lv 20 + `fire_stone`, Reset: No) |
+| `wind_spirit` | [ウィンドスピリット](#species-wind_spirit) | `SPIRIT` | 2 | Wind | 120 | 60 | 35 | 50 | 10 | 10 | 25 | 20 | 15 | 15 | `W` | - | 401 | 1000 | 2000 | `griffin` (Lv 25 + `wolf_soul_gem`, Reset: Yes) |
 | `earth_spirit` | [アーススピリット](#species-earth_spirit) | `SPIRIT` | 2 | Earth | 120 | 60 | 40 | 40 | 15 | 15 | 15 | 15 | 10 | 20 | `t` | - | 203 | 1000 | 2000 | - |
 | `dragon_slime` | [ドラゴンスライム](#species-dragon_slime) | `DRAGON` | 2 | Fire | 150 | 80 | 50 | 20 | 20 | 18 | 15 | 15 | 12 | 12 | `d` | `SLIME_BODY`, `FIRE_IMMUNITY` | 201 | 1000 | 2500 | - |
 | `griffin` | [グリフォン](#species-griffin) | `BEAST` | 3 | Wind | 300 | 150 | 80 | 30 | 30 | 22 | 15 | 18 | 20 | 15 | `G` | `FLIGHT` | 401 | 1200 | 3000 | - |
@@ -214,14 +214,14 @@
 | 種族 ID | 習得スキル (Lv) |
 | :--- | :--- |
 | <a id="species-slime"></a>`slime` | `302`: ポイズンガス (10), `101`: パワーアタック (20) |
-| <a id="species-kobold"></a>`kobold` | `101`: パワーアタック (8) |
-| <a id="species-orc"></a>`orc` | `101`: パワーアタック (1), `102`: 回転斬り (15) |
-| <a id="species-dragon"></a>`dragon` | `201`: ファイアボール (1), `403`: トルネード (25) |
-| <a id="species-lich"></a>`lich` | `202`: アイスブレス (1), `307`: サイレス (1), `305`: コンフューズ (20), `309`: インビジブル (40) |
-| <a id="species-wolf"></a>`wolf` | `101`: パワーアタック (10) |
-| <a id="species-eagle"></a>`eagle` | `401`: ウィンドブレス (15) |
-| <a id="species-zombie"></a>`zombie` | `302`: ポイズンガス (12) |
-| <a id="species-skeleton"></a>`skeleton` | `101`: パワーアタック (5) |
+| <a id="species-kobold"></a>`kobold` | `101`: パワーアタック (8), `103`: シールドバッシュ (15) |
+| <a id="species-orc"></a>`orc` | `101`: パワーアタック (1), `102`: 回転斬り (15), `103`: シールドバッシュ (25) |
+| <a id="species-dragon"></a>`dragon` | `201`: ファイアボール (1), `403`: トルネード (25), `601`: 自爆 (40) |
+| <a id="species-lich"></a>`lich` | `202`: アイスブレス (1), `307`: サイレス (1), `305`: コンフューズ (20), `309`: インビジブル (40), `402`: ホーリーレイ (50) |
+| <a id="species-wolf"></a>`wolf` | `101`: パワーアタック (10), `308`: ヘイスト (30) |
+| <a id="species-eagle"></a>`eagle` | `401`: ウィンドブレス (15), `501`: テレポート (35) |
+| <a id="species-zombie"></a>`zombie` | `302`: ポイズンガス (12), `101`: パワーアタック (20) |
+| <a id="species-skeleton"></a>`skeleton` | `101`: パワーアタック (5), `103`: シールドバッシュ (18) |
 | <a id="species-fire_spirit"></a>`fire_spirit` | `201`: ファイアボール (1), `302`: ポイズンガス (15) |
 | <a id="species-water_spirit"></a>`water_spirit` | `202`: アイスブレス (1), `304`: スリープクラウド (15) |
 | <a id="species-wind_spirit"></a>`wind_spirit` | `401`: ウィンドブレス (1), `309`: インビジブル (20) |
