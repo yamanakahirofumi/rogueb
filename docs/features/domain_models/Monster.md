@@ -29,7 +29,8 @@
         - 有効な値: `SLIME`, `BEAST`, `UNDEAD`, `DRAGON`, `DEMON`, `SPIRIT`, `HUMANOID`
     - `attribute`: モンスターの属性（Fire, Water, Wind, Earth, Holy, Dark, None）。
     - `traits`: モンスターの種族固有の特性（パッシブ能力）のリスト。詳細は [モンスター特性システム](../Monster-Trait-System.md) を参照。特性は「能力強化」「耐性・無効」「特殊・行動」のカテゴリに分類されています。
-    - `aiType`: 行動を制御する AI のタイプ（`NORMAL`, `STATIONARY` 等）。詳細は [モンスターAI詳細仕様](../Monster-AI-Specification.md) を参照。
+    - `aiType`: 行動を制御する AI のタイプ（`NORMAL`, `STATIONARY`, `COWARDLY`, `AGGRESSIVE` 等）。詳細は [モンスターAI詳細仕様](../Monster-AI-Specification.md) を参照。
+    - `skillRate`: AI がスキルを使用する基本確率（0 〜 100）。
     - `baseActionInterval`: 基本行動間隔。
     - `placementCost`: ダンジョン配置時のコスト。
     - `baseIncubationSteps`: 孵化に必要な基本歩数。
@@ -69,6 +70,7 @@
     - `level`: 現在のレベル.
     - `currentHp`: 現在の体力.
     - `currentMp`: 現在の魔法力.
+    - `skillRate`: 個体固有のスキル使用確率（通常は種族の基本値を継承）.
     - `subStep`: 内部歩数カウンタ（状態異常の継続判定や自然回復のタイミング計算に使用）.
     - `experience`: 累積経験値（捕獲後の成長に使用）.
     - `skillIds`: 習得しているスキル ID のリスト. **最大 4 つ**まで保持可能です。
@@ -182,28 +184,28 @@
 
 初期の開発・テストにおいて標準的に使用されるモンスターのパラメータを定義します。
 
-| ID | 名称 | カテゴリ | ティア | 属性 | コスト | EXP | HP | MP | ATK | DEF | MATK | MDEF | DEX | MND | 表示 | 特性 (Traits) | 初期スキル | 間隔 (ms) | 孵化 (歩) | 進化先 (Lv) |
-| :--- | :--- | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :--- | :---: | :---: | :---: | :--- |
-| `slime` | [スライム](#species-slime) | `SLIME` | 1 | None | 10 | 5 | 10 | 0 | 5 | 5 | 2 | 2 | 5 | 5 | `s` | `SLIME_BODY` | - | 1000 | 500 | `dragon_slime` (Lv 15 + `fire_stone`, Reset: No) |
-| `kobold` | [コボルト](#species-kobold) | `HUMANOID` | 1 | None | 25 | 12 | 15 | 0 | 8 | 6 | 2 | 4 | 10 | 6 | `k` | - | - | 1000 | 1000 | `orc` (Lv 12, Reset: Yes) |
-| `orc` | [オーク](#species-orc) | `HUMANOID` | 2 | None | 80 | 45 | 40 | 10 | 18 | 15 | 5 | 8 | 12 | 10 | `o` | `AGGRESSIVE` | 101 | 1000 | 1500 | `demon` (Lv 25 + `dark_stone`, Reset: Yes) |
-| `dragon` | [ドラゴン](#species-dragon) | `DRAGON` | 3 | Fire | 250 | 120 | 100 | 30 | 35 | 25 | 20 | 15 | 15 | 12 | `D` | `FIRE_IMMUNITY` | 201 | 1500 | 5000 | `ancient_dragon` (Lv 30 + `bounty_hunter_proof`, Reset: Yes) |
-| `lich` | [リッチ](#species-lich) | `UNDEAD` | 4 | None | 600 | 300 | 150 | 100 | 20 | 20 | 45 | 40 | 18 | 30 | `L` | `UNDEAD_SOUL`, `STATUS_IMMUNITY`, `MIASMA_RESISTANCE` | 204, 307, 501 | 1200 | 5000 | - |
-| `wolf` | [ウルフ](#species-wolf) | `BEAST` | 1 | None | 35 | 18 | 20 | 0 | 12 | 8 | 2 | 5 | 15 | 8 | `w` | `TRACKING` | 105 | 1000 | 1000 | `griffin` (Lv 20 + `wind_stone` + `wolf_soul_gem`, Reset: Yes) |
-| `eagle` | [イーグル](#species-eagle) | `BEAST` | 1 | Wind | 40 | 20 | 18 | 10 | 10 | 7 | 5 | 8 | 18 | 10 | `e` | `FLIGHT` | - | 1000 | 1000 | `griffin` (Lv 20 + `wind_stone`, Reset: No) |
-| `zombie` | [ゾンビ](#species-zombie) | `UNDEAD` | 1 | None | 30 | 15 | 30 | 0 | 10 | 10 | 0 | 2 | 4 | 12 | `z` | `UNDEAD_SOUL`, `MIASMA_RESISTANCE` | - | 1000 | 1500 | `lich` (Lv 20, Reset: Yes) |
-| `skeleton` | [スケルトン](#species-skeleton) | `UNDEAD` | 1 | None | 35 | 20 | 25 | 0 | 14 | 8 | 0 | 4 | 12 | 6 | `S` | `UNDEAD_SOUL`, `MIASMA_RESISTANCE` | - | 1000 | 1500 | - |
-| `fire_spirit` | [ファイアスピリット](#species-fire_spirit) | `SPIRIT` | 2 | Fire | 120 | 60 | 35 | 50 | 10 | 10 | 25 | 20 | 15 | 15 | `f` | `FIRE_IMMUNITY` | 201 | 1000 | 2000 | `dragon` (Lv 20 + `fire_stone`, Reset: Yes) |
-| `water_spirit` | [ウォータースピリット](#species-water_spirit) | `SPIRIT` | 2 | Water | 120 | 60 | 35 | 50 | 10 | 10 | 25 | 20 | 15 | 15 | `u` | - | 202 | 1000 | 2000 | `mist_spirit` (Lv 20 + `water_stone`, Reset: Yes) |
-| `wind_spirit` | [ウィンドスピリット](#species-wind_spirit) | `SPIRIT` | 2 | Wind | 120 | 60 | 35 | 50 | 10 | 10 | 25 | 20 | 15 | 15 | `W` | - | 401 | 1000 | 2000 | `griffin` (Lv 25 + `wolf_soul_gem`, Reset: Yes) |
-| `earth_spirit` | [アーススピリット](#species-earth_spirit) | `SPIRIT` | 2 | Earth | 120 | 60 | 40 | 40 | 15 | 15 | 15 | 15 | 10 | 20 | `t` | - | 203 | 1000 | 2000 | - |
-| `dragon_slime` | [ドラゴンスライム](#species-dragon_slime) | `DRAGON` | 2 | Fire | 150 | 80 | 50 | 20 | 20 | 18 | 15 | 15 | 12 | 12 | `d` | `SLIME_BODY`, `FIRE_IMMUNITY` | 201 | 1000 | 2500 | - |
-| `griffin` | [グリフォン](#species-griffin) | `BEAST` | 3 | Wind | 300 | 150 | 80 | 30 | 30 | 22 | 15 | 18 | 20 | 15 | `G` | `FLIGHT` | 401 | 1200 | 3000 | - |
-| `demon` | [デーモン](#species-demon) | `DEMON` | 3 | Dark | 300 | 150 | 120 | 50 | 35 | 25 | 30 | 30 | 12 | 15 | `V` | - | 201 | 1500 | 5000 | - |
-| `mist_spirit` | [ミストスピリット](#species-mist_spirit) | `SPIRIT` | 3 | Water | 350 | 180 | 70 | 80 | 15 | 15 | 35 | 30 | 25 | 20 | `M` | - | 202, 302, 304 | 1200 | 3000 | - |
-| `ancient_dragon` | [古代龍](#species-ancient_dragon) | `DRAGON` | 5 | Fire | 2500 | 1000 | 300 | 100 | 80 | 60 | 50 | 40 | 25 | 20 | `A` | `FIRE_IMMUNITY`, `STATUS_IMMUNITY`, `MIASMA_RESISTANCE` | 201, 401, 403 | 1500 | 10000 | - |
-| `town_guardian` | [拠点衛兵](#species-town_guardian) | `HUMANOID` | - | None | - | 0 | 500 | 200 | 100 | 100 | 80 | 80 | 50 | 50 | `g` | `STATUS_IMMUNITY`, `SEE_INVISIBILITY` | 303 | 800 | - | - |
-| `bounty_hunter` | [賞金稼ぎ](#species-bounty_hunter) | `HUMANOID` | 4 | None | - | 0 | (Scaling) | (Scaling) | (Scaling) | (Scaling) | (Scaling) | (Scaling) | (Scaling) | (Scaling) | `H` | `TRACKING`, `SEE_INVISIBILITY` | - | 1000 | - | [詳細](../Monster-PK-System.md#742-賞金稼ぎ-npc-bounty-hunter) |
+| ID | 名称 | カテゴリ | ティア | 属性 | コスト | EXP | HP | MP | ATK | DEF | MATK | MDEF | DEX | MND | 表示 | 特性 (Traits) | 初期スキル | AI | スキル率 | 間隔 (ms) | 孵化 (歩) | 進化先 (Lv) |
+| :--- | :--- | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :--- | :---: | :---: | :---: | :---: | :---: | :--- |
+| `slime` | [スライム](#species-slime) | `SLIME` | 1 | None | 10 | 5 | 10 | 0 | 5 | 5 | 2 | 2 | 5 | 5 | `s` | `SLIME_BODY` | - | NORMAL | 20 | 1000 | 500 | `dragon_slime` (Lv 15 + `fire_stone`, Reset: No) |
+| `kobold` | [コボルト](#species-kobold) | `HUMANOID` | 1 | None | 25 | 12 | 15 | 0 | 8 | 6 | 2 | 4 | 10 | 6 | `k` | - | - | NORMAL | 20 | 1000 | 1000 | `orc` (Lv 12, Reset: Yes) |
+| `orc` | [オーク](#species-orc) | `HUMANOID` | 2 | None | 80 | 45 | 40 | 10 | 18 | 15 | 5 | 8 | 12 | 10 | `o` | `AGGRESSIVE` | 101 | AGGRESSIVE | 25 | 1000 | 1500 | `demon` (Lv 25 + `dark_stone`, Reset: Yes) |
+| `dragon` | [ドラゴン](#species-dragon) | `DRAGON` | 3 | Fire | 250 | 120 | 100 | 30 | 35 | 25 | 20 | 15 | 15 | 12 | `D` | `FIRE_IMMUNITY` | 201 | NORMAL | 30 | 1500 | 5000 | `ancient_dragon` (Lv 30 + `bounty_hunter_proof`, Reset: Yes) |
+| `lich` | [リッチ](#species-lich) | `UNDEAD` | 4 | None | 600 | 300 | 150 | 100 | 20 | 20 | 45 | 40 | 18 | 30 | `L` | `UNDEAD_SOUL`, `STATUS_IMMUNITY`, `MIASMA_RESISTANCE` | 204, 307, 501 | NORMAL | 40 | 1200 | 5000 | - |
+| `wolf` | [ウルフ](#species-wolf) | `BEAST` | 1 | None | 35 | 18 | 20 | 0 | 12 | 8 | 2 | 5 | 15 | 8 | `w` | `TRACKING` | 105 | AGGRESSIVE | 25 | 1000 | 1000 | `griffin` (Lv 20 + `wind_stone` + `wolf_soul_gem`, Reset: Yes) |
+| `eagle` | [イーグル](#species-eagle) | `BEAST` | 1 | Wind | 40 | 20 | 18 | 10 | 10 | 7 | 5 | 8 | 18 | 10 | `e` | `FLIGHT` | - | NORMAL | 20 | 1000 | 1000 | `griffin` (Lv 20 + `wind_stone`, Reset: No) |
+| `zombie` | [ゾンビ](#species-zombie) | `UNDEAD` | 1 | None | 30 | 15 | 30 | 0 | 10 | 10 | 0 | 2 | 4 | 12 | `z` | `UNDEAD_SOUL`, `MIASMA_RESISTANCE` | - | NORMAL | 15 | 1000 | 1500 | `lich` (Lv 20, Reset: Yes) |
+| `skeleton` | [スケルトン](#species-skeleton) | `UNDEAD` | 1 | None | 35 | 20 | 25 | 0 | 14 | 8 | 0 | 4 | 12 | 6 | `S` | `UNDEAD_SOUL`, `MIASMA_RESISTANCE` | - | NORMAL | 20 | 1000 | 1500 | - |
+| `fire_spirit` | [ファイアスピリット](#species-fire_spirit) | `SPIRIT` | 2 | Fire | 120 | 60 | 35 | 50 | 10 | 10 | 25 | 20 | 15 | 15 | `f` | `FIRE_IMMUNITY` | 201 | NORMAL | 30 | 1000 | 2000 | `dragon` (Lv 20 + `fire_stone`, Reset: Yes) |
+| `water_spirit` | [ウォータースピリット](#species-water_spirit) | `SPIRIT` | 2 | Water | 120 | 60 | 35 | 50 | 10 | 10 | 25 | 20 | 15 | 15 | `u` | - | 202 | NORMAL | 30 | 1000 | 2000 | `mist_spirit` (Lv 20 + `water_stone`, Reset: Yes) |
+| `wind_spirit` | [ウィンドスピリット](#species-wind_spirit) | `SPIRIT` | 2 | Wind | 120 | 60 | 35 | 50 | 10 | 10 | 25 | 20 | 15 | 15 | `W` | - | 401 | NORMAL | 30 | 1000 | 2000 | `griffin` (Lv 25 + `wolf_soul_gem`, Reset: Yes) |
+| `earth_spirit` | [アーススピリット](#species-earth_spirit) | `SPIRIT` | 2 | Earth | 120 | 60 | 40 | 40 | 15 | 15 | 15 | 15 | 10 | 20 | `t` | - | 203 | NORMAL | 30 | 1000 | 2000 | - |
+| `dragon_slime` | [ドラゴンスライム](#species-dragon_slime) | `DRAGON` | 2 | Fire | 150 | 80 | 50 | 20 | 20 | 18 | 15 | 15 | 12 | 12 | `d` | `SLIME_BODY`, `FIRE_IMMUNITY` | 201 | NORMAL | 25 | 1000 | 2500 | - |
+| `griffin` | [グリフォン](#species-griffin) | `BEAST` | 3 | Wind | 300 | 150 | 80 | 30 | 30 | 22 | 15 | 18 | 20 | 15 | `G` | `FLIGHT` | 401 | AGGRESSIVE | 30 | 1200 | 3000 | - |
+| `demon` | [デーモン](#species-demon) | `DEMON` | 3 | Dark | 300 | 150 | 120 | 50 | 35 | 25 | 30 | 30 | 12 | 15 | `V` | - | 201 | NORMAL | 35 | 1500 | 5000 | - |
+| `mist_spirit` | [ミストスピリット](#species-mist_spirit) | `SPIRIT` | 3 | Water | 350 | 180 | 70 | 80 | 15 | 15 | 35 | 30 | 25 | 20 | `M` | - | 202, 302, 304 | NORMAL | 40 | 1200 | 3000 | - |
+| `ancient_dragon` | [古代龍](#species-ancient_dragon) | `DRAGON` | 5 | Fire | 2500 | 1000 | 300 | 100 | 80 | 60 | 50 | 40 | 25 | 20 | `A` | `FIRE_IMMUNITY`, `STATUS_IMMUNITY`, `MIASMA_RESISTANCE` | 201, 401, 403 | NORMAL | 50 | 1500 | 10000 | - |
+| `town_guardian` | [拠点衛兵](#species-town_guardian) | `HUMANOID` | - | None | - | 0 | 500 | 200 | 100 | 100 | 80 | 80 | 50 | 50 | `g` | `STATUS_IMMUNITY`, `SEE_INVISIBILITY` | 303 | STATIONARY | 100 | 800 | - | - |
+| `bounty_hunter` | [賞金稼ぎ](#species-bounty_hunter) | `HUMANOID` | 4 | None | - | 0 | (Scaling) | (Scaling) | (Scaling) | (Scaling) | (Scaling) | (Scaling) | (Scaling) | (Scaling) | `H` | `TRACKING`, `SEE_INVISIBILITY` | - | AGGRESSIVE | 40 | 1000 | - | [詳細](../Monster-PK-System.md#742-賞金稼ぎ-npc-bounty-hunter) |
 
 - **賞金稼ぎ (Rank S) の補正**: ランク S の賞金稼ぎは、1.1 倍のステータス補正を受け、追加の特性として `REGENERATION_II`（毎ターン 5% 回復）および `STATUS_IMMUNITY`（全状態異常無効）を保持します。
 - **エリート個体 (Elite) の補正**: ダンジョンランク A 以上で出現するエリート個体は、通常のモンスターと比較して **1.2 倍** のステータス補正（HP, MP, ATK, DEF, MATK, MDEF, DEX, MND）を受けます。
