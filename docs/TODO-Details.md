@@ -179,3 +179,10 @@ AIによる生成が困難な、感性やバランス調整が必要な事項で
     - `Monster.md`: モンスター表示文字（display）の規約（Tier 1-2 は小文字、Tier 3+ は大文字）を策定し、既存データを修正。
     - `Skill-And-Magic-System.md`: モンスターが物理スキルを使用する際の属性継承ルール（種族属性を継承）を追記。
     - `Objects.md`: アイテムテーブルの shorthand 記法と `Standard-Metadata-Specification.md` の JSON 構造との対応表を追加。
+
+### [x] モンスターAI仕様の精緻化とスキルの射程図解の修正
+- **概要**: モンスターのスキル使用確率の個別設定を導入し、AI 関連ドキュメントを精緻化。また、スキル射程の図解をより分かりやすいものに更新。
+- **解決策**:
+    - `Monster.md`: `MonsterDomain` および `MonsterInstance` に `skillRate` を追加。初期実装データ一覧に AI タイプとスキル使用率を追記。
+    - `Monster-AI-Specification.md`: 個別 `skillRate` に基づくスキル使用判定ロジックを明記。
+    - `Skill-And-Magic-System.md`: 射程の ASCII 図解を、より一貫性のあるものに修正。
