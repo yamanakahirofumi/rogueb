@@ -186,3 +186,10 @@ AIによる生成が困難な、感性やバランス調整が必要な事項で
     - `Monster.md`: `MonsterDomain` および `MonsterInstance` に `skillRate` を追加。初期実装データ一覧に AI タイプとスキル使用率を追記。
     - `Monster-AI-Specification.md`: 個別 `skillRate` に基づくスキル使用判定ロジックを明記。
     - `Skill-And-Magic-System.md`: 射程の ASCII 図解を、より一貫性のあるものに修正。
+
+### [x] 仕様ドキュメントの不足情報追加と精緻化
+- **概要**: 実装の確実性を高めるため、状態異常定義、評価システム、および AI ロジックの不足情報を追加。
+- **解決策**:
+    - `Combat-System.md`: 「恐怖」状態異常の詳細（攻撃力・防御力減少効果）を追加。
+    - `Dungeon-Rank-System.md`: ダンジョン経験値の獲得源となっていた「高評価（いいね）」の具体的な獲得メカニズムを策定。
+    - `Monster-AI-Specification.md`: `STATIONARY` および `COWARDLY` タイプの詳細な思考ルーチンを追記。
