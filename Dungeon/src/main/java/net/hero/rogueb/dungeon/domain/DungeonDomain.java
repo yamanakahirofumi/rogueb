@@ -17,6 +17,7 @@ public class DungeonDomain {
     private long dungeonExp;
     private int itemSeed;
     private int monsterSeed;
+    private int trapSeed;
     private int roomCountSeed;
     private String namespace;
     private boolean isIntrusionEnabled;
@@ -29,12 +30,13 @@ public class DungeonDomain {
     public DungeonDomain() {
     }
 
-    public DungeonDomain(String name, int maxLevel, String namespace, int itemSeed, int monsterSeed, int roomCountSeed) {
+    public DungeonDomain(String name, int maxLevel, String namespace, int itemSeed, int monsterSeed, int trapSeed, int roomCountSeed) {
         this.name = name;
         this.maxLevel = maxLevel;
         this.namespace = namespace;
         this.itemSeed = itemSeed;
         this.monsterSeed = monsterSeed;
+        this.trapSeed = trapSeed;
         this.roomCountSeed = roomCountSeed;
     }
 
@@ -84,6 +86,14 @@ public class DungeonDomain {
 
     public void setMonsterSeed(int monsterSeed) {
         this.monsterSeed = monsterSeed;
+    }
+
+    public int getTrapSeed() {
+        return trapSeed;
+    }
+
+    public void setTrapSeed(int trapSeed) {
+        this.trapSeed = trapSeed;
     }
 
     public int getRoomCountSeed() {

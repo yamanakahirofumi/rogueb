@@ -14,6 +14,7 @@
     - `dungeonExp` (Long): 累計経験値。
     - `itemSeed` (Integer): アイテム生成用シード値。
     - `monsterSeed` (Integer): モンスター生成用シード値。
+    - `trapSeed` (Integer): トラップ生成用シード値。
     - `roomCountSeed` (Integer): 部屋数生成用シード値。
     - `namespace` (String): 論理的な名前空間。
     - `isIntrusionEnabled` (Boolean): 乱入許可フラグ。
