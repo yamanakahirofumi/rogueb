@@ -62,6 +62,7 @@
     - `loyalty` (Integer): プレイヤーに対する忠誠度。
     - `lastLoyaltyUpdate` (Long): 最終忠誠度更新タイムスタンプ。
     - `lastBreedingTime` (Long): 最終繁殖タイムスタンプ。
+    - `fusionCount` (Integer): 累積融合回数。
     - `_class` (String): Spring Data MongoDBが使用するクラス情報。
 
 ## 3. インデックス推奨事項
