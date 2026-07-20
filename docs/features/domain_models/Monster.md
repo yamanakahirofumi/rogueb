@@ -89,6 +89,7 @@
     - `loyalty`: プレイヤーに対する忠誠度（懐き具合）。詳細は [モンスター忠誠度システム](../Monster-Loyalty-System.md) を参照.
     - `lastLoyaltyUpdate`: 最後に忠誠度が更新された（時間経過による減少判定が行われた）タイムスタンプ (Long).
     - `lastBreedingTime`: 最後に繁殖を行ったタイムスタンプ (Long)。[モンスター繁殖システム](../Monster-Breeding-System.md) におけるクールタイム判定に使用.
+    - `fusionCount`: 累積融合回数（Integer）。ベース個体として融合を実行した累計回数（0 〜 5）。
 
 ### `StatusEffectDomain` (値オブジェクト)
 - **説明:** [BookOfAdventureモジュール](./Book-Of-Adventure.md#statuseffectdomain-値オブジェクト) にて定義。プレイヤーやモンスターに付与される状態異常を表します。
@@ -206,6 +207,10 @@
 | `ancient_dragon` | [古代龍](#species-ancient_dragon) | `DRAGON` | 5 | Fire | 2500 | 1000 | 300 | 100 | 80 | 60 | 50 | 40 | 25 | 20 | `A` | `FIRE_IMMUNITY`, `STATUS_IMMUNITY`, `MIASMA_RESISTANCE` | 201, 401, 403 | NORMAL | 50 | 1500 | 10000 | - |
 | `town_guardian` | [拠点衛兵](#species-town_guardian) | `HUMANOID` | - | None | - | 0 | 500 | 200 | 100 | 100 | 80 | 80 | 50 | 50 | `g` | `STATUS_IMMUNITY`, `SEE_INVISIBILITY` | 303 | STATIONARY | 100 | 800 | - | - |
 | `bounty_hunter` | [賞金稼ぎ](#species-bounty_hunter) | `HUMANOID` | 4 | None | - | 0 | (Scaling) | (Scaling) | (Scaling) | (Scaling) | (Scaling) | (Scaling) | (Scaling) | (Scaling) | `H` | `TRACKING`, `SEE_INVISIBILITY` | - | AGGRESSIVE | 40 | 1000 | - | [詳細](../Monster-PK-System.md#742-賞金稼ぎ-npc-bounty-hunter) |
+| `metal_spirit` | [メタルスピリット](#species-metal_spirit) | `SPIRIT` | 2 | None | 150 | 80 | 15 | 30 | 8 | 25 | 12 | 25 | 15 | 15 | `m` | `STATUS_IMMUNITY` | 103 | NORMAL | 30 | 1000 | 2000 | - |
+| `metal_slime` | [メタルスライム](#species-metal_slime) | `SLIME` | 2 | None | 200 | 100 | 20 | 10 | 10 | 60 | 5 | 50 | 20 | 20 | `x` | `SLIME_BODY`, `STATUS_IMMUNITY` | 302 | NORMAL | 25 | 1000 | 2500 | - |
+| `high_demon` | [ハイドーモン](#species-high_demon) | `DEMON` | 4 | Dark | 800 | 400 | 180 | 80 | 45 | 35 | 40 | 40 | 15 | 18 | `Y` | `AGGRESSIVE` | 201 | NORMAL | 40 | 1200 | 6000 | - |
+| `gale_wolf` | [ゲイルウルフ](#species-gale_wolf) | `BEAST` | 2 | Wind | 180 | 90 | 45 | 15 | 22 | 12 | 10 | 10 | 22 | 12 | `j` | `TRACKING` | 105 | AGGRESSIVE | 30 | 1000 | 2000 | - |
 
 - **賞金稼ぎ (Rank S) の補正**: ランク S の賞金稼ぎは、1.1 倍のステータス補正を受け、追加の特性として `REGENERATION_II`（毎ターン 5% 回復）および `STATUS_IMMUNITY`（全状態異常無効）を保持します。
 - **エリート個体 (Elite) の補正**: ダンジョンランク A 以上で出現するエリート個体は、通常のモンスターと比較して **1.2 倍** のステータス補正（HP, MP, ATK, DEF, MATK, MDEF, DEX, MND）を受けます。
@@ -236,6 +241,10 @@
 | <a id="species-ancient_dragon"></a>`ancient_dragon` | `201`: ファイアボール (1), `401`: ウィンドブレス (1), `403`: トルネード (1), `308`: ヘイスト (50) |
 | <a id="species-town_guardian"></a>`town_guardian` | `303`: 捕縛 (1) |
 | <a id="species-bounty_hunter"></a>`bounty_hunter` | `101`: パワーアタック (1), `303`: 捕縛 (1) |
+| <a id="species-metal_spirit"></a>`metal_spirit` | `103`: シールドバッシュ (1), `307`: サイレス (12) |
+| <a id="species-metal_slime"></a>`metal_slime` | `302`: ポイズンガス (1), `103`: シールドバッシュ (10) |
+| <a id="species-high_demon"></a>`high_demon` | `201`: ファイアボール (1), `204`: ダークブレス (1), `305`: コンフューズ (10), `501`: テレポート (25) |
+| <a id="species-gale_wolf"></a>`gale_wolf` | `105`: かみつき (1), `401`: ウィンドブレス (12), `403`: トルネード (25) |
 
 ## 6. 今後の拡張
 - **連携攻撃**: 複数のモンスターが協力して発動する強力な攻撃アクション。
