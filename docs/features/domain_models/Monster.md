@@ -200,9 +200,13 @@
 | `water_spirit` | [ウォータースピリット](#species-water_spirit) | `SPIRIT` | 2 | Water | 120 | 60 | 35 | 50 | 10 | 10 | 25 | 20 | 15 | 15 | `u` | - | 202 | NORMAL | 30 | 1000 | 2000 | `mist_spirit` (Lv 20 + `water_stone`, Reset: Yes) |
 | `wind_spirit` | [ウィンドスピリット](#species-wind_spirit) | `SPIRIT` | 2 | Wind | 120 | 60 | 35 | 50 | 10 | 10 | 25 | 20 | 15 | 15 | `W` | - | 401 | NORMAL | 30 | 1000 | 2000 | `griffin` (Lv 25 + `wolf_soul_gem`, Reset: Yes) |
 | `earth_spirit` | [アーススピリット](#species-earth_spirit) | `SPIRIT` | 2 | Earth | 120 | 60 | 40 | 40 | 15 | 15 | 15 | 15 | 10 | 20 | `t` | - | 203 | NORMAL | 30 | 1000 | 2000 | - |
+| `metal_spirit` | [メタルスピリット](#species-metal_spirit) | `SPIRIT` | 2 | Earth | 120 | 60 | 25 | 50 | 10 | 30 | 15 | 15 | 15 | 15 | `m` | - | 203 | NORMAL | 30 | 1000 | 2000 | - |
 | `dragon_slime` | [ドラゴンスライム](#species-dragon_slime) | `DRAGON` | 2 | Fire | 150 | 80 | 50 | 20 | 20 | 18 | 15 | 15 | 12 | 12 | `d` | `SLIME_BODY`, `FIRE_IMMUNITY` | 201 | NORMAL | 25 | 1000 | 2500 | - |
+| `metal_slime` | [メタルスライム](#species-metal_slime) | `SLIME` | 3 | None | 300 | 150 | 8 | 20 | 15 | 150 | 5 | 100 | 30 | 25 | `X` | `SLIME_BODY`, `STATUS_IMMUNITY` | 302 | NORMAL | 30 | 1000 | 3000 | - |
 | `griffin` | [グリフォン](#species-griffin) | `BEAST` | 3 | Wind | 300 | 150 | 80 | 30 | 30 | 22 | 15 | 18 | 20 | 15 | `G` | `FLIGHT` | 401 | AGGRESSIVE | 30 | 1200 | 3000 | - |
+| `gale_wolf` | [ゲイルウルフ](#species-gale_wolf) | `BEAST` | 3 | Wind | 300 | 150 | 70 | 40 | 28 | 20 | 15 | 15 | 30 | 15 | `K` | `TRACKING` | 105 | AGGRESSIVE | 30 | 1000 | 3000 | - |
 | `demon` | [デーモン](#species-demon) | `DEMON` | 3 | Dark | 300 | 150 | 120 | 50 | 35 | 25 | 30 | 30 | 12 | 15 | `V` | - | 201 | NORMAL | 35 | 1500 | 5000 | - |
+| `high_demon` | [ハイドーモン](#species-high_demon) | `DEMON` | 4 | Dark | 600 | 300 | 150 | 80 | 45 | 35 | 35 | 30 | 20 | 20 | `O` | `AGGRESSIVE` | 101, 201 | AGGRESSIVE | 35 | 1000 | 5000 | - |
 | `mist_spirit` | [ミストスピリット](#species-mist_spirit) | `SPIRIT` | 3 | Water | 350 | 180 | 70 | 80 | 15 | 15 | 35 | 30 | 25 | 20 | `M` | - | 202, 302, 304 | NORMAL | 40 | 1200 | 3000 | - |
 | `ancient_dragon` | [古代龍](#species-ancient_dragon) | `DRAGON` | 5 | Fire | 2500 | 1000 | 300 | 100 | 80 | 60 | 50 | 40 | 25 | 20 | `A` | `FIRE_IMMUNITY`, `STATUS_IMMUNITY`, `MIASMA_RESISTANCE` | 201, 401, 403 | NORMAL | 50 | 1500 | 10000 | - |
 | `metal_spirit` | [メタルスピリット](#species-metal_spirit) | `SPIRIT` | 2 | Earth | 120 | 60 | 40 | 40 | 10 | 15 | 20 | 20 | 15 | 15 | `m` | - | 103 | NORMAL | 30 | 1000 | 2000 | - |
@@ -234,9 +238,13 @@
 | <a id="species-water_spirit"></a>`water_spirit` | `202`: アイスブレス (1), `304`: スリープクラウド (15) |
 | <a id="species-wind_spirit"></a>`wind_spirit` | `401`: ウィンドブレス (1), `309`: インビジブル (20) |
 | <a id="species-earth_spirit"></a>`earth_spirit` | `203`: アースニードル (1), `101`: パワーアタック (10), `404`: クエイク (30) |
+| <a id="species-metal_spirit"></a>`metal_spirit` | `203`: アースニードル (1), `302`: ポイズンガス (15) |
 | <a id="species-dragon_slime"></a>`dragon_slime` | `201`: ファイアボール (1), `302`: ポイズンガス (10) |
+| <a id="species-metal_slime"></a>`metal_slime` | `302`: ポイズンガス (1), `101`: パワーアタック (10), `105`: かみつき (20), `602`: 分裂 (35) |
 | <a id="species-demon"></a>`demon` | `201`: ファイアボール (1), `204`: ダークブレス (15), `305`: コンフューズ (15), `501`: テレポート (30) |
+| <a id="species-high_demon"></a>`high_demon` | `101`: パワーアタック (1), `201`: ファイアボール (1), `102`: 回転斬り (15), `204`: ダークブレス (20), `501`: テレポート (35) |
 | <a id="species-griffin"></a>`griffin` | `401`: ウィンドブレス (1), `102`: 回転斬り (20) |
+| <a id="species-gale_wolf"></a>`gale_wolf` | `105`: かみつき (1), `401`: ウィンドブレス (1), `101`: パワーアタック (10), `310`: 遠吠え (25) |
 | <a id="species-mist_spirit"></a>`mist_spirit` | `202`: アイスブレス (1), `302`: ポイズンガス (1), `304`: スリープクラウド (1), `602`: 分裂 (40) |
 | <a id="species-ancient_dragon"></a>`ancient_dragon` | `201`: ファイアボール (1), `401`: ウィンドブレス (1), `403`: トルネード (1), `308`: ヘイスト (50) |
 | <a id="species-metal_spirit"></a>`metal_spirit` | `103`: シールドバッシュ (1), `306`: マヒの粉 (15) |
