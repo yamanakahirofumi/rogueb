@@ -178,6 +178,9 @@ Objectsモジュールは、武器、防具、ポーション、指輪など、�
 | `trap_unequip` | 装備外しの罠の種 | `MATERIAL` | None | 400 | 3 | 200 | `^` | 設置で「装備外しの罠」になる |
 | `trap_hunger` | 空腹の罠の種 | `MATERIAL` | None | 100 | 1 | 2000 | `^` | 設置で「空腹の罠」になる |
 | `trap_summon` | 召喚の罠の種 | `MATERIAL` | None | 500 | 3 | 200 | `^` | 設置で「召喚の罠」になる |
+| `trap_flame` | 火炎の罠の種 | `MATERIAL` | Fire | 220 | 2 | 800 | `^` | 設置で「火炎の罠」になる |
+| `trap_frost` | 氷結の罠の種 | `MATERIAL` | Water | 240 | 2 | 800 | `^` | 設置で「氷結の罠」になる |
+| `trap_lightning` | 電撃の罠の種 | `MATERIAL` | Wind | 350 | 3 | 400 | `^` | 設置で「電撃の罠」になる |
 | `trap_search_scroll` | 罠探しの巻物 | `SCROLL` | None | 150 | 1 | 2000 | `?` | `REVEAL_TRAPS` |
 | `mapping_scroll` | あかりの巻物 | `SCROLL` | None | 200 | 2 | 1000 | `?` | `MAPPING` |
 | `candlestick` | 燭台 | `MATERIAL` | Fire | 100 | 1 | 5000 | `i` | 建築用デコレーション |
