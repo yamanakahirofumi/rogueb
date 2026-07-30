@@ -76,7 +76,7 @@
     - `skillIds`: 習得しているスキル ID のリスト. **最大 4 つ**まで保持可能です。
     - `inheritedStatus`: 継承されたステータス補正（Map<String, Integer>）. 繁殖個体の場合に使用.
     - `statusEffects`: 付与されている状態異常 (`StatusEffectDomain`) のリスト.
-    - `traits`: 個体固有の特性（パッシブ能力）のリスト。詳細は [モンスター特性システム](../Monster-Trait-System.md) を参照。特性は「能力強化」「耐性・無効」「特殊・行動」のカテゴリに分類されています.
+    - `traits`: 個体固有の特性（パッシブ能力）のリスト（繁殖や融合等によって固有に継承・獲得した特性。最大 **2 つ**に制限）。種族固有の標準特性（`MonsterDomain.traits`）はこれに含めず、実行時に動的に合算して総活性特性を適用します。詳細は [モンスター特性システム](../Monster-Trait-System.md) を参照。
     - `metadata`: 個体固有の動的データ（Map<String, Object>）。ニックネームや特殊な成長記録などに使用.
         - 予約済みキーの詳細は **[標準メタデータ仕様](../Standard-Metadata-Specification.md)** を参照してください.
     - `ownerId`: 所有しているプレイヤーの ID（捕獲済みの場合）.
@@ -209,10 +209,6 @@
 | `high_demon` | [ハイドーモン](#species-high_demon) | `DEMON` | 4 | Dark | 600 | 300 | 150 | 80 | 45 | 35 | 35 | 30 | 20 | 20 | `O` | `AGGRESSIVE` | 101, 201 | AGGRESSIVE | 35 | 1000 | 5000 | - |
 | `mist_spirit` | [ミストスピリット](#species-mist_spirit) | `SPIRIT` | 3 | Water | 350 | 180 | 70 | 80 | 15 | 15 | 35 | 30 | 25 | 20 | `M` | - | 202, 302, 304 | NORMAL | 40 | 1200 | 3000 | - |
 | `ancient_dragon` | [古代龍](#species-ancient_dragon) | `DRAGON` | 5 | Fire | 2500 | 1000 | 300 | 100 | 80 | 60 | 50 | 40 | 25 | 20 | `A` | `FIRE_IMMUNITY`, `STATUS_IMMUNITY`, `MIASMA_RESISTANCE` | 201, 401, 403 | NORMAL | 50 | 1500 | 10000 | - |
-| `metal_spirit` | [メタルスピリット](#species-metal_spirit) | `SPIRIT` | 2 | Earth | 120 | 60 | 40 | 40 | 10 | 15 | 20 | 20 | 15 | 15 | `m` | - | 103 | NORMAL | 30 | 1000 | 2000 | - |
-| `metal_slime` | [メタルスライム](#species-metal_slime) | `SLIME` | 2 | None | 150 | 80 | 15 | 10 | 12 | 60 | 5 | 40 | 25 | 20 | `x` | `SLIME_BODY`, `STATUS_IMMUNITY` | 306 | NORMAL | 25 | 1000 | 2500 | - |
-| `high_demon` | [ハイデーモン](#species-high_demon) | `DEMON` | 4 | Dark | 600 | 300 | 160 | 80 | 45 | 30 | 40 | 35 | 15 | 20 | `Y` | - | 201, 204 | AGGRESSIVE | 40 | 1500 | 5000 | - |
-| `gale_wolf` | [ゲイルウルフ](#species-gale_wolf) | `BEAST` | 3 | Wind | 300 | 150 | 75 | 40 | 28 | 20 | 20 | 15 | 25 | 15 | `F` | `TRACKING` | 105 | AGGRESSIVE | 30 | 1000 | 3000 | - |
 | `town_guardian` | [拠点衛兵](#species-town_guardian) | `HUMANOID` | - | None | - | 0 | 500 | 200 | 100 | 100 | 80 | 80 | 50 | 50 | `g` | `STATUS_IMMUNITY`, `SEE_INVISIBILITY` | 303 | STATIONARY | 100 | 800 | - | - |
 | `bounty_hunter` | [賞金稼ぎ](#species-bounty_hunter) | `HUMANOID` | 4 | None | - | 0 | (Scaling) | (Scaling) | (Scaling) | (Scaling) | (Scaling) | (Scaling) | (Scaling) | (Scaling) | `H` | `TRACKING`, `SEE_INVISIBILITY` | - | AGGRESSIVE | 40 | 1000 | - | [詳細](../Monster-PK-System.md#742-賞金稼ぎ-npc-bounty-hunter) |
 
@@ -247,10 +243,6 @@
 | <a id="species-gale_wolf"></a>`gale_wolf` | `105`: かみつき (1), `401`: ウィンドブレス (1), `101`: パワーアタック (10), `310`: 遠吠え (25) |
 | <a id="species-mist_spirit"></a>`mist_spirit` | `202`: アイスブレス (1), `302`: ポイズンガス (1), `304`: スリープクラウド (1), `602`: 分裂 (40) |
 | <a id="species-ancient_dragon"></a>`ancient_dragon` | `201`: ファイアボール (1), `401`: ウィンドブレス (1), `403`: トルネード (1), `308`: ヘイスト (50) |
-| <a id="species-metal_spirit"></a>`metal_spirit` | `103`: シールドバッシュ (1), `306`: マヒの粉 (15) |
-| <a id="species-metal_slime"></a>`metal_slime` | `306`: マヒの粉 (1), `103`: シールドバッシュ (10), `602`: 分裂 (25) |
-| <a id="species-high_demon"></a>`high_demon` | `201`: ファイアボール (1), `204`: ダークブレス (1), `102`: 回転斬り (15), `501`: テレポート (20), `403`: トルネード (40) |
-| <a id="species-gale_wolf"></a>`gale_wolf` | `105`: かみつき (1), `401`: ウィンドブレス (10), `310`: 遠吠え (20), `403`: トルネード (35) |
 | <a id="species-town_guardian"></a>`town_guardian` | `303`: 捕縛 (1) |
 | <a id="species-bounty_hunter"></a>`bounty_hunter` | `101`: パワーアタック (1), `303`: 捕縛 (1) |
 
