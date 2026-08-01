@@ -30,6 +30,7 @@
   - **[モンスター捕獲システム](../Monster-Capture-System.md)**: モンスターの捕獲、アイテム、および成功率に関する仕様。
   - **[モンスター進化システム](../Monster-Evolution-System.md)**: モンスターの進化条件、プロセス、および継承の仕組み。
   - **[モンスター融合システム](../Monster-Fusion-System.md)**: モンスターの融合・合体進化に関する仕様。
+  - **[モンスター特性強化システム](../Monster-Trait-Enhancement-System.md)**: 特性をより上位の効果へ強化する条件、アイテム、および確率に関する仕様。
   - **[モンスター化・PKシステム](../Monster-PK-System.md)**: プレイヤーによるモンスター化変身と乱入・PKの仕組み。
   - **[モンスターAI詳細仕様](../Monster-AI-Specification.md)**: モンスターの行動タイプとスキル使用ロジック。
 
