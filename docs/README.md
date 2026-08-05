@@ -27,6 +27,7 @@
 - [モンスタードロップシステム](features/Monster-Drop-System.md)：モンスター撃破時のドロップと流通制限に関する仕様
 - [モンスター繁殖システム](features/Monster-Breeding-System.md)：モンスターの繁殖、継承、および孵化に関する仕様
 - [モンスター忠誠度システム](features/Monster-Loyalty-System.md)：プレイヤーとの絆、増減メカニズム、および影響に関する仕様
+- [モンスター親愛システム](features/Monster-Affection-System.md)：限界に達した忠誠度の先にある親愛状態と専用スキルに関する仕様
 - [モンスター特性システム](features/Monster-Trait-System.md)：モンスターが保持するパッシブ能力（特性）に関する仕様
 - [モンスター特性強化システム](features/Monster-Trait-Enhancement-System.md)：特定の触媒を用いて特性をレベルIからレベルIIへ強化するシステムに関する仕様
 - [スキル・魔法システム](features/Skill-And-Magic-System.md)：スキル、魔法のカテゴリ、コスト、および効果に関する仕様
