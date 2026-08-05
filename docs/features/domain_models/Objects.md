@@ -149,6 +149,8 @@ Objectsモジュールは、武器、防具、ポーション、指輪など、�
 | `dark_stone` | 闇の石 | `MATERIAL` | Dark | 800 | 3 | 100 | `*` | 進化用触媒 |
 | `breeding_incense` | 繁殖のお香 | `MATERIAL` | None | 1000 | 2 | 300 | `*` | 繁殖用触媒 |
 | `expansion_material` | 増築用資材 | `MATERIAL` | None | 5000 | 2 | 500 | `*` | 倉庫の拡張に使用する。 |
+| `trait_stone` | 特性の石 | `MATERIAL` | None | 1500 | 2 | 500 | `*` | [特性の強化](../Monster-Trait-Enhancement-System.md)に使用する触媒（レベルIからII） |
+| `trait_crystal` | 特性の結晶 | `MATERIAL` | None | 6000 | 3 | 100 | `*` | [特性の強化](../Monster-Trait-Enhancement-System.md)に使用する強力な触媒（レベルIからII、確実成功） |
 | `bounty_hunter_proof` | 賞金稼ぎの証 | `OTHER` | None | 2000 | 3 | 100 | `"` | 強敵撃破の証 |
 | `egg` | モンスターの卵 | `OTHER` | None | 1000 | 2 | 500 | `*` | 孵化してモンスターが生まれる |
 | `dragon_killer` | ドラゴンキラー | `WEAPON` | None | 4000 | 3 | 50 | `)` | `atk: 12`, `slayer: DRAGON` |
