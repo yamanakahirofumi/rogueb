@@ -139,6 +139,7 @@ Objectsモジュールは、武器、防具、ポーション、指輪など、�
 | `wolf_soul_gem` | ウルフのソウルジェム | `OTHER` | None | 1200 | 2 | 300 | `*` | ウルフの魂が宿る宝石。進化用触媒。 |
 | `id_scroll` | 識別の巻物 | `SCROLL` | None | 200 | 1 | 2000 | `?` | `IDENTIFY` |
 | `uncurse_scroll` | 解呪の巻物 | `SCROLL` | None | 300 | 1 | 1000 | `?` | `REMOVE_CURSE` |
+| `enchant_scroll` | エンチャントの巻物 | `SCROLL` | None | 1500 | 3 | 200 | `?` | `ADD_ENCHANT` |
 | `loyalty_cookie` | 懐きクッキー | `FOOD` | None | 400 | 1 | 1000 | `%` | `MODIFY_LOYALTY: +20` |
 | `wonder_candy` | 不思議な飴 | `FOOD` | None | 2000 | 3 | 100 | `%` | `LEVEL_UP: +1` |
 | `fire_stone` | 炎の石 | `MATERIAL` | Fire | 500 | 2 | 300 | `*` | 進化用触媒 |
@@ -152,6 +153,7 @@ Objectsモジュールは、武器、防具、ポーション、指輪など、�
 | `trait_stone` | 特性の石 | `MATERIAL` | None | 1500 | 2 | 500 | `*` | [特性の強化](../Monster-Trait-Enhancement-System.md)に使用する触媒（レベルIからII） |
 | `trait_crystal` | 特性の結晶 | `MATERIAL` | None | 6000 | 3 | 100 | `*` | [特性の強化](../Monster-Trait-Enhancement-System.md)に使用する強力な触媒（レベルIからII、確実成功） |
 | `bounty_hunter_proof` | 賞金稼ぎの証 | `OTHER` | None | 2000 | 3 | 100 | `"` | 強敵撃破の証 |
+| `collar_of_pledge` | 誓いの首輪 | `OTHER` | None | 8000 | 4 | 50 | `*` | [親愛の儀式](../Monster-Affection-System.md)に使用する。 |
 | `egg` | モンスターの卵 | `OTHER` | None | 1000 | 2 | 500 | `*` | 孵化してモンスターが生まれる |
 | `dragon_killer` | ドラゴンキラー | `WEAPON` | None | 4000 | 3 | 50 | `)` | `atk: 12`, `slayer: DRAGON` |
 | `beast_buster` | ビーストバスター | `WEAPON` | None | 2500 | 2 | 100 | `)` | `atk: 8`, `slayer: BEAST` |
