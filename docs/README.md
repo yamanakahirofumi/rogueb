@@ -72,6 +72,7 @@
 - [リアルタイム同期プロトコル](implementation/Real-time-Synchronization.md)：SSE を用いた状態同期の仕様
 - [JUnit 5 利用ルール](implementation/JUnit-Rule.md)：テストの実装方針と記述例
 - [最適化戦略](implementation/Optimization-Strategy.md)：通信、DB、計算処理におけるパフォーマンス向上のための指針
+- [モジュール間通信最適化仕様](implementation/Inter-Module-Communication-Optimization.md)：gRPCや共有メモリを用いた高頻度通信の最適化手法に関する仕様
 
 
 ## 5. 検討事項（TODOリスト）
