@@ -154,6 +154,7 @@ Objectsモジュールは、武器、防具、ポーション、指輪など、�
 | `trait_crystal` | 特性の結晶 | `MATERIAL` | None | 6000 | 3 | 100 | `*` | [特性の強化](../Monster-Trait-Enhancement-System.md)に使用する強力な触媒（レベルIからII、確実成功） |
 | `bounty_hunter_proof` | 賞金稼ぎの証 | `OTHER` | None | 2000 | 3 | 100 | `"` | 強敵撃破の証 |
 | `collar_of_pledge` | 誓いの首輪 | `OTHER` | None | 8000 | 4 | 50 | `*` | [親愛の儀式](../Monster-Affection-System.md)に使用する。 |
+| `degeneration_hourglass` | 退化の砂時計 | `OTHER` | None | 5000 | 3 | 100 | `*` | [退化の儀式](../Monster-Degeneration-System.md)に使用する。 |
 | `egg` | モンスターの卵 | `OTHER` | None | 1000 | 2 | 500 | `*` | 孵化してモンスターが生まれる |
 | `dragon_killer` | ドラゴンキラー | `WEAPON` | None | 4000 | 3 | 50 | `)` | `atk: 12`, `slayer: DRAGON` |
 | `beast_buster` | ビーストバスター | `WEAPON` | None | 2500 | 2 | 100 | `)` | `atk: 8`, `slayer: BEAST` |
