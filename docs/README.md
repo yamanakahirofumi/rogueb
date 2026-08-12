@@ -38,9 +38,12 @@
 - [モンスター進化システム](features/Monster-Evolution-System.md)：進化の条件、プロセス、およびステータス・スキルの継承
 - [モンスター退化システム](features/Monster-Degeneration-System.md)：進化前の形態への退化とステータス一部継承に関する仕様
 - [モンスター融合システム](features/Monster-Fusion-System.md)：モンスターの融合・合体進化に関する仕様
+- [モンスターAI詳細仕様](features/Monster-AI-Specification.md)：モンスターの行動タイプとスキル使用ロジックに関する詳細仕様
+- [モンスター化・PKシステム](features/Monster-PK-System.md)：プレイヤーによるモンスター化変身と乱入・PKの仕組みに関する仕様
 - [ダンジョン構築・運営システム](features/Dungeon-Construction-System.md)：建築資材、建築モード、および管理者介入に関する仕様
 - [ダンジョン生成システム](features/Dungeon-Generation-System.md)：自動生成アルゴリズム、シード値、および通過可能性の保証に関する仕様
 - [ダンジョンランクシステム](features/Dungeon-Rank-System.md)：ダンジョンの成長、経験値、およびランク別の特典に関する仕様
+- [ダンジョン独自ルール詳細仕様](features/Dungeon-Custom-Rule-Specification.md)：ダンジョンランク S で設定可能な独自ルールの技術的定義に関する仕様
 - [世界間連携システム](features/World-Interoperability-System.md)：トラストネットワーク、クロスワールド・マイグレーション、および未知のアイテムの持ち込みに関する仕様
 
 ### 2.1 主要ドメインモデル
