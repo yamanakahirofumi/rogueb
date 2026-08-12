@@ -77,3 +77,58 @@ sequenceDiagram
 - **分岐進化**: 同じモンスターから複数の異なる進化先を選べる仕組み。
 - **退化**: 特定の条件下で前の形態に戻る、あるいは戻すことができる仕組み。詳細なルール、コスト、ステータス継承ロジックは **[モンスター退化システム](./Monster-Degeneration-System.md)** を参照してください。
 - **合体進化**: 2 体のモンスターを合わせて 1 体のより強力なモンスターに進化させる仕組み（詳細は [モンスター融合システム](./Monster-Fusion-System.md) を参照）。
+
+## 8. APIリクエスト・フローとエラーハンドリング
+
+### 8.1 APIリクエスト仕様
+モンスターの進化を実行するためのエンドポイントおよびリクエスト/レスポンスボディのJSON構造を定義します。
+
+- **Endpoint**: `POST /api/v1/monsters/evolve`
+- **Request Body (JSON)**:
+```json
+{
+  "userId": "player_uuid_12345",
+  "monsterInstanceId": "monster_uuid_67890",
+  "targetMonsterId": "orc"
+}
+```
+
+- **Response Body (JSON - 成功時)**:
+```json
+{
+  "success": true,
+  "result": "SUCCESS",
+  "message": "モンスターは オーク に進化した！",
+  "monster": {
+    "instanceId": "monster_uuid_67890",
+    "monsterId": "orc",
+    "level": 1,
+    "traits": [],
+    "loyalty": 150,
+    "inheritedStatus": {
+      "hp": 2,
+      "mp": 0,
+      "atk": 1,
+      "def": 1,
+      "magicAtk": 0,
+      "magicDef": 0,
+      "dex": 1,
+      "mnd": 0
+    },
+    "skillIds": [101]
+  }
+}
+```
+
+### 8.2 エラーハンドリング (Error Handling)
+進化処理の過程で何らかのビジネスルールに抵触した場合、システムは以下のエラーコードと適切なHTTPステータスを持つエラーレスポンスを返却します。
+
+| エラーコード | 発生条件 | レスポンス HTTP ステータス | 戻り値のメッセージ例 |
+| :--- | :--- | :---: | :--- |
+| `MONSTER_NOT_FOUND` | 指定された `monsterInstanceId` のモンスターが存在しない。 | 404 Not Found | 指定されたモンスターが見つかりません。 |
+| `INSUFFICIENT_LEVEL` | モンスターが進化可能レベル（`requiredLevel`）に達していない。 | 400 Bad Request | 進化に必要なレベルに達していません。 |
+| `MISSING_EVOLUTION_ITEM` | 進化に必要な触媒アイテム（`requiredItemId`）がインベントリに不足している。 | 400 Bad Request | 進化に必要な触媒アイテムが不足しています。 |
+| `STATS_NOT_SATISFIED` | 進化に必要なステータス条件（`requiredStats`）を満たしていない。 | 400 Bad Request | 進化に必要なステータス条件を満たしていません。 |
+| `RANK_LIMIT_EXCEEDED` | 進化先のモンスターのティアが現在のダンジョンランク上限（`DungeonRank`）を超えている。 | 400 Bad Request | このダンジョン内では、現在のランク制限によりこれ以上高位のティアへ進化させることはできません。 |
+| `INVALID_EVOLUTION_PATH` | 指定された `targetMonsterId` への進化ルートが種族の `evolutionTable` に定義されていない。 | 400 Bad Request | 指定された進化先へのルートが存在しません。 |
+| `SKILL_OVERFLOW` | 進化にともない新規習得するスキルと既存の保持スキルの合計が4つを超えるが、手動選択が完了していない。 | 400 Bad Request | 保持スキルが上限（4つ）を超えるため、忘れるスキルを選択してください。 |
