@@ -133,3 +133,63 @@ sequenceDiagram
     PO->>BA: プレイヤー所持モンスター情報・ゴールド同期
     PO-->>PO: 結果を画面に表示
 ```
+
+## 8. APIリクエスト・フローとエラーハンドリング
+
+### 8.1 APIリクエスト仕様
+モンスターの融合を実行するためのエンドポイントおよびリクエスト/レスポンスボディのJSON構造を定義します。
+
+- **Endpoint**: `POST /api/v1/monsters/fuse`
+- **Request Body (JSON)**:
+```json
+{
+  "userId": "player_uuid_12345",
+  "baseInstanceId": "monster_uuid_base_111",
+  "materialInstanceId": "monster_uuid_material_222",
+  "fusionType": "SPECIAL",
+  "targetMonsterId": "metal_slime",
+  "retainedSkillIds": [101, 102, 103, 104]
+}
+```
+
+- **Response Body (JSON - 成功時)**:
+```json
+{
+  "success": true,
+  "result": "SUCCESS",
+  "message": "融合に成功しました！メタルスライムが誕生しました。",
+  "monster": {
+    "instanceId": "monster_uuid_base_111",
+    "monsterId": "metal_slime",
+    "level": 1,
+    "traits": ["SLIME_BODY"],
+    "loyalty": 220,
+    "fusionCount": 1,
+    "inheritedStatus": {
+      "hp": 5,
+      "mp": 2,
+      "atk": 3,
+      "def": 8,
+      "magicAtk": 1,
+      "magicDef": 4,
+      "dex": 5,
+      "mnd": 2
+    },
+    "skillIds": [101, 102, 103, 104]
+  }
+}
+```
+
+### 8.2 エラーハンドリング (Error Handling)
+融合処理の過程で何らかのビジネスルールに抵触した場合、システムは以下のエラーコードと適切なHTTPステータスを持つエラーレスポンスを返却します。
+
+| エラーコード | 発生条件 | レスポンス HTTP ステータス | 戻り値のメッセージ例 |
+| :--- | :--- | :---: | :--- |
+| `MONSTER_NOT_FOUND` | 指定された `baseInstanceId` または `materialInstanceId` のモンスターが存在しない。 | 404 Not Found | 指定されたモンスターが見つかりません。 |
+| `INSUFFICIENT_LEVEL` | ベースモンスターまたは素材モンスターのレベルが15未満。 | 400 Bad Request | 融合を実行するには、ベースモンスターと素材モンスターのレベルがどちらも15以上である必要があります。 |
+| `INSUFFICIENT_GOLD` | 融合に必要なゴールドが不足している。 | 400 Bad Request | 融合に必要なゴールドが不足しています。 |
+| `FUSION_LIMIT_EXCEEDED` | ベースモンスターの累計融合回数（`fusionCount`）が上限（5回）に達している。 | 400 Bad Request | このモンスターは融合回数の上限（5回）に達しているため、これ以上の融合は行えません。 |
+| `SKILL_OVERFLOW` | 融合にともない合計スキル数が4つを超えるが、手動選択（`retainedSkillIds`）が完了していない、または指定されたスキルが不正。 | 400 Bad Request | 保持スキルが上限（4つ）を超えるため、忘れるスキルを選択してください。 |
+| `TRAIT_OVERFLOW` | 素材からの継承により、個体特性（パッシブ特性）が上限（2つ）を超えるが、選択・整理が完了していない。 | 400 Bad Request | 継承する個体特性が上限（2つ）を超えるため、既存の特性を上書きするか継承を諦めてください。 |
+| `INVALID_FUSION_PATH` | 指定された `targetMonsterId` への進化ルートが特殊進化合体テーブルに定義されていない。 | 400 Bad Request | 指定された融合進化ルートは存在しません。 |
+| `RANK_LIMIT_EXCEEDED` | 融合（特殊進化）後のモンスターのティアが現在のダンジョンランク上限（`DungeonRank`）を超えている。 | 400 Bad Request | このダンジョン内では、現在のランク制限によりこれ以上高位のティアへ進化・融合させることはできません。 |
