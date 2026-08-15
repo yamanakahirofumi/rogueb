@@ -131,3 +131,109 @@ sequenceDiagram
         PO->>BA: 新モンスターを所持リストへ追加
     end
 ```
+
+## 7. APIリクエスト・フローとエラーハンドリング (API Request Flow and Error Handling)
+
+### 7.1 APIリクエスト・レスポンス仕様
+
+#### 7.1.1 モンスター繁殖 API (`POST /api/v1/monsters/breed`)
+2体の親モンスターから卵アイテムを生成するためのエンドポイントです。
+
+- **Endpoint**: `POST /api/v1/monsters/breed`
+- **Request Body (JSON)**:
+```json
+{
+  "userId": "player_uuid_12345",
+  "parentAMonsterInstanceId": "monster_instance_001",
+  "parentBMonsterInstanceId": "monster_instance_002",
+  "catalystItemId": "breeding_incense"
+}
+```
+
+- **Response Body (JSON - 成功時)**:
+```json
+{
+  "success": true,
+  "result": "SUCCESS",
+  "message": "繁殖が行われ、新しい卵を獲得しました！",
+  "egg": {
+    "instanceId": "egg_instance_999",
+    "typeId": "egg",
+    "name": "スライムの卵",
+    "metadata": {
+      "childTypeId": "slime",
+      "parentAId": "monster_instance_001",
+      "parentBId": "monster_instance_002",
+      "incubationSteps": 500,
+      "currentSteps": 0
+    }
+  },
+  "goldSpent": 1000,
+  "cooldownExpiration": "2026-03-31T12:00:00Z"
+}
+```
+
+#### 7.1.2 卵の孵化 API (`POST /api/v1/monsters/hatch`)
+歩数条件を満たした卵アイテムを孵化させ、新しいモンスター個体を生成するエンドポイントです。
+
+- **Endpoint**: `POST /api/v1/monsters/hatch`
+- **Request Body (JSON)**:
+```json
+{
+  "userId": "player_uuid_12345",
+  "eggInstanceId": "egg_instance_999",
+  "selectedSkillIds": [101, 105, 201, 301]
+}
+```
+※ `selectedSkillIds`: 継承スキルと初期スキルの合計が4つを超える場合に手動選択したスキルのID配列（4つ以下の場合は省略可）。
+
+- **Response Body (JSON - 成功時)**:
+```json
+{
+  "success": true,
+  "result": "SUCCESS",
+  "message": "卵が孵化し、新しいモンスター「スライム」が誕生しました！",
+  "monster": {
+    "instanceId": "child_monster_instance_100",
+    "monsterId": "slime",
+    "level": 1,
+    "loyalty": 100,
+    "skillIds": [101, 105, 201, 301],
+    "traits": ["REGENERATION"],
+    "inheritedStatus": {
+      "hp": 5,
+      "mp": 2,
+      "atk": 3,
+      "def": 3,
+      "magicAtk": 1,
+      "magicDef": 1,
+      "dex": 2,
+      "mnd": 2
+    }
+  },
+  "destination": "PARTY"
+}
+```
+
+### 7.2 エラーハンドリング (Error Handling)
+処理の過程で異常が検出された場合、システムは適切なエラーレスポンスを返却します。
+
+#### 繁殖 API (`/breed`) のエラーハンドリング
+| エラーコード | 発生条件 | レスポンス HTTP ステータス | 戻り値のメッセージ例 |
+| :--- | :--- | :---: | :--- |
+| `MONSTER_NOT_FOUND` | 指定された `parentAMonsterInstanceId` または `parentBMonsterInstanceId` のモンスターが存在しない。 | 404 Not Found | 指定された親モンスターが見つかりません。 |
+| `SAME_MONSTER_SELECTED` | 親 A と親 B に同一のモンスターインスタンス ID が指定された。 | 400 Bad Request | 繁殖には2体の異なるモンスターを指定する必要があります。 |
+| `INSUFFICIENT_LEVEL` | いずれかの親モンスターのレベルが 10 未満。 | 400 Bad Request | 繁殖を行うには両親のレベルが10以上である必要があります。 |
+| `BREEDING_COOLDOWN` | 指定された親モンスターが 24 時間の再繁殖クールタイム中である。 | 400 Bad Request | 指定された親モンスターは現在クールタイム中です。 |
+| `INVALID_CATALYST` | 指定された触媒アイテム ID が `breeding_incense` 以外。 | 400 Bad Request | 無効な触媒アイテムが指定されています。 |
+| `INSUFFICIENT_CATALYST` | プレイヤーのインベントリに「繁殖のお香 (`breeding_incense`)」が存在しない。 | 400 Bad Request | 繁殖に必要な触媒アイテム（繁殖のお香）が不足しています。 |
+| `INSUFFICIENT_GOLD` | 繁殖に必要なゴールドが不足している。 | 400 Bad Request | 所持ゴールドが不足しています。 |
+| `INVENTORY_FULL` | プレイヤーのインベントリが上限に達しており、卵アイテムを受け取れない。 | 400 Bad Request | インベントリが満杯のため卵を受け取れません。 |
+
+#### 孵化 API (`/hatch`) のエラーハンドリング
+| エラーコード | 発生条件 | レスポンス HTTP ステータス | 戻り値のメッセージ例 |
+| :--- | :--- | :---: | :--- |
+| `EGG_NOT_FOUND` | 指定された `eggInstanceId` の卵アイテムが存在しない。 | 404 Not Found | 指定された卵アイテムが見つかりません。 |
+| `EGG_NOT_READY` | 卵の蓄積歩数が足りない (`currentSteps < incubationSteps`)。 | 400 Bad Request | この卵はまだ孵化に必要な歩数に達していません。 |
+| `SKILL_OVERFLOW` | 所持スキルと継承スキルの合計が 4 つを超えているが、`selectedSkillIds` が正しく指定されていない。 | 400 Bad Request | 習得スキルが上限（4つ）を超過しています。保持するスキルを4つ選択してください。 |
+| `STORAGE_FULL` | ティア超過により預かり所へ送られる際、預かり所（STORAGE）の空き枠が存在しない。 | 400 Bad Request | 預かり所が満杯のため、孵化を実行できません。 |
