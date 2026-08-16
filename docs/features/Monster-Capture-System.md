@@ -96,3 +96,58 @@ sequenceDiagram
 ## 7. 今後の拡張
 - **捕獲スキルの導入**: アイテムを使わずに捕獲を試みる特殊なスキル。
 - **自動捕獲トラップ**: ダンジョン内に設置し、踏んだモンスターを自動的に捕獲する罠。
+
+## 8. APIリクエスト・フローとエラーハンドリング
+
+### 8.1 APIリクエスト仕様
+モンスターの捕獲を実行するためのエンドポイントおよびリクエスト/レスポンスボディのJSON構造を定義します。
+
+- **Endpoint**: `POST /api/v1/monsters/capture`
+- **Request Body (JSON)**:
+```json
+{
+  "userId": "player_uuid_12345",
+  "itemInstanceId": "item_uuid_99887",
+  "targetMonsterInstanceId": "monster_uuid_67890"
+}
+```
+
+- **Response Body (JSON - 捕獲成功時)**:
+```json
+{
+  "success": true,
+  "result": "SUCCESS",
+  "message": "スライムの捕獲に成功した！",
+  "capturedMonster": {
+    "instanceId": "monster_uuid_67890",
+    "monsterId": "slime",
+    "level": 5,
+    "loyalty": 50,
+    "isWild": false,
+    "ownerId": "player_uuid_12345"
+  }
+}
+```
+
+- **Response Body (JSON - 捕獲失敗時)**:
+```json
+{
+  "success": false,
+  "result": "FAILED",
+  "message": "捕獲に失敗した...",
+  "targetEnraged": true
+}
+```
+
+### 8.2 エラーハンドリング (Error Handling)
+捕獲処理の過程でビジネスルール違反やパラメータ異常が検出された場合、システムは以下のエラーコードと適切なHTTPステータスを持つエラーレスポンスを返却します。
+
+| エラーコード | 発生条件 | レスポンス HTTP ステータス | 戻り値のメッセージ例 |
+| :--- | :--- | :---: | :--- |
+| `MONSTER_NOT_FOUND` | 指定された `targetMonsterInstanceId` のモンスターが存在しない。 | 404 Not Found | 指定されたモンスターが見つかりません。 |
+| `ITEM_NOT_FOUND` | 指定された `itemInstanceId` のアイテムがインベントリに存在しない。 | 404 Not Found | 指定された捕獲アイテムが見つかりません。 |
+| `INVALID_ITEM_TYPE` | 指定されたアイテムが捕獲用アイテム（`capture_capsule` 等）ではない。 | 400 Bad Request | 捕獲用アイテム以外のアイテムは使用できません。 |
+| `ALREADY_CAPTURED` | 対象モンスターが野生ではなく、既に他プレイヤー（または自分）に捕獲されている（`isWild = false` または `ownerId` が設定済み）。 | 400 Bad Request | すでに捕獲されているモンスターです。 |
+| `BOSS_CANNOT_BE_CAPTURED` | 対象モンスターがボス属性を保持している。 | 400 Bad Request | ボスモンスターは捕獲できません。 |
+| `LEVEL_LIMIT_EXCEEDED` | 対象モンスターのレベルがプレイヤーのレベルより 10 以上高い。 | 400 Bad Request | モンスターのレベルが高すぎるため、捕獲を試みることができません。 |
+| `UNCAPTURABLE_STATUS` | 対象モンスターが不可視状態であり、プレイヤーが「不可視看破」特性を持っていない。 | 400 Bad Request | 姿が見えないモンスターに対して捕獲アイテムを使用することはできません。 |
