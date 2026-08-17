@@ -72,23 +72,23 @@ sequenceDiagram
     participant BA as BookOfAdventure
 
     Note over P, BA: アイテム情報の取得 (表示名決定)
-    PO->>BA: GET /api/user/id/{userId} (知識情報の確認)
+    PO->>BA: GET /api/v1/user/id/{userId} (知識情報の確認)
     BA-->>PO: PlayerKnowledge List
-    PO->>OBJ: GET /api/objects/instance/{id}
+    PO->>OBJ: GET /api/v1/objects/instance/{id}
     OBJ-->>PO: ThingInstance (True Data)
     alt 識別済み
         PO-->>P: 本来の名称を表示
     else 未識別
-        PO->>OBJ: GET /api/objects/appearance/{worldId}/{typeId}
+        PO->>OBJ: GET /api/v1/objects/appearance/{worldId}/{typeId}
         OBJ-->>PO: appearanceName (例: "青い指輪")
         PO-->>P: 外見名を表示
     end
 
     Note over P, BA: 識別アクション (識別の巻物使用等)
     P->>PO: 識別アクション実行
-    PO->>OBJ: POST /api/objects/instance/{id}/identify
+    PO->>OBJ: POST /api/v1/objects/identify
     OBJ->>OBJ: ObjectHistoryDomain.isIdentified = true
-    PO->>BA: POST /api/user/id/{userId}/knowledge
+    PO->>BA: POST /api/v1/user/id/{userId}/knowledge
     Note right of BA: typeId を「識別済み」として記録
     BA-->>PO: 200 OK
     PO-->>P: 「それは ○○ だった！」
@@ -102,7 +102,7 @@ sequenceDiagram
 - **リセット**: ワールド自体が再生成された場合、または管理者が知識のリセットを意図した設定を行った場合は、知識がクリアされます。
 
 ## 8. 呪いと識別の関係
-未識別のアイテムには「呪い」がかかっている可能性があります。
+未識別のアイテムには「呪い」がかかった状態（Cursed）が存在する可能性があります。
 
 - **呪いの隠蔽**: アイテムが未識別状態である場合、そのアイテムが呪われているかどうかはプレイヤーには表示されません。
 - **装備による判明**: 未識別の武器、防具、指輪を装備した際、そのアイテムが呪われていれば即座に「呪い」状態が判明し、メッセージが表示されます。この場合、装備を外すことができなくなります。
@@ -133,3 +133,100 @@ sequenceDiagram
 ## 10. 今後の検討事項
 - **高度な隠蔽**: 識別済みであっても、特定の強力な呪いによって強化値が隠される「二重隠蔽」の導入。
 - **偽の識別**: 呪いによって、誤った識別結果（偽の名称）を表示させるトラップ的な巻物の導入。
+
+## 11. API仕様およびエラーハンドリング
+
+### 11.1 APIエンドポイントとJSON構造
+
+#### 11.1.1 アイテム識別実行 API
+アイテムの識別（「識別の巻物」使用または町の鑑定サービス利用）を行います。
+
+- **Endpoint**: `POST /api/v1/objects/identify`
+- **Request Body (JSON - 識別の巻物使用時)**:
+```json
+{
+  "userId": "player_uuid_12345",
+  "targetObjectId": "item_instance_67890",
+  "method": "SCROLL",
+  "scrollObjectId": "scroll_identify_11111"
+}
+```
+
+- **Request Body (JSON - 町の鑑定サービス利用時)**:
+```json
+{
+  "userId": "player_uuid_12345",
+  "targetObjectId": "item_instance_67890",
+  "method": "APPRAISER"
+}
+```
+
+- **Response Body (JSON - 成功時)**:
+```json
+{
+  "success": true,
+  "result": "SUCCESS",
+  "message": "アイテムを識別しました！「奇妙な文様の巻物」の正体は「混乱の巻物」でした。",
+  "item": {
+    "objectId": "item_instance_67890",
+    "typeId": "scroll_confusion",
+    "trueName": "混乱の巻物",
+    "category": "SCROLL",
+    "isIdentified": true,
+    "isCursed": false
+  }
+}
+```
+
+#### 11.1.2 外見マッピング取得 API
+ワールドにおける特定の未識別アイテムタイプの外見情報を取得します。
+
+- **Endpoint**: `GET /api/v1/objects/appearance/{worldId}/{typeId}`
+- **Response Body (JSON - 成功時)**:
+```json
+{
+  "worldId": "world_alpha_01",
+  "typeId": "ring_strength",
+  "category": "RING",
+  "appearanceName": "青い指輪"
+}
+```
+
+#### 11.1.3 プレイヤー識別知識 API
+プレイヤーが獲得したアイテム識別知識の一覧取得および更新を行います。
+
+- **Endpoint**: `GET /api/v1/user/{userId}/knowledge`
+- **Response Body (JSON - 成功時)**:
+```json
+{
+  "userId": "player_uuid_12345",
+  "worldId": "world_alpha_01",
+  "identifiedTypeIds": [
+    "ring_strength",
+    "scroll_confusion",
+    "stick_fire"
+  ]
+}
+```
+
+- **Endpoint**: `POST /api/v1/user/{userId}/knowledge`
+- **Request Body (JSON)**:
+```json
+{
+  "worldId": "world_alpha_01",
+  "typeId": "scroll_confusion"
+}
+```
+
+### 11.2 エラーハンドリング (Error Handling)
+アイテム識別処理および関連APIで問題が発生した場合のレスポンス定義です。
+
+| エラーコード | 発生条件 | レスポンス HTTP ステータス | 戻り値のメッセージ例 |
+| :--- | :--- | :---: | :--- |
+| `ITEM_NOT_FOUND` | 指定された `targetObjectId` のアイテムが存在しない。 | 404 Not Found | 指定されたアイテムが見つかりません。 |
+| `USER_NOT_FOUND` | 指定された `userId` のプレイヤーが存在しない。 | 404 Not Found | 指定されたプレイヤーが見つかりません。 |
+| `ALREADY_IDENTIFIED` | 対象のアイテムはすでに識別済みである。 | 400 Bad Request | このアイテムはすでに識別されています。 |
+| `ITEM_NOT_IDENTIFIABLE` | 対象アイテムが識別不可のカテゴリ（例：食料や素材等）である。 | 400 Bad Request | このアイテムは識別の必要がありません。 |
+| `INVALID_IDENTIFY_METHOD` | 指定された `method`（`SCROLL` / `APPRAISER` 等）が無効。 | 400 Bad Request | 無効な識別手段が指定されています。 |
+| `SCROLL_NOT_FOUND` | `method="SCROLL"` 時に指定された「識別の巻物」がインベントリに存在しない。 | 400 Bad Request | 識別の巻物を所持していません。 |
+| `INSUFFICIENT_GOLD` | `method="APPRAISER"` 時に鑑定に必要なゴールドが不足している。 | 400 Bad Request | 鑑定費用が不足しています。 |

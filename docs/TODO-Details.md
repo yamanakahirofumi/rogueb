@@ -41,6 +41,14 @@ AIによる生成が困難な、感性やバランス調整が必要な事項で
 ## 6. 完了済み事項
 これまでに検討が完了し、仕様が策定された事項です。
 
+### [x] アイテム識別システムのAPI仕様およびエラーハンドリングの追加
+- **概要**: 確実に実装するのに不足していた、アイテム識別システムに関する具体的なAPIリクエスト・レスポンスJSON構造（`POST /api/v1/objects/identify`等）および詳細なエラーハンドリング仕様の追加。
+- **解決策**: [アイテム識別システム](./features/Item-Identification-System.md) にて、`POST /api/v1/objects/identify` のJSON構造（識別の巻物使用・町での鑑定等）、`GET /api/v1/objects/appearance/{worldId}/{typeId}` 外見マッピング構造、および各種異常系に対する詳細なエラーコード（`ITEM_NOT_FOUND`, `ALREADY_IDENTIFIED`, `ITEM_NOT_IDENTIFIABLE`, `SCROLL_NOT_FOUND`, `INSUFFICIENT_GOLD`等）やHTTPステータスのマッピングを策定。
+
+### [x] 倉庫システムのAPI仕様およびエラーハンドリングの追加
+- **概要**: 確実に実装するのに不足していた、倉庫システム（入庫・出庫・拡張）に関する具体的なAPIリクエスト・レスポンスJSON構造および詳細なエラーハンドリング仕様の追加。
+- **解決策**: [倉庫システム仕様](./features/Storage-System.md) にて、`POST /api/v1/storage/deposit`（入庫）、`POST /api/v1/storage/withdraw`（出庫）、`POST /api/v1/storage/expand`（拡張）のJSON構造、および各異常系に対する詳細なエラーコード（`STORAGE_FULL`, `INVENTORY_FULL`, `ITEM_NOT_FOUND`, `STORAGE_ALREADY_MAX_LIMIT`, `INSUFFICIENT_GOLD`, `INSUFFICIENT_EXPANSION_MATERIAL`等）やHTTPステータスのマッピングを策定。
+
 ### [x] アイテムエンチャントシステムのAPI仕様およびエラーハンドリングの追加
 - **概要**: 確実に実装するのに不足していた、アイテムエンチャントシステムに関する具体的なAPIリクエスト・レスポンスJSON構造（`POST /api/v1/objects/enchant`）および詳細なエラーハンドリング仕様の追加。
 - **解決策**: [アイテムエンチャントシステム仕様](./features/Item-Enchantment-System.md) にて、`POST /api/v1/objects/enchant` のJSON構造（鍛冶屋での付与・強化、エンチャントの巻物使用等）、および各種異常系に対する詳細なエラーコード（`ITEM_NOT_FOUND`, `NO_EMPTY_SLOT`, `INSUFFICIENT_GOLD`, `INSUFFICIENT_MATERIAL`, `SCROLL_NOT_FOUND`, `ITEM_CURSED`, `INVALID_ENCHANT_TYPE`, `DUPLICATE_ENCHANT`）やHTTPステータスのマッピングを策定。

@@ -46,22 +46,12 @@
 | **4段階目** | 170 枠 | 50,000 Gold | `expansion_material`（増築用資材） × 4 |
 | **5段階目** | 200 枠 | 100,000 Gold | `expansion_material`（増築用資材） × 5 |
 
-#### 3.2.2 API仕様とエラーハンドリング
-倉庫の拡張処理は以下のAPIエンドポイントを介して行われます。
-
-- **エンドポイント**: `POST /api/v1/storage/expand`
-- **リクエストパラメータ**:
-    - `playerId` (String): 拡張を実行するプレイヤーのID。
-- **処理フロー**:
-    1. プレイヤーの現在の `PlayerStorageDomain` を取得し、現在の `limitSize` から次の拡張段階を判定します（既に 200 枠に達している場合はエラー）。
-    2. 対象の拡張段階に必要な「ゴールド」および「増築用資材 (`expansion_material`)」をプレイヤーのインベントリ/所持金から確認します。
-    3. 不足している場合はエラーを返します。
-    4. 条件を満たしている場合、ゴールドの減算、アイテムの消費（Objectsモジュールとの連携）をアトミック、あるいは補償トランザクションを伴う結果整合性処理にて実行します。
-    5. `PlayerStorageDomain` の `limitSize` を `+30` 更新して保存します。
-- **想定されるエラーコード**:
-    - `STORAGE_ALREADY_MAX_LIMIT` (400): 既に最大枠（200枠）まで拡張済み。
-    - `INSUFFICIENT_GOLD` (400): 拡張に必要なゴールドが不足している。
-    - `INSUFFICIENT_EXPANSION_MATERIAL` (400): 必要な `expansion_material` が不足している。
+#### 3.2.2 拡張処理フロー
+1. プレイヤーの現在の `PlayerStorageDomain` を取得し、現在の `limitSize` から次の拡張段階を判定します（既に 200 枠に達している場合はエラー）。
+2. 対象の拡張段階に必要な「ゴールド」および「増築用資材 (`expansion_material`)」をプレイヤーのインベントリ/所持金から確認します。
+3. 不足している場合はエラーを返します。
+4. 条件を満たしている場合、ゴールドの減算、アイテムの消費（Objectsモジュールとの連携）を実行します。
+5. `PlayerStorageDomain` の `limitSize` を `+30` 更新して保存します。
 
 ### 3.3 共有倉庫 (Shared Storage)
 将来的な拡張として、同一アカウント内の複数キャラクターや、ギルド単位で共有可能な倉庫の導入を検討します。
@@ -82,7 +72,7 @@ sequenceDiagram
     participant ECO as EconomicSystem
 
     Note over P, ECO: アイテム入庫
-    P->>PO: 入庫リクエスト (instanceId)
+    P->>PO: 入庫リクエスト (objectId)
     PO->>BA: インベントリから削除要求
     BA-->>PO: 200 OK
     PO->>BA: 倉庫 (PlayerStorageDomain) へ追加要求
@@ -98,3 +88,112 @@ sequenceDiagram
 - **カテゴリー別整理**: アイテムの種類（武器、薬等）による自動ソート機能。
 - **倉庫内検索**: アイテム名や属性によるフィルタリング機能。
 - **期限付き倉庫**: 特定のイベント期間中のみ使用可能な一時的な保管場所。
+
+## 7. API仕様およびエラーハンドリング
+
+### 7.1 APIエンドポイントとJSON構造
+
+#### 7.1.1 アイテム入庫 API
+インベントリから倉庫へアイテムを移動します。
+
+- **Endpoint**: `POST /api/v1/storage/deposit`
+- **Request Body (JSON)**:
+```json
+{
+  "playerId": "player_uuid_12345",
+  "objectId": "item_instance_99999"
+}
+```
+
+- **Response Body (JSON - 成功時)**:
+```json
+{
+  "success": true,
+  "result": "SUCCESS",
+  "message": "アイテムを倉庫に入庫しました。",
+  "storage": {
+    "playerId": "player_uuid_12345",
+    "limitSize": 50,
+    "currentSize": 12,
+    "objectIdList": [
+      "item_instance_11111",
+      "item_instance_99999"
+    ]
+  }
+}
+```
+
+#### 7.1.2 アイテム出庫 API
+倉庫からインベントリへアイテムを移動します。
+
+- **Endpoint**: `POST /api/v1/storage/withdraw`
+- **Request Body (JSON)**:
+```json
+{
+  "playerId": "player_uuid_12345",
+  "objectId": "item_instance_99999"
+}
+```
+
+- **Response Body (JSON - 成功時)**:
+```json
+{
+  "success": true,
+  "result": "SUCCESS",
+  "message": "アイテムを倉庫から引き出しました。",
+  "storage": {
+    "playerId": "player_uuid_12345",
+    "limitSize": 50,
+    "currentSize": 11,
+    "objectIdList": [
+      "item_instance_11111"
+    ]
+  }
+}
+```
+
+#### 7.1.3 倉庫拡張 API
+ゴールドと増築用資材を消費して倉庫の最大容量を拡張（+30枠）します。
+
+- **Endpoint**: `POST /api/v1/storage/expand`
+- **Request Body (JSON)**:
+```json
+{
+  "playerId": "player_uuid_12345"
+}
+```
+
+- **Response Body (JSON - 成功時)**:
+```json
+{
+  "success": true,
+  "result": "SUCCESS",
+  "message": "倉庫の拡張に成功しました！容量が 80 枠になりました。",
+  "storage": {
+    "playerId": "player_uuid_12345",
+    "limitSize": 80,
+    "currentSize": 11,
+    "objectIdList": [
+      "item_instance_11111"
+    ]
+  },
+  "costSpent": {
+    "gold": 5000,
+    "expansionMaterialCount": 1
+  }
+}
+```
+
+### 7.2 エラーハンドリング (Error Handling)
+倉庫の各種操作において発生する可能性のあるエラーレスポンスの定義です。
+
+| エラーコード | 発生条件 | レスポンス HTTP ステータス | 戻り値のメッセージ例 |
+| :--- | :--- | :---: | :--- |
+| `PLAYER_NOT_FOUND` | 指定された `playerId` のプレイヤーが存在しない。 | 404 Not Found | 指定されたプレイヤーが見つかりません。 |
+| `STORAGE_NOT_FOUND` | 対象プレイヤーの倉庫データが存在しない。 | 404 Not Found | 倉庫情報が見つかりません。 |
+| `ITEM_NOT_FOUND` | 指定された `objectId` のアイテムが存在しない、または所持指定場所に存在しない。 | 404 Not Found | 対象のアイテムが見つかりません。 |
+| `STORAGE_FULL` | 入庫時に、倉庫の保管アイテム数が `limitSize` に達している。 | 400 Bad Request | 倉庫の容量が満杯のため、これ以上入庫できません。 |
+| `INVENTORY_FULL` | 出庫時に、プレイヤーのインベントリ容量が満杯である。 | 400 Bad Request | インベントリが満杯のため、アイテムを引き出せません。 |
+| `STORAGE_ALREADY_MAX_LIMIT` | 拡張実行時に、すでに最大枠（200枠）まで拡張済みである。 | 400 Bad Request | 倉庫はすでに最大容量（200枠）まで拡張されています。 |
+| `INSUFFICIENT_GOLD` | 拡張に必要なゴールドが不足している。 | 400 Bad Request | 倉庫拡張に必要な所持ゴールドが不足しています。 |
+| `INSUFFICIENT_EXPANSION_MATERIAL` | 拡張に必要な「増築用資材 (`expansion_material`)」が不足している。 | 400 Bad Request | 倉庫拡張に必要な「増築用資材」が不足しています。 |
