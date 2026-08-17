@@ -145,6 +145,85 @@ sequenceDiagram
 - **呪い状態の制約**: 鍛冶屋でのエンチャント付与および強化は、呪われているアイテム（`isCursed = true`）に対しては実行できません。先に「解呪の巻物」等で呪いを解く必要があります。
 - **譲渡・移植制限**: エンチャントされたアイテムを他のアイテムへと直接エンチャント移行（移植）する機能は、ゲームバランス保護のため原則不可能です。
 
-## 8. 今後の拡張
+## 8. APIリクエスト・フローとエラーハンドリング
+
+### 8.1 APIリクエスト仕様
+アイテムにエンチャントを付与・強化するためのエンドポイントおよびリクエスト/レスポンスの構造です。
+
+- **Endpoint**: `POST /api/v1/objects/enchant`
+- **Request Body (JSON - 鍛冶屋での付与例)**:
+```json
+{
+  "userId": "player_uuid_12345",
+  "itemInstanceId": "e30df9bc-2601-4475-bf7e-07df9e19d089",
+  "enchantMethod": "BLACKSMITH",
+  "materialItemId": "fire_stone",
+  "targetEnchantId": "ENCHANT_ATTR_FIRE"
+}
+```
+
+- **Request Body (JSON - エンチャントの巻物使用例)**:
+```json
+{
+  "userId": "player_uuid_12345",
+  "itemInstanceId": "e30df9bc-2601-4475-bf7e-07df9e19d089",
+  "enchantMethod": "SCROLL",
+  "scrollInstanceId": "scroll_instance_uuid_99999"
+}
+```
+
+- **Response Body (JSON - 成功時)**:
+```json
+{
+  "success": true,
+  "result": "SUCCESS",
+  "message": "エンチャント「劫火の」の付与に成功しました！",
+  "item": {
+    "instanceId": "e30df9bc-2601-4475-bf7e-07df9e19d089",
+    "typeId": "silver_sword",
+    "name": "銀の剣",
+    "tier": 2,
+    "metadata": {
+      "isIdentified": true,
+      "atk": 9,
+      "enchantSlots": 2,
+      "enchantments": [
+        {
+          "id": "ENCHANT_ATK",
+          "level": 2,
+          "name": "剛力の",
+          "effects": {
+            "atk": 3
+          }
+        },
+        {
+          "id": "ENCHANT_ATTR_FIRE",
+          "level": 1,
+          "name": "劫火の",
+          "effects": {
+            "attribute": "Fire"
+          }
+        }
+      ]
+    }
+  }
+}
+```
+
+### 8.2 エラーハンドリング (Error Handling)
+処理の過程で異常が検出された場合、システムは適切なエラーコードおよび HTTP ステータスを返却します。
+
+| エラーコード | 発生条件 | レスポンス HTTP ステータス | 戻り値のメッセージ例 |
+| :--- | :--- | :---: | :--- |
+| `ITEM_NOT_FOUND` | 指定された `itemInstanceId` のアイテムが存在しない。 | 404 Not Found | 指定されたアイテムが見つかりません。 |
+| `NO_EMPTY_SLOT` | 対象アイテムのエンチャントスロットが埋まっており、空きスロットがない。 | 400 Bad Request | エンチャントスロットに空きがありません。 |
+| `INSUFFICIENT_GOLD` | 鍛冶屋でのエンチャントに必要なゴールドが不足している。 | 400 Bad Request | 所持ゴールドが不足しています。 |
+| `INSUFFICIENT_MATERIAL` | 鍛冶屋でのエンチャントに必要な素材アイテムが存在しない。 | 400 Bad Request | エンチャントに必要な素材アイテムが不足しています。 |
+| `SCROLL_NOT_FOUND` | 指定された `scrollInstanceId` の巻物がインベントリに存在しない。 | 404 Not Found | 使用するエンチャントの巻物が存在しません。 |
+| `ITEM_CURSED` | 対象アイテムが呪われている（`isCursed = true`）。 | 400 Bad Request | 呪われているアイテムにはエンチャントを付与できません。 |
+| `INVALID_ENCHANT_TYPE` | 対象アイテムのカテゴリに対応していないエンチャントが指定された。 | 400 Bad Request | このアイテムカテゴリには指定されたエンチャントを付与できません。 |
+| `DUPLICATE_ENCHANT` | 対象アイテムに既に同一系統のエンチャントが付与されている。 | 400 Bad Request | 既に同じ種類のエンチャントが付与されています。 |
+
+## 9. 今後の拡張
 - **エンチャント抽出**: 不要になった装備から、1つのエンチャントのみを「魔力スクロール」として抽出する機能。
 - **ソウルリンクエンチャント**: プレイヤーの現在 HP やスタミナに応じて、リアルタイムで効果が変動する特殊エンチャント。
