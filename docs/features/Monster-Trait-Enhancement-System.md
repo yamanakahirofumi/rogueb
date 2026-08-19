@@ -119,6 +119,16 @@ sequenceDiagram
 }
 ```
 
+- **Response Body (JSON - 異常時)**:
+```json
+{
+  "success": false,
+  "result": "ERROR",
+  "errorCode": "INSUFFICIENT_LEVEL",
+  "message": "特性強化を実行するには、モンスターのレベルが15以上である必要があります。"
+}
+```
+
 ### 5.2 エラーハンドリング (Error Handling)
 処理の過程で異常が検出された場合、システムは適切なエラーレスポンスを返却します。
 

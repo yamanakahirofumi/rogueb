@@ -122,7 +122,144 @@ sequenceDiagram
     PO->>D: DungeonDomain の設定更新
 ```
 
-## 8. 今後の拡張
+## 8. APIリクエスト・フローとエラーハンドリング
+
+### 8.1 APIリクエスト仕様
+ダンジョン構築・運営における主要アクション（資材・構造物配置、モンスター配置、リアルタイム介入）のエンドポイントおよびリクエスト/レスポンスボディのJSON構造を定義します。
+
+#### 1) 資材・構造物配置 (`POST /api/v1/dungeons/build/place`)
+- **Request Body (JSON)**:
+```json
+{
+  "userId": "admin_uuid_12345",
+  "dungeonId": "dungeon_uuid_67890",
+  "floorNumber": 1,
+  "coordinate": {
+    "x": 5,
+    "y": 10
+  },
+  "tileTypeId": "breakable_wall"
+}
+```
+
+- **Response Body (JSON - 成功時)**:
+```json
+{
+  "success": true,
+  "result": "SUCCESS",
+  "message": "壊れる壁の配置に成功しました。",
+  "dungeonId": "dungeon_uuid_67890",
+  "floorNumber": 1,
+  "placedTile": {
+    "x": 5,
+    "y": 10,
+    "tileTypeId": "breakable_wall"
+  },
+  "consumedGold": 100,
+  "consumedMaterialId": "material_stone"
+}
+```
+
+#### 2) モンスター配置 (`POST /api/v1/dungeons/build/place-monster`)
+- **Request Body (JSON)**:
+```json
+{
+  "userId": "admin_uuid_12345",
+  "dungeonId": "dungeon_uuid_67890",
+  "floorNumber": 1,
+  "monsterInstanceId": "monster_uuid_11223",
+  "coordinate": {
+    "x": 8,
+    "y": 12
+  },
+  "patrolType": "PATROL_ROOM"
+}
+```
+
+- **Response Body (JSON - 成功時)**:
+```json
+{
+  "success": true,
+  "result": "SUCCESS",
+  "message": "モンスター（オーク）の配置に成功しました。",
+  "dungeonId": "dungeon_uuid_67890",
+  "floorNumber": 1,
+  "monster": {
+    "instanceId": "monster_uuid_11223",
+    "monsterId": "orc",
+    "coordinate": {
+      "x": 8,
+      "y": 12
+    },
+    "patrolType": "PATROL_ROOM"
+  },
+  "currentTotalPlacementCost": 15,
+  "maxPlacementCost": 50
+}
+```
+
+#### 3) リアルタイム介入 (`POST /api/v1/dungeons/intervene`)
+- **Request Body (JSON)**:
+```json
+{
+  "userId": "admin_uuid_12345",
+  "dungeonId": "dungeon_uuid_67890",
+  "targetPlayerUserId": "player_uuid_99887",
+  "actionType": "SUMMON_REINFORCEMENT",
+  "parameters": {
+    "monsterInstanceId": "monster_uuid_33445",
+    "coordinate": {
+      "x": 12,
+      "y": 15
+    }
+  }
+}
+```
+
+- **Response Body (JSON - 成功時)**:
+```json
+{
+  "success": true,
+  "result": "SUCCESS",
+  "message": "介入アクション「増援の召喚」を実行しました。",
+  "actionType": "SUMMON_REINFORCEMENT",
+  "consumedIP": 150,
+  "remainingIP": 350,
+  "cooldownSeconds": 60
+}
+```
+
+#### 4) エラーレスポンス共通フォーマット (JSON - 異常時)
+```json
+{
+  "success": false,
+  "result": "ERROR",
+  "errorCode": "PATH_BLOCKED",
+  "message": "通行可能経路が遮断されるため、この位置に構造物を配置することはできません。"
+}
+```
+
+### 8.2 エラーハンドリング (Error Handling)
+ダンジョン構築およびリアルタイム介入処理の過程で異常が検出された場合、システムは以下のエラーコードと適切なHTTPステータスを返却します。
+
+| エラーコード | 発生条件 | レスポンス HTTP ステータス | 戻り値のメッセージ例 |
+| :--- | :--- | :---: | :--- |
+| `DUNGEON_NOT_FOUND` | 指定された `dungeonId` のダンジョンが存在しない。 | 404 Not Found | 指定されたダンジョンが見つかりません。 |
+| `FLOOR_NOT_FOUND` | 指定された `floorNumber` のフロアが存在しない。 | 404 Not Found | 指定されたフロアが見つかりません。 |
+| `INVALID_COORDINATE` | 指定された座標 `(x, y)` がフロアの有効範囲外である。 | 400 Bad Request | 無効な座標が指定されています。 |
+| `INSUFFICIENT_MATERIAL` | 建築に必要な資材アイテムがプレイヤーの所有物/インベントリに不足している。 | 400 Bad Request | 建築に必要な資材アイテムが不足しています。 |
+| `INSUFFICIENT_GOLD` | 資材の配置に必要なゴールドが不足している。 | 400 Bad Request | 所持ゴールドが不足しています。 |
+| `PATH_BLOCKED` | 構造物の配置により、入り口から最深部までの通過可能な経路が遮断される。 | 400 Bad Request | 通行可能経路が遮断されるため、配置できません。 |
+| `TILE_OCCUPIED` | 解体不可能な固定構造物や他の施設が存在するセルに配置しようとした。 | 400 Bad Request | 既に設置物が存在するセルには配置できません。 |
+| `MONSTER_NOT_FOUND` | 指定された `monsterInstanceId` のモンスターが存在しない。 | 404 Not Found | 指定されたモンスターが見つかりません。 |
+| `MONSTER_NOT_OWNED` | 指定されたモンスターが管理者の所有ストックに存在しない。 | 400 Bad Request | 指定されたモンスターを所有していないか、ストック状態ではありません。 |
+| `PLACEMENT_COST_EXCEEDED` | モンスターの配置により、ダンジョンランク・フロア面積で規定された最大配置コストを超過する。 | 400 Bad Request | モンスターの最大配置コスト制限を超過しています。 |
+| `ACTIVE_SESSION_NOT_FOUND` | 介入対象のプレイヤーセッションが存在しない、または既にダンジョンを退出している。 | 404 Not Found | 対象のプレイヤーはダンジョン内に存在しません。 |
+| `INSUFFICIENT_INTERVENTION_POINTS` | 介入アクションに必要な IP（介入ポイント）が不足している。 | 400 Bad Request | 介入ポイント(IP)が不足しています。 |
+| `ACTION_COOLDOWN_ACTIVE` | 前回の介入アクション実行によるクールタイムが経過していない。 | 400 Bad Request | クールタイム中のため介入アクションを実行できません。 |
+| `INVALID_TARGET_TILE` | プレイヤーの直接視界内や進入不可マスなど、不適切な位置への介入アクション実行。 | 400 Bad Request | 指定された位置には介入アクションを実行できません。 |
+
+## 9. 今後の拡張
 - **[ダンジョンランク](./Dungeon-Rank-System.md)**: プレイヤーの評価や攻略難易度に基づき、ダンジョンのランクが上昇する仕組み。
 - **設計図 (Blueprint)**: 他の管理者が作成した優れたレイアウトを、設計図として売買・利用できる機能。
 - **自動生成の統合**: ベースとなるレイアウトを自動生成し、そこから管理者が微調整を行うハイブリッド建築。
