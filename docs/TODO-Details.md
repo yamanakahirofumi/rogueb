@@ -48,6 +48,17 @@ AIによる生成が困難な、感性やバランス調整が必要な事項で
 ### [x] 倉庫システムのAPI仕様およびエラーハンドリングの追加
 - **概要**: 確実に実装するのに不足していた、倉庫システム（入庫・出庫・拡張）に関する具体的なAPIリクエスト・レスポンスJSON構造および詳細なエラーハンドリング仕様の追加。
 - **解決策**: [倉庫システム仕様](./features/Storage-System.md) にて、`POST /api/v1/storage/deposit`（入庫）、`POST /api/v1/storage/withdraw`（出庫）、`POST /api/v1/storage/expand`（拡張）のJSON構造、および各異常系に対する詳細なエラーコード（`STORAGE_FULL`, `INVENTORY_FULL`, `ITEM_NOT_FOUND`, `STORAGE_ALREADY_MAX_LIMIT`, `INSUFFICIENT_GOLD`, `INSUFFICIENT_EXPANSION_MATERIAL`等）やHTTPステータスのマッピングを策定。
+### [x] モンスタードロップシステムのAPI仕様およびエラーハンドリングの追加
+- **概要**: 確実に実装するのに不足していた、モンスタードロップシステムに関する具体的なAPIリクエスト・レスポンスJSON構造（`POST /api/v1/monsters/drop`, `GET /api/v1/monsters/drop-tables/{typeId}`）および詳細なエラーハンドリング仕様の追加。
+- **解決策**: [モンスタードロップシステム仕様](./features/Monster-Drop-System.md) にて、ドロップ処理およびドロップテーブル取得のJSON構造（通常ドロップ、流通制限時の代替ドロップ、ドロップなし等）、および各種異常系に対する詳細なエラーコード（`MONSTER_NOT_FOUND`, `DUNGEON_NOT_FOUND`, `FLOOR_NOT_FOUND`, `INVALID_COORDINATE`, `DROP_TABLE_NOT_FOUND`, `MONSTER_ALREADY_DEFEATED`）やHTTPステータスのマッピングを策定。
+
+### [x] ダンジョン構築・運営システムのAPI仕様およびエラーハンドリングの追加
+- **概要**: 確実に実装するのに不足していた、ダンジョン構築・運営システムに関する具体的なAPIリクエスト・レスポンスJSON構造（`POST /api/v1/dungeons/build/place`, `POST /api/v1/dungeons/build/place-monster`, `POST /api/v1/dungeons/intervene`）および詳細なエラーハンドリング仕様の追加。
+- **解決策**: [ダンジョン構築・運営システム仕様](./features/Dungeon-Construction-System.md) にて、各種構築・介入アクションのJSON構造（資材配置、モンスター配置、リアルタイム介入等）、および各種異常系に対する詳細なエラーコード（`DUNGEON_NOT_FOUND`, `FLOOR_NOT_FOUND`, `INVALID_COORDINATE`, `INSUFFICIENT_MATERIAL`, `INSUFFICIENT_GOLD`, `PATH_BLOCKED`, `TILE_OCCUPIED`, `MONSTER_NOT_FOUND`, `MONSTER_NOT_OWNED`, `PLACEMENT_COST_EXCEEDED`, `ACTIVE_SESSION_NOT_FOUND`, `INSUFFICIENT_INTERVENTION_POINTS`, `ACTION_COOLDOWN_ACTIVE`, `INVALID_TARGET_TILE`）やHTTPステータスのマッピングを策定。
+
+### [x] モンスター特性強化システムのAPI仕様の補完
+- **概要**: 確実に実装するのに不足していた、モンスター特性強化システムにおける異常系のAPIレスポンスJSON構造例の追加。
+- **解決策**: [モンスター特性強化システム仕様](./features/Monster-Trait-Enhancement-System.md) にて、異常発生時（`INSUFFICIENT_LEVEL` 等）のエラーレスポンスJSON構造を明記。
 
 ### [x] アイテムエンチャントシステムのAPI仕様およびエラーハンドリングの追加
 - **概要**: 確実に実装するのに不足していた、アイテムエンチャントシステムに関する具体的なAPIリクエスト・レスポンスJSON構造（`POST /api/v1/objects/enchant`）および詳細なエラーハンドリング仕様の追加。
