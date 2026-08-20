@@ -41,6 +41,10 @@ AIによる生成が困難な、感性やバランス調整が必要な事項で
 ## 6. 完了済み事項
 これまでに検討が完了し、仕様が策定された事項です。
 
+### [x] モンスター忠誠度システムのAPI仕様およびエラーハンドリングの追加
+- **概要**: 確実に実装するのに不足していた、モンスター忠誠度システムに関する具体的なAPIリクエスト・レスポンスJSON構造（`POST /api/v1/monsters/loyalty/feed`, `GET /api/v1/monsters/{instanceId}/loyalty`）および詳細なエラーハンドリング仕様の追加。
+- **解決策**: [モンスター忠誠度システム仕様](./features/Monster-Loyalty-System.md) にて、アイテム給餌および忠誠度照会のJSON構造（忠誠度変動量、状態テキスト表示等）、および各種異常系に対する詳細なエラーコード（`MONSTER_NOT_FOUND`, `ITEM_NOT_FOUND`, `ITEM_NOT_IN_INVENTORY`, `INVALID_ITEM_TYPE`, `MAX_LOYALTY_REACHED`）やHTTPステータスのマッピングを策定。
+
 ### [x] アイテム識別システムのAPI仕様およびエラーハンドリングの追加
 - **概要**: 確実に実装するのに不足していた、アイテム識別システムに関する具体的なAPIリクエスト・レスポンスJSON構造（`POST /api/v1/objects/identify`等）および詳細なエラーハンドリング仕様の追加。
 - **解決策**: [アイテム識別システム](./features/Item-Identification-System.md) にて、`POST /api/v1/objects/identify` のJSON構造（識別の巻物使用・町での鑑定等）、`GET /api/v1/objects/appearance/{worldId}/{typeId}` 外見マッピング構造、および各種異常系に対する詳細なエラーコード（`ITEM_NOT_FOUND`, `ALREADY_IDENTIFIED`, `ITEM_NOT_IDENTIFIABLE`, `SCROLL_NOT_FOUND`, `INSUFFICIENT_GOLD`等）やHTTPステータスのマッピングを策定。
