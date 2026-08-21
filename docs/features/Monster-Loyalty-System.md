@@ -78,6 +78,64 @@
 - `loyalty`: Integer（0 〜 255）
 - `lastLoyaltyUpdate`: Long（最終忠誠度更新タイムスタンプ）
 
-## 7. 今後の拡張
+## 7. API 仕様
+
+### 7.1 アイテム給餌（忠誠度変動）エンドポイント
+所持中のアイテム（クッキー等）をモンスターに与えて忠誠度を上昇/減少させます。
+
+- **HTTP メソッド**: `POST`
+- **パス**: `/api/v1/monsters/loyalty/feed`
+
+#### リクエスト JSON スキーマ例
+```json
+{
+  "playerId": "player_999",
+  "monsterInstanceId": "mon_inst_12345",
+  "itemInstanceId": "item_cookie_001"
+}
+```
+
+#### レスポンス JSON スキーマ例 (成功時 - HTTP 200)
+```json
+{
+  "success": true,
+  "monsterInstanceId": "mon_inst_12345",
+  "previousLoyalty": 120,
+  "currentLoyalty": 140,
+  "loyaltyDelta": 20,
+  "statusText": "「こちらを信頼しているようだ。」",
+  "message": "モンスターに懐きクッキーを与えました。"
+}
+```
+
+### 7.2 忠誠度照会エンドポイント
+特定モンスターの現在の忠誠度およびテキスト表示状態を取得します。
+
+- **HTTP メソッド**: `GET`
+- **パス**: `/api/v1/monsters/{instanceId}/loyalty`
+
+#### レスポンス JSON スキーマ例 (成功時 - HTTP 200)
+```json
+{
+  "monsterInstanceId": "mon_inst_12345",
+  "loyalty": 140,
+  "lastLoyaltyUpdate": 1700000000,
+  "statusText": "「こちらを信頼しているようだ。」",
+  "braceProbability": 0.0,
+  "statBonusPercent": 0
+}
+```
+
+## 8. エラーハンドリング仕様
+
+| エラーコード | HTTPステータス | 発生条件 | エラーメッセージ例 |
+| :--- | :---: | :--- | :--- |
+| `MONSTER_NOT_FOUND` | 404 | 指定された `monsterInstanceId` が存在しない、または所有権がない。 | 指定されたモンスターが見つかりません。 |
+| `ITEM_NOT_FOUND` | 404 | 指定された `itemInstanceId` が存在しない。 | 指定されたアイテムが見つかりません。 |
+| `ITEM_NOT_IN_INVENTORY` | 400 | アイテムがプレイヤーの所持品内に存在しない。 | 指定されたアイテムを所持していません。 |
+| `INVALID_ITEM_TYPE` | 400 | 指定されたアイテムが忠誠度に影響を与えるアイテム（給餌用）ではない。 | このアイテムはモンスターに与えることができません。 |
+| `MAX_LOYALTY_REACHED` | 400 | 忠誠度が既に上限（255）に達しており、これ以上上昇するアイテムを使用できない。 | 忠誠度が既に最大値に達しています。 |
+
+## 9. 今後の拡張
 - **モンスター親愛システム**: 忠誠度が最大値(255)かつレベル20以上に達したときに解放されるシステム。詳細は **[モンスター親愛システム](./Monster-Affection-System.md)** を参照してください。
 - **特殊演出**: 忠誠度が高いと、戦闘中にプレイヤーをかばう、あるいは状態異常を自力で治す等の特殊演出が発生する。
