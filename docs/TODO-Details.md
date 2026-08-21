@@ -41,6 +41,10 @@ AIによる生成が困難な、感性やバランス調整が必要な事項で
 ## 6. 完了済み事項
 これまでに検討が完了し、仕様が策定された事項です。
 
+### [x] モンスター化・PKシステムのAPI仕様およびエラーハンドリングの追加
+- **概要**: 確実に実装するのに不足していた、モンスター化・PKシステムに関する具体的なAPIリクエスト・レスポンスJSON構造（`POST /api/v1/pk/transform`, `POST /api/v1/pk/intrude`, `GET /api/v1/pk/wanted-list`, `POST /api/v1/pk/atonement`）および詳細なエラーハンドリング仕様の追加。
+- **解決策**: [モンスター化・PKシステム仕様](./features/Monster-PK-System.md) にて、変身・乱入・指名手配リスト照会・贖罪のJSON構造、および各種異常系に対する詳細なエラーコード（`PLAYER_NOT_FOUND`, `INSUFFICIENT_LEVEL`, `ITEM_NOT_FOUND`, `ITEM_NOT_IN_INVENTORY`, `INVALID_ITEM_TYPE`, `MONSTER_NOT_FOUND`, `MONSTER_NOT_OWNED`, `AREA_NOT_INTRUDABLE`, `INSUFFICIENT_GOLD`, `TIER_LIMIT_EXCEEDED`, `TARGET_PLAYER_NOT_FOUND`, `TARGET_NOT_INTRUDABLE`, `NOT_WANTED`）やHTTPステータスのマッピングを策定。
+
 ### [x] モンスター忠誠度システムのAPI仕様およびエラーハンドリングの追加
 - **概要**: 確実に実装するのに不足していた、モンスター忠誠度システムに関する具体的なAPIリクエスト・レスポンスJSON構造（`POST /api/v1/monsters/loyalty/feed`, `GET /api/v1/monsters/{instanceId}/loyalty`）および詳細なエラーハンドリング仕様の追加。
 - **解決策**: [モンスター忠誠度システム仕様](./features/Monster-Loyalty-System.md) にて、アイテム給餌および忠誠度照会のJSON構造（忠誠度変動量、状態テキスト表示等）、および各種異常系に対する詳細なエラーコード（`MONSTER_NOT_FOUND`, `ITEM_NOT_FOUND`, `ITEM_NOT_IN_INVENTORY`, `INVALID_ITEM_TYPE`, `MAX_LOYALTY_REACHED`）やHTTPステータスのマッピングを策定。
