@@ -159,5 +159,160 @@ sequenceDiagram
     - **追跡アルゴリズム**: ランク A 以上は特性「追跡 (`TRACKING`)」により、プレイヤーが視界外にいても常に最短距離で追跡します（「におい」や「魔力探知」の演出）。
     - **連携**: 同一フロアに複数の賞金稼ぎがいる場合、ターゲットを包囲するように動きます。
 
-## 8. 今後の拡張
+## 8. API仕様 (API Specification)
+モンスター化・乱入・指名手配・贖罪処理で用いられる主要な Restful API エンドポイントのデータ構造（JSON）を定義します。
+
+### 8.1 モンスター変身リクエスト (`POST /api/v1/pk/transform`)
+所持モンスターと変身アイテムを選択し、一時的にモンスター形態に変身します。
+
+#### リクエスト Payload 例
+```json
+{
+  "playerId": "usr_998231",
+  "itemInstanceId": "item_soul_gem_001",
+  "monsterInstanceId": "mon_inst_88712"
+}
+```
+
+#### レスポンス Payload 例（成功時: 200 OK）
+```json
+{
+  "success": true,
+  "transformedMonster": {
+    "monsterInstanceId": "mon_inst_88712",
+    "typeId": "high_demon",
+    "nickname": "ヘルブレイズ",
+    "level": 15,
+    "calculatedStatus": {
+      "hp": 240,
+      "maxHp": 240,
+      "atk": 85,
+      "def": 62,
+      "matk": 90,
+      "mdef": 70,
+      "dex": 55
+    },
+    "availableSkillIds": [
+      "skill_dark_breath",
+      "skill_grand_crush"
+    ]
+  },
+  "transformationDurationSubSteps": 500,
+  "message": "ハイデーモンへの変身が完了しました。"
+}
+```
+
+### 8.2 乱入リクエスト (`POST /api/v1/pk/intrude`)
+変身形態のまま他プレイヤーの攻略中フロアへ乱入します。
+
+#### リクエスト Payload 例
+```json
+{
+  "playerId": "usr_998231",
+  "targetDungeonId": "dungeon_abyss_01",
+  "targetFloor": 5,
+  "targetPlayerId": "usr_104822",
+  "monsterInstanceId": "mon_inst_88712",
+  "itemInstanceId": "item_soul_gem_001"
+}
+```
+
+#### レスポンス Payload 例（成功時: 200 OK）
+```json
+{
+  "success": true,
+  "intrusionId": "intrude_772189",
+  "targetFloor": 5,
+  "spawnCoordinate": {
+    "x": 12,
+    "y": 8
+  },
+  "requiredGoldCost": 2500,
+  "message": "ターゲットプレイヤーの視界外へ乱入しました。"
+}
+```
+
+### 8.3 指名手配リスト照会 (`GET /api/v1/pk/wanted-list`)
+現在指名手配されているプレイヤーの一覧を取得します。
+
+#### リクエストパラメータ例
+`GET /api/v1/pk/wanted-list?rank=A&page=1&limit=10`
+
+#### レスポンス Payload 例（成功時: 200 OK）
+```json
+{
+  "total": 3,
+  "wantedPlayers": [
+    {
+      "playerId": "usr_998231",
+      "playerName": "ShadowSlayer",
+      "bounty": 65000,
+      "rank": "A",
+      "currentKillStreak": 8,
+      "totalPkCount": 42,
+      "lastKnownLocation": {
+        "dungeonId": "dungeon_abyss_01",
+        "dungeonName": "深淵の魔宮",
+        "floor": 5
+      }
+    }
+  ]
+}
+```
+
+### 8.4 贖罪リクエスト (`POST /api/v1/pk/atonement`)
+拠点の教会等でゴールドを支払い、指名手配状態および撃破数をリセットします。
+
+#### リクエスト Payload 例
+```json
+{
+  "playerId": "usr_998231",
+  "paymentGold": 97500
+}
+```
+
+#### レスポンス Payload 例（成功時: 200 OK）
+```json
+{
+  "success": true,
+  "paidGold": 97500,
+  "remainingGold": 125000,
+  "clearedBounty": 65000,
+  "message": "贖罪が完了し、指名手配が解除されました。"
+}
+```
+
+## 9. エラーハンドリング (Error Handling)
+モンスター化およびPK処理において発生し得る業務エラーコード、発生条件、および対応する HTTP ステータスコードのマッピングを以下に示します。
+
+| エラーコード | HTTPステータス | 発生条件・詳細 |
+| :--- | :---: | :--- |
+| `PLAYER_NOT_FOUND` | 404 Not Found | 指定されたプレイヤーが存在しない場合。 |
+| `INSUFFICIENT_LEVEL` | 400 Bad Request | 変身・乱入に必要なプレイヤーレベル（Lv 10以上）を満たしていない場合。 |
+| `ITEM_NOT_FOUND` | 404 Not Found | 指定された変身アイテムが存在しない場合。 |
+| `ITEM_NOT_IN_INVENTORY` | 400 Bad Request | 変身アイテムがプレイヤーのインベントリ内に存在しない場合。 |
+| `INVALID_ITEM_TYPE` | 400 Bad Request | 指定されたアイテムが変身用アイテム（モンスターソウルジェム等）でない場合。 |
+| `MONSTER_NOT_FOUND` | 404 Not Found | 変身対象として指定されたモンスターが存在しない場合。 |
+| `MONSTER_NOT_OWNED` | 403 Forbidden | 指定されたモンスターがプレイヤー自身の所有個体でない場合。 |
+| `AREA_NOT_INTRUDABLE` | 400 Bad Request | 対象ダンジョンまたはエリアで乱入が許可されていない（`isIntrusionEnabled = false`）場合。 |
+| `INSUFFICIENT_GOLD` | 400 Bad Request | 乱入コストまたは贖罪に必要なゴールドが不足している場合。 |
+| `TIER_LIMIT_EXCEEDED` | 400 Bad Request | ダンジョンランクの上限を超えるティアのモンスターで乱入しようとした場合。 |
+| `TARGET_PLAYER_NOT_FOUND` | 404 Not Found | 乱入対象のプレイヤーが存在しないか、すでにダンジョンを離脱している場合。 |
+| `TARGET_NOT_INTRUDABLE` | 400 Bad Request | 乱入対象プレイヤーが乱入可能エリアに滞在していない場合。 |
+| `NOT_WANTED` | 400 Bad Request | 指名手配されていないプレイヤーが贖罪を行おうとした場合。 |
+
+#### エラーレスポンス Payload 例（ゴールド不足時: 400 Bad Request）
+```json
+{
+  "errorCode": "INSUFFICIENT_GOLD",
+  "message": "乱入に必要なゴールドが不足しています。",
+  "details": {
+    "requiredGold": 2500,
+    "currentGold": 1200
+  },
+  "timestamp": "2026-03-31T12:00:00Z"
+}
+```
+
+## 10. 今後の拡張 (Future Extensions)
 - **進化系モンスター**: 特定のプレイヤーを倒し続けることで、変身できるモンスターがより強力な種族へ進化する機能。
