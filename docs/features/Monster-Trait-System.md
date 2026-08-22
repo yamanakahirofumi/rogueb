@@ -68,3 +68,129 @@
 ## 6. 今後の拡張
 - **特性強化**: 触媒アイテム（`trait_stone`, `trait_crystal`）を用いて、レベルIの個体特性をレベルIIへ強化する仕組み。詳細なルールやコストについては、**[モンスター特性強化システム](./Monster-Trait-Enhancement-System.md)** を参照してください。
 - **連携特性**: パーティ内に特定の組み合わせの特性を持つモンスターがいる場合に発動するシナジー効果。詳細な仕様については、**[モンスター連携特性システム](./Monster-Synergy-Trait-System.md)** を参照してください。
+
+## 7. API 仕様 (API Specifications)
+
+### 7.1 特性一覧取得
+指定したモンスター個体の種族特性、個体特性、および現在有効な総活性特性の一覧を取得します。
+
+- **HTTP メソッド**: `GET`
+- **エンドポイント**: `/api/v1/monsters/{instanceId}/traits`
+
+#### リクエストパラメータ
+- **パスパラメータ**:
+    - `instanceId` (String, 必須): モンスター個体 ID。
+
+#### レスポンス構造 (200 OK)
+```json
+{
+  "instanceId": "mon-12345",
+  "speciesId": "slime_01",
+  "speciesName": "スライム",
+  "activeTraits": [
+    {
+      "traitId": "SLIME_BODY",
+      "name": "スライム体質",
+      "category": "特殊・行動",
+      "description": "物理ダメージを 20% 軽減するが、火属性ダメージが 1.5 倍になる。",
+      "source": "SPECIES"
+    },
+    {
+      "traitId": "REGENERATION",
+      "name": "自己再生",
+      "category": "能力強化",
+      "description": "subStep % 10 == 0 のタイミングで、最大 HP の 3% を回復する。",
+      "source": "INDIVIDUAL"
+    }
+  ],
+  "individualTraits": [
+    {
+      "traitId": "REGENERATION",
+      "name": "自己再生",
+      "category": "能力強化",
+      "description": "subStep % 10 == 0 のタイミングで、最大 HP の 3% を回復する。"
+    }
+  ],
+  "maxIndividualTraits": 2
+}
+```
+
+### 7.2 個体特性付与
+触媒アイテム等を用いて、モンスター個体に新たな個体特性を習得・付与します。
+
+- **HTTP メソッド**: `POST`
+- **エンドポイント**: `/api/v1/monsters/{instanceId}/traits/equip`
+
+#### リクエストボディ (JSON)
+```json
+{
+  "instanceId": "mon-12345",
+  "traitId": "FIRE_IMMUNITY",
+  "catalystItemId": "item-9876"
+}
+```
+
+#### レスポンス構造 (200 OK)
+```json
+{
+  "success": true,
+  "instanceId": "mon-12345",
+  "equippedTraitId": "FIRE_IMMUNITY",
+  "updatedIndividualTraits": [
+    "REGENERATION",
+    "FIRE_IMMUNITY"
+  ],
+  "message": "特性「火属性無効」を習得させました。"
+}
+```
+
+### 7.3 個体特性削除
+モンスター個体が保持する不要な個体特性を忘れさせ（削除し）、個体特性枠を空けます。
+
+- **HTTP メソッド**: `DELETE`
+- **エンドポイント**: `/api/v1/monsters/{instanceId}/traits/{traitId}`
+
+#### リクエストパラメータ
+- **パスパラメータ**:
+    - `instanceId` (String, 必須): モンスター個体 ID。
+    - `traitId` (String, 必須): 削除対象の特性 ID。
+
+#### レスポンス構造 (200 OK)
+```json
+{
+  "success": true,
+  "instanceId": "mon-12345",
+  "removedTraitId": "REGENERATION",
+  "updatedIndividualTraits": [
+    "FIRE_IMMUNITY"
+  ],
+  "message": "特性「自己再生」を削除しました。"
+}
+```
+
+## 8. エラーハンドリング (Error Handling)
+
+### 8.1 ビジネスルールエラー一覧
+モンスター特性操作時の各異常系に対応するエラーコードおよび HTTP ステータスの定義です。
+
+| エラーコード | HTTP ステータス | 発生条件・詳細 |
+| :--- | :---: | :--- |
+| `MONSTER_NOT_FOUND` | 404 Not Found | 指定された `instanceId` のモンスターが存在しない場合。 |
+| `MONSTER_NOT_OWNED` | 403 Forbidden | 操作対象のモンスターがリクエストを実行したプレイヤーの所有物でない場合。 |
+| `TRAIT_NOT_FOUND` | 404 Not Found | 指定された `traitId` の特性が存在しない、または削除時に個体が保持していない場合。 |
+| `TRAIT_SLOT_FULL` | 400 Bad Request | 個体特性の保持上限（最大 2 個）に達しており、追加の個体特性を習得できない場合。 |
+| `DUPLICATE_TRAIT` | 400 Bad Request | すでに種族特性または個体特性として保持している特性を重ねて付与しようとした場合。 |
+| `INVALID_TRAIT_TYPE` | 400 Bad Request | 該当モンスターの種族に適用不可能な特性を指定した場合。 |
+| `ITEM_NOT_FOUND` | 404 Not Found | 指定された触媒アイテム (`catalystItemId`) が存在しない場合。 |
+| `ITEM_NOT_IN_INVENTORY` | 400 Bad Request | 指定された触媒アイテムがプレイヤーのインベントリ内に存在しない場合。 |
+
+### 8.2 エラーレスポンス構造
+異常発生時は、以下の統一エラーレスポンス構造を返却します。
+
+```json
+{
+  "errorCode": "TRAIT_SLOT_FULL",
+  "message": "個体特性の保持枠（最大2個）を超過しています。",
+  "timestamp": "2023-10-27T10:00:00Z"
+}
+```
