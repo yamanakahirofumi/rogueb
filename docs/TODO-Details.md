@@ -41,6 +41,10 @@ AIによる生成が困難な、感性やバランス調整が必要な事項で
 ## 6. 完了済み事項
 これまでに検討が完了し、仕様が策定された事項です。
 
+### [x] トラップシステムのAPI仕様およびエラーハンドリングの追加
+- **概要**: 確実に実装するのに不足していた、トラップシステムに関する具体的なAPIリクエスト・レスポンスJSON構造（`POST /api/v1/dungeons/traps/trigger`, `POST /api/v1/dungeons/traps/place`）および詳細なエラーハンドリング仕様の追加。
+- **解決策**: [トラップシステム仕様](./features/Trap-System.md) にて、トラップの作動判定・効果適用および管理者による配置のJSON構造、ならびに各種異常系に対する詳細なエラーコード（`DUNGEON_NOT_FOUND`, `FLOOR_NOT_FOUND`, `INVALID_COORDINATE`, `TRAP_NOT_FOUND`, `TILE_OCCUPIED`, `INSUFFICIENT_RESOURCE`, `UNAUTHORIZED_ACTION`）やHTTPステータスのマッピングを策定。
+
 ### [x] モンスター特性システムのAPI仕様およびエラーハンドリングの追加
 - **概要**: 確実に実装するのに不足していた、モンスター特性システムに関する具体的なAPIリクエスト・レスポンスJSON構造（`GET /api/v1/monsters/{instanceId}/traits`, `POST /api/v1/monsters/{instanceId}/traits/equip`, `DELETE /api/v1/monsters/{instanceId}/traits/{traitId}`）および詳細なエラーハンドリング仕様の追加。
 - **解決策**: [モンスター特性システム仕様](./features/Monster-Trait-System.md) にて、特性一覧取得、個体特性付与、個体特性削除のJSON構造、および各種異常系に対する詳細なエラーコード（`MONSTER_NOT_FOUND`, `MONSTER_NOT_OWNED`, `TRAIT_NOT_FOUND`, `TRAIT_SLOT_FULL`, `DUPLICATE_TRAIT`, `INVALID_TRAIT_TYPE`, `ITEM_NOT_FOUND`, `ITEM_NOT_IN_INVENTORY`）やHTTPステータスのマッピングを策定。
