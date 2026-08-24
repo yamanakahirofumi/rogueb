@@ -41,6 +41,10 @@ AIによる生成が困難な、感性やバランス調整が必要な事項で
 ## 6. 完了済み事項
 これまでに検討が完了し、仕様が策定された事項です。
 
+### [x] スキル・魔法システムのAPI仕様およびエラーハンドリングの追加
+- **概要**: 確実に実装するのに不足していた、スキル・魔法システムに関する具体的なAPIリクエスト・レスポンスJSON構造（`POST /api/v1/skills/use`, `GET /api/v1/skills/{casterType}/{entityId}`）および詳細なエラーハンドリング仕様の追加。
+- **解決策**: [スキル・魔法システム仕様](./features/Skill-And-Magic-System.md) にて、スキル・魔法の発動および照会のJSON構造、ならびに各種異常系に対する詳細なエラーコード（`CASTER_NOT_FOUND`, `SKILL_NOT_FOUND`, `SKILL_NOT_LEARNED`, `INSUFFICIENT_MP`, `INSUFFICIENT_STAMINA`, `SILENCED_STATUS`, `TARGET_OUT_OF_RANGE`, `INVALID_TARGET_TILE`, `CASTER_DEFEATED`）やHTTPステータスのマッピングを策定。
+
 ### [x] トラップシステムのAPI仕様およびエラーハンドリングの追加
 - **概要**: 確実に実装するのに不足していた、トラップシステムに関する具体的なAPIリクエスト・レスポンスJSON構造（`POST /api/v1/dungeons/traps/trigger`, `POST /api/v1/dungeons/traps/place`）および詳細なエラーハンドリング仕様の追加。
 - **解決策**: [トラップシステム仕様](./features/Trap-System.md) にて、トラップの作動判定・効果適用および管理者による配置のJSON構造、ならびに各種異常系に対する詳細なエラーコード（`DUNGEON_NOT_FOUND`, `FLOOR_NOT_FOUND`, `INVALID_COORDINATE`, `TRAP_NOT_FOUND`, `TILE_OCCUPIED`, `INSUFFICIENT_RESOURCE`, `UNAUTHORIZED_ACTION`）やHTTPステータスのマッピングを策定。
