@@ -77,3 +77,103 @@ sequenceDiagram
 ## 7. 今後の拡張
 - **味方トラップ**: プレイヤーが設置し、モンスターを嵌めるためのトラップ。
 - **偽の階段**: 降りようとするとトラップとして作動する階段。
+
+---
+
+## 8. APIリクエスト・フローとエラーハンドリング
+
+### 8.1 APIリクエスト仕様
+
+#### 1. トラップ作動処理 (`POST /api/v1/dungeons/traps/trigger`)
+プレイヤーまたはモンスターがトラップタイルを踏んだ際に作動判定と効果処理を行う API エンドポイントです。
+
+- **Endpoint**: `POST /api/v1/dungeons/traps/trigger`
+- **Request Body (JSON)**:
+```json
+{
+  "dungeonId": "dungeon_uuid_12345",
+  "floorNumber": 3,
+  "entityId": "player_uuid_99999",
+  "entityType": "PLAYER",
+  "coordinate": {
+    "x": 12,
+    "y": 8
+  }
+}
+```
+
+- **Response Body (JSON - 成功時 / 作動時)**:
+```json
+{
+  "success": true,
+  "result": "TRIGGERED",
+  "message": "毒矢の罠が作動！ 5 ダメージを受け、毒状態になった！",
+  "trapDetail": {
+    "trapId": 2,
+    "trapName": "毒矢の罠",
+    "isEvaded": false,
+    "nextState": "REVEALED",
+    "effects": [
+      {
+        "type": "FIXED_DAMAGE",
+        "value": 5
+      },
+      {
+        "type": "STATUS_EFFECT",
+        "status": "POISON",
+        "duration": 10
+      }
+    ]
+  }
+}
+```
+
+#### 2. 管理者によるトラップ配置 (`POST /api/v1/dungeons/traps/place`)
+ダンジョン管理者（My Dungeon モード）がマップ上にトラップを新しく配置する API エンドポイントです。
+
+- **Endpoint**: `POST /api/v1/dungeons/traps/place`
+- **Request Body (JSON)**:
+```json
+{
+  "dungeonId": "dungeon_uuid_12345",
+  "floorNumber": 1,
+  "ownerUserId": "player_uuid_99999",
+  "trapTypeId": 3,
+  "coordinate": {
+    "x": 5,
+    "y": 10
+  }
+}
+```
+
+- **Response Body (JSON - 成功時)**:
+```json
+{
+  "success": true,
+  "result": "SUCCESS",
+  "message": "地雷（配置コスト: 100）を正常に配置しました。",
+  "placedTrap": {
+    "trapTypeId": 3,
+    "trapName": "地雷",
+    "cost": 100,
+    "coordinate": {
+      "x": 5,
+      "y": 10
+    },
+    "state": "REVEALED"
+  }
+}
+```
+
+### 8.2 エラーハンドリング (Error Handling)
+処理中にエラーが発生した場合、システムは以下のエラーコードおよび対応する HTTP ステータスを返却します。
+
+| エラーコード | 発生条件 | レスポンス HTTP ステータス | 戻り値のメッセージ例 |
+| :--- | :--- | :---: | :--- |
+| `DUNGEON_NOT_FOUND` | 指定された `dungeonId` のダンジョンが存在しない。 | 404 Not Found | 指定されたダンジョンが見つかりません。 |
+| `FLOOR_NOT_FOUND` | 指定された `floorNumber` のフロアが存在しない。 | 404 Not Found | 指定された階層が存在しません。 |
+| `INVALID_COORDINATE` | 指定された座標 `(x, y)` がマップ範囲外または壁などの設置不可タイル。 | 400 Bad Request | トラップを配置・作動できない無効な座標です。 |
+| `TRAP_NOT_FOUND` | 作動要求時に該当座標にトラップが存在しない。 | 404 Not Found | 指定された座標に作動可能なトラップが存在しません。 |
+| `TILE_OCCUPIED` | トラップ配置時に該当座標に既に別のトラップや施設が配置されている。 | 400 Bad Request | 該当タイルには既に別のオブジェクトが配置されています。 |
+| `INSUFFICIENT_RESOURCE` | トラップ配置に必要な資材（配置コスト）が不足している。 | 400 Bad Request | トラップ配置に必要な資材が不足しています。 |
+| `UNAUTHORIZED_ACTION` | ダンジョンの所有者以外のユーザーが配置アクションを実行しようとした。 | 403 Forbidden | ダンジョン所有者のみがトラップを配置できます。 |
