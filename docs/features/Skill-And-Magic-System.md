@@ -131,3 +131,123 @@
 ■■■■■
  (射程 2 の例: 5x5 エリア内の任意の 1 マス)
 ```
+
+---
+
+## 8. API仕様およびエラーハンドリング (API Specification & Error Handling)
+
+### 8.1 APIリクエスト仕様
+スキルおよび魔法の発動・照会に関するエンドポイントおよびリクエスト/レスポンスの構造です。
+
+#### 1. スキル・魔法発動エンドポイント
+- **Endpoint**: `POST /api/v1/skills/use`
+- **Request Body (JSON - プレイヤーによる攻撃魔法発動例)**:
+```json
+{
+  "userId": "player_uuid_12345",
+  "casterId": "player_instance_001",
+  "casterType": "PLAYER",
+  "skillId": 201,
+  "targetCoordinate": {
+    "x": 12,
+    "y": 8
+  },
+  "direction": "EAST"
+}
+```
+
+- **Request Body (JSON - モンスターによるスキル発動例)**:
+```json
+{
+  "casterId": "monster_inst_789",
+  "casterType": "MONSTER",
+  "skillId": 105,
+  "targetId": "player_instance_001"
+}
+```
+
+- **Response Body (JSON - 成功時)**:
+```json
+{
+  "success": true,
+  "result": "SUCCESS",
+  "skillId": 201,
+  "skillName": "ファイアボール",
+  "costConsumed": {
+    "resourceType": "MP",
+    "amount": 8
+  },
+  "affectedTargets": [
+    {
+      "targetId": "monster_inst_789",
+      "targetName": "スライム",
+      "damageDealt": 24,
+      "isCritical": false,
+      "statusEffectsApplied": [],
+      "isDefeated": false
+    }
+  ],
+  "logs": [
+    "プレイヤーはファイアボールを唱えた！",
+    "スライムに 24 ポイントのダメージ！"
+  ]
+}
+```
+
+#### 2. 習得スキル一覧照会エンドポイント
+- **Endpoint**: `GET /api/v1/skills/{casterType}/{entityId}`
+- **Response Body (JSON - 成功時)**:
+```json
+{
+  "entityId": "player_instance_001",
+  "casterType": "PLAYER",
+  "stamina": 80,
+  "maxStamina": 100,
+  "mp": 35,
+  "maxMp": 50,
+  "statusEffects": [],
+  "skills": [
+    {
+      "skillId": 101,
+      "name": "パワーアタック",
+      "category": "Physical",
+      "costType": "STAMINA",
+      "costValue": 5,
+      "load": "LIGHT",
+      "element": "None",
+      "powerMultiplier": 1.5,
+      "rangeType": "ADJACENT",
+      "rangeValue": 1,
+      "description": "物理攻撃力の 1.5 倍のダメージを与える。"
+    },
+    {
+      "skillId": 201,
+      "name": "ファイアボール",
+      "category": "Magic",
+      "costType": "MP",
+      "costValue": 8,
+      "load": "LIGHT",
+      "element": "Fire",
+      "powerMultiplier": 1.2,
+      "rangeType": "STRAIGHT",
+      "rangeValue": 10,
+      "description": "直線上の対象に火属性の魔法ダメージを与える。"
+    }
+  ]
+}
+```
+
+### 8.2 エラーハンドリング (Error Handling)
+処理の過程で異常が検出された場合、システムは適切なエラーコードおよび HTTP ステータスを返却します。
+
+| エラーコード | 発生条件 | レスポンス HTTP ステータス | 戻り値のメッセージ例 |
+| :--- | :--- | :---: | :--- |
+| `CASTER_NOT_FOUND` | 指定された `casterId`（プレイヤーまたはモンスター）が存在しない。 | 404 Not Found | 実行者が見つかりません。 |
+| `SKILL_NOT_FOUND` | 指定された `skillId` のスキル・魔法がシステムに定義されていない。 | 404 Not Found | 指定されたスキルが存在しません。 |
+| `SKILL_NOT_LEARNED` | 実行者が指定された `skillId` を習得していない。 | 400 Bad Request | 該当するスキルを習得していません。 |
+| `INSUFFICIENT_MP` | 魔法の使用に必要な MP が不足している。 | 400 Bad Request | MPが不足しています。 |
+| `INSUFFICIENT_STAMINA` | 物理スキルの使用に必要なスタミナが不足している。 | 400 Bad Request | スタミナが不足しています。 |
+| `SILENCED_STATUS` | 実行者が「封印」状態であり、スキルや魔法を使用できない。 | 400 Bad Request | 封印状態のためスキルや魔法を使用できません。 |
+| `TARGET_OUT_OF_RANGE` | 指定されたターゲットまたは座標がスキルの射程外である。 | 400 Bad Request | ターゲットがスキルの射程外です。 |
+| `INVALID_TARGET_TILE` | 移動不可タイル（大粉砕等の壁破壊スキルを除く）を対象とした。 | 400 Bad Request | 無効な対象マスが指定されました。 |
+| `CASTER_DEFEATED` | 実行者が既に撃破・死亡状態にある。 | 400 Bad Request | 実行不能な状態です。 |
