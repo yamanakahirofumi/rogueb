@@ -206,7 +206,140 @@ sequenceDiagram
     PO-->>P: 移動成功
 ```
 
-## 8. 今後の拡張
+## 8. APIリクエスト・フローとエラーハンドリング
+
+### 8.1 APIリクエスト仕様
+
+#### 8.1.1 トラストポリシー照会 API
+指定したワールドに対するトラストポリシー（アイテム持ち込み方針・レベル同期方針等）を取得します。
+
+- **Endpoint**: `GET /api/v1/world/trust-policies/{targetWorldId}`
+- **Response Body (JSON - 成功時)**:
+```json
+{
+  "targetWorldId": "world-beta-02",
+  "itemCarryPolicy": "BIDIRECTIONAL",
+  "levelSyncPolicy": "SYNC_ALL",
+  "monsterLoyaltyPolicy": "PRESERVE",
+  "isMigrationAllowed": true
+}
+```
+
+#### 8.1.2 マイグレーションエクスポート API
+キャラクターデータのスナップショットを生成し、Ed25519 デジタル署名を付与した移行パッケージを発行します。
+
+- **Endpoint**: `POST /api/v1/world/migration/export`
+- **Request Body (JSON)**:
+```json
+{
+  "userId": "user-123",
+  "targetWorldId": "world-beta-02"
+}
+```
+
+- **Response Body (JSON - 成功時)**:
+```json
+{
+  "success": true,
+  "result": "SUCCESS",
+  "exportPackage": {
+    "version": "1.0",
+    "timestamp": "2023-10-27T10:00:00Z",
+    "originWorldId": "world-alpha-01",
+    "playerData": {
+      "id": "user-123",
+      "name": "Hero",
+      "level": 20,
+      "exp": 15000,
+      "gold": 5000,
+      "status": {
+        "hp": 120,
+        "maxHp": 120,
+        "mp": 50,
+        "maxMp": 50,
+        "atk": 50,
+        "def": 40
+      }
+    },
+    "inventory": [
+      {
+        "instanceId": "item-999",
+        "typeId": "ex-sword-01",
+        "isUnknown": true,
+        "inheritanceData": {
+          "name": "Excalibur",
+          "type": "WEAPON",
+          "params": { "atk": 100 },
+          "effects": [{ "id": "HOLY_DAMAGE", "value": 20 }]
+        }
+      }
+    ],
+    "monsters": [
+      {
+        "instanceId": "monster-777",
+        "monsterId": "gale_wolf",
+        "level": 22,
+        "loyalty": 255,
+        "skillIds": ["bite", "bonds_of_gale"]
+      }
+    ],
+    "signature": "base64-encoded-eddsa-signature"
+  }
+}
+```
+
+#### 8.1.3 マイグレーションインポート API
+移行パッケージを受け取り、署名検証およびトラストポリシーを適用して移動先サーバーへデータを反映します。
+
+- **Endpoint**: `POST /api/v1/world/migration/import`
+- **Request Body (JSON)**:
+```json
+{
+  "userId": "user-123",
+  "exportPackage": {
+    "version": "1.0",
+    "timestamp": "2023-10-27T10:00:00Z",
+    "originWorldId": "world-alpha-01",
+    "playerData": {
+      "id": "user-123",
+      "name": "Hero",
+      "level": 20,
+      "exp": 15000,
+      "gold": 5000,
+      "status": { "hp": 120, "maxHp": 120, "mp": 50, "maxMp": 50, "atk": 50, "def": 40 }
+    },
+    "inventory": [],
+    "monsters": [],
+    "signature": "base64-encoded-eddsa-signature"
+  }
+}
+```
+
+- **Response Body (JSON - 成功時)**:
+```json
+{
+  "success": true,
+  "result": "SUCCESS",
+  "message": "ワールドへの移行が成功しました。",
+  "redirectUrl": "https://world-beta-02.rogueb.net/session/connect?token=abc123xyz"
+}
+```
+
+### 8.2 エラーハンドリング (Error Handling)
+
+世界間連携処理およびマイグレーション時に発生する異常系と、HTTP ステータスコードのマッピング一覧です。
+
+| エラーコード | 発生条件 | レスポンス HTTP ステータス | 戻り値のメッセージ例 |
+| :--- | :--- | :---: | :--- |
+| `WORLD_NOT_FOUND` | 指定された `targetWorldId` のワールドが存在しない。 | 404 Not Found | 指定されたワールドが見つかりません。 |
+| `MIGRATION_LOCKED` | 対象プレイヤーが既に他の移行プロセスのためロック中。 | 409 Conflict | 対象のプレイヤーは現在他のワールド移動処理中のためロックされています。 |
+| `ERR_MIGRATION_AUTH_FAILED` | デジタル署名の検証に失敗した、または改ざんが検出された。 | 401 Unauthorized | マイグレーションパッケージの署名検証に失敗しました。 |
+| `ERR_MIGRATION_VERSION_MISMATCH` | データフォーマットのバージョンが移動先サーバーで未対応。 | 400 Bad Request | 移動パッケージのデータフォーマットバージョンが対応していません。 |
+| `ERR_MIGRATION_POLICY_VIOLATION` | 持ち込み不可アイテムの持ち込み等、トラストポリシーに違反した。 | 403 Forbidden | 移動先サーバーのトラストポリシーにより移動が拒否されました。 |
+| `ERR_MIGRATION_DATA_CORRUPT` | 移行パッケージの構造が崩れている、または破損している。 | 400 Bad Request | マイグレーションデータの構造が不正または破損しています。 |
+| `ERR_MIGRATION_TIMEOUT` | マイグレーションのインポート処理が一定時間内に完了しなかった。 | 504 Gateway Timeout | 移動処理がタイムアウトしました。元のワールドでロールバックを行ってください。 |
+
+## 9. 今後の拡張
 - **アイテムの逆輸入**: 外部ワールドで獲得したアイテムを、元のワールドへ持ち帰る際の同期ロジック。
 - **クロスワールド・ランキング**: 複数のワールドをまたいだプレイヤーランキングシステム。
 - **ギルド間抗争**: ワールドの壁を超えた、大規模な組織間バトル。

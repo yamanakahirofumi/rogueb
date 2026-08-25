@@ -41,6 +41,10 @@ AIによる生成が困難な、感性やバランス調整が必要な事項で
 ## 6. 完了済み事項
 これまでに検討が完了し、仕様が策定された事項です。
 
+### [x] 世界間連携システムのAPI仕様およびエラーハンドリングの追加
+- **概要**: 確実に実装するのに不足していた、世界間連携システムに関する具体的なAPIリクエスト・レスポンスJSON構造（`GET /api/v1/world/trust-policies/{targetWorldId}`, `POST /api/v1/world/migration/export`, `POST /api/v1/world/migration/import`）および詳細なエラーハンドリング仕様の追加。
+- **解決策**: [世界間連携システム](./features/World-Interoperability-System.md) にて、トラストポリシー照会・エクスポート・インポートのJSON構造、および各種異常系に対する詳細なエラーコード（`WORLD_NOT_FOUND`, `MIGRATION_LOCKED`, `ERR_MIGRATION_AUTH_FAILED`, `ERR_MIGRATION_VERSION_MISMATCH`, `ERR_MIGRATION_POLICY_VIOLATION`, `ERR_MIGRATION_DATA_CORRUPT`, `ERR_MIGRATION_TIMEOUT`）やHTTPステータスのマッピングを策定。
+
 ### [x] スキル・魔法システムのAPI仕様およびエラーハンドリングの追加
 - **概要**: 確実に実装するのに不足していた、スキル・魔法システムに関する具体的なAPIリクエスト・レスポンスJSON構造（`POST /api/v1/skills/use`, `GET /api/v1/skills/{casterType}/{entityId}`）および詳細なエラーハンドリング仕様の追加。
 - **解決策**: [スキル・魔法システム仕様](./features/Skill-And-Magic-System.md) にて、スキル・魔法の発動および照会のJSON構造、ならびに各種異常系に対する詳細なエラーコード（`CASTER_NOT_FOUND`, `SKILL_NOT_FOUND`, `SKILL_NOT_LEARNED`, `INSUFFICIENT_MP`, `INSUFFICIENT_STAMINA`, `SILENCED_STATUS`, `TARGET_OUT_OF_RANGE`, `INVALID_TARGET_TILE`, `CASTER_DEFEATED`）やHTTPステータスのマッピングを策定。
