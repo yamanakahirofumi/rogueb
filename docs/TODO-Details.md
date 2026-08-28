@@ -41,6 +41,10 @@ AIによる生成が困難な、感性やバランス調整が必要な事項で
 ## 6. 完了済み事項
 これまでに検討が完了し、仕様が策定された事項です。
 
+### [x] ダンジョン独自ルール詳細仕様のAPI仕様およびエラーハンドリングの追加
+- **概要**: 確実に実装するのに不足していた、ダンジョンランク S における独自ルール設定に関する具体的なAPIリクエスト・レスポンスJSON構造（`GET /api/v1/dungeons/{dungeonId}/custom-rules`, `POST /api/v1/dungeons/{dungeonId}/custom-rules`, `DELETE /api/v1/dungeons/{dungeonId}/custom-rules/{ruleId}`）および詳細なエラーハンドリング仕様の追加。
+- **解決策**: [ダンジョン独自ルール詳細仕様](./features/Dungeon-Custom-Rule-Specification.md) にて、独自ルール一覧取得・設定/更新・削除のJSON構造、および各種異常系に対する詳細なエラーコード（`DUNGEON_NOT_FOUND`, `INSUFFICIENT_DUNGEON_RANK`, `CUSTOM_RULE_LIMIT_EXCEEDED`, `INVALID_RULE_TYPE`, `INVALID_RULE_PARAMETER`, `DUPLICATE_CUSTOM_RULE`, `RULE_NOT_FOUND`）やHTTPステータスのマッピングを策定。
+
 ### [x] 世界間連携システムのAPI仕様およびエラーハンドリングの追加
 - **概要**: 確実に実装するのに不足していた、世界間連携システムに関する具体的なAPIリクエスト・レスポンスJSON構造（`GET /api/v1/world/trust-policies/{targetWorldId}`, `POST /api/v1/world/migration/export`, `POST /api/v1/world/migration/import`）および詳細なエラーハンドリング仕様の追加。
 - **解決策**: [世界間連携システム](./features/World-Interoperability-System.md) にて、トラストポリシー照会・エクスポート・インポートのJSON構造、および各種異常系に対する詳細なエラーコード（`WORLD_NOT_FOUND`, `MIGRATION_LOCKED`, `ERR_MIGRATION_AUTH_FAILED`, `ERR_MIGRATION_VERSION_MISMATCH`, `ERR_MIGRATION_POLICY_VIOLATION`, `ERR_MIGRATION_DATA_CORRUPT`, `ERR_MIGRATION_TIMEOUT`）やHTTPステータスのマッピングを策定。
