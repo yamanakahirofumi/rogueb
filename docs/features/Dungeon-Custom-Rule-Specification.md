@@ -58,3 +58,103 @@
 ## 4. 今後の拡張
 - **天候システム**: 特定のターン周期で視界や属性補正が変化するルール。
 - **コンボボーナス**: 特定の条件下で連続して敵を倒すと報酬が増加するルール。
+
+## 5. APIリクエスト・フローとエラーハンドリング
+
+### 5.1 APIリクエスト仕様
+ダンジョン管理者による独自ルールの設定、変更、取得、削除に関するAPIエンドポイントおよびJSON形式を定義します。
+
+#### 1) 独自ルール一覧取得 (`GET /api/v1/dungeons/{dungeonId}/custom-rules`)
+- **Response Body (JSON - 成功時)**:
+```json
+{
+  "dungeonId": "dungeon_uuid_67890",
+  "dungeonRank": "S",
+  "customRules": [
+    {
+      "ruleId": "ITEM_RESTRICTION",
+      "parameters": {
+        "prohibitedTypes": ["SCROLL", "STICK"],
+        "isCarryInDisabled": true
+      }
+    },
+    {
+      "ruleId": "ATTRIBUTE_MODIFIER",
+      "parameters": {
+        "boostedAttribute": "FIRE",
+        "boostRate": 1.5,
+        "suppressedAttribute": "WATER",
+        "suppressRate": 0.5
+      }
+    }
+  ]
+}
+```
+
+#### 2) 独自ルールの設定・更新 (`POST /api/v1/dungeons/{dungeonId}/custom-rules`)
+- **Request Body (JSON)**:
+```json
+{
+  "userId": "admin_uuid_12345",
+  "ruleId": "TURN_LIMIT",
+  "parameters": {
+    "maxTurns": 500,
+    "penaltyType": "FORCED_EXIT"
+  }
+}
+```
+
+- **Response Body (JSON - 成功時)**:
+```json
+{
+  "success": true,
+  "result": "SUCCESS",
+  "message": "独自ルール「TURN_LIMIT」を設定しました。",
+  "dungeonId": "dungeon_uuid_67890",
+  "appliedRule": {
+    "ruleId": "TURN_LIMIT",
+    "parameters": {
+      "maxTurns": 500,
+      "penaltyType": "FORCED_EXIT"
+    }
+  },
+  "currentRuleCount": 3,
+  "maxRuleLimit": 3
+}
+```
+
+#### 3) 独自ルールの削除 (`DELETE /api/v1/dungeons/{dungeonId}/custom-rules/{ruleId}`)
+- **Response Body (JSON - 成功時)**:
+```json
+{
+  "success": true,
+  "result": "SUCCESS",
+  "message": "独自ルール「TURN_LIMIT」を削除しました。",
+  "dungeonId": "dungeon_uuid_67890",
+  "removedRuleId": "TURN_LIMIT",
+  "currentRuleCount": 2
+}
+```
+
+#### 4) エラーレスポンス共通フォーマット (JSON - 異常時)
+```json
+{
+  "success": false,
+  "result": "ERROR",
+  "errorCode": "INSUFFICIENT_DUNGEON_RANK",
+  "message": "独自ルールを設定するにはダンジョンランクが S である必要があります。"
+}
+```
+
+### 5.2 エラーハンドリング (Error Handling)
+独自ルールの設定・変更および削除処理中に異常が検出された場合、システムは以下のエラーコードと適切なHTTPステータスを返却します。
+
+| エラーコード | 発生条件 | レスポンス HTTP ステータス | 戻り値のメッセージ例 |
+| :--- | :--- | :---: | :--- |
+| `DUNGEON_NOT_FOUND` | 指定された `dungeonId` のダンジョンが存在しない。 | 404 Not Found | 指定されたダンジョンが見つかりません。 |
+| `INSUFFICIENT_DUNGEON_RANK` | ダンジョンのランクが S 未満であるため独自ルールを設定・変更できない。 | 400 Bad Request | 独自ルールを設定するにはダンジョンランクが S である必要があります。 |
+| `CUSTOM_RULE_LIMIT_EXCEEDED` | 設定済みの独自ルールが上限の3つに達しており、新たなルールを追加できない。 | 400 Bad Request | 独自ルールの設定上限（最大3つ）を超過しています。 |
+| `INVALID_RULE_TYPE` | 定義されていない無効な `ruleId` が指定された。 | 400 Bad Request | 無効な独自ルールタイプが指定されています。 |
+| `INVALID_RULE_PARAMETER` | `parameters` に不正な値（例: 負のターン数、未定義の属性名等）が含まれている。 | 400 Bad Request | ルールパラメーターの値が不正です。 |
+| `DUPLICATE_CUSTOM_RULE` | 既に設定済みの `ruleId` を重複して設定しようとした。 | 400 Bad Request | 指定された独自ルールは既に設定されています。 |
+| `RULE_NOT_FOUND` | 削除対象として指定された `ruleId` が設定されていない。 | 404 Not Found | 指定された独自ルールは設定されていません。 |
