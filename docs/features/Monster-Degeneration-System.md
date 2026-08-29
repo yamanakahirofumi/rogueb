@@ -104,7 +104,7 @@ sequenceDiagram
 ## 6. APIリクエスト・フローとエラーハンドリング
 
 ### 6.1 APIリクエスト仕様
-退化を実行するためのエンドポイントおよびリクエスト・レスポンスボディの構造です。
+退化を実行するためのエンドポイントおよびリクエスト・レスポンスボディのJSON構造を定義します。
 
 - **Endpoint**: `POST /api/v1/monsters/degeneration`
 - **Request Body (JSON)**:
@@ -129,17 +129,33 @@ sequenceDiagram
     "loyalty": 200,
     "inheritedStatus": {
       "hp": 5,
+      "mp": 0,
       "atk": 4,
-      "def": 3
+      "def": 3,
+      "magicAtk": 0,
+      "magicDef": 0,
+      "dex": 2,
+      "mnd": 1
     },
     "traits": ["REGENERATION"],
-    "skillIds": ["bite", "power_attack"]
+    "skillIds": [105, 101]
   }
 }
 ```
 
+- **Response Body (JSON - 保持スキル枠超過時)**:
+退化先種族の初期スキルと元の所持スキルの合計が 4 つを超える場合、`SKILL_OVERFLOW` の警告とともに手動選択のためのスキル一覧が返却されます。
+```json
+{
+  "success": false,
+  "result": "SKILL_OVERFLOW",
+  "message": "保持スキルが上限（4つ）を超えるため、残すスキルを4つ選択してください。",
+  "availableSkills": [101, 105, 201, 204, 301]
+}
+```
+
 ### 6.2 エラーハンドリング (Error Handling)
-処理の過程で整合性や制約を満たさない場合、以下のエラーコードおよび適切な HTTP ステータスを返却します。
+退化処理の過程で何らかのビジネスルールに抵触した場合、システムは以下のエラーコードと適切な HTTP ステータスを持つエラーレスポンスを返却します。
 
 | エラーコード | 発生条件 | レスポンス HTTP ステータス | 戻り値のメッセージ例 |
 | :--- | :--- | :---: | :--- |
@@ -150,6 +166,7 @@ sequenceDiagram
 | `INVALID_CATALYST` | 指定された触媒アイテム ID が `degeneration_hourglass` 以外。 | 400 Bad Request | 無効な触媒アイテムが指定されています。 |
 | `INSUFFICIENT_CATALYST` | プレイヤーのインベントリに「退化の砂時計」が存在しない。 | 400 Bad Request | 退化に必要な触媒アイテム「退化の砂時計」が不足しています。 |
 | `INSUFFICIENT_GOLD` | 退化に必要なゴールドが不足している。 | 400 Bad Request | 退化に必要な所持ゴールドが不足しています。 |
+| `SKILL_OVERFLOW` | 保持スキルが上限（4つ）を超えるが、残すスキルの指定が完了していない。 | 400 Bad Request | 保持スキルが上限（4つ）を超えるため、残すスキルを選択してください。 |
 
 ## 7. 相互参照
 - [モンスター進化システム](./Monster-Evolution-System.md)：進化の基本プロセスと条件。

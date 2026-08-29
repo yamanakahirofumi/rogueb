@@ -104,6 +104,10 @@ AIによる生成が困難な、感性やバランス調整が必要な事項で
 - **概要**: 確実に実装するのに不足していた、モンスター進化システムに関する具体的なAPIリクエスト・レスポンスJSON構造、および詳細なエラーハンドリング仕様の追加。
 - **解決策**: [モンスター進化システム仕様](./features/Monster-Evolution-System.md) にて、`POST /api/v1/monsters/evolve` のJSON構造、および各異常系に対する詳細なエラーコード（`MONSTER_NOT_FOUND`, `RANK_LIMIT_EXCEEDED`等）やHTTPステータスのマッピングを策定。
 
+### [x] モンスター退化システムのAPI仕様およびエラーハンドリングの追加
+- **概要**: 確実に実装するのに不足していた、モンスター退化システムに関する具体的なAPIリクエスト・レスポンスJSON構造（`POST /api/v1/monsters/degeneration`）および詳細なエラーハンドリング仕様の追加。
+- **解決策**: [モンスター退化システム仕様](./features/Monster-Degeneration-System.md) にて、`POST /api/v1/monsters/degeneration` のJSON構造（退化成功時、保持スキル超過時）、および各種異常系に対する詳細なエラーコード（`MONSTER_NOT_FOUND`, `INSUFFICIENT_LEVEL`, `NOT_EVOLVED_YET`, `DEGENERATION_COOLDOWN`, `INVALID_CATALYST`, `INSUFFICIENT_CATALYST`, `INSUFFICIENT_GOLD`, `SKILL_OVERFLOW`）やHTTPステータスのマッピングを策定。
+
 ### [x] モジュール間通信の最適化
 - **概要**: 現在の REST ベースの通信におけるオーバーヘッドの評価と、必要に応じた最適化（gRPCや共有メモリの検討）。
 - **解決策**: [モジュール間通信最適化仕様](./implementation/Inter-Module-Communication-Optimization.md)にて、HTTP/2 ベースのリアクティブ gRPC (Protobuf) の導入、シングルノード配備用の共有メモリを用いたゼロコピー通信仕様、自動フォールバック戦略、およびパフォーマンスベンチマーク手法を策定済み。
