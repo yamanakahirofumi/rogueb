@@ -41,6 +41,10 @@ AIによる生成が困難な、感性やバランス調整が必要な事項で
 ## 6. 完了済み事項
 これまでに検討が完了し、仕様が策定された事項です。
 
+### [x] ダンジョンランクシステムのAPI仕様およびエラーハンドリングの追加
+- **概要**: 確実に実装するのに不足していた、ダンジョンランクシステムに関する具体的なAPIリクエスト・レスポンスJSON構造（`POST /api/v1/dungeons/{dungeonId}/rank/entry-fee`, `GET /api/v1/dungeons/search`, `GET /api/v1/dungeons/{dungeonId}/rank/reward-quality`）および詳細なエラーハンドリング仕様の追加。
+- **解決策**: [ダンジョンランクシステム](./features/Dungeon-Rank-System.md) にて、入場料設定・ダンジョン検索・報酬品質補正取得のJSON構造、および各種異常系に対する詳細なエラーコード（`DUNGEON_NOT_FOUND`, `UNAUTHORIZED_MANAGER`, `INVALID_ENTRY_FEE`, `ENTRY_FEE_EXCEEDS_RANK_LIMIT`, `INVALID_SEARCH_PARAMETER`）やHTTPステータスのマッピングを策定。また、`Book-Of-Adventure-MongoDB.md` の見出し番号の不整合を修正。
+
 ### [x] ダンジョン独自ルール詳細仕様のAPI仕様およびエラーハンドリングの追加
 - **概要**: 確実に実装するのに不足していた、ダンジョンランク S における独自ルール設定に関する具体的なAPIリクエスト・レスポンスJSON構造（`GET /api/v1/dungeons/{dungeonId}/custom-rules`, `POST /api/v1/dungeons/{dungeonId}/custom-rules`, `DELETE /api/v1/dungeons/{dungeonId}/custom-rules/{ruleId}`）および詳細なエラーハンドリング仕様の追加。
 - **解決策**: [ダンジョン独自ルール詳細仕様](./features/Dungeon-Custom-Rule-Specification.md) にて、独自ルール一覧取得・設定/更新・削除のJSON構造、および各種異常系に対する詳細なエラーコード（`DUNGEON_NOT_FOUND`, `INSUFFICIENT_DUNGEON_RANK`, `CUSTOM_RULE_LIMIT_EXCEEDED`, `INVALID_RULE_TYPE`, `INVALID_RULE_PARAMETER`, `DUPLICATE_CUSTOM_RULE`, `RULE_NOT_FOUND`）やHTTPステータスのマッピングを策定。

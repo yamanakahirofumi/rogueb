@@ -140,3 +140,101 @@ sequenceDiagram
 ## 7. 今後の拡張
 - **ダンジョン称号**: 特定の条件（例：1,000人撃破）を満たすことで付与される特別な肩書き。
 - **ランキング報酬**: 期間ごとの獲得 EXP ランキングに応じた管理者向けのボーナス。
+
+## 8. APIリクエスト・フローとエラーハンドリング
+
+### 8.1 APIリクエスト仕様
+ダンジョンランク管理、入場料変更、ダンジョン検索・優先度取得、および報酬品質算出に関するAPIエンドポイントおよびJSONレスポンス構造を定義します。
+
+#### 1) 入場料の設定・更新 (`POST /api/v1/dungeons/{dungeonId}/rank/entry-fee`)
+管理者がダンジョンの入場料を変更します。設定金額は現在のダンジョンランク上限を超えてはなりません。
+
+- **Request Body (JSON)**:
+```json
+{
+  "managerUserId": "admin_uuid_12345",
+  "entryFee": 500
+}
+```
+
+- **Response Body (JSON - 成功時)**:
+```json
+{
+  "success": true,
+  "result": "SUCCESS",
+  "message": "入場料を 500 Gold に更新しました。",
+  "dungeonId": "dungeon_uuid_67890",
+  "rank": "D",
+  "entryFee": 500,
+  "maxEntryFeeLimit": 500
+}
+```
+
+#### 2) ダンジョン検索および露出優先度取得 (`GET /api/v1/dungeons/search`)
+ワールド内のダンジョンをランクや評価順に検索・取得します。
+
+- **Query Parameters**:
+  - `minRank` (String, オプション): 最小ランク（例: `C`）
+  - `sortBy` (String, オプション): ソート順（`RANK_DESC`, `EXP_DESC`, `EVALUATION_DESC` デフォルト: `RANK_DESC`）
+  - `page` (Integer, デフォルト: `1`)
+  - `limit` (Integer, デフォルト: `20`)
+
+- **Response Body (JSON - 成功時)**:
+```json
+{
+  "success": true,
+  "result": "SUCCESS",
+  "totalCount": 45,
+  "page": 1,
+  "limit": 20,
+  "dungeons": [
+    {
+      "dungeonId": "dungeon_uuid_67890",
+      "name": "魔王の試練塔",
+      "rank": "S",
+      "rankIndex": 6,
+      "totalExp": 245000,
+      "evaluationCount": 1280,
+      "entryFee": 50000,
+      "maxFloor": 100
+    }
+  ]
+}
+```
+
+#### 3) 報酬品質補正値の取得 (`GET /api/v1/dungeons/{dungeonId}/rank/reward-quality`)
+ダンジョンのランクと累計EXPに基づき、ドロップ宝箱などの報酬品質補正値を取得します。
+
+- **Response Body (JSON - 成功時)**:
+```json
+{
+  "success": true,
+  "result": "SUCCESS",
+  "dungeonId": "dungeon_uuid_67890",
+  "rank": "A",
+  "rankIndex": 5,
+  "totalExp": 75000,
+  "rewardQualityMultiplier": 5.375
+}
+```
+
+#### 4) エラーレスポンス共通フォーマット (JSON - 異常時)
+```json
+{
+  "success": false,
+  "result": "ERROR",
+  "errorCode": "ENTRY_FEE_EXCEEDS_RANK_LIMIT",
+  "message": "設定された入場料(1,000 Gold)が、現在のダンジョンランク D の上限(500 Gold)を超えています。"
+}
+```
+
+### 8.2 エラーハンドリング (Error Handling)
+ダンジョンランクに関する操作中に異常が検出された場合、システムは以下のエラーコードおよびHTTPステータスを返却します。
+
+| エラーコード | 発生条件 | レスポンス HTTP ステータス | 戻り値のメッセージ例 |
+| :--- | :--- | :---: | :--- |
+| `DUNGEON_NOT_FOUND` | 指定された `dungeonId` のダンジョンが存在しない。 | 404 Not Found | 指定されたダンジョンが見つかりません。 |
+| `UNAUTHORIZED_MANAGER` | リクエストを行ったユーザーが該当ダンジョンの管理者権限を保持していない。 | 403 Forbidden | ダンジョン管理者の権限がありません。 |
+| `INVALID_ENTRY_FEE` | `entryFee` に負の値や無効な数値が指定された。 | 400 Bad Request | 入場料の指定が不正です。 |
+| `ENTRY_FEE_EXCEEDS_RANK_LIMIT` | `entryFee` が現在のダンジョンランクで許可されている上限額を超過している。 | 400 Bad Request | 設定された入場料が、現在のダンジョンランクの上限を超えています。 |
+| `INVALID_SEARCH_PARAMETER` | 検索クエリパラメーター（`minRank`, `sortBy` 等）に未定義の値が指定された。 | 400 Bad Request | 検索パラメーターが不正です。 |
