@@ -246,5 +246,5 @@
 | <a id="species-town_guardian"></a>`town_guardian` | `303`: 捕縛 (1) |
 | <a id="species-bounty_hunter"></a>`bounty_hunter` | `101`: パワーアタック (1), `303`: 捕縛 (1) |
 
-## 6. 今後の拡張
-- **連携攻撃**: 複数のモンスターが協力して発動する強力な攻撃アクション。
+## 6. 相互参照・今後の拡張
+- [モンスター連携特性システム](../Monster-Synergy-Trait-System.md): パーティ内の特定特性の組み合わせで発動する連携効果の仕様。
