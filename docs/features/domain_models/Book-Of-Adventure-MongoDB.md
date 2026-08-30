@@ -53,7 +53,7 @@
     - `isIdentified` (Boolean): 識別済みかどうか。
     - `_class` (String): Spring Data MongoDBが使用するクラス情報（例: `net.hero.rogueb.bookofadventure.domain.PlayerKnowledgeDomain`）。
 
-## 4. インデックス推奨事項
+## 5. インデックス推奨事項
 
 ### `playerDomain`
 - `{"name": 1}`: プレイヤー名によるユニーク検索に必須。
