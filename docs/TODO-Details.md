@@ -41,6 +41,10 @@ AIによる生成が困難な、感性やバランス調整が必要な事項で
 ## 6. 完了済み事項
 これまでに検討が完了し、仕様が策定された事項です。
 
+### [x] 戦闘システムのAPI仕様およびエラーハンドリングの追加
+- **概要**: 確実に実装するのに不足していた、戦闘システムに関する具体的なAPIリクエスト・レスポンスJSON構造（`POST /api/v1/combat/attack`, `POST /api/v1/combat/throw`, `POST /api/v1/combat/wait`）および詳細なエラーハンドリング仕様の追加。
+- **解決策**: [戦闘システム](./features/Combat-System.md) にて、攻撃・投擲・待機アクションのJSON構造、および各種異常系に対する詳細なエラーコード（`ATTACKER_NOT_FOUND`, `DUNGEON_NOT_FOUND`, `TARGET_NOT_FOUND`, `ITEM_NOT_FOUND`, `STATUS_PREVENTS_ACTION`, `TARGET_OUT_OF_RANGE`, `INVALID_TARGET_TILE`, `ENTITY_DEFEATED`, `ACTION_COOLDOWN_ACTIVE`）やHTTPステータスのマッピングを策定。
+
 ### [x] ダンジョンランクシステムのAPI仕様およびエラーハンドリングの追加
 - **概要**: 確実に実装するのに不足していた、ダンジョンランクシステムに関する具体的なAPIリクエスト・レスポンスJSON構造（`POST /api/v1/dungeons/{dungeonId}/rank/entry-fee`, `GET /api/v1/dungeons/search`, `GET /api/v1/dungeons/{dungeonId}/rank/reward-quality`）および詳細なエラーハンドリング仕様の追加。
 - **解決策**: [ダンジョンランクシステム](./features/Dungeon-Rank-System.md) にて、入場料設定・ダンジョン検索・報酬品質補正取得のJSON構造、および各種異常系に対する詳細なエラーコード（`DUNGEON_NOT_FOUND`, `UNAUTHORIZED_MANAGER`, `INVALID_ENTRY_FEE`, `ENTRY_FEE_EXCEEDS_RANK_LIMIT`, `INVALID_SEARCH_PARAMETER`）やHTTPステータスのマッピングを策定。また、`Book-Of-Adventure-MongoDB.md` の見出し番号の不整合を修正。
