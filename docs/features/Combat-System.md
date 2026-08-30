@@ -288,3 +288,141 @@ HP が 0 になった場合、キャラクターは死亡します。
 
 ### 8.2 拡張性
 - **部位破壊**: 特定の強力なモンスターに対し、特定の部位を攻撃して無力化する要素の検討。
+
+## 9. APIリクエスト・フローとエラーハンドリング
+
+### 9.1 APIリクエスト仕様
+戦闘アクション（攻撃、投擲、足踏み待機/罠探し）を実行するためのAPIエンドポイントおよびJSON形式を定義します。
+
+#### 9.1.1 攻撃アクション API (`POST /api/v1/combat/attack`)
+通常攻撃および隣接・指定方向への物理攻撃を実行します。
+
+- **Endpoint**: `POST /api/v1/combat/attack`
+- **Request Body (JSON)**:
+```json
+{
+  "attackerId": "player_uuid_12345",
+  "attackerType": "PLAYER",
+  "dungeonId": "dungeon_001",
+  "floorNumber": 3,
+  "direction": "NORTH",
+  "targetTile": {
+    "x": 10,
+    "y": 14
+  }
+}
+```
+
+- **Response Body (JSON - 成功時)**:
+```json
+{
+  "success": true,
+  "result": "HIT",
+  "actionType": "ATTACK",
+  "attackerId": "player_uuid_12345",
+  "target": {
+    "targetId": "slime_instance_999",
+    "targetType": "MONSTER",
+    "name": "スライム",
+    "isCritical": false,
+    "damageDealt": 14,
+    "remainingHp": 6,
+    "isDefeated": false,
+    "triggeredEffects": []
+  },
+  "logMessage": "プレイヤーの攻撃！ スライムに 14 のダメージを与えた。"
+}
+```
+
+#### 9.1.2 投擲アクション API (`POST /api/v1/combat/throw`)
+インベントリ内のアイテム（武器、投擲物、ポーション等）を直線方向へ投擲します。
+
+- **Endpoint**: `POST /api/v1/combat/throw`
+- **Request Body (JSON)**:
+```json
+{
+  "attackerId": "player_uuid_12345",
+  "dungeonId": "dungeon_001",
+  "floorNumber": 3,
+  "itemInstanceId": "item_rock_001",
+  "direction": "EAST"
+}
+```
+
+- **Response Body (JSON - 成功時)**:
+```json
+{
+  "success": true,
+  "result": "HIT",
+  "actionType": "THROW",
+  "attackerId": "player_uuid_12345",
+  "thrownItem": {
+    "itemInstanceId": "item_rock_001",
+    "itemTypeId": "rock"
+  },
+  "impactTile": {
+    "x": 15,
+    "y": 14
+  },
+  "travelDistance": 5,
+  "target": {
+    "targetId": "goblin_instance_888",
+    "targetType": "MONSTER",
+    "name": "ゴブリン",
+    "damageDealt": 10,
+    "remainingHp": 0,
+    "isDefeated": true,
+    "appliedStatusEffects": []
+  },
+  "logMessage": "プレイヤーは石を投げた！ ゴブリンに 10 のダメージを与え、倒した！"
+}
+```
+
+#### 9.1.3 足踏み待機・罠探し API (`POST /api/v1/combat/wait`)
+ターンを消費して足踏み待機、または指定タイルの素振り（隠しトラップ探索）を行います。
+
+- **Endpoint**: `POST /api/v1/combat/wait`
+- **Request Body (JSON)**:
+```json
+{
+  "entityId": "player_uuid_12345",
+  "dungeonId": "dungeon_001",
+  "floorNumber": 3,
+  "isSearchingTrap": true,
+  "targetDirection": "NORTH"
+}
+```
+
+- **Response Body (JSON - 成功時)**:
+```json
+{
+  "success": true,
+  "result": "SUCCESS",
+  "actionType": "WAIT_SEARCH",
+  "revealedTrap": {
+    "trapId": "trap_flame_001",
+    "trapType": "trap_flame",
+    "name": "地雷の罠",
+    "coordinate": {
+      "x": 10,
+      "y": 14
+    }
+  },
+  "logMessage": "攻撃を素振りした！ 北の床に「地雷の罠」を発見した！"
+}
+```
+
+### 9.2 エラーハンドリング (Error Handling)
+戦闘アクション処理中にエラーが発生した場合、システムは適切なエラーコードとHTTPステータスを返却します。
+
+| エラーコード | 発生条件 | レスポンス HTTP ステータス | 戻り値のメッセージ例 |
+| :--- | :--- | :---: | :--- |
+| `ATTACKER_NOT_FOUND` | 指定された `attackerId` または `entityId` がダンジョン内に存在しない。 | 404 Not Found | 攻撃エンティティが見つかりません。 |
+| `DUNGEON_NOT_FOUND` | 指定された `dungeonId` または `floorNumber` が存在しない。 | 404 Not Found | ダンジョンまたはフロアが見つかりません。 |
+| `TARGET_NOT_FOUND` | 指定された座標や方向に攻撃・投擲対象が存在しない。 | 404 Not Found | 攻撃対象となるエンティティが見つかりません。 |
+| `ITEM_NOT_FOUND` | 投擲に使用する `itemInstanceId` がインベントリに存在しない。 | 400 Bad Request | 投擲するアイテムがインベントリに存在しません。 |
+| `STATUS_PREVENTS_ACTION` | 攻撃者が「睡眠」「麻痺」等の行動不能状態異常にかかっている。 | 400 Bad Request | 状態異常により行動できません。 |
+| `TARGET_OUT_OF_RANGE` | 指定されたターゲットが攻撃・投擲の射程範囲外に存在する。 | 400 Bad Request | 対象が攻撃射程外です。 |
+| `INVALID_TARGET_TILE` | 通行不可の壁や無効な座標が指定された。 | 400 Bad Request | 無効なターゲット座標が指定されています。 |
+| `ENTITY_DEFEATED` | 既に撃破（死亡）しているエンティティを対象とした。 | 400 Bad Request | 対象は既に倒されています。 |
+| `ACTION_COOLDOWN_ACTIVE` | 待機時間（WaitTime）が終わっておらず、次の行動を実行できない。 | 429 Too Many Requests | 行動間隔の待機中です。 |
