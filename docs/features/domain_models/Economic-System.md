@@ -99,3 +99,176 @@
 ### 5.3 生成・消失のライフサイクル
 - **生成時のチェック**: アイテム生成の直前に `Objects` モジュールは `EconomicSystem` に問い合わせ、`currentCount < maxLimit` であることを確認します。承認された場合のみ生成され、`currentCount` がインクリメントされます。
 - **カウントの減少**: アイテムが使用（消費）、破壊、または[世界間連携システム](../World-Interoperability-System.md)を通じて「世界の外」へ持ち出された際に、`currentCount` が減算され、再び生成が可能になります。
+
+---
+
+## 6. API リクエスト・レスポンス仕様
+
+### 6.1 アイテム流通量・基本価格の照会 (`GET /api/v1/economic/circulation/{typeId}`)
+指定されたアイテムタイプの現在の流通量、存在上限、および算出された基本市場価格を取得します。
+
+- **リクエストパラメータ**:
+  - `typeId` (Path): アイテムタイプのID（例: `potion_heal_01`）
+
+- **レスポンス (200 OK)**:
+```json
+{
+  "id": "circ_potion_heal_01",
+  "worldId": "world_alpha",
+  "typeId": "potion_heal_01",
+  "currentCount": 420,
+  "maxLimit": 1000,
+  "basePrice": 158
+}
+```
+
+---
+
+### 6.2 ショップ情報の取得 (`GET /api/v1/economic/shops/{shopId}`)
+指定されたショップの詳細情報、開店状態、および現在販売中のアイテムと価格一覧を取得します。
+
+- **リクエストパラメータ**:
+  - `shopId` (Path): ショップの一意な識別子
+
+- **レスポンス (200 OK)**:
+```json
+{
+  "shopId": "shop_dungeon_01_f1_01",
+  "ownerId": "manager_user_01",
+  "dungeonId": "dungeon_beginner_01",
+  "level": 1,
+  "position": {
+    "x": 12,
+    "y": 8
+  },
+  "isOpen": true,
+  "items": [
+    {
+      "instanceId": "item_inst_1001",
+      "typeId": "potion_heal_01",
+      "name": "薬草",
+      "price": 160,
+      "stock": 5
+    },
+    {
+      "instanceId": "item_inst_1002",
+      "typeId": "sword_iron_01",
+      "name": "鉄の剣",
+      "price": 1200,
+      "stock": 1
+    }
+  ]
+}
+```
+
+---
+
+### 6.3 ショップでのアイテム購入 (`POST /api/v1/economic/shops/{shopId}/buy`)
+プレイヤーがショップで販売中のアイテムを購入します。
+
+- **リクエストボディ**:
+```json
+{
+  "buyerId": "player_user_99",
+  "instanceId": "item_inst_1001",
+  "quantity": 1
+}
+```
+
+- **レスポンス (200 OK)**:
+```json
+{
+  "transactionId": "tx_20260331_001",
+  "shopId": "shop_dungeon_01_f1_01",
+  "buyerId": "player_user_99",
+  "sellerId": "manager_user_01",
+  "instanceId": "item_inst_1001",
+  "typeId": "potion_heal_01",
+  "price": 160,
+  "quantity": 1,
+  "remainingGold": 2840,
+  "transactionDate": "2026-03-31T12:00:00Z"
+}
+```
+
+---
+
+### 6.4 ショップへのアイテム売却 (`POST /api/v1/economic/shops/{shopId}/sell`)
+プレイヤーが所持しているアイテムをショップに売却します。
+
+- **リクエストボディ**:
+```json
+{
+  "sellerId": "player_user_99",
+  "instanceId": "item_inst_2005",
+  "quantity": 1
+}
+```
+
+- **レスポンス (200 OK)**:
+```json
+{
+  "transactionId": "tx_20260331_002",
+  "shopId": "shop_dungeon_01_f1_01",
+  "buyerId": "manager_user_01",
+  "sellerId": "player_user_99",
+  "instanceId": "item_inst_2005",
+  "typeId": "scroll_identify_01",
+  "price": 100,
+  "quantity": 1,
+  "updatedGold": 2940,
+  "transactionDate": "2026-03-31T12:05:00Z"
+}
+```
+
+---
+
+### 6.5 店舗在庫・価格の設定更新 (`PUT /api/v1/economic/shops/{shopId}/inventory`)
+ショップオーナー（管理者）が店舗の在庫アイテムの追加・削除、販売価格の設定、および開店/閉店状態を更新します。
+
+- **リクエストボディ**:
+```json
+{
+  "ownerId": "manager_user_01",
+  "isOpen": true,
+  "inventoryUpdates": [
+    {
+      "instanceId": "item_inst_1003",
+      "customPrice": 500
+    }
+  ],
+  "removedInstanceIds": [
+    "item_inst_1002"
+  ]
+}
+```
+
+- **レスポンス (200 OK)**:
+```json
+{
+  "shopId": "shop_dungeon_01_f1_01",
+  "ownerId": "manager_user_01",
+  "isOpen": true,
+  "totalItemCount": 6,
+  "updatedAt": "2026-03-31T12:10:00Z"
+}
+```
+
+---
+
+## 7. エラーハンドリング仕様
+
+経済システムの各 API 呼び出しにおける異常系のエラーコード、HTTP ステータス、および発生条件は以下の通りです。
+
+| エラーコード | HTTP ステータス | 発生条件 | エラーメッセージ（例） |
+| :--- | :--- | :--- | :--- |
+| `ITEM_NOT_FOUND` | `404 Not Found` | 指定されたアイテムタイプ（`typeId`）またはアイテムインスタンスが存在しない場合。 | 指定されたアイテムが見つかりません。 |
+| `SHOP_NOT_FOUND` | `404 Not Found` | 指定された `shopId` のショップが存在しない場合。 | 指定されたショップが見つかりません。 |
+| `SHOP_CLOSED` | `400 Bad Request` | 開店していない（`isOpen = false`）ショップで売買を行おうとした場合。 | 対象のショップは現在閉店中です。 |
+| `ITEM_NOT_IN_SHOP` | `400 Bad Request` | ショップの在庫一覧に含まれていないアイテムを購入しようとした場合。 | 指定されたアイテムはショップで販売されていません。 |
+| `INSUFFICIENT_GOLD` | `400 Bad Request` | 購入に必要なゴールドが不足している場合。 | ゴールドが不足しています。 |
+| `INSUFFICIENT_STOCK` | `400 Bad Request` | 購入希望数量がショップの在庫数量を超えている場合。 | ショップの在庫が不足しています。 |
+| `INVENTORY_FULL` | `400 Bad Request` | アイテム購入後、プレイヤーの所持品インベントリ枠を超過する場合。 | インベントリ領域が不足しています。 |
+| `CIRCULATION_LIMIT_REACHED` | `400 Bad Request` | 新規アイテム配置・補充時に世界全体の存在上限（`maxLimit`）に達している場合。 | アイテムの流通上限に達しているため補充できません。 |
+| `UNAUTHORIZED_SHOP_OWNER` | `403 Forbidden` | ショップオーナー以外のユーザーが在庫や価格の設定を変更しようとした場合。 | ショップの管理権限がありません。 |
+| `INVALID_PRICE_SETTING` | `400 Bad Request` | 設定価格が 0 以下の不正な値である場合。 | 販売価格は 1 ゴールド以上に設定してください。 |
