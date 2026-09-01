@@ -116,6 +116,14 @@ AIによる生成が困難な、感性やバランス調整が必要な事項で
 - **概要**: 確実に実装するのに不足していた、モンスター進化システムに関する具体的なAPIリクエスト・レスポンスJSON構造、および詳細なエラーハンドリング仕様の追加。
 - **解決策**: [モンスター進化システム仕様](./features/Monster-Evolution-System.md) にて、`POST /api/v1/monsters/evolve` のJSON構造、および各異常系に対する詳細なエラーコード（`MONSTER_NOT_FOUND`, `RANK_LIMIT_EXCEEDED`等）やHTTPステータスのマッピングを策定。
 
+### [x] モンスター親愛システムのAPI仕様およびエラーハンドリングの追加
+- **概要**: 確実に実装するのに不足していた、モンスター親愛システムに関する具体的なAPIリクエスト・レスポンスJSON構造（`POST /api/v1/monsters/affection/pledge`, `GET /api/v1/monsters/{instanceId}/affection`）および詳細なエラーハンドリング仕様の追加。
+- **解決策**: [モンスター親愛システム仕様](./features/Monster-Affection-System.md) にて、誓い（親愛解放）処理および親愛状態照会のJSON構造、ならびに各種異常系に対する詳細なエラーコード（`MONSTER_NOT_FOUND`, `INSUFFICIENT_LOYALTY`, `INSUFFICIENT_LEVEL`, `ALREADY_AFFECTION`, `INVALID_RITUAL_ITEM`, `INSUFFICIENT_RITUAL_ITEM`）やHTTPステータスのマッピングを策定。
+
+### [x] モンスター連携特性システムのAPI仕様およびエラーハンドリングの追加
+- **概要**: 確実に実装するのに不足していた、モンスター連携特性システムに関する具体的なAPIリクエスト・レスポンスJSON構造（`GET /api/v1/players/{userId}/synergy-traits`）および詳細なエラーハンドリング仕様の追加。
+- **解決策**: [モンスター連携特性システム仕様](./features/Monster-Synergy-Trait-System.md) にて、活性化中の連携特性照会のJSON構造（発動上限数・必須特性リスト等）、ならびに各種異常系に対する詳細なエラーコード（`PLAYER_NOT_FOUND`, `NO_ACTIVE_PARTY`, `ALL_MONSTERS_DEFEATED`）やHTTPステータスのマッピングを策定。
+
 ### [x] モンスター退化システムのAPI仕様およびエラーハンドリングの追加
 - **概要**: 確実に実装するのに不足していた、モンスター退化システムに関する具体的なAPIリクエスト・レスポンスJSON構造（`POST /api/v1/monsters/degeneration`）および詳細なエラーハンドリング仕様の追加。
 - **解決策**: [モンスター退化システム仕様](./features/Monster-Degeneration-System.md) にて、`POST /api/v1/monsters/degeneration` のJSON構造（退化成功時、保持スキル超過時）、および各種異常系に対する詳細なエラーコード（`MONSTER_NOT_FOUND`, `INSUFFICIENT_LEVEL`, `NOT_EVOLVED_YET`, `DEGENERATION_COOLDOWN`, `INVALID_CATALYST`, `INSUFFICIENT_CATALYST`, `INSUFFICIENT_GOLD`, `SKILL_OVERFLOW`）やHTTPステータスのマッピングを策定。

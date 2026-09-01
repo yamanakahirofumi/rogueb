@@ -76,8 +76,9 @@ sequenceDiagram
 ## 6. APIリクエスト・フローとエラーハンドリング
 
 ### 6.1 APIリクエスト仕様
-親愛状態を解放（誓い）するための API エンドポイントです。
+親愛状態の解放およびステータス照会に関する API エンドポイントとデータ構造を定義します。
 
+#### 1. 親愛の誓い（解放）エンドポイント
 - **Endpoint**: `POST /api/v1/monsters/affection/pledge`
 - **Request Body (JSON)**:
 ```json
@@ -107,8 +108,43 @@ sequenceDiagram
 }
 ```
 
+- **Response Body (JSON - エラー時例)**:
+```json
+{
+  "success": false,
+  "result": "ERROR",
+  "errorCode": "INSUFFICIENT_LOYALTY",
+  "message": "親愛状態に達するには、忠誠度が最大値(255)に達している必要があります。"
+}
+```
+
+#### 2. 親愛状態照会エンドポイント
+- **Endpoint**: `GET /api/v1/monsters/{instanceId}/affection`
+- **Response Body (JSON - 成功時)**:
+```json
+{
+  "monsterInstanceId": "monster_uuid_99999",
+  "monsterId": "water_spirit",
+  "isAffection": true,
+  "affectionStatus": "ACTIVE",
+  "loyalty": 255,
+  "level": 22,
+  "affectionSkill": {
+    "skillId": 706,
+    "name": "精霊の加護",
+    "category": "SPIRIT",
+    "description": "パッシブ：プレイヤーの全属性耐性を 10% 上昇させる。"
+  },
+  "effects": [
+    "かばう（30%確率）",
+    "自力治癒（20%確率）",
+    "不屈の闘志（100%確定食いしばり 1回/戦闘）"
+  ]
+}
+```
+
 ### 6.2 エラーハンドリング (Error Handling)
-処理中に問題が検出された場合、システムは適切なエラーレスポンスを返却します。
+処理中に問題が検出された場合、システムは適切なエラーコードおよび HTTP ステータスを返却します。
 
 | エラーコード | 発生条件 | レスポンス HTTP ステータス | 戻り値のメッセージ例 |
 | :--- | :--- | :---: | :--- |
