@@ -41,6 +41,10 @@ AIによる生成が困難な、感性やバランス調整が必要な事項で
 ## 6. 完了済み事項
 これまでに検討が完了し、仕様が策定された事項です。
 
+### [x] PlayerOperationsモジュールのAPI仕様およびエラーハンドリングの追加
+- **概要**: 確実に実装するのに不足していた、PlayerOperationsモジュール（プレイヤー移動、バッグ照会、アイテム拾得・ドロップ）に関する具体的なAPIリクエスト・レスポンスJSON構造および詳細なエラーハンドリング仕様の追加。
+- **解決策**: [PlayerOperationsモジュール ドメインモデル](./features/domain_models/Player-Operations.md) にて、プレイヤー移動・バッグ情報照会・アイテム拾得・ドロップのJSON構造、および各種異常系に対する詳細なエラーコード（`PLAYER_NOT_FOUND`, `INVALID_MOVE_DIRECTION`, `TILE_BLOCKED`, `BAG_FULL`, `ITEM_NOT_FOUND`, `ITEM_NOT_ON_TILE`, `ITEM_NOT_IN_BAG`, `STAMINA_EXHAUSTED`, `STATUS_PREVENTS_MOVEMENT`）やHTTPステータスのマッピングを策定。
+
 ### [x] 経済システムのAPI仕様およびエラーハンドリングの追加
 - **概要**: 確実に実装するのに不足していた、経済システム（流通量・市場価格照会、ショップ情報照会、購入・売却処理、店舗在庫・価格設定）に関する具体的なAPIリクエスト・レスポンスJSON構造および詳細なエラーハンドリング仕様の追加。
 - **解決策**: [経済システム ドメインモデル](./features/domain_models/Economic-System.md) にて、流通量照会・ショップ情報取得・購入・売却・価格設定のJSON構造、および各種異常系に対する詳細なエラーコード（`ITEM_NOT_FOUND`, `SHOP_NOT_FOUND`, `SHOP_CLOSED`, `ITEM_NOT_IN_SHOP`, `INSUFFICIENT_GOLD`, `INSUFFICIENT_STOCK`, `INVENTORY_FULL`, `CIRCULATION_LIMIT_REACHED`, `UNAUTHORIZED_SHOP_OWNER`, `INVALID_PRICE_SETTING`）やHTTPステータスのマッピングを策定。
