@@ -66,31 +66,46 @@ sequenceDiagram
 ## 5. APIリクエスト・フローとデータ表現
 
 ### 5.1 APIリクエスト仕様
-プレイヤーの現在のパーティにおける活性化中の連携特性一覧を取得するためのエンドポイントです。
+プレイヤーの現在のパーティにおける活性化中の連携特性一覧の取得に関する API エンドポイントとデータ構造を定義します。
 
+#### 1. 活性連携特性照会エンドポイント
 - **Endpoint**: `GET /api/v1/players/{userId}/synergy-traits`
-- **Response Body (JSON)**:
+- **Response Body (JSON - 成功時)**:
 ```json
 {
   "userId": "player_uuid_12345",
+  "activeSynergiesCount": 1,
+  "maxSynergiesLimit": 3,
   "activeSynergies": [
     {
       "synergyId": "SYN_REGEN_EMPOWER",
       "name": "共鳴再生",
       "description": "パーティ全員の自然回復量を 1.5 倍にし、回復タイミングを subStep 8 回ごとに短縮します。",
+      "requiredTraits": ["REGENERATION", "SLIME_BODY"],
       "triggerMonsterIds": ["slime_instance_001", "mist_spirit_instance_002"]
     }
   ]
 }
 ```
 
+- **Response Body (JSON - エラー時例)**:
+```json
+{
+  "success": false,
+  "result": "ERROR",
+  "errorCode": "NO_ACTIVE_PARTY",
+  "message": "アクティブパーティにモンスターが編成されていません。"
+}
+```
+
 ### 5.2 エラーハンドリング (Error Handling)
-連携特性の算出時に発生する可能性のある例外的な状態を適切に処理します。
+連携特性の算出および照会時に異常が発生した場合、システムは適切なエラーコードおよび HTTP ステータスを返却します。
 
 | エラーコード | 発生条件 | レスポンス HTTP ステータス | 戻り値のメッセージ例 |
 | :--- | :--- | :---: | :--- |
 | `PLAYER_NOT_FOUND` | 指定された `userId` のプレイヤーが存在しない。 | 404 Not Found | プレイヤー情報が見つかりません。 |
 | `NO_ACTIVE_PARTY` | プレイヤーがアクティブパーティに1体もモンスターを編入していない。 | 400 Bad Request | アクティブパーティにモンスターが編成されていません。 |
+| `ALL_MONSTERS_DEFEATED` | パーティ内の全モンスターが戦闘不能（HP 0）状態である。 | 400 Bad Request | パーティのモンスターが全員戦闘不能のため連携特性は発動しません。 |
 
 ---
 
