@@ -73,3 +73,172 @@ PlayerOperationsモジュールは、プレイヤーキャラクターの状態�
     - `TopRight`: (1, -1)
     - `DownLeft`: (-1, 1)
     - `DownRight`: (1, 1)
+
+---
+
+## 5. API仕様
+
+PlayerOperationsモジュールが提供する外部APIエンドポイントの仕様です。
+
+### 5.1 プレイヤー移動 (`POST /api/v1/player/move`)
+
+プレイヤーをダンジョン内の指定方向（8方向）へ1マス移動させます。移動に伴いスタミナが消費され、移動先タイルのイベント（トラップ発動、アイテム獲得等）が発生します。
+
+#### リクエスト (Request)
+```json
+{
+  "userId": "user_12345",
+  "dungeonId": "dungeon_frontier_01",
+  "floorNumber": 3,
+  "direction": "TopRight"
+}
+```
+
+#### レスポンス (Response: 200 OK)
+```json
+{
+  "userId": "user_12345",
+  "previousCoordinate": {
+    "x": 10,
+    "y": 15
+  },
+  "newCoordinate": {
+    "x": 11,
+    "y": 14
+  },
+  "staminaConsumed": 1,
+  "remainingStamina": 99,
+  "fieldEvent": {
+    "eventType": "NONE",
+    "description": "安全に移動しました。"
+  }
+}
+```
+
+---
+
+### 5.2 インベントリ（バッグ）情報照会 (`GET /api/v1/player/{userId}/bag`)
+
+指定したプレイヤーのバッグ内アイテム一覧および保持容量を取得します。
+
+#### レスポンス (Response: 200 OK)
+```json
+{
+  "userId": "user_12345",
+  "limitSize": 23,
+  "currentCount": 2,
+  "contents": [
+    {
+      "instanceId": "item_inst_001",
+      "typeId": "potion_heal_small",
+      "display": "!",
+      "name": "薬草",
+      "category": "CONSUMABLE"
+    },
+    {
+      "instanceId": "item_inst_002",
+      "typeId": "sword_bronze",
+      "display": "/",
+      "name": "銅の剣",
+      "category": "WEAPON"
+    }
+  ]
+}
+```
+
+---
+
+### 5.3 アイテム拾得 (`POST /api/v1/player/items/pick`)
+
+プレイヤーの足元（現在座標）に存在するアイテムをバッグに拾い上げます。
+
+#### リクエスト (Request)
+```json
+{
+  "userId": "user_12345",
+  "dungeonId": "dungeon_frontier_01",
+  "floorNumber": 3,
+  "coordinate": {
+    "x": 11,
+    "y": 14
+  }
+}
+```
+
+#### レスポンス (Response: 200 OK)
+```json
+{
+  "userId": "user_12345",
+  "pickedItem": {
+    "instanceId": "item_inst_003",
+    "typeId": "ring_strength",
+    "display": "=",
+    "name": "ちからの指輪"
+  },
+  "remainingBagSpace": 20
+}
+```
+
+---
+
+### 5.4 アイテム手放し・ドロップ (`POST /api/v1/player/items/drop`)
+
+バッグ内の指定アイテムを足元（現在座標）の床に置きます。
+
+#### リクエスト (Request)
+```json
+{
+  "userId": "user_12345",
+  "dungeonId": "dungeon_frontier_01",
+  "floorNumber": 3,
+  "instanceId": "item_inst_001"
+}
+```
+
+#### レスポンス (Response: 200 OK)
+```json
+{
+  "userId": "user_12345",
+  "droppedItem": {
+    "instanceId": "item_inst_001",
+    "typeId": "potion_heal_small",
+    "display": "!"
+  },
+  "droppedCoordinate": {
+    "x": 11,
+    "y": 14
+  },
+  "remainingBagSpace": 22
+}
+```
+
+---
+
+## 6. エラーハンドリング仕様
+
+PlayerOperationsモジュールの処理実行時に発生する主要なエラーコードと対応するHTTPステータスコードです。
+
+### 6.1 エラーコード一覧
+
+| エラーコード | HTTPステータス | 説明 | 発生条件 |
+| :--- | :--- | :--- | :--- |
+| `PLAYER_NOT_FOUND` | `404 Not Found` | プレイヤー非存在 | 指定された `userId` のプレイヤーが存在しない。 |
+| `INVALID_MOVE_DIRECTION` | `400 Bad Request` | 無効な移動方向 | 指定された移動方向 (`direction`) が `MoveEnum` に定義されていない。 |
+| `TILE_BLOCKED` | `400 Bad Request` | 移動不可タイル | 移動先の座標が壁・水路・障害物などで進入できない。 |
+| `BAG_FULL` | `400 Bad Request` | バッグ容量超過 | バッグの所持数が上限（23個）に達しており新しくアイテムを拾えない。 |
+| `ITEM_NOT_FOUND` | `404 Not Found` | アイテム非存在 | 指定された `instanceId` のアイテムが存在しない。 |
+| `ITEM_NOT_ON_TILE` | `400 Bad Request` | 足元アイテムなし | 拾得対象の座標に落ちているアイテムが存在しない。 |
+| `ITEM_NOT_IN_BAG` | `400 Bad Request` | バッグ内アイテム非存在 | 指定された `instanceId` のアイテムがバッグ内に存在しない。 |
+| `STAMINA_EXHAUSTED` | `422 Unprocessable Entity` | スタミナ枯渇 | スタミナが0で移動不能状態（HP消費移動が発生する場合を除く）。 |
+| `STATUS_PREVENTS_MOVEMENT` | `422 Unprocessable Entity` | 状態異常による行動不能 | 麻痺、睡眠、影ぬい等の状態異常により移動・アイテム操作ができない。 |
+
+### 6.2 エラーレスポンス形式例
+
+```json
+{
+  "errorCode": "BAG_FULL",
+  "message": "バッグが満杯のため、これ以上アイテムを持ち運べません。",
+  "status": 400,
+  "timestamp": "2026-03-31T12:00:00Z"
+}
+```
