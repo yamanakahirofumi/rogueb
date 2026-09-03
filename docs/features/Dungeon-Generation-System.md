@@ -118,3 +118,108 @@
 ## 7. 今後の拡張
 - **フロアテーマの深化**: すでに定義されている「溶岩」「水路」や環境効果に加え、特定のテーマに基づいたタイルセットや専用オブジェクト（氷の床、動く床等）を自動配置する仕組み。
 - **隠し部屋**: 通常の通路では繋がっておらず、壁を破壊したり隠しスイッチを押すことで入れる部屋。
+
+## 8. APIリクエスト・フロー仕様
+
+### 8.1 ダンジョンフロア生成 API
+ダンジョンの指定階層のマップタイル構造、モンスター、アイテム、トラップをシード値と難易度曲線ルールに基づき自動生成・初期化します。
+
+- **Endpoint**: `POST /api/v1/dungeons/{dungeonId}/floors/generate`
+- **Request Body (JSON)**:
+```json
+{
+  "dungeonId": "dungeon_frontier_001",
+  "floorLevel": 3,
+  "overrideAlgorithm": "STANDARD_ROOM",
+  "customSeed": {
+    "roomCountSeed": 1002,
+    "itemSeed": 2005,
+    "monsterSeed": 3008,
+    "trapSeed": 4011
+  }
+}
+```
+
+- **Response Body (JSON - 成功時)**:
+```json
+{
+  "success": true,
+  "dungeonId": "dungeon_frontier_001",
+  "floorLevel": 3,
+  "algorithmUsed": "STANDARD_ROOM",
+  "dimensions": {
+    "width": 30,
+    "height": 20
+  },
+  "spawnPoint": {
+    "x": 4,
+    "y": 5
+  },
+  "exitPoint": {
+    "x": 25,
+    "y": 16
+  },
+  "roomCount": 5,
+  "entities": {
+    "monstersCount": 8,
+    "itemsCount": 4,
+    "trapsCount": 3
+  },
+  "connectivityVerified": true
+}
+```
+
+### 8.2 ダンジョン生成プレビュー API
+ダンジョン管理者や開発用デバッグツール向けに、ダンジョン生成パラメータに基づくマップの構造プレビュー（メトリクス検証およびグリッド情報）を事前計算して取得します。
+
+- **Endpoint**: `POST /api/v1/dungeons/generation/preview`
+- **Request Body (JSON)**:
+```json
+{
+  "dungeonRank": "RANK_A",
+  "floorLevel": 10,
+  "algorithmType": "NATURAL_CAVE",
+  "roomCountSeed": 5541,
+  "itemSeed": 1209,
+  "monsterSeed": 9832,
+  "trapSeed": 3310,
+  "dimensions": {
+    "width": 40,
+    "height": 30
+  }
+}
+```
+
+- **Response Body (JSON - 成功時)**:
+```json
+{
+  "success": true,
+  "previewId": "preview_gen_992381",
+  "algorithmType": "NATURAL_CAVE",
+  "dimensions": {
+    "width": 40,
+    "height": 30
+  },
+  "connectivityVerified": true,
+  "metrics": {
+    "wallPercentage": 42.5,
+    "floorPercentage": 57.5,
+    "roomCount": 1,
+    "chokePointCount": 7,
+    "maxPathDistance": 48
+  }
+}
+```
+
+## 9. エラーハンドリング仕様
+
+フロア生成およびプレビュー時に発生するエラーコードと HTTP ステータスコードのマッピングです。
+
+| エラーコード | 発生条件 | レスポンス HTTP ステータス | 戻り値のメッセージ例 |
+| :--- | :--- | :---: | :--- |
+| `DUNGEON_NOT_FOUND` | 指定された `dungeonId` のダンジョンが存在しない。 | 404 Not Found | 指定されたダンジョンが見つかりません。 |
+| `INVALID_FLOOR_LEVEL` | 指定された `floorLevel` が 1 未満またはダンジョンの最大階層を超過している。 | 400 Bad Request | 無効な階層レベルが指定されています。 |
+| `INVALID_ALGORITHM_TYPE` | 指定された生成アルゴリズム（`overrideAlgorithm` または `algorithmType`）が存在しない。 | 400 Bad Request | 指定された生成アルゴリズム種別が無効です。 |
+| `INVALID_SEED_VALUE` | 入力されたシード値が負数または不正なフォーマット。 | 400 Bad Request | シード値のフォーマットが正しくありません。 |
+| `GENERATION_FAILED` | 生成パラメータの不整合により到達可能性（Connectivity）の保証アルゴリズムが失敗/タイムアウトした。 | 500 Internal Server Error | マップの自動生成に失敗しました。シード値を確認してください。 |
+| `UNAUTHORIZED_BUILDER` | 権限のないユーザーが管理者専用のプレビュー/カスタム生成を行おうとした。 | 403 Forbidden | このダンジョンのフロア生成権限がありません。 |
