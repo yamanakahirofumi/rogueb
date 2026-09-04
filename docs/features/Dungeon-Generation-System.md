@@ -118,3 +118,121 @@
 ## 7. 今後の拡張
 - **フロアテーマの深化**: すでに定義されている「溶岩」「水路」や環境効果に加え、特定のテーマに基づいたタイルセットや専用オブジェクト（氷の床、動く床等）を自動配置する仕組み。
 - **隠し部屋**: 通常の通路では繋がっておらず、壁を破壊したり隠しスイッチを押すことで入れる部屋。
+
+## 8. APIリクエスト・フローとエラーハンドリング
+
+### 8.1 APIリクエスト仕様
+
+#### 8.1.1 フロア生成実行 API (`POST /api/v1/dungeons/{dungeonId}/floors/generate`)
+ダンジョンの指定階層に対して自動生成処理を実行し、生成されたフロアの構造データ（マップ配列、オブジェクト初期配置、各種シード値）を返却する API エンドポイントです。
+
+- **HTTP メソッド**: `POST`
+- **パス**: `/api/v1/dungeons/{dungeonId}/floors/generate`
+- **ヘッダー**: `Content-Type: application/json`
+
+##### リクエストボディ例
+```json
+{
+  "floorLevel": 5,
+  "algorithmType": "ROOM_CORRIDOR",
+  "seedOverrides": {
+    "roomCountSeed": 12345,
+    "itemSeed": 67890,
+    "monsterSeed": 11223,
+    "trapSeed": 44556
+  }
+}
+```
+
+##### レスポンスボディ例（成功時: `200 OK`）
+```json
+{
+  "success": true,
+  "dungeonId": "dung-771a-4b92",
+  "floorLevel": 5,
+  "algorithmType": "ROOM_CORRIDOR",
+  "dimensions": {
+    "width": 32,
+    "height": 32
+  },
+  "seeds": {
+    "roomCountSeed": 12345,
+    "itemSeed": 67890,
+    "monsterSeed": 11223,
+    "trapSeed": 44556
+  },
+  "stairs": {
+    "upStairs": { "x": 4, "y": 4 },
+    "downStairs": { "x": 28, "y": 26 }
+  },
+  "tileMapSummary": {
+    "floorTiles": 450,
+    "wallTiles": 574,
+    "waterwayTiles": 0,
+    "lavaTiles": 0
+  },
+  "placedSummary": {
+    "itemCount": 5,
+    "monsterCount": 8,
+    "trapCount": 3
+  },
+  "generatedAt": "2026-03-31T10:15:30Z"
+}
+```
+
+#### 8.1.2 生成プレビュー API (`POST /api/v1/dungeons/generation/preview`)
+ダンジョン管理者（My Dungeon モード）やデバッグ環境において、指定されたパラメータとシード値に基づく生成結果のシミュレーションと検証を行う API エンドポイントです。
+
+- **HTTP メソッド**: `POST`
+- **パス**: `/api/v1/dungeons/generation/preview`
+- **ヘッダー**: `Content-Type: application/json`
+
+##### リクエストボディ例
+```json
+{
+  "width": 40,
+  "height": 40,
+  "algorithmType": "NATURAL_CAVE",
+  "seeds": {
+    "roomCountSeed": 99887,
+    "itemSeed": 77665,
+    "monsterSeed": 55443,
+    "trapSeed": 33221
+  }
+}
+```
+
+##### レスポンスボディ例（成功時: `200 OK`）
+```json
+{
+  "success": true,
+  "algorithmType": "NATURAL_CAVE",
+  "dimensions": {
+    "width": 40,
+    "height": 40
+  },
+  "connectivityStatus": {
+    "isConnectable": true,
+    "isolatedComponents": 0,
+    "excavatedCorridors": 2
+  },
+  "tileStatistics": {
+    "floorRatio": 0.52,
+    "wallRatio": 0.48
+  },
+  "previewGeneratedAt": "2026-03-31T10:16:00Z"
+}
+```
+
+## 9. エラーハンドリング仕様
+
+ダンジョン生成処理における例外および各種異常系のエラーコード、HTTP ステータス、発生条件、および対処手順は以下の通りです。
+
+| エラーコード | HTTP ステータス | エラーメッセージ / 発生条件 | 対処手順 |
+| :--- | :--- | :--- | :--- |
+| `DUNGEON_NOT_FOUND` | `404 Not Found` | 指定された `dungeonId` のダンジョンが存在しない場合。 | 正しい `dungeonId` を指定して再試行してください。 |
+| `INVALID_FLOOR_LEVEL` | `400 Bad Request` | `floorLevel` が 1 未満、またはダンジョンの最大階層数を超えている場合。 | 有効な階層範囲（1〜maxLevel）でリクエストを再送信してください。 |
+| `INVALID_ALGORITHM_TYPE` | `400 Bad Request` | サポートされていないアルゴリズム名（例: 未定義の識別子）が指定された場合。 | 規定のアルゴリズム型 (`ROOM_CORRIDOR`, `NATURAL_CAVE`, `MAZE`, `BIG_ROOM`) を指定してください。 |
+| `INVALID_SEED_VALUE` | `400 Bad Request` | シード値に無効な形式や範囲外の値が入力された場合。 | 正しい数値型シード値を設定してください。 |
+| `GENERATION_FAILED` | `500 Internal Server Error` | 通過可能性（Connectivity）の確保に失敗し、最大再試行回数を超過した場合。 | シード値を変更するか、アルゴリズムパラメータを見直して再生成してください。 |
+| `UNAUTHORIZED_BUILDER` | `403 Forbidden` | ダンジョン構築・プレビュー権限を持たないユーザーが要求を実行した場合。 | ダンジョン所有者または管理者アカウントでログインして再試行してください。 |
