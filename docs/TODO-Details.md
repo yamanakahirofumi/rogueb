@@ -41,6 +41,10 @@ AIによる生成が困難な、感性やバランス調整が必要な事項で
 ## 6. 完了済み事項
 これまでに検討が完了し、仕様が策定された事項です。
 
+### [x] ダンジョン生成システムのAPI仕様およびエラーハンドリングの追加
+- **概要**: 確実に実装するのに不足していた、ダンジョン生成システムに関する具体的なAPIリクエスト・レスポンスJSON構造（`POST /api/v1/dungeons/{dungeonId}/floors/generate`, `POST /api/v1/dungeons/generation/preview`）および詳細なエラーハンドリング仕様の追加。
+- **解決策**: [ダンジョン生成システム仕様](./features/Dungeon-Generation-System.md) にて、フロア生成実行および生成プレビューのJSON構造、ならびに各種異常系に対する詳細なエラーコード（`DUNGEON_NOT_FOUND`, `INVALID_FLOOR_LEVEL`, `INVALID_ALGORITHM_TYPE`, `INVALID_SEED_VALUE`, `GENERATION_FAILED`, `UNAUTHORIZED_BUILDER`）やHTTPステータスのマッピングを策定。
+
 ### [x] PlayerOperationsモジュールのAPI仕様およびエラーハンドリングの追加
 - **概要**: 確実に実装するのに不足していた、PlayerOperationsモジュール（プレイヤー移動、バッグ照会、アイテム拾得・ドロップ）に関する具体的なAPIリクエスト・レスポンスJSON構造および詳細なエラーハンドリング仕様の追加。
 - **解決策**: [PlayerOperationsモジュール ドメインモデル](./features/domain_models/Player-Operations.md) にて、プレイヤー移動・バッグ情報照会・アイテム拾得・ドロップのJSON構造、および各種異常系に対する詳細なエラーコード（`PLAYER_NOT_FOUND`, `INVALID_MOVE_DIRECTION`, `TILE_BLOCKED`, `BAG_FULL`, `ITEM_NOT_FOUND`, `ITEM_NOT_ON_TILE`, `ITEM_NOT_IN_BAG`, `STAMINA_EXHAUSTED`, `STATUS_PREVENTS_MOVEMENT`）やHTTPステータスのマッピングを策定。
