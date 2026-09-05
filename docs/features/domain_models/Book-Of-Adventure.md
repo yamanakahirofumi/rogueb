@@ -137,3 +137,245 @@ PlayerOperationsモジュールはこのサービスを利用して、プレイ�
     - `leather_armor` (皮の鎧) × 1
     - `bread` (パン) × 2
 - **所持モンスター**: なし。
+
+---
+
+## 5. API仕様 (API Specifications)
+
+BookOfAdventureモジュールが提供するREST APIのエンドポイント、リクエスト・レスポンスのデータ構造です。
+
+### 5.1 ユーザー存在チェック (`GET /api/v1/user/name/{userName}/exist`)
+指定したユーザー名（プレイヤー名）のセーブデータが存在するか確認します。
+
+#### レスポンス JSON スキーマ
+```json
+{
+  "userName": "HeroPlayer",
+  "exists": true
+}
+```
+
+---
+
+### 5.2 新規プレイヤーデータ作成 (`POST /api/v1/user/name/{userName}`)
+新しいプレイヤーキャラクターのセーブデータを初期化・生成します。
+
+#### リクエスト JSON スキーマ
+```json
+{
+  "namespace": "world_alpha",
+  "currentStatus": {
+    "hp": 20,
+    "mp": 10,
+    "stamina": 100,
+    "actionInterval": 1000,
+    "subStep": 0
+  }
+}
+```
+
+#### レスポンス JSON スキーマ (201 Created)
+```json
+{
+  "userId": "usr_998877665544",
+  "name": "HeroPlayer",
+  "namespace": "world_alpha",
+  "createdAt": "2026-03-31T12:00:00Z"
+}
+```
+
+---
+
+### 5.3 プレイヤーセーブデータ照会 (`GET /api/v1/user/id/{userId}`)
+指定したユーザーIDのプレイヤー状態（ステータス、位置情報、装備、パーティ編成等）を取得します。
+
+#### レスポンス JSON スキーマ (200 OK)
+```json
+{
+  "id": "usr_998877665544",
+  "name": "HeroPlayer",
+  "level": 1,
+  "exp": 0,
+  "gold": 500,
+  "totalPkCount": 0,
+  "currentKillStreak": 0,
+  "bounty": 0,
+  "namespace": "world_alpha",
+  "currentStatus": {
+    "hp": 20,
+    "mp": 10,
+    "stamina": 100,
+    "actionInterval": 1000,
+    "subStep": 0
+  },
+  "status": {
+    "atk": 10,
+    "def": 10,
+    "magicAtk": 8,
+    "magicDef": 8,
+    "dex": 12,
+    "mnd": 10,
+    "maxHp": 20,
+    "maxMp": 10,
+    "maxStamina": 100,
+    "attribute": "None"
+  },
+  "location": {
+    "dungeonId": "dungeon_cave_01",
+    "level": 1,
+    "x": 5,
+    "y": 8
+  },
+  "equipment": {
+    "weapon": "item_sword_wood_001",
+    "armor": "item_armor_leather_001",
+    "ring1": null,
+    "ring2": null
+  },
+  "skillIds": [101, 102],
+  "activeMonsterIds": ["mon_inst_001", "mon_inst_002"],
+  "statusEffects": [
+    {
+      "type": "Poison",
+      "remainingTurns": 5,
+      "value": 2
+    }
+  ]
+}
+```
+
+---
+
+### 5.4 プレイヤーセーブデータ保存・更新 (`PUT /api/v1/user/id/{userId}`)
+ダンジョン探索中や拠点帰還時に、プレイヤーの現在の状態（HP、所持金、位置情報、装備等）を一括保存・更新します。
+
+#### リクエスト JSON スキーマ
+```json
+{
+  "id": "usr_998877665544",
+  "name": "HeroPlayer",
+  "level": 2,
+  "exp": 120,
+  "gold": 650,
+  "totalPkCount": 0,
+  "currentKillStreak": 0,
+  "bounty": 0,
+  "namespace": "world_alpha",
+  "currentStatus": {
+    "hp": 18,
+    "mp": 8,
+    "stamina": 85,
+    "actionInterval": 1000,
+    "subStep": 120
+  },
+  "status": {
+    "atk": 11,
+    "def": 10,
+    "magicAtk": 8,
+    "magicDef": 8,
+    "dex": 12,
+    "mnd": 10,
+    "maxHp": 22,
+    "maxMp": 10,
+    "maxStamina": 100,
+    "attribute": "None"
+  },
+  "location": {
+    "dungeonId": "dungeon_cave_01",
+    "level": 2,
+    "x": 12,
+    "y": 15
+  },
+  "equipment": {
+    "weapon": "item_sword_wood_001",
+    "armor": "item_armor_leather_001",
+    "ring1": null,
+    "ring2": null
+  },
+  "skillIds": [101, 102],
+  "activeMonsterIds": ["mon_inst_001", "mon_inst_002"],
+  "statusEffects": []
+}
+```
+
+#### レスポンス JSON スキーマ (200 OK)
+```json
+{
+  "userId": "usr_998877665544",
+  "status": "SUCCESS",
+  "updatedAt": "2026-03-31T12:05:00Z"
+}
+```
+
+---
+
+### 5.5 所持アイテム一覧照会 (`GET /api/v1/user/id/{userId}/items`)
+指定したプレイヤーがインベントリ（バッグ）内に所持しているアイテムインスタンスIDの一覧を取得します。
+
+#### レスポンス JSON スキーマ (200 OK)
+```json
+{
+  "playerId": "usr_998877665544",
+  "limitSize": 23,
+  "objectIdList": [
+    "item_sword_wood_001",
+    "item_armor_leather_001",
+    "item_bread_001",
+    "item_bread_002"
+  ]
+}
+```
+
+---
+
+### 5.6 所持アイテム一覧更新 (`POST /api/v1/user/id/{userId}/items`)
+拾得・消費・破棄等によるインベントリのアイテムインスタンスIDリストを更新します。
+
+#### リクエスト JSON スキーマ
+```json
+{
+  "objectIdList": [
+    "item_sword_wood_001",
+    "item_armor_leather_001",
+    "item_bread_001",
+    "item_potion_hp_001"
+  ]
+}
+```
+
+#### レスポンス JSON スキーマ (200 OK)
+```json
+{
+  "playerId": "usr_998877665544",
+  "itemCount": 4,
+  "limitSize": 23,
+  "status": "SUCCESS"
+}
+```
+
+---
+
+## 6. エラーハンドリング仕様 (Error Handling Specification)
+
+BookOfAdventureモジュールのAPI実行時にビジネスルール違反やリクエスト異常が発生した場合、以下の統一エラーフォーマットに従ってエラーレスポンスを返却します。
+
+### 6.1 エラーレスポンス共通 JSON スキーマ
+```json
+{
+  "errorCode": "PLAYER_NOT_FOUND",
+  "message": "指定されたユーザーIDのプレイヤーデータが存在しません。",
+  "timestamp": "2026-03-31T12:00:00Z"
+}
+```
+
+### 6.2 エラーコード一覧およびマッピング
+
+| エラーコード | HTTPステータス | 発生条件・説明 |
+| :--- | :---: | :--- |
+| `PLAYER_NOT_FOUND` | `404 Not Found` | 指定された `userId` または `userName` に該当するプレイヤーデータが存在しない場合。 |
+| `DUPLICATE_USERNAME` | `409 Conflict` | 新規作成時、指定された `userName` がすでに他のプレイヤーで使用されている場合。 |
+| `INVALID_USER_NAME` | `400 Bad Request` | プレイヤー名に使用不可文字が含まれている、または文字数制限（1〜16文字）を超過している場合。 |
+| `INVENTORY_LIMIT_EXCEEDED` | `400 Bad Request` | `POST /items` 更新時、送付されたアイテム数がバッグ上限（デフォルト23）を超えている場合。 |
+| `INVALID_STATUS_DATA` | `400 Bad Request` | 保存用データの属性値（HP負数、不正なレベル、不正な座標値等）がドメイン制約に違反している場合。 |
+| `PARTY_SIZE_EXCEEDED` | `400 Bad Request` | アクティブパーティ (`activeMonsterIds`) に設定されたモンスター数が上限（最大3体）を超えている場合。 |
+| `UNAUTHORIZED_USER_ACCESS` | `403 Forbidden` | 他ユーザーのセーブデータに対するアクセスや更新権限がない場合。 |
