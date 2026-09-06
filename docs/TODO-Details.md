@@ -41,6 +41,10 @@ AIによる生成が困難な、感性やバランス調整が必要な事項で
 ## 6. 完了済み事項
 これまでに検討が完了し、仕様が策定された事項です。
 
+### [x] UI-UX設計システムのUI演出パラメータおよびエラーマッピングの追加
+- **概要**: 確実に実装するのに不足していた、UI/UX設計における視覚・音響演出（ヒットストップ、スクリーンシェイク、SEイベントID等）の具体的パラメータ仕様、リアルタイム演出連動イベントJSON構造（SSE Payload）、およびバックエンドエラーコードに対応するUI表示方式・SEのマッピング仕様の追加。
+- **解決策**: [UI-UX 設計](./features/UI-UX-Design.md) にて、アクション別の標準演出パラメータ（ヒットストップ時間、シェイク強度、ポップアップテキスト、SEイベントID）、演出連動イベントJSON構造、およびバックエンドエラーコード（`BAG_FULL`, `STAMINA_EXHAUSTED`, `STATUS_PREVENTS_MOVEMENT`, `TILE_BLOCKED`, `INSUFFICIENT_GOLD` 等）に対応するUI表示タイプ（トースト、ダイアログ、ログ）とSEのマッピング仕様を定義。
+
 ### [x] BookOfAdventureモジュールのAPI仕様およびエラーハンドリングの追加
 - **概要**: 確実に実装するのに不足していた、BookOfAdventureモジュール（ユーザー存在チェック、新規プレイヤー作成、セーブデータ取得・更新、所持アイテム一覧照会・更新）に関する具体的なAPIリクエスト・レスポンスJSON構造および詳細なエラーハンドリング仕様の追加。
 - **解決策**: [BookOfAdventureモジュール ドメインモデル](./features/domain_models/Book-Of-Adventure.md) にて、プレイヤーセーブデータの作成・照会・更新、インベントリ更新のJSON構造、および各種異常系に対する詳細なエラーコード（`PLAYER_NOT_FOUND`, `DUPLICATE_USERNAME`, `INVALID_USER_NAME`, `INVENTORY_LIMIT_EXCEEDED`, `INVALID_STATUS_DATA`, `PARTY_SIZE_EXCEEDED`, `UNAUTHORIZED_USER_ACCESS`）やHTTPステータスのマッピングを策定。
