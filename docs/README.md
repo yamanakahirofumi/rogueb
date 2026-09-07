@@ -22,6 +22,7 @@
 - [開発ロードマップ](features/Development-Roadmap.md)：開発フェーズと優先順位
 - [アイテム識別システム](features/Item-Identification-System.md)：アイテムの識別状態とプロセスに関する仕様
 - [アイテムエンチャントシステム](features/Item-Enchantment-System.md)：装備品への追加効果・補正付与に関する仕様
+- [セット装備システム](features/Equipment-Set-System.md)：特定装備の組み合わせにより発動する特殊効果に関する仕様
 - [標準メタデータ仕様](features/Standard-Metadata-Specification.md)：予約済みメタデータキーとエフェクトの定義
 - [トラップシステム](features/Trap-System.md)：ダンジョン内の罠の種類と効果に関する仕様
 - [モンスタードロップシステム](features/Monster-Drop-System.md)：モンスター撃破時のドロップと流通制限に関する仕様
