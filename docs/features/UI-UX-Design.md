@@ -52,3 +52,83 @@
   - プレイヤー: 黄色 / 白色
   - モンスター: 赤色 / 紫色
   - ゴールド: 金色
+
+---
+
+## 6. UI演出・フィードバック制御仕様
+
+UIのレスポンス性やゲームの「手触り（プレイ感覚）」を向上させるため、クライアント演出パラメータおよびサーバーからの演出連動イベント（SSE/WebSocket）のJSON構造を定義します。
+
+### 6.1 フィードバック演出パラメータ
+各ゲームイベント発生時にクライアント側で実行される視覚・音響演出の標準パラメータです。
+
+| アクション種別 | ヒットストップ (ms) | スクリーンシェイク (強度/時間) | ダメージポップアップ演出 | SEイベントID |
+| :--- | :--- | :--- | :--- | :--- |
+| **通常物理攻撃** | 50ms | 弱 (3px / 100ms) | 赤色数値、上方スライド | `se_attack_hit` |
+| **クリティカル攻撃** | 150ms | 強 (8px / 250ms) | 黄色・大フォント、フラッシュ | `se_critical_hit` |
+| **痛恨の被ダメージ** | 100ms | 中 (5px / 200ms) | 赤色・大フォント、画面赤フラッシュ | `se_player_damaged` |
+| **回復（ポーション）** | 0ms | なし | 緑色数値、上方スライド | `se_heal` |
+| **アイテム拾得** | 0ms | なし | ポップアップアイコン＋ログ表示 | `se_item_pick` |
+| **レベルアップ** | 200ms | 画面全体光演出 (500ms) | 「LEVEL UP!」エフェクト | `se_level_up` |
+| **罠作動** | 100ms | 中 (5px / 150ms) | 紫色数値/効果テキスト | `se_trap_trigger` |
+
+### 6.2 演出連動イベントJSON構造 (SSE Payload)
+リアルタイム同期時にクライアントがUI描画・演出実行を行うためのイベントデータ構造です。
+
+```json
+{
+  "type": "UI_FEEDBACK_EVENT",
+  "timestamp": 1698393600000,
+  "payload": {
+    "actionType": "CRITICAL_ATTACK",
+    "sourceEntityId": "player-123",
+    "targetEntityId": "monster-456",
+    "targetCoordinate": {
+      "x": 10,
+      "y": 12
+    },
+    "value": 42,
+    "hitStopDurationMs": 150,
+    "screenShake": {
+      "intensity": "HIGH",
+      "durationMs": 250
+    },
+    "popupText": "CRITICAL 42!",
+    "soundEffectId": "se_critical_hit"
+  }
+}
+```
+
+---
+
+## 7. エラーハンドリングとUI表示マッピング
+
+バックエンドから返却されるエラーコードに対応したUI側の表示方式（トースト通知、ダイアログ、メッセージログ）およびSEトリガーのマッピング仕様です。
+
+### 7.1 UIエラーマッピングテーブル
+
+| エラーコード | UI表示タイプ | ログ/通知メッセージテンプレート | SEトリガー |
+| :--- | :--- | :--- | :--- |
+| `BAG_FULL` | トースト通知 | バックが満杯のため、これ以上アイテムを持てません。 | `se_error_buzz` |
+| `STAMINA_EXHAUSTED` | メッセージログ (警告色) | 空腹で倒れそうだ！スタミナが切れています。 | `se_warning_stamina` |
+| `STATUS_PREVENTS_MOVEMENT` | トースト通知 | 身体が動かない！（状態異常により行動不能） | `se_error_buzz` |
+| `TILE_BLOCKED` | 簡易警告 | そこへは進めません。 | `se_bump_wall` |
+| `INSUFFICIENT_GOLD` | ダイアログ | ゴールドが不足しています。 | `se_error_buzz` |
+| `INSUFFICIENT_MP` | トースト通知 | MPが足りません。 | `se_error_buzz` |
+| `STORAGE_FULL` | ダイアログ | 倉庫の空き容量が足りません。 | `se_error_buzz` |
+| `UNCAPTURABLE_STATUS` | トースト通知 | この状態のモンスターは捕獲できません。 | `se_error_buzz` |
+
+### 7.2 エラーダイアログレスポンス例
+
+```json
+{
+  "errorCode": "INSUFFICIENT_GOLD",
+  "message": "ゴールドが不足しています。",
+  "uiConfig": {
+    "displayType": "DIALOG",
+    "title": "購入失敗",
+    "seId": "se_error_buzz",
+    "autoCloseMs": 0
+  }
+}
+```
