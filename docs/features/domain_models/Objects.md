@@ -124,6 +124,7 @@ Objectsモジュールは、武器、防具、ポーション、指輪など、�
 | `leather_armor` | 皮の鎧 | `ARMOR` | None | 150 | 1 | 1000 | `[` | `def: +2` |
 | `chain_mail` | チェインメイル | `ARMOR` | None | 600 | 2 | 500 | `[` | `def: +4` |
 | `plate_armor` | プレートアーマー | `ARMOR` | None | 1200 | 3 | 200 | `[` | `def: +7` |
+| `dragon_shield` | ドラゴンシールド | `ARMOR` | Fire | 3000 | 3 | 100 | `[` | `def: +5`, `fireResist: +15%` |
 | `magic_robe` | 魔術師のローブ | `ARMOR` | None | 800 | 2 | 500 | `[` | `def: +2, magicDef: +5` |
 | `healing_potion` | 癒しの薬 | `POTION` | None | 50 | 1 | 5000 | `!` | `HEAL_HP: 30` |
 | `mana_potion` | 魔力の薬 | `POTION` | None | 50 | 1 | 5000 | `!` | `HEAL_MP: 20` |
@@ -195,4 +196,4 @@ Objectsモジュールは、武器、防具、ポーション、指輪など、�
 
 ## 5. 今後の拡張
 - **エンチャントシステム**: [アイテムエンチャントシステム](../Item-Enchantment-System.md) として策定・追加済み。
-- **セット装備**: 特定の装備を組み合わせることで発動する強力なボーナス効果。
+- **セット装備**: [セット装備システム仕様](../Equipment-Set-System.md) として策定・追加済み。
