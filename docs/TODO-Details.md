@@ -354,3 +354,7 @@ AIによる生成が困難な、感性やバランス調整が必要な事項で
 ### [x] プレイ感覚の微調整（手触り）仕様の策定
 - **概要**: プレイヤーの操作レスポンスや演出効果など「動かしていて気持ちいい」手触りを実現するための各種パラメータ・タイミング仕様の策定。
 - **解決策**: [UI-UX 設計](./features/UI-UX-Design.md) にて、先行入力バッファ（150ms）、連続移動ピッチ、1タイル移動補間時間（60ms）、攻撃振り下ろしモーション、ヒットストップ減速曲線、Damped Harmonic Oscillator モデルに基づくスクリーンシェイク波形、SE発火タイミングオフセット、ダメージポップアップタイムライン、およびクライアント手触り設定制御 JSON スキーマを策定。
+
+### [x] セット装備・オブジェクトメタデータおよびMongoDB構造の不足情報追加
+- **概要**: 確実に実装するのに不足していた、セット装備マスターのMongoDBデータ構造 (`setEquipmentDomain` コレクション)、`Standard-Metadata-Specification.md` でのセット装備・エンチャント関連メタデータキー (`setId`, `setPieceType`, `enchantments`) やエフェクトID (`SLAYER_BONUS`, `DAMAGE_REDUCTION_CATEGORY`, `ELEMENTAL_RESIST`, `ADD_ENCHANT`)、およびセット装備マスター作成・更新API仕様の追加。
+- **解決策**: [Objects-MongoDB.md](./features/domain_models/Objects-MongoDB.md) に `setEquipmentDomain` コレクション定義およびインデックス設計を追加、[標準メタデータ仕様](./features/Standard-Metadata-Specification.md) のメタデータ表および標準化エフェクト構造を拡充、[セット装備システム仕様](./features/Equipment-Set-System.md) にセット定義作成・更新APIエンドポイント (`POST /api/v1/objects/equipment-sets`, `PUT /api/v1/objects/equipment-sets/{setId}`) を追加。

@@ -30,6 +30,9 @@
 | キー | 型 | 意味 | 有効範囲 / 例 |
 | :--- | :--- | :--- | :--- |
 | `slayer` | String | 特効対象カテゴリ | `UNDEAD`, `DRAGON`, `BEAST`, `DEMON` 等 |
+| `setId` | String | 所属するセット装備 ID | `dragon_slayer_set` 等。[セット装備システム](./Equipment-Set-System.md) 参照。 |
+| `setPieceType` | String | セット内での部位カテゴリ | `WEAPON`, `ARMOR`, `RING` 等 |
+| `enchantments` | Array | 付与されているエンチャントのリスト | オブジェクトの配列。[アイテムエンチャントシステム](./Item-Enchantment-System.md) 参照。 |
 | `meta_effects` | Array | 標準化エフェクトのリスト | オブジェクトの配列。詳細は後述。 |
 
 ---
@@ -112,6 +115,14 @@
 | `MOVE_FLOOR` | `relativeLevel` | Integer | 相対的な階層移動（1: 下の階層へ） |
 | `SUMMON_MONSTER` | `count` | Integer | モンスターの召喚数 |
 | `UNEQUIP_ALL` | - | - | 装備中の全アイテムの解除 |
+| `SLAYER_BONUS` | `targetCategory` | String | 特効対象カテゴリ (`DRAGON` 等) |
+| | `value` | Double | ダメージ上昇率補正 (例: 0.15) |
+| `DAMAGE_REDUCTION_CATEGORY` | `targetCategory` | String | 対象カテゴリ (`DRAGON` 等) |
+| | `value` | Double | ダメージ軽減率補正 (例: 0.20) |
+| `ELEMENTAL_RESIST` | `element` | String | 対象属性 (`FIRE`, `WATER` 等) |
+| | `value` | Double | 属性耐性上昇率補正 (例: 0.30) |
+| `ADD_ENCHANT` | `enchantType` | String | エンチャント種類 (`FIRE_DAMAGE` 等) |
+| | `value` | Double / Integer | エンチャント補正値 |
 
 ---
 

@@ -174,6 +174,79 @@
 }
 ```
 
+### 7.3 セット装備マスター定義新規作成
+
+#### リクエスト
+`POST /api/v1/objects/equipment-sets`
+
+#### リクエスト JSON スキーマ
+```json
+{
+  "setId": "gale_assassin_set",
+  "setName": "疾風の暗殺者セット",
+  "description": "風の如く素早く敵を仕留める暗殺者の装束。",
+  "pieces": [
+    { "typeId": "silver_sword", "pieceName": "銀の剣" },
+    { "typeId": "leather_armor", "pieceName": "皮の鎧" }
+  ],
+  "bonuses": [
+    {
+      "requiredCount": 2,
+      "bonusName": "疾風怒濤",
+      "effects": [
+        { "type": "STAT_BONUS", "stat": "dex", "value": 10 },
+        { "type": "STAT_BONUS", "stat": "evasion", "value": 0.15 }
+      ]
+    }
+  ]
+}
+```
+
+#### レスポンス JSON スキーマ (`201 Created`)
+```json
+{
+  "success": true,
+  "setId": "gale_assassin_set",
+  "message": "セット装備マスター定義を作成しました。"
+}
+```
+
+### 7.4 セット装備マスター定義更新
+
+#### リクエスト
+`PUT /api/v1/objects/equipment-sets/{setId}`
+
+#### リクエスト JSON スキーマ
+```json
+{
+  "setName": "疾風の暗殺者セット (改)",
+  "description": "洗練された風の力を宿す暗殺者の強化装束。",
+  "pieces": [
+    { "typeId": "silver_sword", "pieceName": "銀の剣" },
+    { "typeId": "leather_armor", "pieceName": "皮の鎧" }
+  ],
+  "bonuses": [
+    {
+      "requiredCount": 2,
+      "bonusName": "疾風怒濤・極",
+      "effects": [
+        { "type": "STAT_BONUS", "stat": "dex", "value": 15 },
+        { "type": "STAT_BONUS", "stat": "evasion", "value": 0.20 }
+      ]
+    }
+  ]
+}
+```
+
+#### レスポンス JSON スキーマ (`200 OK`)
+```json
+{
+  "success": true,
+  "setId": "gale_assassin_set",
+  "message": "セット装備マスター定義を更新しました。"
+}
+```
+
 ---
 
 ## 8. エラーハンドリング
@@ -185,3 +258,5 @@
 | `PLAYER_NOT_FOUND` | `404 Not Found` | 指定された `userId` のプレイヤーが存在しない場合。 | `{"code": "PLAYER_NOT_FOUND", "message": "指定されたプレイヤーが見つかりません。"}` |
 | `INVALID_EQUIPMENT_SLOT` | `400 Bad Request` | 無効な装備スロット番号または未装備スロットを参照した場合。 | `{"code": "INVALID_EQUIPMENT_SLOT", "message": "装備スロットが正しくありません。"}` |
 | `EQUIPMENT_SET_NOT_FOUND` | `404 Not Found` | 存在しない `setId` がリクエストされた場合。 | `{"code": "EQUIPMENT_SET_NOT_FOUND", "message": "指定されたセット定義が存在しません。"}` |
+| `DUPLICATE_EQUIPMENT_SET` | `409 Conflict` | 既に存在する `setId` で新規作成を試みた場合。 | `{"code": "DUPLICATE_EQUIPMENT_SET", "message": "指定されたセットIDは既に存在します。"}` |
+| `INVALID_SET_DEFINITION` | `400 Bad Request` | 構成パーツ数が不十分、または必須フィールドが未設定の場合。 | `{"code": "INVALID_SET_DEFINITION", "message": "セット定義データが不完全または無効です。"}` |
