@@ -358,3 +358,7 @@ AIによる生成が困難な、感性やバランス調整が必要な事項で
 ### [x] セット装備・オブジェクトメタデータおよびMongoDB構造の不足情報追加
 - **概要**: 確実に実装するのに不足していた、セット装備マスターのMongoDBデータ構造 (`setEquipmentDomain` コレクション)、`Standard-Metadata-Specification.md` でのセット装備・エンチャント関連メタデータキー (`setId`, `setPieceType`, `enchantments`) やエフェクトID (`SLAYER_BONUS`, `DAMAGE_REDUCTION_CATEGORY`, `ELEMENTAL_RESIST`, `ADD_ENCHANT`)、およびセット装備マスター作成・更新API仕様の追加。
 - **解決策**: [Objects-MongoDB.md](./features/domain_models/Objects-MongoDB.md) に `setEquipmentDomain` コレクション定義およびインデックス設計を追加、[標準メタデータ仕様](./features/Standard-Metadata-Specification.md) のメタデータ表および標準化エフェクト構造を拡充、[セット装備システム仕様](./features/Equipment-Set-System.md) にセット定義作成・更新APIエンドポイント (`POST /api/v1/objects/equipment-sets`, `PUT /api/v1/objects/equipment-sets/{setId}`) を追加。
+
+### [x] WorldモジュールのAPI仕様およびエラーハンドリングの追加
+- **概要**: 確実に実装するのに不足していた、Worldモジュール（初期ダンジョン照会、サービス情報登録、サービスエンドポイント照会、ワールド情報・トラストポリシー照会）に関する具体的なAPIリクエスト・レスポンスJSON構造および詳細なエラーハンドリング仕様の追加。
+- **解決策**: [Worldモジュール ドメインモデル](./features/domain_models/World.md) にて、初期ダンジョン照会、サービス登録、サービス照会、ワールド情報のJSON構造、および各種異常系に対する詳細なエラーコード（`WORLD_NOT_FOUND`, `SERVICE_NOT_FOUND`, `INVALID_SERVICE_TYPE`, `DUPLICATE_SERVICE_REGISTRATION`, `START_DUNGEON_NOT_CONFIGURED`, `UNAUTHORIZED_SERVICE_REGISTRATION`）やHTTPステータスのマッピングを策定。
