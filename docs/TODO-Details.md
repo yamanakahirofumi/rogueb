@@ -362,3 +362,7 @@ AIによる生成が困難な、感性やバランス調整が必要な事項で
 ### [x] WorldモジュールのAPI仕様およびエラーハンドリングの追加
 - **概要**: 確実に実装するのに不足していた、Worldモジュール（初期ダンジョン照会、サービス情報登録、サービスエンドポイント照会、ワールド情報・トラストポリシー照会）に関する具体的なAPIリクエスト・レスポンスJSON構造および詳細なエラーハンドリング仕様の追加。
 - **解決策**: [Worldモジュール ドメインモデル](./features/domain_models/World.md) にて、初期ダンジョン照会、サービス登録、サービス照会、ワールド情報のJSON構造、および各種異常系に対する詳細なエラーコード（`WORLD_NOT_FOUND`, `SERVICE_NOT_FOUND`, `INVALID_SERVICE_TYPE`, `DUPLICATE_SERVICE_REGISTRATION`, `START_DUNGEON_NOT_CONFIGURED`, `UNAUTHORIZED_SERVICE_REGISTRATION`）やHTTPステータスのマッピングを策定。
+
+### [x] PlayerOperationsモジュールのアイテム使用・装備変更API仕様およびエラーハンドリングの追加
+- **概要**: 確実に実装するのに不足していた、PlayerOperationsモジュールにおけるアイテム使用（`POST /api/v1/player/items/use`）および装備着脱（`POST /api/v1/player/equipment/equip`, `POST /api/v1/player/equipment/unequip`）に関する具体的なAPIリクエスト・レスポンスJSON構造および詳細なエラーハンドリング仕様の追加。
+- **解決策**: [PlayerOperationsモジュール ドメインモデル](./features/domain_models/Player-Operations.md) にて、アイテム使用・装備着脱のJSON構造、および各種異常系に対する詳細なエラーコード（`ITEM_NOT_USABLE`, `EQUIPMENT_SLOT_INVALID`, `CURSED_ITEM_CANNOT_BE_REMOVED`, `NO_EQUIPMENT_IN_SLOT`, `SLOT_ALREADY_OCCUPIED` 等）やHTTPステータスのマッピングを策定。
