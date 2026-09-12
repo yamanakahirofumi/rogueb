@@ -214,6 +214,109 @@ PlayerOperationsモジュールが提供する外部APIエンドポイントの�
 
 ---
 
+### 5.5 アイテム使用 (`POST /api/v1/player/items/use`)
+
+バッグ内または足元の消費アイテム（ポーション・薬草、巻物、杖、草等）を使用します。
+
+#### リクエスト (Request)
+```json
+{
+  "userId": "user_12345",
+  "dungeonId": "dungeon_frontier_01",
+  "floorNumber": 3,
+  "instanceId": "item_inst_001",
+  "targetCoordinate": {
+    "x": 12,
+    "y": 14
+  },
+  "targetEntityId": "monster_inst_789"
+}
+```
+
+#### レスポンス (Response: 200 OK)
+```json
+{
+  "userId": "user_12345",
+  "usedItem": {
+    "instanceId": "item_inst_001",
+    "typeId": "potion_heal_small",
+    "category": "CONSUMABLE"
+  },
+  "effectResult": {
+    "effectType": "HEAL_HP",
+    "value": 30,
+    "description": "HPが30回復した！",
+    "affectedTargetId": "user_12345"
+  },
+  "consumed": true,
+  "remainingCharges": 0,
+  "remainingBagSpace": 23
+}
+```
+
+---
+
+### 5.6 装備変更・着脱 (`POST /api/v1/player/equipment/equip`, `POST /api/v1/player/equipment/unequip`)
+
+バッグ内の装備品（武器、防具、指輪等）を指定のスロットに装備、または装着中の装備品を取り外してバッグへ戻します。
+
+#### 装備実行リクエスト (`POST /api/v1/player/equipment/equip`)
+```json
+{
+  "userId": "user_12345",
+  "instanceId": "item_inst_002",
+  "slot": "MAIN_HAND"
+}
+```
+
+#### 装備実行レスポンス (Response: 200 OK)
+```json
+{
+  "userId": "user_12345",
+  "slot": "MAIN_HAND",
+  "equippedItem": {
+    "instanceId": "item_inst_002",
+    "typeId": "sword_bronze",
+    "name": "銅の剣",
+    "category": "WEAPON"
+  },
+  "unequippedItem": null,
+  "statChanges": {
+    "atkChange": 5,
+    "defChange": 0
+  }
+}
+```
+
+#### 装備解除リクエスト (`POST /api/v1/player/equipment/unequip`)
+```json
+{
+  "userId": "user_12345",
+  "slot": "MAIN_HAND"
+}
+```
+
+#### 装備解除レスポンス (Response: 200 OK)
+```json
+{
+  "userId": "user_12345",
+  "slot": "MAIN_HAND",
+  "unequippedItem": {
+    "instanceId": "item_inst_002",
+    "typeId": "sword_bronze",
+    "name": "銅の剣",
+    "category": "WEAPON"
+  },
+  "statChanges": {
+    "atkChange": -5,
+    "defChange": 0
+  },
+  "remainingBagSpace": 22
+}
+```
+
+---
+
 ## 6. エラーハンドリング仕様
 
 PlayerOperationsモジュールの処理実行時に発生する主要なエラーコードと対応するHTTPステータスコードです。
@@ -231,6 +334,11 @@ PlayerOperationsモジュールの処理実行時に発生する主要なエラ�
 | `ITEM_NOT_IN_BAG` | `400 Bad Request` | バッグ内アイテム非存在 | 指定された `instanceId` のアイテムがバッグ内に存在しない。 |
 | `STAMINA_EXHAUSTED` | `422 Unprocessable Entity` | スタミナ枯渇 | スタミナが0で移動不能状態（HP消費移動が発生する場合を除く）。 |
 | `STATUS_PREVENTS_MOVEMENT` | `422 Unprocessable Entity` | 状態異常による行動不能 | 麻痺、睡眠、影ぬい等の状態異常により移動・アイテム操作ができない。 |
+| `ITEM_NOT_USABLE` | `400 Bad Request` | アイテム使用不可 | 使用対象のアイテムが消費アイテムや使用可能アイテムではない。 |
+| `EQUIPMENT_SLOT_INVALID` | `400 Bad Request` | 無効な装備スロット | アイテムのカテゴリが指定された装備スロット（`MAIN_HAND`, `OFF_HAND`, `ARMOR`, `RING_1`, `RING_2`）に適合しない。 |
+| `CURSED_ITEM_CANNOT_BE_REMOVED` | `422 Unprocessable Entity` | 呪い装備解除不可 | 解除対象の装備品が呪われており、呪い解除の儀式や巻物を使用しないと外せない。 |
+| `NO_EQUIPMENT_IN_SLOT` | `400 Bad Request` | スロット装備非存在 | 解除指定されたスロットに装備品が装着されていない。 |
+| `SLOT_ALREADY_OCCUPIED` | `400 Bad Request` | スロット重複・バッグ容量不足 | 装備変更時に既存装備の解除とバッグ格納が必要であるが、バッグが満杯で格納できない。 |
 
 ### 6.2 エラーレスポンス形式例
 
