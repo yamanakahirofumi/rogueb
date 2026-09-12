@@ -37,6 +37,11 @@
         - `requiredItemId` (String)
         - `requiredStats` (Map): `hp`, `mp`, `atk`, `def`, `magicAtk`, `magicDef`, `dex`, `mnd`, `loyalty`
         - `resetLevel` (Boolean)
+    - `fusionTable` (Array): `MonsterFusionSlot` オブジェクトの配列。特殊進化合体の条件および進化先を保持。
+        - `materialMonsterId` (String)
+        - `targetMonsterId` (String)
+        - `requiredLevel` (Integer)
+        - `requiredGold` (Integer)
     - `_class` (String): Spring Data MongoDBが使用するクラス情報。
 
 ## 2. `monsterInstanceDomain` コレクション
@@ -50,7 +55,7 @@
     - `subStep` (Integer): 内部歩数カウンタ。
     - `experience` (Long): 累積経験値。
     - `skillIds` (Array): 習得しているスキル ID の配列。
-    - `inheritedStatus` (Map): 継承されたステータス補正。
+    - `inheritedStatus` (Map): 継承されたステータス補正（Map<String, Integer>）。繁殖および融合によって獲得した補正値（融合時 cap: Lv 1 基本値の 50%）。
     - `statusEffects` (Array): 付与されている状態異常の配列。
         - `type` (String)
         - `remainingTurns` (Integer)
