@@ -366,3 +366,7 @@ AIによる生成が困難な、感性やバランス調整が必要な事項で
 ### [x] PlayerOperationsモジュールのアイテム使用・装備変更API仕様およびエラーハンドリングの追加
 - **概要**: 確実に実装するのに不足していた、PlayerOperationsモジュールにおけるアイテム使用（`POST /api/v1/player/items/use`）および装備着脱（`POST /api/v1/player/equipment/equip`, `POST /api/v1/player/equipment/unequip`）に関する具体的なAPIリクエスト・レスポンスJSON構造および詳細なエラーハンドリング仕様の追加。
 - **解決策**: [PlayerOperationsモジュール ドメインモデル](./features/domain_models/Player-Operations.md) にて、アイテム使用・装備着脱のJSON構造、および各種異常系に対する詳細なエラーコード（`ITEM_NOT_USABLE`, `EQUIPMENT_SLOT_INVALID`, `CURSED_ITEM_CANNOT_BE_REMOVED`, `NO_EQUIPMENT_IN_SLOT`, `SLOT_ALREADY_OCCUPIED` 等）やHTTPステータスのマッピングを策定。
+
+### [x] モンスター融合システムに伴うMonsterドメインモデルおよびMongoDBスキーマの不足プロパティ定義の追加
+- **概要**: 確実に実装するのに不足していた、モンスター融合システム（特殊進化合体条件 `fusionTable` / `MonsterFusionSlot`）に関するドメインモデルおよびMongoDBスキーマのフィールド定義・上限補正（50%キャップ）仕様の補完。
+- **解決策**: [モンスター ドメインモデル](./features/domain_models/Monster.md) にて `fusionTable` プロパティおよび `MonsterFusionSlot` 値オブジェクトを追加し、[Monsterモジュール MongoDBデータ構造](./features/domain_models/Monster-MongoDB.md) に `fusionTable` フィールドと `inheritedStatus` の融合キャップ仕様を統合・補完。

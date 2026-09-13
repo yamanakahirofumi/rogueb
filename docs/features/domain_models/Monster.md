@@ -37,6 +37,7 @@
     - `skillTable`: `MonsterSkillSlot` のリスト（習得可能なスキル）。
     - `dropTable`: `MonsterDropSlot` のリスト。
     - `evolutionTable`: `MonsterEvolutionSlot` のリスト。詳細は [モンスター進化システム](../Monster-Evolution-System.md) を参照。
+    - `fusionTable`: `MonsterFusionSlot` のリスト。特殊進化合体の条件および進化先を定義。詳細は [モンスター融合システム](../Monster-Fusion-System.md) を参照。
 
 ### `MonsterSkillSlot` (値オブジェクト)
 - **説明:** モンスターが習得するスキルとその条件を定義します。
@@ -62,6 +63,14 @@
         - 有効なキー: `hp`, `mp`, `atk`, `def`, `magicAtk`, `magicDef`, `dex`, `mnd`, `loyalty`
     - `resetLevel`: 進化後にレベルを 1 に戻すかどうか (boolean)。
 
+### `MonsterFusionSlot` (値オブジェクト)
+- **説明:** モンスターの特殊進化合体の条件と変化先を定義します。詳細は [モンスター融合システム](../Monster-Fusion-System.md) を参照。
+- **プロパティ:**
+    - `materialMonsterId`: 相手となる素材モンスターの種族 ID。
+    - `targetMonsterId`: 融合（特殊進化合体）後の変化先となる種族 ID。
+    - `requiredLevel`: 融合に必要な最低レベル（デフォルト: 15）。
+    - `requiredGold`: 融合に必要なゴールドまたは計算倍率（任意）。
+
 ### `MonsterInstance`
 - **説明:** 特定のモンスター個体を表します。ダンジョン内の野生モンスター、またはプレイヤーが所持しているモンスターとして存在します。
 - **主要なプロパティ:**
@@ -74,7 +83,7 @@
     - `subStep`: 内部歩数カウンタ（状態異常の継続判定や自然回復のタイミング計算に使用）.
     - `experience`: 累積経験値（捕獲後の成長に使用）.
     - `skillIds`: 習得しているスキル ID のリスト. **最大 4 つ**まで保持可能です。
-    - `inheritedStatus`: 継承されたステータス補正（Map<String, Integer>）. 繁殖個体の場合に使用.
+    - `inheritedStatus`: 継承されたステータス補正（Map<String, Integer>）. 繁殖および融合によってベース個体に加算されたステータス補正値を保持します（融合の場合、種族の Lv 1 基本ステータスの 50% が上限キャップとなります）。
     - `statusEffects`: 付与されている状態異常 (`StatusEffectDomain`) のリスト.
     - `traits`: 個体固有の特性（パッシブ能力）のリスト（繁殖や融合等によって固有に継承・獲得した特性。最大 **2 つ**に制限）。種族固有の標準特性（`MonsterDomain.traits`）はこれに含めず、実行時に動的に合算して総活性特性を適用します。詳細は [モンスター特性システム](../Monster-Trait-System.md) を参照。
     - `metadata`: 個体固有の動的データ（Map<String, Object>）。ニックネームや特殊な成長記録などに使用.
