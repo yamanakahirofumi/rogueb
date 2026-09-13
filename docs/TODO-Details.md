@@ -370,3 +370,7 @@ AIによる生成が困難な、感性やバランス調整が必要な事項で
 ### [x] モンスター融合システムに伴うMonsterドメインモデルおよびMongoDBスキーマの不足プロパティ定義の追加
 - **概要**: 確実に実装するのに不足していた、モンスター融合システム（特殊進化合体条件 `fusionTable` / `MonsterFusionSlot`）に関するドメインモデルおよびMongoDBスキーマのフィールド定義・上限補正（50%キャップ）仕様の補完。
 - **解決策**: [モンスター ドメインモデル](./features/domain_models/Monster.md) にて `fusionTable` プロパティおよび `MonsterFusionSlot` 値オブジェクトを追加し、[Monsterモジュール MongoDBデータ構造](./features/domain_models/Monster-MongoDB.md) に `fusionTable` フィールドと `inheritedStatus` の融合キャップ仕様を統合・補完。
+
+### [x] DungeonモジュールのAPI仕様およびエラーハンドリングの追加
+- **概要**: 確実に実装するのに不足していた、Dungeonモジュール（ダンジョン基本情報照会、フロア構造照会、入場処理、死亡ペナルティ適用処理）に関する具体的なAPIリクエスト・レスポンスJSON構造および詳細なエラーハンドリング仕様の追加。
+- **解決策**: [Dungeonモジュール ドメインモデル](./features/domain_models/Dungeon.md) にて、ダンジョン情報照会、フロア照会、入場処理、死亡ペナルティ処理のJSON構造、および各種異常系に対する詳細なエラーコード（`DUNGEON_NOT_FOUND`, `FLOOR_NOT_FOUND`, `INSUFFICIENT_ENTRY_FEE`, `DUNGEON_MAX_LEVEL_EXCEEDED`, `ALREADY_IN_DUNGEON`, `PLAYER_NOT_IN_DUNGEON`）やHTTPステータスのマッピングを策定。

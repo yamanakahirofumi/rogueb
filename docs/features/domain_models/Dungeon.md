@@ -215,3 +215,191 @@ Dungeonモジュールは、ダンジョンの構造、内容、状態の管理�
     - `MIASMA`: 自然回復を無効化し、さらに **10 歩 (`subStep`) ごとに 1 ダメージ** を与えます。
     - `MAGIC_INTERFERENCE`: 魔法、スキル、および杖の消費 MP を **2 倍** にします。
     - `HEAVY_GRAVITY`: 移動および行動時のスタミナ消費を **2 倍** にします。
+
+---
+
+## 4. API仕様
+
+Dungeonモジュールが提供する主要なREST APIエンドポイントの仕様です。
+
+### 4.1 ダンジョン基本情報照会 (`GET /api/v1/dungeons/{dungeonId}`)
+
+指定されたダンジョンの基本設定、ランク、入場料、クリア条件、環境効果などのメタデータを取得します。
+
+#### レスポンス (Response: 200 OK)
+```json
+{
+  "dungeonId": "dungeon_frontier_01",
+  "name": "試練の洞窟",
+  "adminId": "user_admin_01",
+  "entryFee": 100,
+  "maxLevel": 10,
+  "rank": "B",
+  "dungeonExp": 1250,
+  "isIntrusionEnabled": true,
+  "interventionPoints": 350,
+  "environmentalEffects": [
+    "DARKNESS"
+  ],
+  "clearCondition": {
+    "type": "FLOOR_REACHED",
+    "targetValue": "10"
+  },
+  "clearReward": {
+    "gold": 5000,
+    "itemInstanceIds": [
+      "item_inst_reward_001"
+    ]
+  },
+  "deathPenalty": {
+    "itemForfeitureType": "RANDOM",
+    "goldLossType": "PERCENTAGE",
+    "goldLossValue": 20,
+    "statusResetType": "NONE"
+  }
+}
+```
+
+---
+
+### 4.2 フロア構造・配置情報照会 (`GET /api/v1/dungeons/{dungeonId}/floors/{level}`)
+
+指定されたダンジョンおよび階層（フロア）のマップ構造、階段の位置、配置されているアイテム・ゴールド・モンスター・トラップの一覧を取得します。
+
+#### レスポンス (Response: 200 OK)
+```json
+{
+  "dungeonId": "dungeon_frontier_01",
+  "floorId": "floor_dungeon_frontier_01_03",
+  "level": 3,
+  "width": 30,
+  "height": 30,
+  "upStairs": {
+    "x": 5,
+    "y": 5,
+    "z": 0
+  },
+  "downStairs": {
+    "x": 25,
+    "y": 25,
+    "z": 0
+  },
+  "thingList": [
+    {
+      "position": { "x": 10, "y": 12, "z": 0 },
+      "instanceId": "item_inst_101"
+    }
+  ],
+  "goldList": [
+    {
+      "position": { "x": 15, "y": 8, "z": 0 },
+      "gold": 150
+    }
+  ],
+  "monsterList": [
+    {
+      "position": { "x": 12, "y": 14, "z": 0 },
+      "instanceId": "monster_inst_301"
+    }
+  ],
+  "trapList": [
+    {
+      "position": { "x": 8, "y": 20, "z": 0 },
+      "trapId": "trap_flame_01",
+      "isRevealed": false
+    }
+  ]
+}
+```
+
+---
+
+### 4.3 ダンジョン入場処理 (`POST /api/v1/dungeons/{dungeonId}/enter`)
+
+プレイヤーがダンジョンに入場するための処理です。入場料の徴収と、第1フロアでの初期スポーン位置の生成を行います。
+
+#### リクエスト (Request)
+```json
+{
+  "userId": "user_12345"
+}
+```
+
+#### レスポンス (Response: 200 OK)
+```json
+{
+  "dungeonId": "dungeon_frontier_01",
+  "userId": "user_12345",
+  "currentFloor": 1,
+  "entryFeePaid": 100,
+  "spawnCoordinate": {
+    "x": 5,
+    "y": 6,
+    "z": 0
+  },
+  "enteredAt": "2026-03-31T12:00:00Z"
+}
+```
+
+---
+
+### 4.4 死亡ペナルティ適用処理 (`POST /api/v1/dungeons/{dungeonId}/death-penalty`)
+
+ダンジョン内でプレイヤーがHP 0となり倒れた際に、ダンジョンのペナルティ設定（`deathPenalty`）に従って所持品没収・ゴールド喪失・経験値減少等の処理を適用し、ダンジョン外へ強制退出させます。
+
+#### リクエスト (Request)
+```json
+{
+  "userId": "user_12345",
+  "floorLevel": 5,
+  "causeOfDeath": "MONSTER_ATTACK"
+}
+```
+
+#### レスポンス (Response: 200 OK)
+```json
+{
+  "userId": "user_12345",
+  "dungeonId": "dungeon_frontier_01",
+  "forfeitedItems": [
+    {
+      "instanceId": "item_inst_001",
+      "name": "薬草"
+    }
+  ],
+  "lostGold": 300,
+  "statusChanges": {
+    "expReduced": 0,
+    "levelReset": false
+  },
+  "respawnLocation": "TOWN"
+}
+```
+
+---
+
+## 5. エラーハンドリング仕様
+
+Dungeonモジュールの処理実行時に発生する主要なエラーコードと対応するHTTPステータスコードです。
+
+### 5.1 エラーコード一覧
+
+| エラーコード | HTTPステータス | 説明 | 発生条件 |
+| :--- | :--- | :--- | :--- |
+| `DUNGEON_NOT_FOUND` | `404 Not Found` | ダンジョン非存在 | 指定された `dungeonId` のダンジョンが存在しない。 |
+| `FLOOR_NOT_FOUND` | `404 Not Found` | フロア非存在 | 指定された `level` のフロアデータが存在しない、または総階層数を超えている。 |
+| `INSUFFICIENT_ENTRY_FEE` | `400 Bad Request` | 入場料不足 | 入場に必要なゴールドがプレイヤーの所持ゴールドに満たない。 |
+| `DUNGEON_MAX_LEVEL_EXCEEDED` | `400 Bad Request` | 階層制限超過 | 移動先の階層がダンジョンの `maxLevel` を超えている。 |
+| `ALREADY_IN_DUNGEON` | `409 Conflict` | 二重入場エラー | プレイヤーがすでにいずれかのダンジョンに入場中である。 |
+| `PLAYER_NOT_IN_DUNGEON` | `400 Bad Request` | 非入場状態エラー | ダンジョン内に存在しないプレイヤーに対して死亡ペナルティ等のダンジョン内処理を呼び出した。 |
+
+### 5.2 エラーレスポンス形式例
+
+```json
+{
+  "errorCode": "INSUFFICIENT_ENTRY_FEE",
+  "message": "ダンジョンへの入場料（100 G）が不足しています。",
+  "status": 400,
+  "timestamp": "2026-03-31T12:00:00Z"
+}
+```
