@@ -374,3 +374,7 @@ AIによる生成が困難な、感性やバランス調整が必要な事項で
 ### [x] DungeonモジュールのAPI仕様およびエラーハンドリングの追加
 - **概要**: 確実に実装するのに不足していた、Dungeonモジュール（ダンジョン基本情報照会、フロア構造照会、入場処理、死亡ペナルティ適用処理）に関する具体的なAPIリクエスト・レスポンスJSON構造および詳細なエラーハンドリング仕様の追加。
 - **解決策**: [Dungeonモジュール ドメインモデル](./features/domain_models/Dungeon.md) にて、ダンジョン情報照会、フロア照会、入場処理、死亡ペナルティ処理のJSON構造、および各種異常系に対する詳細なエラーコード（`DUNGEON_NOT_FOUND`, `FLOOR_NOT_FOUND`, `INSUFFICIENT_ENTRY_FEE`, `DUNGEON_MAX_LEVEL_EXCEEDED`, `ALREADY_IN_DUNGEON`, `PLAYER_NOT_IN_DUNGEON`）やHTTPステータスのマッピングを策定。
+
+### [x] 倉庫システムのMongoDBデータ構造における拡張段階プロパティおよび操作ログコレクション定義の追加
+- **概要**: 確実に実装するのに不足していた、倉庫システム（`Storage-MongoDB.md`）における拡張段階プロパティ（`expansionStage`）および操作履歴コレクション（`storageLogDomain`）のフィールド定義・TTLインデックス推奨事項の追加。
+- **解決策**: [倉庫システム MongoDBデータ構造](./features/domain_models/Storage-MongoDB.md) にて、`playerStorageDomain` へ `expansionStage`・`updateDate` プロパティを追加し、`storageLogDomain` コレクション構造（`DEPOSIT`, `WITHDRAW`, `EXPAND`）およびインデックス推奨事項・肥大化対策（TTLインデックス）を策定。
