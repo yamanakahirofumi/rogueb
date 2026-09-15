@@ -255,5 +255,152 @@
 | <a id="species-town_guardian"></a>`town_guardian` | `303`: 捕縛 (1) |
 | <a id="species-bounty_hunter"></a>`bounty_hunter` | `101`: パワーアタック (1), `303`: 捕縛 (1) |
 
-## 6. 相互参照・今後の拡張
+## 6. API仕様 (API Specifications)
+
+Monsterモジュールが提供する基本APIのエンドポイント、リクエスト・レスポンスのデータ構造です。
+
+### 6.1 モンスター種族マスタ照会 (`GET /api/v1/monsters/species/{monsterId}`)
+指定された種族ID（`monsterId`）に対応する基本ステータス、属性、AIタイプ、習得スキルテーブルを取得します。
+
+#### レスポンス JSON スキーマ (200 OK)
+```json
+{
+  "monsterId": "slime",
+  "name": "スライム",
+  "type": "SLIME",
+  "tier": 1,
+  "attribute": "NONE",
+  "baseHp": 10,
+  "baseMp": 0,
+  "baseAtk": 5,
+  "baseDef": 5,
+  "baseMagicAtk": 2,
+  "baseMagicDef": 2,
+  "baseDex": 5,
+  "baseMnd": 5,
+  "display": "s",
+  "expValue": 5,
+  "placementCost": 10,
+  "aiType": "NORMAL",
+  "skillRate": 20,
+  "traits": [
+    "SLIME_BODY"
+  ]
+}
+```
+
+---
+
+### 6.2 モンスターインスタンス生成 (`POST /api/v1/monsters/instances`)
+野生モンスターの出現やダンジョン配置用として、指定された種族IDおよびレベルのモンスター個体インスタンスを生成します。
+
+#### リクエスト JSON スキーマ
+```json
+{
+  "monsterId": "slime",
+  "level": 1,
+  "isWild": true,
+  "ownerId": null
+}
+```
+
+#### レスポンス JSON スキーマ (201 Created)
+```json
+{
+  "instanceId": "mon_inst_774102",
+  "monsterId": "slime",
+  "name": "スライム",
+  "level": 1,
+  "currentHp": 10,
+  "maxHp": 10,
+  "currentMp": 0,
+  "maxMp": 0,
+  "atk": 5,
+  "def": 5,
+  "magicAtk": 2,
+  "magicDef": 2,
+  "dex": 5,
+  "mnd": 5,
+  "display": "s",
+  "state": "WILD",
+  "isWild": true,
+  "ownerId": null,
+  "loyalty": 0,
+  "skillIds": [],
+  "traits": [],
+  "createdAt": "2026-03-31T12:00:00Z"
+}
+```
+
+---
+
+### 6.3 モンスター個体情報照会 (`GET /api/v1/monsters/instances/{instanceId}`)
+指定されたモンスター個体ID（`instanceId`）の現在の詳細ステータス、スキル、状態異常、所有者情報を取得します。
+
+#### レスポンス JSON スキーマ (200 OK)
+```json
+{
+  "instanceId": "mon_inst_774102",
+  "monsterId": "slime",
+  "name": "スライム",
+  "level": 1,
+  "currentHp": 10,
+  "maxHp": 10,
+  "currentMp": 0,
+  "maxMp": 0,
+  "experience": 0,
+  "state": "WILD",
+  "isWild": true,
+  "ownerId": null,
+  "loyalty": 0,
+  "skillIds": [],
+  "traits": [],
+  "inheritedStatus": {},
+  "fusionCount": 0
+}
+```
+
+---
+
+### 6.4 モンスター個体削除 (`DELETE /api/v1/monsters/instances/{instanceId}`)
+撃破、逃走、お別れ等により、存在しなくなったモンスター個体を削除・消滅処理します。
+
+#### レスポンス JSON スキーマ (200 OK)
+```json
+{
+  "status": "SUCCESS",
+  "deletedInstanceId": "mon_inst_774102",
+  "timestamp": "2026-03-31T12:00:00Z"
+}
+```
+
+---
+
+## 7. エラーハンドリング仕様 (Error Handling Specification)
+
+Monsterモジュールの基本API実行時にエラーが発生した場合、以下の統一フォーマットでエラーレスポンスを返却します。
+
+### 7.1 エラーレスポンス共通 JSON スキーマ
+```json
+{
+  "errorCode": "MONSTER_NOT_FOUND",
+  "message": "指定されたモンスター種族IDが存在しません。",
+  "timestamp": "2026-03-31T12:00:00Z"
+}
+```
+
+### 7.2 エラーコード一覧およびマッピング
+
+| エラーコード | HTTPステータス | 発生条件・説明 |
+| :--- | :---: | :--- |
+| `MONSTER_NOT_FOUND` | `404 Not Found` | 指定された `monsterId` に該当する種族マスタが存在しない場合。 |
+| `INSTANCE_NOT_FOUND` | `404 Not Found` | 指定された `instanceId` に該当する個体が存在しない場合。 |
+| `INVALID_MONSTER_LEVEL` | `400 Bad Request` | 生成時や育成時に不正なレベル（例: 0以下またはシステム上限超過）が指定された場合。 |
+| `INVALID_SKILL_SELECTION` | `400 Bad Request` | 存在しないスキルIDのセットや、スキル枠数上限（最大4つ）超過時。 |
+| `MAX_PARTY_LIMIT_EXCEEDED` | `409 Conflict` | プレイヤーの手持ちパーティ枠の上限を超えて所持しようとした場合。 |
+| `UNAUTHORIZED_MONSTER_OPERATOR` | `403 Forbidden` | 他のプレイヤーが所有するモンスターのステータス書き換え・削除を行おうとした場合。 |
+
+---
+
+## 8. 相互参照・今後の拡張
 - [モンスター連携特性システム](../Monster-Synergy-Trait-System.md): パーティ内の特定特性の組み合わせで発動する連携効果の仕様。

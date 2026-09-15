@@ -374,3 +374,7 @@ AIによる生成が困難な、感性やバランス調整が必要な事項で
 ### [x] DungeonモジュールのAPI仕様およびエラーハンドリングの追加
 - **概要**: 確実に実装するのに不足していた、Dungeonモジュール（ダンジョン基本情報照会、フロア構造照会、入場処理、死亡ペナルティ適用処理）に関する具体的なAPIリクエスト・レスポンスJSON構造および詳細なエラーハンドリング仕様の追加。
 - **解決策**: [Dungeonモジュール ドメインモデル](./features/domain_models/Dungeon.md) にて、ダンジョン情報照会、フロア照会、入場処理、死亡ペナルティ処理のJSON構造、および各種異常系に対する詳細なエラーコード（`DUNGEON_NOT_FOUND`, `FLOOR_NOT_FOUND`, `INSUFFICIENT_ENTRY_FEE`, `DUNGEON_MAX_LEVEL_EXCEEDED`, `ALREADY_IN_DUNGEON`, `PLAYER_NOT_IN_DUNGEON`）やHTTPステータスのマッピングを策定。
+
+### [x] ObjectsモジュールおよびMonsterモジュールのコアAPI仕様とエラーハンドリングの追加
+- **概要**: 確実に実装するのに不足していた、Objectsモジュール（アイテムマスタ照会、インスタンス生成・照会・削除）およびMonsterモジュール（モンスター種族マスタ照会、インスタンス生成・照会・削除）に関する具体的なAPIリクエスト・レスポンスJSON構造および詳細なエラーハンドリング仕様の追加。
+- **解決策**: [Objectsモジュール ドメインモデル](./features/domain_models/Objects.md) および [Monsterモジュール ドメインモデル](./features/domain_models/Monster.md) にて、各種コア操作のJSON構造、ならびに各種異常系に対する詳細なエラーコード（`ITEM_NOT_FOUND`, `INSTANCE_NOT_FOUND`, `INVALID_ITEM_TYPE`, `CIRCULATION_LIMIT_REACHED`, `MONSTER_NOT_FOUND`, `INVALID_MONSTER_LEVEL`, `INVALID_SKILL_SELECTION`, `MAX_PARTY_LIMIT_EXCEEDED` 等）やHTTPステータスのマッピングを策定。
