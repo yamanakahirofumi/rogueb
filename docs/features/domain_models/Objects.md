@@ -194,6 +194,131 @@ Objectsモジュールは、武器、防具、ポーション、指輪など、�
 | `stone_statue` | 石像 | `MATERIAL` | None | 300 | 2 | 1000 | `I` | 建築用デコレーション |
 | `flag` | 旗 | `MATERIAL` | None | 150 | 1 | 3000 | `F` | 建築用デコレーション |
 
-## 5. 今後の拡張
+## 5. API仕様 (API Specifications)
+
+Objectsモジュールが提供する基本APIのエンドポイント、リクエスト・レスポンスのデータ構造です。
+
+### 5.1 アイテムマスタ照会 (`GET /api/v1/objects/{typeId}`)
+指定されたアイテムタイプID（`typeId`）に対応するマスタ基本情報およびドロップ上限等のプロパティを取得します。
+
+#### レスポンス JSON スキーマ (200 OK)
+```json
+{
+  "typeId": "iron_sword",
+  "name": "鉄の剣",
+  "category": "WEAPON",
+  "attribute": "NONE",
+  "standardPrice": 500,
+  "tier": 1,
+  "maxLimit": 1000,
+  "display": ")",
+  "isMany": false
+}
+```
+
+---
+
+### 5.2 アイテムインスタンス生成 (`POST /api/v1/objects/instances`)
+指定されたアイテムタイプから、一意な `instanceId` を持つアイテムインスタンスを新規生成します。初期メタデータやスタック個数を指定可能です。
+
+#### リクエスト JSON スキーマ
+```json
+{
+  "typeId": "iron_sword",
+  "quantity": 1,
+  "initialMetadata": {
+    "atk": 5,
+    "isCursed": false
+  }
+}
+```
+
+#### レスポンス JSON スキーマ (201 Created)
+```json
+{
+  "instanceId": "obj_inst_998213",
+  "typeId": "iron_sword",
+  "name": "鉄の剣",
+  "display": ")",
+  "attribute": "NONE",
+  "standardPrice": 500,
+  "tier": 1,
+  "metadata": {
+    "atk": 5,
+    "quantity": 1,
+    "isCursed": false,
+    "isIdentified": true
+  },
+  "createdAt": "2026-03-31T12:00:00Z"
+}
+```
+
+---
+
+### 5.3 アイテムインスタンス照会 (`GET /api/v1/objects/instances/{instanceId}`)
+指定されたアイテムインスタンスID（`instanceId`）の現在の詳細情報を取得します。
+
+#### レスポンス JSON スキーマ (200 OK)
+```json
+{
+  "instanceId": "obj_inst_998213",
+  "typeId": "iron_sword",
+  "name": "鉄の剣",
+  "display": ")",
+  "attribute": "NONE",
+  "standardPrice": 500,
+  "tier": 1,
+  "metadata": {
+    "atk": 5,
+    "quantity": 1,
+    "isCursed": false,
+    "isIdentified": true
+  }
+}
+```
+
+---
+
+### 5.4 アイテムインスタンス削除 (`DELETE /api/v1/objects/instances/{instanceId}`)
+消費・破壊・売却等により、存在しなくなったアイテムインスタンスをシステムから破棄します。
+
+#### レスポンス JSON スキーマ (200 OK)
+```json
+{
+  "status": "SUCCESS",
+  "deletedInstanceId": "obj_inst_998213",
+  "timestamp": "2026-03-31T12:00:00Z"
+}
+```
+
+---
+
+## 6. エラーハンドリング仕様 (Error Handling Specification)
+
+ObjectsモジュールのAPI実行時にエラーが発生した場合、以下の統一フォーマットでエラーレスポンスを返却します。
+
+### 6.1 エラーレスポンス共通 JSON スキーマ
+```json
+{
+  "errorCode": "ITEM_NOT_FOUND",
+  "message": "指定されたアイテムタイプIDが存在しません。",
+  "timestamp": "2026-03-31T12:00:00Z"
+}
+```
+
+### 6.2 エラーコード一覧およびマッピング
+
+| エラーコード | HTTPステータス | 発生条件・説明 |
+| :--- | :---: | :--- |
+| `ITEM_NOT_FOUND` | `404 Not Found` | 指定された `typeId` に該当するアイテムマスタが存在しない場合。 |
+| `INSTANCE_NOT_FOUND` | `404 Not Found` | 指定された `instanceId` に該当するアイテムインスタンスが存在しない場合。 |
+| `INVALID_ITEM_TYPE` | `400 Bad Request` | 無効なアイテムカテゴリ（`TypeEnum`）や属性が指定された場合。 |
+| `CIRCULATION_LIMIT_REACHED` | `409 Conflict` | 対象アイテムのワールド内総数が上限 (`maxLimit`) に達しており新規生成できない場合。 |
+| `METADATA_INVALID` | `400 Bad Request` | インスタンス生成時の初期メタデータ構造が不整合である場合。 |
+| `UNAUTHORIZED_OBJECT_OPERATOR` | `403 Forbidden` | アイテムの破棄や強制書き換え権限のないユーザーが操作を試みた場合。 |
+
+---
+
+## 7. 今後の拡張
 - **エンチャントシステム**: [アイテムエンチャントシステム](../Item-Enchantment-System.md) として策定・追加済み。
 - **セット装備**: [セット装備システム仕様](../Equipment-Set-System.md) として策定・追加済み。
