@@ -153,6 +153,7 @@ Objectsモジュールは、武器、防具、ポーション、指輪など、�
 | `expansion_material` | 増築用資材 | `MATERIAL` | None | 5000 | 2 | 500 | `*` | 倉庫の拡張に使用する。 |
 | `trait_stone` | 特性の石 | `MATERIAL` | None | 1500 | 2 | 500 | `*` | [特性の強化](../Monster-Trait-Enhancement-System.md)に使用する触媒（レベルIからII） |
 | `trait_crystal` | 特性の結晶 | `MATERIAL` | None | 6000 | 3 | 100 | `*` | [特性の強化](../Monster-Trait-Enhancement-System.md)に使用する強力な触媒（レベルIからII、確実成功） |
+| `extraction_orb` | 抽出の水晶球 | `MATERIAL` | None | 3000 | 2 | 300 | `*` | [特性の抽出](../Monster-Trait-Extraction-System.md)に使用する触媒 |
 | `bounty_hunter_proof` | 賞金稼ぎの証 | `OTHER` | None | 2000 | 3 | 100 | `"` | 強敵撃破の証 |
 | `collar_of_pledge` | 誓いの首輪 | `OTHER` | None | 8000 | 4 | 50 | `*` | [親愛の儀式](../Monster-Affection-System.md)に使用する。 |
 | `degeneration_hourglass` | 退化の砂時計 | `OTHER` | None | 5000 | 3 | 100 | `*` | [退化の儀式](../Monster-Degeneration-System.md)に使用する。 |
