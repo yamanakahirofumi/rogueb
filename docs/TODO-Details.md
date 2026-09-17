@@ -378,3 +378,7 @@ AIによる生成が困難な、感性やバランス調整が必要な事項で
 ### [x] ObjectsモジュールおよびMonsterモジュールのコアAPI仕様とエラーハンドリングの追加
 - **概要**: 確実に実装するのに不足していた、Objectsモジュール（アイテムマスタ照会、インスタンス生成・照会・削除）およびMonsterモジュール（モンスター種族マスタ照会、インスタンス生成・照会・削除）に関する具体的なAPIリクエスト・レスポンスJSON構造および詳細なエラーハンドリング仕様の追加。
 - **解決策**: [Objectsモジュール ドメインモデル](./features/domain_models/Objects.md) および [Monsterモジュール ドメインモデル](./features/domain_models/Monster.md) にて、各種コア操作のJSON構造、ならびに各種異常系に対する詳細なエラーコード（`ITEM_NOT_FOUND`, `INSTANCE_NOT_FOUND`, `INVALID_ITEM_TYPE`, `CIRCULATION_LIMIT_REACHED`, `MONSTER_NOT_FOUND`, `INVALID_MONSTER_LEVEL`, `INVALID_SKILL_SELECTION`, `MAX_PARTY_LIMIT_EXCEEDED` 等）やHTTPステータスのマッピングを策定。
+
+### [x] モンスター特性抽出システムの新機能提案および詳細仕様策定
+- **概要**: モンスターが保持する個体特性（Individual Traits）を抽出・結晶化し、他のモンスターへ移植可能な消費アイテム「特性オーブ（Trait Orb）」を生成するシステムの設計と仕様の策定。
+- **解決策**: [モンスター特性抽出システム仕様](./features/Monster-Trait-Extraction-System.md) を新規作成し、実行条件（レベル10以上）、抽出による代償と結果、データ構造・特性オーブのアイテム化、API仕様（`POST /api/v1/monsters/{instanceId}/traits/extract`）、およびエラーハンドリングを定義。あわせて [Objectsモジュール ドメインモデル](./features/domain_models/Objects.md) に抽出用素材「抽出の水晶球（`extraction_orb`）」を追加。
