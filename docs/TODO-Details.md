@@ -382,3 +382,7 @@ AIによる生成が困難な、感性やバランス調整が必要な事項で
 ### [x] モンスター特性抽出システムの新機能提案および詳細仕様策定
 - **概要**: モンスターが保持する個体特性（Individual Traits）を抽出・結晶化し、他のモンスターへ移植可能な消費アイテム「特性オーブ（Trait Orb）」を生成するシステムの設計と仕様の策定。
 - **解決策**: [モンスター特性抽出システム仕様](./features/Monster-Trait-Extraction-System.md) を新規作成し、実行条件（レベル10以上）、抽出による代償と結果、データ構造・特性オーブのアイテム化、API仕様（`POST /api/v1/monsters/{instanceId}/traits/extract`）、およびエラーハンドリングを定義。あわせて [Objectsモジュール ドメインモデル](./features/domain_models/Objects.md) に抽出用素材「抽出の水晶球（`extraction_orb`）」を追加。
+
+### [x] ドメインモデルドキュメント一覧（Index.md）のインデックス整理
+- **概要**: 新規・拡張仕様書群（トラップシステム、アイテム識別システム、アイテムエンチャントシステム、セット装備システム、モンスター親愛システム、モンスター退化システム、モンスター特性抽出システム）が `docs/features/domain_models/Index.md` に未インデックス状態であったため、該当モジュール（Dungeon, Objects, Monster）配下への追記・整理を実施。
+- **解決策**: [ドメインモデル一覧](./features/domain_models/Index.md) を更新し、各モジュール（Dungeon, Objects, Monster）配下の関連機能仕様の相互リンクを網羅・補完。
