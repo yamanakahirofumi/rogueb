@@ -13,6 +13,7 @@
 ### 2.2 対象特性の制限
 - 強化できるのは、個体が保有する **個体特性 (Individual Traits)** (`MonsterInstanceDomain.traits`）のみです。
 - 種族固有の標準特性である **種族特性 (Species Traits)** (`MonsterDomain.traits`）は、直接強化（上書き）することはできません。
+- すでにレベルIIへ強化済みの特性（例：`REGENERATION_II`）は、これ以上の強化は行えません（`TRAIT_ALREADY_MAX_LEVEL`）。
 
 ### 2.3 強化に必要な消費アイテムとコスト
 特性強化には、ゴールドに加えて、専用の触媒アイテム（素材）である「特性の石（`trait_stone`）」または「特性の結晶（`trait_crystal`）」のいずれかが必要です。
@@ -89,10 +90,48 @@ sequenceDiagram
 
 ## 5. APIリクエスト・フローとエラーハンドリング
 
-### 5.1 APIリクエスト仕様
-特性強化を実行するためのエンドポイントおよびリクエストボディの構造です。
+### 5.1 強化候補・必要コスト照会 (`GET /api/v1/monsters/{instanceId}/traits/enhancements`)
+指定されたモンスター個体（`instanceId`）が保持する個体特性のうち、レベルIIへの強化が可能な特性一覧と必要となる触媒・ゴールド・成功確率を照会します。
 
-- **Endpoint**: `POST /api/v1/monsters/traits/enhance`
+#### レスポンス JSON スキーマ (200 OK)
+```json
+{
+  "instanceId": "monster_uuid_67890",
+  "monsterId": "slime",
+  "tier": 1,
+  "level": 15,
+  "canEnhance": true,
+  "enhancementCandidates": [
+    {
+      "currentTraitId": "REGENERATION",
+      "targetTraitId": "REGENERATION_II",
+      "traitName": "自己再生",
+      "enhancedTraitName": "自己再生 II",
+      "options": [
+        {
+          "catalystItemId": "trait_stone",
+          "catalystName": "特性の石",
+          "requiredGold": 1000,
+          "successRatePercent": 70
+        },
+        {
+          "catalystItemId": "trait_crystal",
+          "catalystName": "特性の結晶",
+          "requiredGold": 3000,
+          "successRatePercent": 100
+        }
+      ]
+    }
+  ]
+}
+```
+
+---
+
+### 5.2 特性強化の実行 (`POST /api/v1/monsters/{instanceId}/traits/enhance`)
+指定された触媒アイテムとゴールドを消費して、モンスターの個体特性をレベルIからレベルIIへ強化実行します。
+
+- **Endpoint**: `POST /api/v1/monsters/{instanceId}/traits/enhance` (別名: `POST /api/v1/monsters/traits/enhance`)
 - **Request Body (JSON)**:
 ```json
 {
@@ -103,7 +142,7 @@ sequenceDiagram
 }
 ```
 
-- **Response Body (JSON - 成功時)**:
+- **Response Body (JSON - 成功時 200 OK)**:
 ```json
 {
   "success": true,
@@ -119,7 +158,23 @@ sequenceDiagram
 }
 ```
 
-- **Response Body (JSON - 異常時)**:
+- **Response Body (JSON - 強化失敗時 (確率判定不合格) 200 OK)**:
+```json
+{
+  "success": false,
+  "result": "FAILED",
+  "message": "特性の強化に失敗しました...（消費したゴールドと触媒は失われましたが、元の特性は維持されます）",
+  "monster": {
+    "instanceId": "monster_uuid_67890",
+    "monsterId": "slime",
+    "level": 15,
+    "traits": ["REGENERATION"],
+    "loyalty": 210
+  }
+}
+```
+
+- **Response Body (JSON - 異常発生時)**:
 ```json
 {
   "success": false,
@@ -129,15 +184,52 @@ sequenceDiagram
 }
 ```
 
-### 5.2 エラーハンドリング (Error Handling)
+---
+
+### 5.3 エラーハンドリング (Error Handling)
 処理の過程で異常が検出された場合、システムは適切なエラーレスポンスを返却します。
 
 | エラーコード | 発生条件 | レスポンス HTTP ステータス | 戻り値のメッセージ例 |
 | :--- | :--- | :---: | :--- |
 | `MONSTER_NOT_FOUND` | 指定された `monsterInstanceId` のモンスターが存在しない。 | 404 Not Found | 指定されたモンスターが見つかりません。 |
+| `MONSTER_NOT_OWNED` | 操作を行うユーザー（`userId`）が該当モンスターの所有者でない。 | 403 Forbidden | このモンスターに対する操作権限がありません。 |
 | `INSUFFICIENT_LEVEL` | モンスターのレベルが 15 未満。 | 400 Bad Request | 特性強化を実行するには、モンスターのレベルが15以上である必要があります。 |
 | `TRAIT_NOT_FOUND` | モンスターが指定された `currentTraitId` の個体特性を所持していない。 | 400 Bad Request | 指定された特性をこの個体は所持していません。 |
+| `TRAIT_ALREADY_MAX_LEVEL` | 指定された特性がすでにレベルII（最大レベル）に達している。 | 400 Bad Request | 該当する特性は既に最大レベルまで強化されています。 |
 | `CANNOT_ENHANCE_SPECIES_TRAIT` | 指定された特性が種族固有の特性（`MonsterDomain.traits`）である。 | 400 Bad Request | 種族特性は直接強化できません。個体特性のみが対象です。 |
 | `INVALID_CATALYST` | 指定された触媒アイテム ID が `trait_stone` または `trait_crystal` 以外。 | 400 Bad Request | 無効な触媒アイテムが指定されています。 |
 | `INSUFFICIENT_CATALYST` | プレイヤーのインベントリに指定された触媒アイテムが存在しない。 | 400 Bad Request | 特性強化に必要な触媒アイテムが不足しています。 |
 | `INSUFFICIENT_GOLD` | 特性強化に必要なゴールドが不足している。 | 400 Bad Request | 所持ゴールドが不足しています。 |
+
+---
+
+## 6. データベース・永続化仕様 (Database & Persistence Specification)
+
+`Monster` モジュールの MongoDB データ構造 (`monsterInstanceDomain` コレクション) における特性強化結果の永続化仕様を定義します。
+
+### 6.1 `monsterInstanceDomain` の更新データ構造
+強化に成功した場合、`monsterInstanceDomain` ドキュメントの `traits` 配列が更新されます。
+
+```json
+{
+  "_id": "monster_uuid_67890",
+  "monsterId": "slime",
+  "level": 15,
+  "traits": [
+    "REGENERATION_II"
+  ],
+  "metadata": {
+    "lastTraitEnhancement": {
+      "timestamp": "2026-03-31T15:30:00Z",
+      "fromTrait": "REGENERATION",
+      "toTrait": "REGENERATION_II",
+      "catalystUsed": "trait_stone",
+      "result": "SUCCESS"
+    }
+  }
+}
+```
+
+### 6.2 永続化ルール
+- **個体特性リスト (`traits`) の更新**: 強化成功時、元のレベルI特性 ID（例: `REGENERATION`）は配列から削除され、対応するレベルII特性 ID（例: `REGENERATION_II`）に同一枠で置換されます。
+- **履歴追跡 (`metadata.lastTraitEnhancement`)**: 強化成功および失敗時のログデータを `metadata` フィールド配下に記録し、監査やデバッグを可能にします。
