@@ -111,9 +111,9 @@ AIによる生成が困難な、感性やバランス調整が必要な事項で
 - **概要**: 確実に実装するのに不足していた、ダンジョン構築・運営システムに関する具体的なAPIリクエスト・レスポンスJSON構造（`POST /api/v1/dungeons/build/place`, `POST /api/v1/dungeons/build/place-monster`, `POST /api/v1/dungeons/intervene`）および詳細なエラーハンドリング仕様の追加。
 - **解決策**: [ダンジョン構築・運営システム仕様](./features/Dungeon-Construction-System.md) にて、各種構築・介入アクションのJSON構造（資材配置、モンスター配置、リアルタイム介入等）、および各種異常系に対する詳細なエラーコード（`DUNGEON_NOT_FOUND`, `FLOOR_NOT_FOUND`, `INVALID_COORDINATE`, `INSUFFICIENT_MATERIAL`, `INSUFFICIENT_GOLD`, `PATH_BLOCKED`, `TILE_OCCUPIED`, `MONSTER_NOT_FOUND`, `MONSTER_NOT_OWNED`, `PLACEMENT_COST_EXCEEDED`, `ACTIVE_SESSION_NOT_FOUND`, `INSUFFICIENT_INTERVENTION_POINTS`, `ACTION_COOLDOWN_ACTIVE`, `INVALID_TARGET_TILE`）やHTTPステータスのマッピングを策定。
 
-### [x] モンスター特性強化システムのAPI仕様の補完
-- **概要**: 確実に実装するのに不足していた、モンスター特性強化システムにおける異常系のAPIレスポンスJSON構造例の追加。
-- **解決策**: [モンスター特性強化システム仕様](./features/Monster-Trait-Enhancement-System.md) にて、異常発生時（`INSUFFICIENT_LEVEL` 等）のエラーレスポンスJSON構造を明記。
+### [x] モンスター特性強化システムのAPI仕様・エラーハンドリングおよびデータ構造の追加
+- **概要**: 確実に実装するのに不足していた、モンスター特性強化システムに関する強化候補・必要コスト照会クエリAPI（`GET /api/v1/monsters/{instanceId}/traits/enhancements`）および実行API（`POST /api/v1/monsters/{instanceId}/traits/enhance`）のリクエスト・レスポンスJSON構造、拡張されたエラーハンドリング仕様（`MONSTER_NOT_OWNED`, `TRAIT_ALREADY_MAX_LEVEL`等）、ならびにMongoDB（`monsterInstanceDomain`）永続化仕様の追加。
+- **解決策**: [モンスター特性強化システム仕様](./features/Monster-Trait-Enhancement-System.md) にて、各種APIの完全なJSONスキーマ（照会・実行・成功・失敗・異常時）、エラーコードマッピング、および `monsterInstanceDomain` コレクションにおける `traits` 更新と `metadata.lastTraitEnhancement` 履歴追跡構造を定義。
 
 ### [x] アイテムエンチャントシステムのAPI仕様およびエラーハンドリングの追加
 - **概要**: 確実に実装するのに不足していた、アイテムエンチャントシステムに関する具体的なAPIリクエスト・レスポンスJSON構造（`POST /api/v1/objects/enchant`）および詳細なエラーハンドリング仕様の追加。
