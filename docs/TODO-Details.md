@@ -386,3 +386,7 @@ AIによる生成が困難な、感性やバランス調整が必要な事項で
 ### [x] ドメインモデルドキュメント一覧（Index.md）のインデックス整理
 - **概要**: 新規・拡張仕様書群（トラップシステム、アイテム識別システム、アイテムエンチャントシステム、セット装備システム、モンスター親愛システム、モンスター退化システム、モンスター特性抽出システム）が `docs/features/domain_models/Index.md` に未インデックス状態であったため、該当モジュール（Dungeon, Objects, Monster）配下への追記・整理を実施。
 - **解決策**: [ドメインモデル一覧](./features/domain_models/Index.md) を更新し、各モジュール（Dungeon, Objects, Monster）配下の関連機能仕様の相互リンクを網羅・補完。
+
+### [x] モンスター遠征システムの新機能提案および詳細仕様策定
+- **概要**: 待機中のサブモンスター（1〜3体）にフロンティア（未拓域）への調査・自動遠征を指示し、実時間経過に伴い資材調達（ゴールド、増築用資材、特性の石、退化の砂時計等）やモンスター自身の育成（経験値・忠誠度上昇）を得られる「モンスター遠征システム（Monster Expedition System）」の提案および詳細仕様の策定。
+- **解決策**: [モンスター遠征システム仕様](./features/Monster-Expedition-System.md) を新規作成し、遠征エリア、成功率・大成功・負傷判定ロジック、MongoDBデータ構造 (`expeditionInstanceDomain`)、モジュール間連携フロー、API仕様 (`GET /api/v1/monsters/expeditions/areas`, `POST /api/v1/monsters/expeditions/dispatch`, `POST /api/v1/monsters/expeditions/claim`)、およびエラーハンドリングを定義。
