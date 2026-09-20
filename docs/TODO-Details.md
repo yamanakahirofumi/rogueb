@@ -36,6 +36,10 @@ AIによる生成が困難な、感性やバランス調整が必要な事項で
 ## 6. 完了済み事項
 これまでに検討が完了し、仕様が策定された事項です。
 
+### [x] モンスター遠征システムの新機能提案および詳細仕様策定
+- **概要**: 待機中（パーティ非編入）のモンスターをフロンティア未開地（遠征地域）へ派遣し、一定時間経過後に資源（Gold、クラフト/増築素材、種・トラップ配置アイテム等）、EXP、忠誠度を獲得して帰還させる新機能「モンスター遠征システム（Monster Expedition System）」の設計と仕様の策定。
+- **解決策**: [モンスター遠征システム仕様](./features/Monster-Expedition-System.md) を新規作成し、遠征エリア（古代の鉱山、瘴気の森、沈没船の入江、竜の脊梁）、スコア・大成功/負傷計算式、MongoDBデータ構造 (`expeditionInstanceDomain`)、モジュール間連携シーケンス（Mermaid.js）、API仕様（`GET /api/v1/monsters/expeditions/areas`, `GET /api/v1/monsters/expeditions/active/{userId}`, `POST /api/v1/monsters/expeditions/dispatch`, `POST /api/v1/monsters/expeditions/claim`）、およびエラーハンドリングを定義。
+
 ### [x] セット装備システムの新機能提案および詳細仕様策定
 - **概要**: 単体のステータス性能だけでなく、特定組み合わせの装備（武器、防具、指輪等）を同時に装着することで発動する特殊ボーナス「セット効果（Equipment Set Bonus）」の設計と仕様の策定。
 - **解決策**: [セット装備システム仕様](./features/Equipment-Set-System.md) を新規作成し、段階的ボーナス発動条件、主要初期セット装備（ドラゴンキラーセット、鉄の騎士セット、大魔導士セット、影の暗殺者セット、聖なる守護者セット）、データ構造・メタデータ表現、モジュール間データ連携フロー、API仕様（`GET /api/v1/players/{userId}/equipment-sets`, `GET /api/v1/objects/equipment-sets`）、およびエラーハンドリングを定義。
