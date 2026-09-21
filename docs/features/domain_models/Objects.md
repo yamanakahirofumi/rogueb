@@ -194,6 +194,7 @@ Objectsモジュールは、武器、防具、ポーション、指輪など、�
 | `candlestick` | 燭台 | `MATERIAL` | Fire | 100 | 1 | 5000 | `i` | 建築用デコレーション |
 | `stone_statue` | 石像 | `MATERIAL` | None | 300 | 2 | 1000 | `I` | 建築用デコレーション |
 | `flag` | 旗 | `MATERIAL` | None | 150 | 1 | 3000 | `F` | 建築用デコレーション |
+| `expedition_whistle` | 遠征の笛 | `OTHER` | None | 1500 | 2 | 500 | `*` | [モンスター遠征](../Monster-Expedition-System.md)に使用する。評価スコア1.5倍 |
 
 ## 5. API仕様 (API Specifications)
 
@@ -323,3 +324,4 @@ ObjectsモジュールのAPI実行時にエラーが発生した場合、以下�
 ## 7. 今後の拡張
 - **エンチャントシステム**: [アイテムエンチャントシステム](../Item-Enchantment-System.md) として策定・追加済み。
 - **セット装備**: [セット装備システム仕様](../Equipment-Set-System.md) として策定・追加済み。
+- **モンスター遠征システム**: [モンスター遠征システム](../Monster-Expedition-System.md) として策定・追加済み。

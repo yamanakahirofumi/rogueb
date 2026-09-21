@@ -386,3 +386,7 @@ AIによる生成が困難な、感性やバランス調整が必要な事項で
 ### [x] ドメインモデルドキュメント一覧（Index.md）のインデックス整理
 - **概要**: 新規・拡張仕様書群（トラップシステム、アイテム識別システム、アイテムエンチャントシステム、セット装備システム、モンスター親愛システム、モンスター退化システム、モンスター特性抽出システム）が `docs/features/domain_models/Index.md` に未インデックス状態であったため、該当モジュール（Dungeon, Objects, Monster）配下への追記・整理を実施。
 - **解決策**: [ドメインモデル一覧](./features/domain_models/Index.md) を更新し、各モジュール（Dungeon, Objects, Monster）配下の関連機能仕様の相互リンクを網羅・補完。
+
+### [x] モンスター遠征システムの新機能提案および詳細仕様策定
+- **概要**: 手持ち以外のアクティブパーティ外（ストレージ内）控えモンスターを、未開拓地（フロンティア）へ派遣し、リアルタイム時間経過によって自動的にゴールド・建築資材・触媒・経験値を獲得する「モンスター遠征システム（Monster Expedition System）」の設計と仕様の策定。
+- **解決策**: [モンスター遠征システム仕様](./features/Monster-Expedition-System.md) を新規作成し、4つの遠征エリア（古代の鉱山、瘴気の森、沈没した遺跡、竜の脊梁）、成功度・負傷率の判定計算式、`ExpeditionInstance` ドメインモデルおよび `expeditionInstanceDomain` MongoDB コレクション構造、シーケンスフロー、API仕様（`GET /api/v1/monsters/expeditions/areas`, `GET /api/v1/monsters/expeditions/active/{userId}`, `POST /api/v1/monsters/expeditions/dispatch`, `POST /api/v1/monsters/expeditions/claim`）、ならびにエラーハンドリングを定義。あわせて [Objectsモジュール](./features/domain_models/Objects.md) に遠征補助アイテム「遠征の笛（`expedition_whistle`）」を登録。
