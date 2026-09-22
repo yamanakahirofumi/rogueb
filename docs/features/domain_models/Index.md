@@ -36,6 +36,7 @@
   - **[モンスター特性強化システム](../Monster-Trait-Enhancement-System.md)**: 特定の触媒を用いて特性をレベルIからレベルIIへ強化するシステムに関する仕様。
   - **[モンスター特性抽出システム](../Monster-Trait-Extraction-System.md)**: 個体特性を抽出・結晶化し特性オーブとするシステムに関する仕様。
   - **[モンスター退化システム](../Monster-Degeneration-System.md)**: 進化前形態への退化とステータス限界突破の仕組み。
+  - **[モンスター遠征システム](../Monster-Expedition-System.md)**: 未開拓地へのモンスター遠征およびリソース獲得の仕組み。
   - **[モンスター連携特性システム](../Monster-Synergy-Trait-System.md)**: 特定の特性の組み合わせを持つモンスターが同じパーティにいる場合に発動するシナジー効果（連携特性）に関する仕様。
   - **[モンスター捕獲システム](../Monster-Capture-System.md)**: モンスターの捕獲、アイテム、および成功率に関する仕様。
   - **[モンスター進化システム](../Monster-Evolution-System.md)**: モンスターの進化条件、プロセス、および継承の仕組み。
