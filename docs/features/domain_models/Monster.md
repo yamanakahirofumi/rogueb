@@ -100,6 +100,19 @@
     - `lastBreedingTime`: 最後に繁殖を行ったタイムスタンプ (Long)。[モンスター繁殖システム](../Monster-Breeding-System.md) におけるクールタイム判定に使用.
     - `fusionCount`: ベース個体（Base）としての累計融合回数。詳細は [モンスター融合システム](../Monster-Fusion-System.md) を参照.
 
+### `ExpeditionInstanceDomain`
+- **説明:** プレイヤーが控えモンスターを未開拓地へ派遣する遠征セッションを表します。詳細は [モンスター遠征システム](../Monster-Expedition-System.md) を参照。
+- **主要なプロパティ:**
+    - `expeditionId`: 一意な遠征セッション ID.
+    - `userId`: 派遣を行ったプレイヤーの ID.
+    - `areaId`: 派遣エリアの ID（例: `ancient_mine`）.
+    - `monsterInstanceIds`: 派遣されたモンスターの `instanceId` リスト（1 〜 3 頭）.
+    - `dispatchTime`: 派遣開始日時 (UTC).
+    - `estimatedCompletionTime`: 遠征完了予定日時 (UTC).
+    - `status`: 遠征状態 (`IN_PROGRESS`, `COMPLETED`, `CLAIMED`, `CANCELLED`).
+    - `isWhistleUsed`: サポートアイテム「遠征の笛」の使用フラグ.
+    - `result`: 遠征結果オブジェクト（`outcome`, `rewardGold`, `rewardExp`, `rewardItems`, `injuredMonsterIds`）.
+
 ### `StatusEffectDomain` (値オブジェクト)
 - **説明:** [BookOfAdventureモジュール](./Book-Of-Adventure.md#statuseffectdomain-値オブジェクト) にて定義。プレイヤーやモンスターに付与される状態異常を表します。
 

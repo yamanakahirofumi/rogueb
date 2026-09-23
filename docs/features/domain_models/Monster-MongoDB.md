@@ -70,7 +70,24 @@
     - `fusionCount` (Integer): 累計融合回数。
     - `_class` (String): Spring Data MongoDBが使用するクラス情報。
 
-## 3. インデックス推奨事項
+## 3. `expeditionInstanceDomain` コレクション
+- **説明:** `ExpeditionInstanceDomain`クラスに対応します。プレイヤーが控えモンスターを派遣した遠征セッションの状態を保持します。
+- **フィールド:**
+    - `_id` (ObjectId): MongoDB内部ID。
+    - `expeditionId` (String): 一意な遠征セッションID（例: `exp_8830192`）。
+    - `userId` (String): 派遣プレイヤーのID。
+    - `areaId` (String): 派遣エリアのID（例: `ancient_mine`）。
+    - `monsterInstanceIds` (Array): 派遣されたモンスターの `instanceId` の配列。
+    - `dispatchTime` (Date): 派遣開始日時 (UTC)。
+    - `estimatedCompletionTime` (Date): 完了予定日時 (UTC)。
+    - `status` (String): 遠征状態 (`IN_PROGRESS`, `COMPLETED`, `CLAIMED`, `CANCELLED`)。
+    - `isWhistleUsed` (Boolean): サポートアイテム「遠征の笛」使用フラグ。
+    - `result` (Object): 遠征完了時の結果オブジェクト（`outcome`, `rewardGold`, `rewardExp`, `rewardItems`, `injuredMonsterIds`）。
+    - `createdAt` (Date): レコード作成日時。
+    - `updatedAt` (Date): レコード更新日時。
+    - `_class` (String): Spring Data MongoDBが使用するクラス情報。
+
+## 4. インデックス推奨事項
 
 ### `monsterDomain`
 - `{"name": 1}`: 名前による検索。
@@ -79,3 +96,7 @@
 ### `monsterInstanceDomain`
 - `{"ownerId": 1}`: プレイヤーが所持するモンスターを検索する場合に必須。
 - `{"isWild": 1}`: 野生モンスターのみを抽出する場合に使用します。
+
+### `expeditionInstanceDomain`
+- `{"userId": 1}`: 特定プレイヤーの遠征一覧を取得する場合に必須。
+- `{"status": 1}`: 進行中・受取待ち等のステータス別絞り込み検索に使用します。

@@ -73,7 +73,7 @@
   - `ring`および`objectHistory`コレクションのスキーマ情報。
 
 - **[Monsterモジュール (MongoDB)](./Monster-MongoDB.md)**
-  - `monsterDomain`および`monsterInstanceDomain`コレクションのスキーマ情報。
+  - `monsterDomain`, `monsterInstanceDomain`, および `expeditionInstanceDomain` コレクションのスキーマ情報。
 
 - **[BookOfAdventureモジュール (MongoDB)](./Book-Of-Adventure-MongoDB.md)**
   - `playerDomain`コレクションのスキーマ情報。

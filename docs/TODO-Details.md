@@ -390,3 +390,7 @@ AIによる生成が困難な、感性やバランス調整が必要な事項で
 ### [x] モンスター遠征システムの新機能提案および詳細仕様策定
 - **概要**: 手持ち以外のアクティブパーティ外（ストレージ内）控えモンスターを、未開拓地（フロンティア）へ派遣し、リアルタイム時間経過によって自動的にゴールド・建築資材・触媒・経験値を獲得する「モンスター遠征システム（Monster Expedition System）」の設計と仕様の策定。
 - **解決策**: [モンスター遠征システム仕様](./features/Monster-Expedition-System.md) を新規作成し、4つの遠征エリア（古代の鉱山、瘴気の森、沈没した遺跡、竜の脊梁）、成功度・負傷率の判定計算式、`ExpeditionInstance` ドメインモデルおよび `expeditionInstanceDomain` MongoDB コレクション構造、シーケンスフロー、API仕様（`GET /api/v1/monsters/expeditions/areas`, `GET /api/v1/monsters/expeditions/active/{userId}`, `POST /api/v1/monsters/expeditions/dispatch`, `POST /api/v1/monsters/expeditions/claim`）、ならびにエラーハンドリングを定義。あわせて [Objectsモジュール](./features/domain_models/Objects.md) に遠征補助アイテム「遠征の笛（`expedition_whistle`）」を登録。
+
+### [x] モンスター遠征システムのドメインモデルおよびMongoDBデータ構造定義の追加
+- **概要**: 確実に実装するのに不足していた、モンスター遠征システム（`Monster-Expedition-System.md`）に関する `ExpeditionInstanceDomain` ドメインモデル仕様および `expeditionInstanceDomain` コレクションのMongoDBデータ構造・インデックス定義の追加。
+- **解決策**: [Monsterモジュール ドメインモデル](./features/domain_models/Monster.md) に `ExpeditionInstanceDomain` ドメインオブジェクト（`expeditionId`, `userId`, `areaId`, `monsterInstanceIds`, `dispatchTime`, `estimatedCompletionTime`, `status`, `isWhistleUsed`, `result`）を追加し、[Monsterモジュール MongoDBデータ構造](./features/domain_models/Monster-MongoDB.md) に `expeditionInstanceDomain` コレクションの構造および推奨インデックス（`userId`, `status`）を定義。あわせて [ドメインモデル一覧](./features/domain_models/Index.md) を更新。
