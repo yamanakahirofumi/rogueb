@@ -394,3 +394,7 @@ AIによる生成が困難な、感性やバランス調整が必要な事項で
 ### [x] モンスター遠征システムのドメインモデルおよびMongoDBデータ構造定義の追加
 - **概要**: 確実に実装するのに不足していた、モンスター遠征システム（`Monster-Expedition-System.md`）に関する `ExpeditionInstanceDomain` ドメインモデル仕様および `expeditionInstanceDomain` コレクションのMongoDBデータ構造・インデックス定義の追加。
 - **解決策**: [Monsterモジュール ドメインモデル](./features/domain_models/Monster.md) に `ExpeditionInstanceDomain` ドメインオブジェクト（`expeditionId`, `userId`, `areaId`, `monsterInstanceIds`, `dispatchTime`, `estimatedCompletionTime`, `status`, `isWhistleUsed`, `result`）を追加し、[Monsterモジュール MongoDBデータ構造](./features/domain_models/Monster-MongoDB.md) に `expeditionInstanceDomain` コレクションの構造および推奨インデックス（`userId`, `status`）を定義。あわせて [ドメインモデル一覧](./features/domain_models/Index.md) を更新。
+
+### [x] モンスター作戦指示システムの新機能提案および詳細仕様策定
+- **概要**: プレイヤーが連れているアクティブパーティの仲間モンスターに対して、ターンごとの行動方針（作戦）をリアルタイムに指示・切替を行う「モンスター作戦指示システム」の設計と仕様の策定。
+- **解決策**: [モンスター作戦指示システム仕様](./features/Monster-Tactical-Directives-System.md) を新規作成し、6つの作戦コード（`FULL_POWER`, `SAVE_RESOURCES`, `SAFETY_FIRST`, `FOLLOW_ME`, `FREE_ACTION`, `STAY_WAIT`）、作戦別詳細行動思考アルゴリズム、忠誠度に基づく指示遵守判定計算式および不従順時代替行動、`MonsterInstanceDomain` ドメイン拡張、API仕様（`GET /api/v1/monsters/{instanceId}/tactics`, `PUT /api/v1/monsters/{instanceId}/tactics`）、ならびにエラーハンドリングを定義。あわせて [README.md](./README.md) および [ドメインモデル一覧](./features/domain_models/Index.md) を更新。

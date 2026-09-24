@@ -43,6 +43,7 @@
   - **[モンスター融合システム](../Monster-Fusion-System.md)**: モンスターの融合・合体進化に関する仕様。
   - **[モンスター化・PKシステム](../Monster-PK-System.md)**: プレイヤーによるモンスター化変身と乱入・PKの仕組み。
   - **[モンスターAI詳細仕様](../Monster-AI-Specification.md)**: モンスターの行動タイプとスキル使用ロジック。
+  - **[モンスター作戦指示システム](../Monster-Tactical-Directives-System.md)**: 仲間モンスターへの戦術指示（作戦）切替、思考アルゴリズム、および忠誠度による指示遵守判定に関する仕様。
 
 - **[PlayerOperationsモジュール](./Player-Operations.md)**
   - プレイヤーの操作、およびインベントリ（`Bag`）の管理を調整します。
