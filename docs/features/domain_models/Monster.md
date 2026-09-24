@@ -99,6 +99,7 @@
     - `lastLoyaltyUpdate`: 最後に忠誠度が更新された（時間経過による減少判定が行われた）タイムスタンプ (Long).
     - `lastBreedingTime`: 最後に繁殖を行ったタイムスタンプ (Long)。[モンスター繁殖システム](../Monster-Breeding-System.md) におけるクールタイム判定に使用.
     - `fusionCount`: ベース個体（Base）としての累計融合回数。詳細は [モンスター融合システム](../Monster-Fusion-System.md) を参照.
+    - `currentTactic`: 現在設定されている作戦指示 (Enum: `FULL_POWER`, `SAVE_RESOURCES`, `SAFETY_FIRST`, `FOLLOW_ME`, `FREE_ACTION`, `STAY_WAIT`)。デフォルトは `FREE_ACTION`。詳細は [モンスター作戦指示システム](../Monster-Tactical-Directives-System.md) を参照.
 
 ### `ExpeditionInstanceDomain`
 - **説明:** プレイヤーが控えモンスターを未開拓地へ派遣する遠征セッションを表します。詳細は [モンスター遠征システム](../Monster-Expedition-System.md) を参照。
@@ -417,3 +418,4 @@ Monsterモジュールの基本API実行時にエラーが発生した場合、�
 
 ## 8. 相互参照・今後の拡張
 - [モンスター連携特性システム](../Monster-Synergy-Trait-System.md): パーティ内の特定特性の組み合わせで発動する連携効果の仕様。
+- [モンスター作戦指示システム](../Monster-Tactical-Directives-System.md): 仲間モンスターへの戦術指示（作戦）切替と行動思考アルゴリズムの仕様。
