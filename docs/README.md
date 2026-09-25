@@ -43,6 +43,7 @@
 - [モンスター融合システム](features/Monster-Fusion-System.md)：モンスターの融合・合体進化に関する仕様
 - [モンスターAI詳細仕様](features/Monster-AI-Specification.md)：モンスターの行動タイプとスキル使用ロジックに関する詳細仕様
 - [モンスター作戦指示システム](features/Monster-Tactical-Directives-System.md)：仲間モンスターへの戦術指示（作戦）切替、思考アルゴリズム、および忠誠度による指示遵守判定に関する仕様
+- [モンスター図鑑システム](features/Monster-Encyclopedia-System.md)：各種モンスター種族の遭遇・討伐・獲得記録、段階的情報開示、およびコンプリート報酬に関する仕様
 - [モンスター化・PKシステム](features/Monster-PK-System.md)：プレイヤーによるモンスター化変身と乱入・PKの仕組みに関する仕様
 - [ダンジョン構築・運営システム](features/Dungeon-Construction-System.md)：建築資材、建築モード、および管理者介入に関する仕様
 - [ダンジョン生成システム](features/Dungeon-Generation-System.md)：自動生成アルゴリズム、シード値、および通過可能性の保証に関する仕様

@@ -44,6 +44,7 @@
   - **[モンスター化・PKシステム](../Monster-PK-System.md)**: プレイヤーによるモンスター化変身と乱入・PKの仕組み。
   - **[モンスターAI詳細仕様](../Monster-AI-Specification.md)**: モンスターの行動タイプとスキル使用ロジック。
   - **[モンスター作戦指示システム](../Monster-Tactical-Directives-System.md)**: 仲間モンスターへの戦術指示（作戦）切替、思考アルゴリズム、および忠誠度による指示遵守判定に関する仕様。
+  - **[モンスター図鑑システム](../Monster-Encyclopedia-System.md)**: 各種モンスター種族の遭遇・討伐・獲得記録、情報開示、およびコンプリート報酬に関する仕様。
 
 - **[PlayerOperationsモジュール](./Player-Operations.md)**
   - プレイヤーの操作、およびインベントリ（`Bag`）の管理を調整します。
@@ -52,6 +53,7 @@
 
 - **[BookOfAdventureモジュール](./Book-Of-Adventure.md)**
   - プレイヤーの状態、キャラクター情報の永続化を担当します。
+  - **[モンスター図鑑システム](../Monster-Encyclopedia-System.md)**: プレイヤー個別のモンスター図鑑進捗およびマイルストーン報酬受取管理。
 
 - **[EconomicSystemモジュール](./Economic-System.md)**
   - アイテムの流通量、動的な価格計算、およびショップ管理を担当します。
@@ -77,7 +79,7 @@
   - `monsterDomain`, `monsterInstanceDomain`, および `expeditionInstanceDomain` コレクションのスキーマ情報。
 
 - **[BookOfAdventureモジュール (MongoDB)](./Book-Of-Adventure-MongoDB.md)**
-  - `playerDomain`コレクションのスキーマ情報。
+  - `playerDomain`, `playerKnowledgeDomain`, および `playerMonsterEncyclopediaDomain` コレクションのスキーマ情報。
 
 - **[EconomicSystemモジュール (MongoDB)](./Economic-System-MongoDB.md)**
   - `itemCirculationDomain`, `shopDomain`, `transactionHistoryDomain` コレクションのスキーマ情報。
