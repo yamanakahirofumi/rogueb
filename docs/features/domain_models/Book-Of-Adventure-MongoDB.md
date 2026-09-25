@@ -53,7 +53,20 @@
     - `isIdentified` (Boolean): 識別済みかどうか。
     - `_class` (String): Spring Data MongoDBが使用するクラス情報（例: `net.hero.rogueb.bookofadventure.domain.PlayerKnowledgeDomain`）。
 
-## 5. インデックス推奨事項
+## 5. `playerMonsterEncyclopediaDomain` コレクション
+- **説明:** `PlayerMonsterEncyclopediaDomain`クラスに対応します。プレイヤーごとのモンスター図鑑の解放状況、撃破数、捕獲数、初遭遇日時を保持します。
+- **フィールド:**
+    - `_id` (String): 一意なID（例: `enc_usr_9921_slime_001`）。
+    - `userId` (String): ユーザーID。
+    - `monsterTypeId` (String): モンスター種族ID。
+    - `unlockStage` (String): 情報開示段階 (`DISCOVERED`, `DEFEATED`, `CAPTURED`, `MASTERED`)。
+    - `defeatCount` (Integer): 累計撃破数。
+    - `captureCount` (Integer): 累計捕獲・獲得数。
+    - `firstDiscoveredAt` (Date): 初遭遇日時。
+    - `firstCapturedAt` (Date): 初獲得日時。
+    - `_class` (String): Spring Data MongoDBが使用するクラス情報。
+
+## 6. インデックス推奨事項
 
 ### `playerDomain`
 - `{"name": 1}`: プレイヤー名によるユニーク検索に必須。
@@ -68,3 +81,7 @@
 ### `playerKnowledgeDomain`
 - `{"userId": 1, "worldId": 1}`: ユーザーが特定のワールドで持っている知識を一覧するために必須。
 - `{"userId": 1, "worldId": 1, "typeId": 1}`: ユニークインデックス。
+
+### `playerMonsterEncyclopediaDomain`
+- `{"userId": 1}`: ユーザーごとの図鑑解放状況を一覧検索するために必須。
+- `{"userId": 1, "monsterTypeId": 1}`: ユニーク複合インデックス。特定のモンスター種族の図鑑データ照会・更新用。
