@@ -402,3 +402,7 @@ AIによる生成が困難な、感性やバランス調整が必要な事項で
 ### [x] モンスター作戦指示システムのドメインモデルおよびMongoDBデータ構造定義の追加
 - **概要**: 確実に実装するのに不足していた、モンスター作戦指示システム（`Monster-Tactical-Directives-System.md`）における `currentTactic` 属性の `MonsterInstance` ドメインモデルおよび `monsterInstanceDomain` コレクションのMongoDBデータ構造定義の追加。
 - **解決策**: [Monsterモジュール ドメインモデル](./features/domain_models/Monster.md) の `MonsterInstance` に `currentTactic` プロパティ（デフォルト: `FREE_ACTION`）を追加し、[Monsterモジュール MongoDBデータ構造](./features/domain_models/Monster-MongoDB.md) に `currentTactic` フィールドを追記。
+
+### [x] モンスター図鑑・博物誌システムの新機能提案および詳細仕様策定
+- **概要**: プレイヤーが遭遇・討伐・捕獲・繁殖・進化・融合した各種モンスター種族の記録・生態データ・フレーバーテキストを段階的に解禁し、図鑑コンプリート率に応じたマイルストーン報酬や完全踏破ボーナス（図鑑熟知ボーナス +5%）を提供する「モンスター図鑑・博物誌システム」の設計と仕様の策定。
+- **解決策**: [モンスター図鑑・博物誌システム仕様](./features/Monster-Encyclopedia-System.md) を新規作成し、5段階の情報開示フェーズ（`UNENCOUNTERED`, `DISCOVERED`, `DEFEATED`, `CAPTURED`, `MASTERED`）、ドロップ確率・スキルテーブル完全開示ルール、コンプリート率算出式・マイルストーン報酬テーブル（25%, 50%, 75%, 100%）、モジュール間連携イベントフロー（Combat/Monster -> BookOfAdventure）、`playerMonsterEncyclopediaDomain` MongoDBコレクション構造、API仕様（`GET /api/v1/monsters/encyclopedia/{userId}`, `GET /api/v1/monsters/encyclopedia/{userId}/{monsterTypeId}`, `POST /api/v1/monsters/encyclopedia/claim-reward`）、ならびにエラーハンドリング（`PLAYER_NOT_FOUND`, `MILESTONE_NOT_REACHED`, `REWARD_ALREADY_CLAIMED`等）を定義。あわせて [BookOfAdventure MongoDB構造](./features/domain_models/Book-Of-Adventure-MongoDB.md)、[README.md](./README.md)、および [ドメインモデル一覧](./features/domain_models/Index.md) を更新。
