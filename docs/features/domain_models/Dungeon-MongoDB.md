@@ -65,6 +65,13 @@
         - `position` (Object): 座標 (`Coordinate`)。
         - `trapId` (Integer): トラップの種別 ID（[トラップシステム](../Trap-System.md) の ID に対応）。
         - `isRevealed` (Boolean): 露出フラグ。
+    - `activeEnvironmentalAnomaly` (Object): フロア全体に及ぶ広域環境異変データ。詳細は [ダンジョン環境異変システム](../Dungeon-Environmental-Anomaly-System.md) を参照。
+        - `anomalyId` (String): `solar_flare`, `freezing_blizzard`, `mana_surge`, `miasma_storm`, `supergravity`
+        - `name` (String): 表示名称
+        - `severity` (Integer): 異変の強さレベル (1 〜 3)
+        - `remainingTurns` (Integer): 残りターン数 (-1 は階層永続)
+        - `triggeredBy` (String): `NATURAL`, `MANAGER_INTERVENTION`, `PLAYER_ITEM`
+        - `modifiers` (Map): パラメータ補正のマップ
     - `tiles` (Array): 2次元のタイル情報（`Tile2D` オブジェクトの配列の配列）。
         - `display` (String): 表示文字（例: `#`, `.`）。
         - `pointType` (String): タイルの種類 (`Wall`, `UpStairs`, `downStairs`, `floor`)。

@@ -195,6 +195,11 @@ Objectsモジュールは、武器、防具、ポーション、指輪など、�
 | `stone_statue` | 石像 | `MATERIAL` | None | 300 | 2 | 1000 | `I` | 建築用デコレーション |
 | `flag` | 旗 | `MATERIAL` | None | 150 | 1 | 3000 | `F` | 建築用デコレーション |
 | `expedition_whistle` | 遠征の笛 | `OTHER` | None | 1500 | 2 | 500 | `*` | [モンスター遠征](../Monster-Expedition-System.md)に使用する。評価スコア1.5倍 |
+| `weather_orb_blaze` | 灼熱の宝珠 | `OTHER` | Fire | 3000 | 3 | 200 | `*` | [環境異変](../Dungeon-Environmental-Anomaly-System.md) `solar_flare` を引き起こす |
+| `weather_orb_blizzard` | 極寒の宝珠 | `OTHER` | Water | 3000 | 3 | 200 | `*` | [環境異変](../Dungeon-Environmental-Anomaly-System.md) `freezing_blizzard` を引き起こす |
+| `weather_orb_miasma` | 瘴気の宝珠 | `OTHER` | Dark | 3500 | 3 | 150 | `*` | [環境異変](../Dungeon-Environmental-Anomaly-System.md) `miasma_storm` を引き起こす |
+| `weather_orb_gravity` | 重力の宝珠 | `OTHER` | Earth | 3000 | 3 | 200 | `*` | [環境異変](../Dungeon-Environmental-Anomaly-System.md) `supergravity` を引き起こす |
+| `weather_dispel_scroll` | 凪の巻物 | `SCROLL` | None | 2000 | 2 | 500 | `?` | [環境異変](../Dungeon-Environmental-Anomaly-System.md) を無害化・解呪する |
 
 ## 5. API仕様 (API Specifications)
 
@@ -325,3 +330,4 @@ ObjectsモジュールのAPI実行時にエラーが発生した場合、以下�
 - **エンチャントシステム**: [アイテムエンチャントシステム](../Item-Enchantment-System.md) として策定・追加済み。
 - **セット装備**: [セット装備システム仕様](../Equipment-Set-System.md) として策定・追加済み。
 - **モンスター遠征システム**: [モンスター遠征システム](../Monster-Expedition-System.md) として策定・追加済み。
+- **ダンジョン環境異変システム**: [ダンジョン環境異変システム](../Dungeon-Environmental-Anomaly-System.md) として策定・追加済み。
