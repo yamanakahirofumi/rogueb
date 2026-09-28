@@ -24,7 +24,7 @@ Spring WebFlux および Project Reactor を採用しており、すべてのサ
 - **Flux**: 複数の値を返す非同期ストリーム
 
 ## 4. リアルタイム同期 (SSE)
-マルチプレイヤー間の状態同期は Server-Sent Events (SSE) を用いて行われます。詳細は [リアルタイム同期プロトコル](Real-time-Synchronization.md) を参照してください。
+マルチプレイヤー間の状態同期は Server-Sent Events (SSE) を用いて行われます。詳細は [リアルタイム同期プロトコル](Real-Time-Synchronization.md) を参照してください。
 
 ## 5. データ整合性戦略
 複数サービスにまたがる更新の整合性は、結果整合性に基づいて確保されます。詳細は以下のドキュメントを参照してください。
