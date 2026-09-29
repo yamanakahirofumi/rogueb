@@ -19,6 +19,7 @@
 - [機能仕様書](features/Functional-Specification.md)：二種類のダンジョン、モンスター、経済システムなどの詳細仕様
 - [動作環境](features/System-Requirements.md)：必要な技術スタックとスペック
 - [UI-UX 設計](features/UI-UX-Design.md)：画面構成、操作フィードバック、デザイン規約、演出パラメータ、および手触り微調整仕様
+- [プレイヤー称号・実績システム](features/Player-Title-Achievement-System.md)：実績のトラッキング、達成報酬、称号解禁および装着パッシブ効果に関する仕様
 - [開発ロードマップ](features/Development-Roadmap.md)：開発フェーズと優先順位
 - [アイテム識別システム](features/Item-Identification-System.md)：アイテムの識別状態とプロセスに関する仕様
 - [アイテムエンチャントシステム](features/Item-Enchantment-System.md)：装備品への追加効果・補正付与に関する仕様

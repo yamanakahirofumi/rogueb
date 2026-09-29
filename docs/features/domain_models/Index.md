@@ -55,6 +55,7 @@
 - **[BookOfAdventureモジュール](./Book-Of-Adventure.md)**
   - プレイヤーの状態、キャラクター情報の永続化を担当します。
   - **[モンスター図鑑システム](../Monster-Encyclopedia-System.md)**: プレイヤー個別のモンスター図鑑進捗およびマイルストーン報酬受取管理。
+  - **[プレイヤー称号・実績システム](../Player-Title-Achievement-System.md)**: 各領域の実績トラッキング、称号解禁および装着によるパッシブ効果の適用。
 
 - **[EconomicSystemモジュール](./Economic-System.md)**
   - アイテムの流通量、動的な価格計算、およびショップ管理を担当します。
@@ -80,7 +81,7 @@
   - `monsterDomain`, `monsterInstanceDomain`, および `expeditionInstanceDomain` コレクションのスキーマ情報。
 
 - **[BookOfAdventureモジュール (MongoDB)](./Book-Of-Adventure-MongoDB.md)**
-  - `playerDomain`, `playerKnowledgeDomain`, および `playerMonsterEncyclopediaDomain` コレクションのスキーマ情報。
+  - `playerDomain`, `playerKnowledgeDomain`, `playerMonsterEncyclopediaDomain`, `playerAchievementDomain`, および `playerTitleDomain` コレクションのスキーマ情報。
 
 - **[EconomicSystemモジュール (MongoDB)](./Economic-System-MongoDB.md)**
   - `itemCirculationDomain`, `shopDomain`, `transactionHistoryDomain` コレクションのスキーマ情報。

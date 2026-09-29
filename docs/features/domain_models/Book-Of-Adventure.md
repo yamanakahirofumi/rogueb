@@ -66,6 +66,26 @@ PlayerOperationsモジュールはこのサービスを利用して、プレイ�
     - `typeId`: アイテムタイプのID。
     - `isIdentified`: そのアイテムタイプが識別されているかどうかを示すブール値。
 
+### `PlayerAchievementDomain`
+- **説明:** プレイヤーごとの各種実績の達成進捗、達成フラグ、報酬受領状況を管理します。詳細は [プレイヤー称号・実績システム仕様](../Player-Title-Achievement-System.md) を参照してください。
+- **主要なプロパティ:**
+    - `id`: 一意な識別子。
+    - `userId`: プレイヤー（ユーザー）のID。
+    - `achievementId`: 実績定義ID。
+    - `category`: 実績カテゴリ (`EXPLORATION`, `MONSTER_MASTER`, `COMBAT_LEGEND`, `ECONOMIC_TYCOON`, `WORLD_TRAVELER`)。
+    - `currentProgress`: 現在の進捗数値。
+    - `targetProgress`: 達成目標数値。
+    - `isCompleted`: 達成フラグ。
+    - `isClaimed`: 報酬受領フラグ。
+
+### `PlayerTitleDomain`
+- **説明:** プレイヤーが所有する解禁済み称号およびアクティブ（装着中）称号の設定状況を管理します。
+- **主要なプロパティ:**
+    - `id`: 一意な識別子。
+    - `userId`: プレイヤー（ユーザー）のID。
+    - `unlockedTitleIds`: 解禁済み称号IDのリスト。
+    - `equippedTitleId`: 現在装着中のアクティブ称号ID（未装着時は null）。
+
 ### `StatusEffectDomain` (値オブジェクト)
 - **説明:** プレイヤーやモンスターに付与される状態異常を定義します。
 - **プロパティ:**

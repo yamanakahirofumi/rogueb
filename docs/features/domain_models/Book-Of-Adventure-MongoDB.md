@@ -66,7 +66,31 @@
     - `firstCapturedAt` (Date): 初獲得日時。
     - `_class` (String): Spring Data MongoDBが使用するクラス情報。
 
-## 6. インデックス推奨事項
+## 6. `playerAchievementDomain` コレクション
+- **説明:** `PlayerAchievementDomain`クラスに対応します。プレイヤーごとの実績の累積進捗、目標数値、達成フラグ、報酬受領フラグを保持します。
+- **フィールド:**
+    - `_id` (String): 一意なID (例: `ach_usr_12345_exp_floor_30`)。
+    - `userId` (String): ユーザーID。
+    - `achievementId` (String): 実績定義ID。
+    - `category` (String): 実績カテゴリ (`EXPLORATION`, `MONSTER_MASTER` 等)。
+    - `currentProgress` (Long): 現在の進捗累積値。
+    - `targetProgress` (Long): 目標達成値。
+    - `isCompleted` (Boolean): 達成フラグ。
+    - `isClaimed` (Boolean): 報酬受領フラグ。
+    - `completedAt` (Date): 達成日時。
+    - `_class` (String): Spring Data MongoDBが使用するクラス情報。
+
+## 7. `playerTitleDomain` コレクション
+- **説明:** `PlayerTitleDomain`クラスに対応します。プレイヤーごとの解禁済み称号リストおよび現在装着中のアクティブ称号を保持します。
+- **フィールド:**
+    - `_id` (String): ユーザーID（通常は1ユーザー1ドキュメント）。
+    - `userId` (String): ユーザーID。
+    - `unlockedTitleIds` (Array): 解禁済み称号IDの配列。
+    - `equippedTitleId` (String): 現在装着中のアクティブ称号ID（未装着時は null）。
+    - `updatedAt` (Date): 最終更新日時。
+    - `_class` (String): Spring Data MongoDBが使用するクラス情報。
+
+## 8. インデックス推奨事項
 
 ### `playerDomain`
 - `{"name": 1}`: プレイヤー名によるユニーク検索に必須。
@@ -85,3 +109,10 @@
 ### `playerMonsterEncyclopediaDomain`
 - `{"userId": 1}`: ユーザーごとの図鑑解放状況を一覧検索するために必須。
 - `{"userId": 1, "monsterTypeId": 1}`: ユニーク複合インデックス。特定のモンスター種族の図鑑データ照会・更新用。
+
+### `playerAchievementDomain`
+- `{"userId": 1}`: ユーザーごとの実績進捗一覧検索用。
+- `{"userId": 1, "achievementId": 1}`: ユニーク複合インデックス。特定実績の進捗更新・受領判定用。
+
+### `playerTitleDomain`
+- `{"userId": 1}`: ユニークインデックス。ユーザーごとの所有称号および装着状態照会・更新用。
