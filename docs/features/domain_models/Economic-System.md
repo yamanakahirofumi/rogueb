@@ -272,3 +272,18 @@
 | `CIRCULATION_LIMIT_REACHED` | `400 Bad Request` | 新規アイテム配置・補充時に世界全体の存在上限（`maxLimit`）に達している場合。 | アイテムの流通上限に達しているため補充できません。 |
 | `UNAUTHORIZED_SHOP_OWNER` | `403 Forbidden` | ショップオーナー以外のユーザーが在庫や価格の設定を変更しようとした場合。 | ショップの管理権限がありません。 |
 | `INVALID_PRICE_SETTING` | `400 Bad Request` | 設定価格が 0 以下の不正な値である場合。 | 販売価格は 1 ゴールド以上に設定してください。 |
+
+---
+
+## 8. MongoDB 永続化仕様
+
+本システムのドメインオブジェクトは、MongoDB 上の専用コレクションに永続化されます。詳細は [経済システム MongoDBデータ構造](./Economic-System-MongoDB.md) を参照してください。
+
+### 8.1 永続化コレクション一覧
+- **`itemCirculationDomain`**: 世界（サーバー）内のアイテム流通量および市場基本価格（`ItemCirculationDomain`）を管理。
+  - **インデックス**: `{"worldId": 1, "typeId": 1}` (ユニークインデックス)
+- **`shopDomain`**: ダンジョン内に配置されたショップの状態および販売インベントリ（`ShopDomain`）を管理。
+  - **インデックス**: `{"dungeonId": 1, "level": 1}`, `{"ownerId": 1}`
+- **`transactionHistoryDomain`**: ショップ内で行われた全売買取引の履歴（`TransactionHistoryDomain`）を記録。
+  - **インデックス**: `{"shopId": 1, "transactionDate": -1}`, `{"buyerId": 1}`, `{"sellerId": 1}`
+  - **TTL設定**: 取引履歴データの肥大化を防ぐため、`transactionDate` フィールドに対する TTL インデックス（一定期間自動削除）を適用。

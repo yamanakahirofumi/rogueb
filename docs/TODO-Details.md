@@ -414,3 +414,7 @@ AIによる生成が困難な、感性やバランス調整が必要な事項で
 ### [x] プレイヤー称号・実績システムの新機能提案および詳細仕様策定
 - **概要**: 探索、モンスター育成・マスター、戦闘・PK、経済、世界連携など全アクティビティにおける長期的な目標達成度をトラッキングし、報酬およびアクティブ装着によるステータス・補助パッシブ効果を付与する「プレイヤー称号・実績システム」の設計と仕様の策定。
 - **解決策**: [プレイヤー称号・実績システム仕様](./features/Player-Title-Achievement-System.md) を新規作成し、5つの実績カテゴリ（`EXPLORATION`, `MONSTER_MASTER`, `COMBAT_LEGEND`, `ECONOMIC_TYCOON`, `WORLD_TRAVELER`）、称号アクティブ装備メカニズムおよびパッシブ効果上限パラメータ、`PlayerAchievementDomain` および `PlayerTitleDomain` データ構造、`playerAchievementDomain` / `playerTitleDomain` MongoDBコレクション構造、モジュール間イベント連携フロー、REST API仕様（`GET /api/v1/players/{userId}/achievements`, `GET /api/v1/players/{userId}/titles`, `POST /api/v1/players/{userId}/titles/equip`, `POST /api/v1/players/{userId}/achievements/claim`）、ならびにエラーハンドリング（`PLAYER_NOT_FOUND`, `ACHIEVEMENT_NOT_COMPLETED`, `TITLE_NOT_UNLOCKED` 等）を定義。あわせて [BookOfAdventure ドメインモデル](./features/domain_models/Book-Of-Adventure.md)、[BookOfAdventure MongoDB構造](./features/domain_models/Book-Of-Adventure-MongoDB.md)、[README.md](./README.md)、および [ドメインモデル一覧](./features/domain_models/Index.md) を更新。
+
+### [x] 経済システムドメインモデルへのMongoDB永続化仕様の追加
+- **概要**: 確実に実装するのに不足していた、経済システムドメインモデルにおけるMongoDB永続化仕様（`itemCirculationDomain`, `shopDomain`, `transactionHistoryDomain` 各コレクションの役割、推奨インデックス、および履歴の自動削除TTL設定）の明記。
+- **解決策**: [経済システム ドメインモデル](./features/domain_models/Economic-System.md) に「8. MongoDB 永続化仕様」セクションを追加し、[経済システム MongoDBデータ構造](./features/domain_models/Economic-System-MongoDB.md) への相互参照リンクと各コレクションの役割・インデックス・TTL設定仕様を明記。
