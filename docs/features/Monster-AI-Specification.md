@@ -99,3 +99,118 @@ AI モンスターが自身のターンにスキル（`skillIds`）を使用す�
 ## 6. 今後の拡張
 - **連携 AI**: 近くにいる味方モンスターと協力してプレイヤーを包囲するロジック。
 - **状況判断 AI**: 自身の属性とプレイヤーの装備属性を比較し、有利なスキルを選択するロジック。
+
+## 7. APIリクエスト・フローとエラーハンドリング
+
+### 7.1 APIリクエスト仕様
+モンスターAIの思考評価、AI状態照会、およびAI一時オーバーライドを実行するためのAPIエンドポイントおよびJSON形式を定義します。
+
+#### 7.1.1 モンスターAI思考評価 API (`POST /api/v1/monsters/{instanceId}/ai/evaluate`)
+指定したモンスター個体の現在の周囲状況を入力し、AI思考アルゴリズムに基づき決定された次の行動を取得します。
+
+- **Endpoint**: `POST /api/v1/monsters/{instanceId}/ai/evaluate`
+- **Request Body (JSON)**:
+```json
+{
+  "instanceId": "goblin_instance_888",
+  "dungeonId": "dungeon_001",
+  "floorNumber": 3,
+  "currentCoordinate": {
+    "x": 12,
+    "y": 14
+  },
+  "targetPlayerCoordinate": {
+    "x": 10,
+    "y": 14
+  },
+  "isVisiblePlayer": true,
+  "statusEffects": ["SLOW"]
+}
+```
+
+- **Response Body (JSON - 成功時)**:
+```json
+{
+  "success": true,
+  "instanceId": "goblin_instance_888",
+  "aiType": "NORMAL",
+  "chosenAction": "MOVE",
+  "actionDetails": {
+    "targetCoordinate": {
+      "x": 11,
+      "y": 14
+    },
+    "direction": "WEST",
+    "skillId": null
+  },
+  "thoughtProcessLog": "プレイヤーを視界内に検知。追跡のため西へ1歩移動を選択。"
+}
+```
+
+#### 7.1.2 モンスターAI状態照会 API (`GET /api/v1/monsters/{instanceId}/ai/state`)
+指定したモンスター個体の現在のAIタイプ、思考パラメータ、記憶状態、および適用中の作戦・オーバーライド状態を照会します。
+
+- **Endpoint**: `GET /api/v1/monsters/{instanceId}/ai/state`
+- **Response Body (JSON - 成功時)**:
+```json
+{
+  "instanceId": "dragon_instance_101",
+  "aiType": "AGGRESSIVE",
+  "skillRate": 35,
+  "memoryState": {
+    "lastKnownPlayerCoordinate": {
+      "x": 15,
+      "y": 20
+    },
+    "memoryTurnsRemaining": 3
+  },
+  "currentTacticOverride": null,
+  "statusEffects": []
+}
+```
+
+#### 7.1.3 モンスターAI一時オーバーライド API (`PUT /api/v1/monsters/{instanceId}/ai/override`)
+ダンジョン管理者や特殊デバフ・イベント等により、指定モンスターのAIタイプやターゲットを一意に一時上書きします。
+
+- **Endpoint**: `PUT /api/v1/monsters/{instanceId}/ai/override`
+- **Request Body (JSON)**:
+```json
+{
+  "instanceId": "dragon_instance_101",
+  "overrideAiType": "STATIONARY",
+  "forcedTargetCoordinate": {
+    "x": 15,
+    "y": 20
+  },
+  "durationTurns": 5
+}
+```
+
+- **Response Body (JSON - 成功時)**:
+```json
+{
+  "success": true,
+  "instanceId": "dragon_instance_101",
+  "activeOverride": {
+    "overrideAiType": "STATIONARY",
+    "forcedTargetCoordinate": {
+      "x": 15,
+      "y": 20
+    },
+    "remainingTurns": 5
+  },
+  "message": "モンスターAIを一時的に固定型（STATIONARY）へオーバーライドしました。"
+}
+```
+
+### 7.2 エラーハンドリング (Error Handling)
+モンスターAI関連処理中に発生する例外およびエラーコードとHTTPステータスのマッピングを定義します。
+
+| エラーコード | 発生条件 | レスポンス HTTP ステータス | 戻り値のメッセージ例 |
+| :--- | :--- | :---: | :--- |
+| `MONSTER_NOT_FOUND` | 指定された `instanceId` のモンスターが存在しない。 | 404 Not Found | 指定されたモンスター個体が見つかりません。 |
+| `AI_STATE_NOT_FOUND` | モンスターのAI状態または思考コンテキスト情報が存在しない。 | 404 Not Found | モンスターのAI状態データが見つかりません。 |
+| `INVALID_AI_TYPE` | 存在しないまたは不正なAIタイプが指定された。 | 400 Bad Request | 不正なAIタイプが指定されています。 |
+| `STATUS_PREVENTS_AI_ACTION` | 睡眠や麻痺等の状態異常によりAI思考・行動が不可能な場合。 | 400 Bad Request | 状態異常によりAI行動を評価できません。 |
+| `OVERRIDE_EXPIRED` | 既に期限切れのオーバーライド設定を解除・更新しようとした場合。 | 400 Bad Request | 指定されたAIオーバーライドは既に期限切れです。 |
+| `UNAUTHORIZED_AI_OPERATOR` | 権限を持たないユーザーがAIオーバーライド操作を要求した場合。 | 403 Forbidden | AI設定を変更する権限がありません。 |

@@ -418,3 +418,7 @@ AIによる生成が困難な、感性やバランス調整が必要な事項で
 ### [x] 経済システムドメインモデルへのMongoDB永続化仕様の追加
 - **概要**: 確実に実装するのに不足していた、経済システムドメインモデルにおけるMongoDB永続化仕様（`itemCirculationDomain`, `shopDomain`, `transactionHistoryDomain` 各コレクションの役割、推奨インデックス、および履歴の自動削除TTL設定）の明記。
 - **解決策**: [経済システム ドメインモデル](./features/domain_models/Economic-System.md) に「8. MongoDB 永続化仕様」セクションを追加し、[経済システム MongoDBデータ構造](./features/domain_models/Economic-System-MongoDB.md) への相互参照リンクと各コレクションの役割・インデックス・TTL設定仕様を明記。
+
+### [x] モンスターAI仕様のAPI仕様およびエラーハンドリングの追加
+- **概要**: 確実に実装するのに不足していた、モンスターAI詳細仕様に関する具体的なAPIリクエスト・レスポンスJSON構造（`POST /api/v1/monsters/{instanceId}/ai/evaluate`, `GET /api/v1/monsters/{instanceId}/ai/state`, `PUT /api/v1/monsters/{instanceId}/ai/override`）および詳細なエラーハンドリング仕様の追加。
+- **解決策**: [モンスターAI詳細仕様](./features/Monster-AI-Specification.md) にて、AI思考評価・状態照会・一時オーバーライドのJSON構造、および各種異常系に対する詳細なエラーコード（`MONSTER_NOT_FOUND`, `AI_STATE_NOT_FOUND`, `INVALID_AI_TYPE`, `STATUS_PREVENTS_AI_ACTION`, `OVERRIDE_EXPIRED`, `UNAUTHORIZED_AI_OPERATOR`）やHTTPステータスのマッピングを策定。
