@@ -36,6 +36,10 @@ AIによる生成が困難な、感性やバランス調整が必要な事項で
 ## 6. 完了済み事項
 これまでに検討が完了し、仕様が策定された事項です。
 
+### [x] 標準メタデータ仕様におけるモンスター用予約済みキーおよび標準化エフェクトの不足情報の追加
+- **概要**: 確実に実装するのに不足していた、モンスター個体インスタンス（`MonsterInstanceDomain`）で利用する予約済みメタデータキー、および各種新規機能アイテム（環境異変、遠征短縮、特性抽出、退化、親愛の誓い等）に対応する標準化エフェクト ID（`meta_effects`）の仕様の追加。
+- **解決策**: [標準メタデータ仕様](./features/Standard-Metadata-Specification.md) にて、モンスター用メタデータキー（`loyalty`, `isPledged`, `pledgedAt`, `currentTactic`, `fusionCount`, `preEvolutionId`, `lastTraitEnhancement`, `traits`）および標準化エフェクト ID（`TRIGGER_ENVIRONMENTAL_ANOMALY`, `DISPEL_ENVIRONMENTAL_ANOMALY`, `REDUCE_EXPEDITION_TIME`, `EXTRACT_TRAIT`, `DEGENERATE_MONSTER`, `PLEDGE_MONSTER`）を定義。
+
 ### [x] セット装備システムの新機能提案および詳細仕様策定
 - **概要**: 単体のステータス性能だけでなく、特定組み合わせの装備（武器、防具、指輪等）を同時に装着することで発動する特殊ボーナス「セット効果（Equipment Set Bonus）」の設計と仕様の策定。
 - **解決策**: [セット装備システム仕様](./features/Equipment-Set-System.md) を新規作成し、段階的ボーナス発動条件、主要初期セット装備（ドラゴンキラーセット、鉄の騎士セット、大魔導士セット、影の暗殺者セット、聖なる守護者セット）、データ構造・メタデータ表現、モジュール間データ連携フロー、API仕様（`GET /api/v1/players/{userId}/equipment-sets`, `GET /api/v1/objects/equipment-sets`）、およびエラーハンドリングを定義。

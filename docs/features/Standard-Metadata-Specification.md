@@ -53,6 +53,14 @@
 | キー | 型 | 意味 | 有効範囲 / 例 |
 | :--- | :--- | :--- | :--- |
 | `nickname` | String | 個体に付けられたニックネーム | 最大 16 文字 |
+| `loyalty` | Integer | 忠誠度 | 0 〜 255。[モンスター忠誠度システム](./Monster-Loyalty-System.md) 参照。 |
+| `isPledged` | Boolean | 親愛（誓い）状態フラグ | `true` / `false`。[モンスター親愛システム](./Monster-Affection-System.md) 参照。 |
+| `pledgedAt` | String | 親愛の誓い完了日時 | ISO-8601 形式の文字列 |
+| `currentTactic` | String | 現在アクティブな作戦指示コード | `FULL_POWER`, `SAVE_RESOURCES`, `SAFETY_FIRST`, `FOLLOW_ME`, `FREE_ACTION`, `STAY_WAIT`。[モンスター作戦指示システム](./Monster-Tactical-Directives-System.md) 参照。 |
+| `fusionCount` | Integer | 融合（合体進化）回数 | 0 〜 5。[モンスター融合システム](./Monster-Fusion-System.md) 参照。 |
+| `preEvolutionId` | String | 直前の進化前種族 ID | `slime` 等。[モンスター退化システム](./Monster-Degeneration-System.md) 参照。 |
+| `lastTraitEnhancement` | Object | 最終特性強化日時および履歴情報 | タイムスタンプ・強化対象メタデータ。[モンスター特性強化システム](./Monster-Trait-Enhancement-System.md) 参照。 |
+| `traits` | Array | 装備中の個体特性オブジェクトの配列 | 各要素は `traitId`, `level`, `type` 等のマップ。[モンスター特性システム](./Monster-Trait-System.md) 参照。 |
 | `inheritanceData` | Object | 未知の種族を持ち込む際の継承データ | 種族基本ステータス、外見、特性等 |
 
 ---
@@ -123,6 +131,12 @@
 | | `value` | Double | 属性耐性上昇率補正 (例: 0.30) |
 | `ADD_ENCHANT` | `enchantType` | String | エンチャント種類 (`FIRE_DAMAGE` 等) |
 | | `value` | Double / Integer | エンチャント補正値 |
+| `TRIGGER_ENVIRONMENTAL_ANOMALY` | `anomalyType` | String | フロア全体に発生させる環境異変種別 (`SOLAR_FLARE`, `FREEZING_BLIZZARD`, `MANA_SURGE`, `MIASMA_STORM`, `SUPERGRAVITY`) |
+| `DISPEL_ENVIRONMENTAL_ANOMALY` | - | - | フロアで発生中の環境異変を無害化・解呪 |
+| `REDUCE_EXPEDITION_TIME` | `multiplier` | Double | 実行中のモンスター遠征時間を短縮する補正倍率 (例: 1.5) |
+| `EXTRACT_TRAIT` | - | - | モンスターからの個体特性抽出（特性オーブ化）処理 |
+| `DEGENERATE_MONSTER` | - | - | モンスターの退化処理 |
+| `PLEDGE_MONSTER` | - | - | モンスターとの親愛の誓い（親愛解放）処理 |
 
 ---
 
