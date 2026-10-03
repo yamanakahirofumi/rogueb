@@ -426,3 +426,7 @@ AIによる生成が困難な、感性やバランス調整が必要な事項で
 ### [x] モンスターAI仕様のAPI仕様およびエラーハンドリングの追加
 - **概要**: 確実に実装するのに不足していた、モンスターAI詳細仕様に関する具体的なAPIリクエスト・レスポンスJSON構造（`POST /api/v1/monsters/{instanceId}/ai/evaluate`, `GET /api/v1/monsters/{instanceId}/ai/state`, `PUT /api/v1/monsters/{instanceId}/ai/override`）および詳細なエラーハンドリング仕様の追加。
 - **解決策**: [モンスターAI詳細仕様](./features/Monster-AI-Specification.md) にて、AI思考評価・状態照会・一時オーバーライドのJSON構造、および各種異常系に対する詳細なエラーコード（`MONSTER_NOT_FOUND`, `AI_STATE_NOT_FOUND`, `INVALID_AI_TYPE`, `STATUS_PREVENTS_AI_ACTION`, `OVERRIDE_EXPIRED`, `UNAUTHORIZED_AI_OPERATOR`）やHTTPステータスのマッピングを策定。
+
+### [x] ダンジョン錬金・アイテム調合システムの新機能提案および詳細仕様策定
+- **概要**: 探索や遠征で獲得した未利用ドロップや素材アイテムを統合し、高階級資材・強化触媒・特殊ユーティリティアイテムを創出する「ダンジョン錬金・アイテム調合システム」の設計と仕様の策定。
+- **解決策**: [ダンジョン錬金・アイテム調合システム仕様](./features/Item-Synthesis-Alchemy-System.md) を新規作成し、2種類の調合環境（ポータブル鍋・錬金炉タイル）、成功率・大成功・失敗計算式、賢者の石（100%大成功）および世界内流通上限照会メカニズム、初期実装レシピテーブル、`playerAlchemyRecipeDomain` MongoDBコレクション構造、シーケンスフロー、API仕様（`GET /api/v1/alchemy/recipes/{userId}`, `POST /api/v1/alchemy/recipes/unlock`, `POST /api/v1/alchemy/synthesize`）、ならびにエラーハンドリングを定義。あわせて [Objects ドメインモデル](./features/domain_models/Objects.md) に関連アイテム（`alchemy_pot`, `philosophers_stone`, `alchemy_kettle_tile`, `recipe_book_basic`）を追加、[標準メタデータ仕様](./features/Standard-Metadata-Specification.md) にエフェクト ID (`SYNTHESIZE_ITEM`) を追記、[README.md](./README.md) および [ドメインモデル一覧](./features/domain_models/Index.md) を更新。
