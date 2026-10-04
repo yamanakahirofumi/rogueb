@@ -200,6 +200,10 @@ Objectsモジュールは、武器、防具、ポーション、指輪など、�
 | `weather_orb_miasma` | 瘴気の宝珠 | `OTHER` | Dark | 3500 | 3 | 150 | `*` | [環境異変](../Dungeon-Environmental-Anomaly-System.md) `miasma_storm` を引き起こす |
 | `weather_orb_gravity` | 重力の宝珠 | `OTHER` | Earth | 3000 | 3 | 200 | `*` | [環境異変](../Dungeon-Environmental-Anomaly-System.md) `supergravity` を引き起こす |
 | `weather_dispel_scroll` | 凪の巻物 | `SCROLL` | None | 2000 | 2 | 500 | `?` | [環境異変](../Dungeon-Environmental-Anomaly-System.md) を無害化・解呪する |
+| `alchemy_pot` | 調合の鍋 | `OTHER` | None | 1000 | 1 | 1000 | `u` | [錬金・調合](../Item-Synthesis-Alchemy-System.md)に使用するポータブル調合具 |
+| `philosophers_stone` | 賢者の石 | `MATERIAL` | Holy | 10000 | 4 | 20 | `*` | [錬金・調合](../Item-Synthesis-Alchemy-System.md)に使用する最高級触媒。成功率100%・大成功確定 |
+| `alchemy_kettle_tile` | 錬金炉 | `MATERIAL` | Fire | 3000 | 2 | 500 | `K` | 建築用資材、[錬金・調合](../Item-Synthesis-Alchemy-System.md)の成功率+10%ボーナス |
+| `recipe_book_basic` | 初級錬金調合書 | `OTHER` | None | 2000 | 1 | 500 | `?` | [錬金・調合](../Item-Synthesis-Alchemy-System.md)の初期基本レシピ群を解禁 |
 
 ## 5. API仕様 (API Specifications)
 
@@ -331,3 +335,4 @@ ObjectsモジュールのAPI実行時にエラーが発生した場合、以下�
 - **セット装備**: [セット装備システム仕様](../Equipment-Set-System.md) として策定・追加済み。
 - **モンスター遠征システム**: [モンスター遠征システム](../Monster-Expedition-System.md) として策定・追加済み。
 - **ダンジョン環境異変システム**: [ダンジョン環境異変システム](../Dungeon-Environmental-Anomaly-System.md) として策定・追加済み。
+- **ダンジョン錬金・アイテム調合システム**: [ダンジョン錬金・アイテム調合システム](../Item-Synthesis-Alchemy-System.md) として策定・追加済み。
