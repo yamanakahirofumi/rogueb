@@ -430,3 +430,7 @@ AIによる生成が困難な、感性やバランス調整が必要な事項で
 ### [x] ダンジョン錬金・アイテム調合システムの新機能提案および詳細仕様策定
 - **概要**: 探索や遠征で獲得した未利用ドロップや素材アイテムを統合し、高階級資材・強化触媒・特殊ユーティリティアイテムを創出する「ダンジョン錬金・アイテム調合システム」の設計と仕様の策定。
 - **解決策**: [ダンジョン錬金・アイテム調合システム仕様](./features/Item-Synthesis-Alchemy-System.md) を新規作成し、2種類の調合環境（ポータブル鍋・錬金炉タイル）、成功率・大成功・失敗計算式、賢者の石（100%大成功）および世界内流通上限照会メカニズム、初期実装レシピテーブル、`playerAlchemyRecipeDomain` MongoDBコレクション構造、シーケンスフロー、API仕様（`GET /api/v1/alchemy/recipes/{userId}`, `POST /api/v1/alchemy/recipes/unlock`, `POST /api/v1/alchemy/synthesize`）、ならびにエラーハンドリングを定義。あわせて [Objects ドメインモデル](./features/domain_models/Objects.md) に関連アイテム（`alchemy_pot`, `philosophers_stone`, `alchemy_kettle_tile`, `recipe_book_basic`）を追加、[標準メタデータ仕様](./features/Standard-Metadata-Specification.md) にエフェクト ID (`SYNTHESIZE_ITEM`) を追記、[README.md](./README.md) および [ドメインモデル一覧](./features/domain_models/Index.md) を更新。
+
+### [x] BookOfAdventureモジュール ドメインモデルおよびMongoDBデータ構造における PlayerAlchemyRecipeDomain 仕様の追加
+- **概要**: 確実に実装するのに不足していた、BookOfAdventureモジュールにおけるプレイヤーの解禁済み錬金・調合レシピ状態（`PlayerAlchemyRecipeDomain`）のドメインモデル定義、MongoDBコレクション構造（`playerAlchemyRecipeDomain`）、およびユニークインデックス推奨事項の追加。
+- **解決策**: [BookOfAdventure ドメインモデル](./features/domain_models/Book-Of-Adventure.md) に `PlayerAlchemyRecipeDomain` ドメインエンティティの説明を追記し、[BookOfAdventure MongoDB構造](./features/domain_models/Book-Of-Adventure-MongoDB.md) に `playerAlchemyRecipeDomain` コレクションのフィールド定義および `{"userId": 1}` ユニークインデックス推奨事項を追加。
