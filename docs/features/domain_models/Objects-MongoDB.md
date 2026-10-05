@@ -59,3 +59,24 @@
 
 ### インデックス推奨事項
 - `{"setId": 1}`: ユニークインデックス。セットIDによる高速なマスター検索を保証します。
+
+## 5. `playerDisassemblyLogDomain` コレクション
+- **説明:** `PlayerDisassemblyLogDomain`クラスに対応します。プレイヤーが実行したアイテム分解の履歴および獲得還元素材のログを保持・監査します。
+- **フィールド:**
+    - `_id` (String): ドキュメントの一意なID。
+    - `userId` (String): ユーザーID。
+    - `disassembledItem` (Object): 分解されたアイテムの情報。
+        - `objectId` (String): 分解されたインスタンス ID。
+        - `typeId` (String): 種別 ID（例: `iron_sword`）。
+        - `tier` (Integer): ティア。
+    - `method` (String): 分解手段 (`KIT` または `BLACKSMITH`)。
+    - `result` (String): 分解結果 (`GREAT_SUCCESS`, `SUCCESS`, `FAILURE`)。
+    - `obtainedMaterials` (Array): 獲得した還元素材オブジェクトの配列。
+        - `typeId` (String): 還元素材の種別 ID（例: `magic_powder`）。
+        - `count` (Integer): 獲得個数。
+    - `timestamp` (Date): 分解実行日時。
+    - `_class` (String): Spring Data MongoDBが使用するクラス情報（例: `net.hero.rogueb.objects.domain.PlayerDisassemblyLogDomain`）。
+
+### インデックス推奨事項と肥大化対策
+- `{"userId": 1, "timestamp": -1}`: ユーザーごとの分解履歴取得クエリの高速化。
+- **TTL インデックス**: `{"timestamp": 1}` (expireAfterSeconds: 7776000 / 約90日)。直近の監査用ログ保持期間経過後に自動削除します。
