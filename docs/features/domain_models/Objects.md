@@ -204,6 +204,11 @@ Objectsモジュールは、武器、防具、ポーション、指輪など、�
 | `philosophers_stone` | 賢者の石 | `MATERIAL` | Holy | 10000 | 4 | 20 | `*` | [錬金・調合](../Item-Synthesis-Alchemy-System.md)に使用する最高級触媒。成功率100%・大成功確定 |
 | `alchemy_kettle_tile` | 錬金炉 | `MATERIAL` | Fire | 3000 | 2 | 500 | `K` | 建築用資材、[錬金・調合](../Item-Synthesis-Alchemy-System.md)の成功率+10%ボーナス |
 | `recipe_book_basic` | 初級錬金調合書 | `OTHER` | None | 2000 | 1 | 500 | `?` | [錬金・調合](../Item-Synthesis-Alchemy-System.md)の初期基本レシピ群を解禁 |
+| `disassembly_kit` | 分解キット | `OTHER` | None | 800 | 1 | 1000 | `u` | [アイテム分解](../Item-Disassembly-System.md)に使用するポータブル工具 |
+| `magic_powder` | 魔導の粉塵 | `MATERIAL` | None | 300 | 1 | 5000 | `*` | アイテム分解で還元される魔法の粉。調合・エンチャント資材 |
+| `elemental_essence_fire` | 火炎の精華 | `MATERIAL` | Fire | 1200 | 2 | 1000 | `*` | 火属性アイテムの分解で還元される純粋な火のエネルギー結晶 |
+| `elemental_essence_frost` | 氷結の精華 | `MATERIAL` | Water | 1200 | 2 | 1000 | `*` | 氷属性アイテムの分解で還元される純粋な水のエネルギー結晶 |
+| `elemental_essence_lightning` | 電撃の精華 | `MATERIAL` | Wind | 1200 | 2 | 1000 | `*` | 雷属性アイテムの分解で還元される純粋な風のエネルギー結晶 |
 
 ## 5. API仕様 (API Specifications)
 
@@ -336,3 +341,4 @@ ObjectsモジュールのAPI実行時にエラーが発生した場合、以下�
 - **モンスター遠征システム**: [モンスター遠征システム](../Monster-Expedition-System.md) として策定・追加済み。
 - **ダンジョン環境異変システム**: [ダンジョン環境異変システム](../Dungeon-Environmental-Anomaly-System.md) として策定・追加済み。
 - **ダンジョン錬金・アイテム調合システム**: [ダンジョン錬金・アイテム調合システム](../Item-Synthesis-Alchemy-System.md) として策定・追加済み。
+- **アイテム分解・リサイクルシステム**: [アイテム分解・リサイクルシステム](../Item-Disassembly-System.md) として策定・追加済み。
