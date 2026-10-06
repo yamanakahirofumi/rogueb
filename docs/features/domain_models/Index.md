@@ -27,6 +27,7 @@
   - **[アイテムエンチャントシステム](../Item-Enchantment-System.md)**: 装備品への追加効果・補正付与に関する仕様。
   - **[セット装備システム](../Equipment-Set-System.md)**: 特定装備の組み合わせにより発動する特殊効果に関する仕様。
   - **[ダンジョン錬金・アイテム調合システム](../Item-Synthesis-Alchemy-System.md)**: 素材・触媒を組み合わせたアイテム創出・レシピ解禁に関する仕様。
+  - **[アイテム分解・リサイクルシステム](../Item-Disassembly-System.md)**: 不要アイテムの分解、素材還元、およびリサイクルに関する仕様。
 
 - **[Monsterモジュール](./Monster.md)**
   - モンスターの種族、個体状態、およびダンジョン内での配置を管理します。
@@ -76,7 +77,7 @@
   - ワールド情報およびサービス管理のためのリレーショナルデータベース構造。
 
 - **[Objectsモジュール (MongoDB)](./Objects-MongoDB.md)**
-  - `ring`および`objectHistory`コレクションのスキーマ情報。
+  - `ring`, `objectHistory`, `setEquipmentDomain`, および `playerDisassemblyLogDomain` コレクションのスキーマ情報。
 
 - **[Monsterモジュール (MongoDB)](./Monster-MongoDB.md)**
   - `monsterDomain`, `monsterInstanceDomain`, および `expeditionInstanceDomain` コレクションのスキーマ情報。

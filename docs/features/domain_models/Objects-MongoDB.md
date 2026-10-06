@@ -59,3 +59,21 @@
 
 ### インデックス推奨事項
 - `{"setId": 1}`: ユニークインデックス。セットIDによる高速なマスター検索を保証します。
+
+## 5. `playerDisassemblyLogDomain` コレクション
+- **説明:** `PlayerDisassemblyLogDomain`クラスに対応します。プレイヤーが行った分解処理の監査・ログ情報を永続化します。
+- **フィールド:**
+    - `_id` (String): ドキュメントの一意なID。
+    - `userId` (String): 実行したプレイヤーID。
+    - `sourceInstanceId` (String): 分解された元のアイテムインスタンスID。
+    - `sourceTypeId` (String): 分解された元のアイテムタイプID（例: `dragon_killer`）。
+    - `method` (String): 分解手段 (`DISASSEMBLY_KIT` または `BLACKSMITH_WORKSHOP`)。
+    - `yieldedMaterials` (Array): 獲得した素材オブジェクトの配列。
+        - `typeId` (String): 素材のアイテムタイプID（例: `magic_powder`）。
+        - `quantity` (Integer): 獲得個数。
+    - `createdAt` (Date): 分解日時。
+    - `_class` (String): Spring Data MongoDBが使用するクラス情報（例: `net.hero.rogueb.objects.domain.PlayerDisassemblyLogDomain`）。
+
+### インデックス推奨事項と肥大化対策
+- `{"userId": 1, "createdAt": -1}`: プレイヤーごとの分解履歴検索用インデックス。
+- **肥大化対策**: 分解ログは監査用データのため、90日が経過したログを自動削除する TTL インデックス (`{"createdAt": 1}`, expireAfterSeconds: 7776000) の設定を推奨します。
