@@ -59,3 +59,22 @@
 
 ### インデックス推奨事項
 - `{"setId": 1}`: ユニークインデックス。セットIDによる高速なマスター検索を保証します。
+
+## 5. `playerDisassemblyLogDomain` コレクション
+- **説明:** `PlayerDisassemblyLogDomain`クラスに対応します。プレイヤーの分解・リサイクル実行履歴を追跡・監査します。
+- **フィールド:**
+    - `_id` (String): ドキュメントの一意なID。
+    - `logId` (String): ログ一意識別子。
+    - `userId` (String): プレイヤーのユーザー ID。
+    - `disassembledItemId` (String): 分解されたアイテムの種別 ID (`typeId`)。
+    - `disassembledItemName` (String): アイテム表示名。
+    - `tier` (Integer): アイテムティア。
+    - `method` (String): 分解方法 (`FIELD_KIT` または `WORKSHOP`)。
+    - `gainedGold` (Integer): 分解により獲得したゴールド。
+    - `gainedItems` (Array): 分解により獲得した素材アイテムオブジェクト（`typeId`, `quantity`）の配列。
+    - `createdAt` (Date): 分解日時。
+    - `_class` (String): Spring Data MongoDBが使用するクラス情報。
+
+### インデックス推奨事項と TTL 設定
+- `{"userId": 1, "createdAt": -1}`: プレイヤーごとの分解履歴取得用インデックス。
+- `{"createdAt": 1}` (TTL 90 days): データ肥大化を防ぐため、90経過した過去のログを自動削除する TTL インデックス。

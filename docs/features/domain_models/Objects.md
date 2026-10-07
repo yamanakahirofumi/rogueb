@@ -204,6 +204,11 @@ Objectsモジュールは、武器、防具、ポーション、指輪など、�
 | `philosophers_stone` | 賢者の石 | `MATERIAL` | Holy | 10000 | 4 | 20 | `*` | [錬金・調合](../Item-Synthesis-Alchemy-System.md)に使用する最高級触媒。成功率100%・大成功確定 |
 | `alchemy_kettle_tile` | 錬金炉 | `MATERIAL` | Fire | 3000 | 2 | 500 | `K` | 建築用資材、[錬金・調合](../Item-Synthesis-Alchemy-System.md)の成功率+10%ボーナス |
 | `recipe_book_basic` | 初級錬金調合書 | `OTHER` | None | 2000 | 1 | 500 | `?` | [錬金・調合](../Item-Synthesis-Alchemy-System.md)の初期基本レシピ群を解禁 |
+| `disassembly_kit` | 分解キット | `OTHER` | None | 500 | 1 | 1000 | `*` | [アイテム分解](../Item-Disassembly-System.md)に使用する携帯用道具（耐久度:10） |
+| `magic_powder` | 魔力の粉末 | `MATERIAL` | None | 100 | 1 | 5000 | `*` | [アイテム分解](../Item-Disassembly-System.md)で得られる基本素材 |
+| `elemental_essence_fire` | 火の精霊石 | `MATERIAL` | Fire | 800 | 2 | 500 | `*` | [アイテム分解](../Item-Disassembly-System.md)で得られる火属性元素材 |
+| `elemental_essence_frost` | 氷の精霊石 | `MATERIAL` | Water | 800 | 2 | 500 | `*` | [アイテム分解](../Item-Disassembly-System.md)で得られる氷属性元素材 |
+| `elemental_essence_lightning` | 雷の精霊石 | `MATERIAL` | Wind | 800 | 2 | 500 | `*` | [アイテム分解](../Item-Disassembly-System.md)で得られる雷属性元素材 |
 
 ## 5. API仕様 (API Specifications)
 
@@ -336,3 +341,4 @@ ObjectsモジュールのAPI実行時にエラーが発生した場合、以下�
 - **モンスター遠征システム**: [モンスター遠征システム](../Monster-Expedition-System.md) として策定・追加済み。
 - **ダンジョン環境異変システム**: [ダンジョン環境異変システム](../Dungeon-Environmental-Anomaly-System.md) として策定・追加済み。
 - **ダンジョン錬金・アイテム調合システム**: [ダンジョン錬金・アイテム調合システム](../Item-Synthesis-Alchemy-System.md) として策定・追加済み。
+- **アイテム分解・リサイクルシステム**: [アイテム分解・リサイクルシステム](../Item-Disassembly-System.md) として策定・追加済み。
