@@ -136,8 +136,53 @@ sequenceDiagram
 
 ## 8. APIリクエスト・フローとエラーハンドリング
 
-### 8.1 APIリクエスト仕様
-モンスターの融合を実行するためのエンドポイントおよびリクエスト/レスポンスボディのJSON構造を定義します。
+### 8.1 APIリクエスト・レスポンス仕様
+
+#### 8.1.1 モンスター融合プレビュー・必要コスト照会 API (`POST /api/v1/monsters/fuse/preview`)
+選択されたベースモンスター（`baseInstanceId`）と素材モンスター（`materialInstanceId`）の組み合わせにおける融合判定結果（融合モード、変化先種族、必要ゴールド、継承ステータス予測、および引き継ぎ候補のスキル・特性一覧）を取得するエンドポイントです。
+
+- **Endpoint**: `POST /api/v1/monsters/fuse/preview`
+- **Request Body (JSON)**:
+```json
+{
+  "userId": "player_uuid_12345",
+  "baseInstanceId": "monster_uuid_base_111",
+  "materialInstanceId": "monster_uuid_material_222"
+}
+```
+
+- **Response Body (JSON - 200 OK)**:
+```json
+{
+  "canFuse": true,
+  "fusionType": "SPECIAL",
+  "targetMonsterId": "metal_slime",
+  "targetMonsterName": "メタルスライム",
+  "requiredGold": 5000,
+  "userGold": 10000,
+  "currentBaseFusionCount": 1,
+  "maxFusionCount": 5,
+  "expectedInheritedStatus": {
+    "hp": 5,
+    "mp": 2,
+    "atk": 3,
+    "def": 8,
+    "magicAtk": 1,
+    "magicDef": 4,
+    "dex": 5,
+    "mnd": 2
+  },
+  "candidateSkillIds": [101, 102, 103, 104, 105],
+  "maxSkillLimit": 4,
+  "skillSelectionRequired": true,
+  "candidateTraits": ["SLIME_BODY", "METAL_BODY"],
+  "maxTraitLimit": 2,
+  "traitSelectionRequired": false
+}
+```
+
+#### 8.1.2 モンスター融合実行 API (`POST /api/v1/monsters/fuse`)
+選択した条件・スキルの内容に基づき、モンスターの融合処理を実行するエンドポイントです。
 
 - **Endpoint**: `POST /api/v1/monsters/fuse`
 - **Request Body (JSON)**:
@@ -186,6 +231,7 @@ sequenceDiagram
 | エラーコード | 発生条件 | レスポンス HTTP ステータス | 戻り値のメッセージ例 |
 | :--- | :--- | :---: | :--- |
 | `MONSTER_NOT_FOUND` | 指定された `baseInstanceId` または `materialInstanceId` のモンスターが存在しない。 | 404 Not Found | 指定されたモンスターが見つかりません。 |
+| `UNAUTHORIZED_MONSTER_OPERATOR` | 操作を行おうとしたユーザーがベースまたは素材モンスターの所有者（`ownerId`）ではない。 | 403 Forbidden | 対象モンスターの操作権限がありません。 |
 | `INSUFFICIENT_LEVEL` | ベースモンスターまたは素材モンスターのレベルが15未満。 | 400 Bad Request | 融合を実行するには、ベースモンスターと素材モンスターのレベルがどちらも15以上である必要があります。 |
 | `INSUFFICIENT_GOLD` | 融合に必要なゴールドが不足している。 | 400 Bad Request | 融合に必要なゴールドが不足しています。 |
 | `FUSION_LIMIT_EXCEEDED` | ベースモンスターの累計融合回数（`fusionCount`）が上限（5回）に達している。 | 400 Bad Request | このモンスターは融合回数の上限（5回）に達しているため、これ以上の融合は行えません。 |
