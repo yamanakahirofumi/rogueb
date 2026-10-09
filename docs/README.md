@@ -25,6 +25,7 @@
 - [アイテムエンチャントシステム](features/Item-Enchantment-System.md)：装備品への追加効果・補正付与に関する仕様
 - [セット装備システム](features/Equipment-Set-System.md)：特定装備の組み合わせにより発動する特殊効果に関する仕様
 - [ダンジョン錬金・アイテム調合システム](features/Item-Synthesis-Alchemy-System.md)：素材・触媒を組み合わせたアイテム創出・レシピ解禁に関する仕様
+- [アイテム分解・リサイクルシステム](features/Item-Disassembly-System.md)：不要アイテムの解体およびクラフト素材還元に関する仕様
 - [標準メタデータ仕様](features/Standard-Metadata-Specification.md)：予約済みメタデータキーとエフェクトの定義
 - [トラップシステム](features/Trap-System.md)：ダンジョン内の罠の種類と効果に関する仕様
 - [モンスタードロップシステム](features/Monster-Drop-System.md)：モンスター撃破時のドロップと流通制限に関する仕様
