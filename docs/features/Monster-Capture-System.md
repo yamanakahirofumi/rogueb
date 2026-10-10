@@ -50,8 +50,13 @@
 2. **成否判定**: 上記の計算式に基づき、サーバー側で乱数判定を行います。
 3. **成功時**:
    - モンスターがマップから消失します。
-   - `MonsterInstanceDomain` の `ownerId` がプレイヤーの ID に更新され、`isWild` が `false` になります。
-   - プレイヤーの所持モンスターリスト（`BookOfAdventure`）に追加されます。
+   - `MonsterInstanceDomain` のプロパティが更新されます：
+     - `ownerId`: 捕獲したプレイヤーの `userId` に更新。
+     - `isWild`: `false` に変更。
+     - `loyalty`: 初期忠誠度 **50** を設定（[モンスター忠誠度システム](./Monster-Loyalty-System.md) 参照）。
+     - `metadata`: 捕獲メタデータ（`capturedAt`, `capturedBy`, `captureItemTypeId`）が追加記録されます（[標準メタデータ仕様](./Standard-Metadata-Specification.md) 参照）。
+     - `state`: 手持ちパーティ（`PARTY`）の空き枠（最大4体）に応じて決定。空きがある場合は `PARTY`、手持ちが満杯またはダンジョンのランク制限を超過している場合は自動的に預かり所（`STORAGE`）へ送られます。
+   - プレイヤーの所持モンスターリスト（`BookOfAdventure` / `Monster` モジュール）に保存・更新されます。
 4. **失敗時**:
    - 捕獲用アイテムは消費されます。
    - **20%** の確率で、モンスターが「[怒り](./Combat-System.md#6-状態異常-status-effects)」状態（一時的なステータス上昇）になります。
@@ -124,7 +129,13 @@ sequenceDiagram
     "level": 5,
     "loyalty": 50,
     "isWild": false,
-    "ownerId": "player_uuid_12345"
+    "ownerId": "player_uuid_12345",
+    "state": "PARTY",
+    "metadata": {
+      "capturedAt": "2026-03-31T12:00:00Z",
+      "capturedBy": "player_uuid_12345",
+      "captureItemTypeId": "capture_capsule"
+    }
   }
 }
 ```

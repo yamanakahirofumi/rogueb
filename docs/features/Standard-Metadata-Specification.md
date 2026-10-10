@@ -61,6 +61,9 @@
 | `preEvolutionId` | String | 直前の進化前種族 ID | `slime` 等。[モンスター退化システム](./Monster-Degeneration-System.md) 参照。 |
 | `lastTraitEnhancement` | Object | 最終特性強化日時および履歴情報 | タイムスタンプ・強化対象メタデータ。[モンスター特性強化システム](./Monster-Trait-Enhancement-System.md) 参照。 |
 | `traits` | Array | 装備中の個体特性オブジェクトの配列 | 各要素は `traitId`, `level`, `type` 等のマップ。[モンスター特性システム](./Monster-Trait-System.md) 参照。 |
+| `capturedAt` | String | モンスターを捕獲した日時 | ISO-8601 形式の文字列（例: `2026-03-31T12:00:00Z`）。[モンスター捕獲システム](./Monster-Capture-System.md) 参照。 |
+| `capturedBy` | String | モンスターを捕獲したプレイヤーの ID | プレイヤー ID / UUID 形式 |
+| `captureItemTypeId` | String | 捕獲時に使用した捕獲アイテムの種別 ID | `capture_capsule`, `great_capsule`, `ultra_capsule`, `elemental_capsule` 等 |
 | `inheritanceData` | Object | 未知の種族を持ち込む際の継承データ | 種族基本ステータス、外見、特性等 |
 
 ---

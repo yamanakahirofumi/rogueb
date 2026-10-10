@@ -61,10 +61,11 @@
         - `remainingTurns` (Integer)
         - `value` (Integer)
     - `traits` (Array): 個体固有の特性（パッシブ能力）のリスト。
-    - `metadata` (Object): 個体固有の動的データ（Map<String, Object>）。
+    - `state` (String): モンスターの現在所在・状態 (`WILD`, `PARTY`, `STORAGE`, `PLACED`)。
+    - `metadata` (Object): 個体固有の動的データ（Map<String, Object>）。捕獲履歴 (`capturedAt`, `capturedBy`, `captureItemTypeId`) 等を包含。
     - `ownerId` (String): 所有しているプレイヤーのID。
     - `isWild` (Boolean): 野生状態かどうかを示すフラグ。
-    - `loyalty` (Integer): プレイヤーに対する忠誠度。
+    - `loyalty` (Integer): プレイヤーに対する忠誠度（捕獲直後の初期値: 50）。
     - `lastLoyaltyUpdate` (Long): 最終忠誠度更新タイムスタンプ。
     - `lastBreedingTime` (Long): 最終繁殖タイムスタンプ。
     - `fusionCount` (Integer): 累計融合回数。
@@ -96,6 +97,7 @@
 
 ### `monsterInstanceDomain`
 - `{"ownerId": 1}`: プレイヤーが所持するモンスターを検索する場合に必須。
+- `{"ownerId": 1, "state": 1}`: プレイヤーの手持ちパーティ (`PARTY`) または預かり所 (`STORAGE`) のモンスターを高速にグループ取得するための複合インデックス。
 - `{"isWild": 1}`: 野生モンスターのみを抽出する場合に使用します。
 
 ### `expeditionInstanceDomain`
