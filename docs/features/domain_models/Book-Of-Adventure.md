@@ -86,6 +86,16 @@ PlayerOperationsモジュールはこのサービスを利用して、プレイ�
     - `unlockedTitleIds`: 解禁済み称号IDのリスト。
     - `equippedTitleId`: 現在装着中のアクティブ称号ID（未装着時は null）。
 
+### `PlayerAlchemyRecipeDomain`
+- **説明:** プレイヤーごとの解禁済み錬金・調合レシピおよび試行・成功統計情報を管理します。詳細は [ダンジョン錬金・アイテム調合システム仕様](../Item-Synthesis-Alchemy-System.md) を参照してください。
+- **主要なプロパティ:**
+    - `id`: 一意な識別子（通常はユーザーIDと同値）。
+    - `userId`: プレイヤー（ユーザー）のID。
+    - `unlockedRecipeIds`: 解禁済みレシピIDのセット。
+    - `totalSynthesisCount`: 累計調合実行回数。
+    - `totalSuccessCount`: 累計調合成功回数。
+    - `updatedAt`: 最終更新日時。
+
 ### `StatusEffectDomain` (値オブジェクト)
 - **説明:** プレイヤーやモンスターに付与される状態異常を定義します。
 - **プロパティ:**
