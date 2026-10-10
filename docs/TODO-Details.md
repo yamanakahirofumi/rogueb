@@ -36,6 +36,10 @@ AIによる生成が困難な、感性やバランス調整が必要な事項で
 ## 6. 完了済み事項
 これまでに検討が完了し、仕様が策定された事項です。
 
+### [x] モンスター進化システムおよびモンスター融合システムの照会・プレビューAPI仕様の追加
+- **概要**: 確実に実装するのに不足していた、モンスター進化システムにおける進化候補・条件達成状況照会API（`GET /api/v1/monsters/{instanceId}/evolution-options`）および、モンスター融合システムにおける融合結果プレビュー・必要コスト照会API（`POST /api/v1/monsters/fuse/preview`）の具体的なリクエスト・レスポンスJSON構造およびエラーハンドリング仕様の追加。
+- **解決策**: [モンスター進化システム仕様](./features/Monster-Evolution-System.md) にて進化候補・条件達成状況照会APIを定義し、[モンスター融合システム仕様](./features/Monster-Fusion-System.md) にて融合プレビューAPIを定義。また、未所有個体操作時のエラーコード `UNAUTHORIZED_MONSTER_OPERATOR` を各エラーマッピング表に追加。
+
 ### [x] 標準メタデータ仕様におけるモンスター用予約済みキーおよび標準化エフェクトの不足情報の追加
 - **概要**: 確実に実装するのに不足していた、モンスター個体インスタンス（`MonsterInstanceDomain`）で利用する予約済みメタデータキー、および各種新規機能アイテム（環境異変、遠征短縮、特性抽出、退化、親愛の誓い等）に対応する標準化エフェクト ID（`meta_effects`）の仕様の追加。
 - **解決策**: [標準メタデータ仕様](./features/Standard-Metadata-Specification.md) にて、モンスター用メタデータキー（`loyalty`, `isPledged`, `pledgedAt`, `currentTactic`, `fusionCount`, `preEvolutionId`, `lastTraitEnhancement`, `traits`）および標準化エフェクト ID（`TRIGGER_ENVIRONMENTAL_ANOMALY`, `DISPEL_ENVIRONMENTAL_ANOMALY`, `REDUCE_EXPEDITION_TIME`, `EXTRACT_TRAIT`, `DEGENERATE_MONSTER`, `PLEDGE_MONSTER`）を定義。
@@ -434,3 +438,6 @@ AIによる生成が困難な、感性やバランス調整が必要な事項で
 ### [x] BookOfAdventureモジュール ドメインモデルおよびMongoDBデータ構造における PlayerAlchemyRecipeDomain 仕様の追加
 - **概要**: 確実に実装するのに不足していた、BookOfAdventureモジュールにおけるプレイヤーの解禁済み錬金・調合レシピ状態（`PlayerAlchemyRecipeDomain`）のドメインモデル定義、MongoDBコレクション構造（`playerAlchemyRecipeDomain`）、およびユニークインデックス推奨事項の追加。
 - **解決策**: [BookOfAdventure ドメインモデル](./features/domain_models/Book-Of-Adventure.md) に `PlayerAlchemyRecipeDomain` ドメインエンティティの説明を追記し、[BookOfAdventure MongoDB構造](./features/domain_models/Book-Of-Adventure-MongoDB.md) に `playerAlchemyRecipeDomain` コレクションのフィールド定義および `{"userId": 1}` ユニークインデックス推奨事項を追加。
+### [x] アイテム分解・リサイクルシステムの新機能提案および詳細仕様策定
+- **概要**: ダンジョン探索やドロップ等で蓄積する不要な装備品やアイテムを解体・分解し、クラフト・錬金・建築・倉庫拡張に利用可能な基本素材および希少資材へ還元する「アイテム分解・リサイクルシステム」の設計と仕様の策定。
+- **解決策**: [アイテム分解・リサイクルシステム仕様](./features/Item-Disassembly-System.md) を新規作成し、2種類の分解手段（分解キット・解体炉）、カテゴリ・ティア・標準価格に基づく素材還元計算式、希少素材ドロップ確率（魔導の粉、エレメント精導石、増築用資材等）、`playerDisassemblyLogDomain` MongoDBコレクション構造、API仕様（`POST /api/v1/objects/disassemble`, `POST /api/v1/objects/disassemble/preview`）、ならびに詳細なエラーハンドリングテーブルを定義。あわせて [Objects ドメインモデル](./features/domain_models/Objects.md) に分解補助アイテムおよび還元素材アイテム（`disassembly_kit`, `magic_powder`, `elemental_essence_fire`, `elemental_essence_frost`, `elemental_essence_lightning`）を追加、[Objects-MongoDB.md](./features/domain_models/Objects-MongoDB.md) に `playerDisassemblyLogDomain` スキーマを定義、[標準メタデータ仕様](./features/Standard-Metadata-Specification.md) にエフェクト ID (`DISASSEMBLE_ITEM`) を追記、[README.md](./README.md) および [ドメインモデル一覧](./features/domain_models/Index.md) を更新。

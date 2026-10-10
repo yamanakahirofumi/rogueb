@@ -80,8 +80,43 @@ sequenceDiagram
 
 ## 8. APIリクエスト・フローとエラーハンドリング
 
-### 8.1 APIリクエスト仕様
-モンスターの進化を実行するためのエンドポイントおよびリクエスト/レスポンスボディのJSON構造を定義します。
+### 8.1 APIリクエスト・レスポンス仕様
+
+#### 8.1.1 モンスター進化候補照会 API (`GET /api/v1/monsters/{instanceId}/evolution-options`)
+指定されたモンスター個体（`instanceId`）の現在のレベル・ステータス・所持アイテムおよび現在のダンジョンランク制限に基づき、進化可能な分岐ルート・条件達成状況の一覧を取得するエンドポイントです。
+
+- **Endpoint**: `GET /api/v1/monsters/{instanceId}/evolution-options?userId=player_uuid_12345`
+- **Response Body (JSON - 200 OK)**:
+```json
+{
+  "instanceId": "monster_uuid_67890",
+  "currentMonsterId": "slime",
+  "currentLevel": 10,
+  "canEvolve": true,
+  "options": [
+    {
+      "targetMonsterId": "king_slime",
+      "targetMonsterName": "キングスライム",
+      "targetTier": 2,
+      "requiredLevel": 10,
+      "requiredItemId": "king_crown",
+      "requiredStats": {
+        "hp": 50,
+        "atk": 20
+      },
+      "isLevelSatisfied": true,
+      "isItemSatisfied": true,
+      "isStatsSatisfied": true,
+      "isRankSatisfied": true,
+      "canEvolveToThis": true,
+      "resetLevel": true
+    }
+  ]
+}
+```
+
+#### 8.1.2 モンスター進化実行 API (`POST /api/v1/monsters/evolve`)
+対象のモンスター個体を、選択した進化先種族へ進化させるエンドポイントです。
 
 - **Endpoint**: `POST /api/v1/monsters/evolve`
 - **Request Body (JSON)**:
@@ -126,6 +161,7 @@ sequenceDiagram
 | エラーコード | 発生条件 | レスポンス HTTP ステータス | 戻り値のメッセージ例 |
 | :--- | :--- | :---: | :--- |
 | `MONSTER_NOT_FOUND` | 指定された `monsterInstanceId` のモンスターが存在しない。 | 404 Not Found | 指定されたモンスターが見つかりません。 |
+| `UNAUTHORIZED_MONSTER_OPERATOR` | 操作を行おうとしたユーザーが対象モンスターの所有者（`ownerId`）ではない。 | 403 Forbidden | 対象モンスターの操作権限がありません。 |
 | `INSUFFICIENT_LEVEL` | モンスターが進化可能レベル（`requiredLevel`）に達していない。 | 400 Bad Request | 進化に必要なレベルに達していません。 |
 | `MISSING_EVOLUTION_ITEM` | 進化に必要な触媒アイテム（`requiredItemId`）がインベントリに不足している。 | 400 Bad Request | 進化に必要な触媒アイテムが不足しています。 |
 | `STATS_NOT_SATISFIED` | 進化に必要なステータス条件（`requiredStats`）を満たしていない。 | 400 Bad Request | 進化に必要なステータス条件を満たしていません。 |
