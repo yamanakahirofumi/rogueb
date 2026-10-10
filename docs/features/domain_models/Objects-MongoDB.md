@@ -59,3 +59,20 @@
 
 ### インデックス推奨事項
 - `{"setId": 1}`: ユニークインデックス。セットIDによる高速なマスター検索を保証します。
+
+## 5. `playerDisassemblyLogDomain` コレクション
+- **説明:** プレイヤーによるアイテム分解・リサイクルの実行履歴を永続化します。詳細は [アイテム分解・リサイクルシステム仕様](../Item-Disassembly-System.md) を参照してください。
+- **フィールド:**
+    - `_id` (String): 一意なログ ID（UUID 形式）。
+    - `userId` (String): 実行したプレイヤー ID。
+    - `disassembledItemId` (String): 分解されたアイテムの `instanceId`。
+    - `disassembledTypeId` (String): 分解されたアイテムの `typeId`（例: `iron_sword`）。
+    - `method` (String): 分解手段（`KIT` または `WORKSHOP`）。
+    - `yieldedMaterials` (Array): 獲得した素材アイテムの構造化オブジェクトの配列。
+        - `typeId` (String): 素材アイテム ID。
+        - `quantity` (Integer): 獲得個数。
+    - `createdAt` (Date): 実行日時。
+    - `_class` (String): Spring Data MongoDBが使用するクラス情報（例: `net.hero.rogueb.objects.domain.PlayerDisassemblyLogDomain`）。
+
+### インデックス推奨事項
+- `{"userId": 1, "createdAt": -1}`: プレイヤーごとの分解履歴取得を高速化するための複合インデックス。
