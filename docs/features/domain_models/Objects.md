@@ -209,6 +209,8 @@ Objectsモジュールは、武器、防具、ポーション、指輪など、�
 | `elemental_essence_fire` | 火のエレメント精導石 | `MATERIAL` | Fire | 1500 | 2 | 500 | `*` | 火属性分解素材 |
 | `elemental_essence_frost` | 氷のエレメント精導石 | `MATERIAL` | Water | 1500 | 2 | 500 | `*` | 氷/水属性分解素材 |
 | `elemental_essence_lightning` | 雷のエレメント精導石 | `MATERIAL` | Wind | 1500 | 2 | 500 | `*` | 雷/風属性分解素材 |
+| `trait_orb` | 特性オーブ | `OTHER` | None | 4000 | 2 | 500 | `o` | [特性抽出](../Monster-Trait-Extraction-System.md)で得られる個別特性結晶。使用でモンスターに特性付与 |
+| `skill_scroll` | スキル秘伝書 | `SCROLL` | None | 3000 | 2 | 300 | `?` | [スキル・魔法](../Skill-And-Magic-System.md)習得用巻物。使用で指定スキル習得 |
 
 ## 5. API仕様 (API Specifications)
 
