@@ -184,6 +184,46 @@ sequenceDiagram
 }
 ```
 
+#### 7.1.4 倉庫情報照会 API
+指定されたプレイヤーの倉庫状態（上限数、保管数、拡張段階、保管中のアイテム一覧等）を取得します。
+
+- **Endpoint**: `GET /api/v1/storage/{playerId}`
+- **Response Body (JSON - 成功時)**:
+```json
+{
+  "success": true,
+  "result": "SUCCESS",
+  "storage": {
+    "playerId": "player_uuid_12345",
+    "limitSize": 80,
+    "currentSize": 2,
+    "expansionStage": 1,
+    "objectIdList": [
+      "item_instance_11111",
+      "item_instance_99999"
+    ],
+    "items": [
+      {
+        "objectId": "item_instance_11111",
+        "typeId": "iron_sword",
+        "name": "鉄の剣",
+        "category": "WEAPON",
+        "tier": 1,
+        "isIdentified": true
+      },
+      {
+        "objectId": "item_instance_99999",
+        "typeId": "potion_healing",
+        "name": "回復薬",
+        "category": "CONSUMABLE",
+        "tier": 1,
+        "isIdentified": true
+      }
+    ]
+  }
+}
+```
+
 ### 7.2 エラーハンドリング (Error Handling)
 倉庫の各種操作において発生する可能性のあるエラーレスポンスの定義です。
 

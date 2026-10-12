@@ -438,3 +438,7 @@ AIによる生成が困難な、感性やバランス調整が必要な事項で
 ### [x] アイテム分解・リサイクルシステムの新機能提案および詳細仕様策定
 - **概要**: ダンジョン探索やドロップ等で蓄積する不要な装備品やアイテムを解体・分解し、クラフト・錬金・建築・倉庫拡張に利用可能な基本素材および希少資材へ還元する「アイテム分解・リサイクルシステム」の設計と仕様の策定。
 - **解決策**: [アイテム分解・リサイクルシステム仕様](./features/Item-Disassembly-System.md) を新規作成し、2種類の分解手段（分解キット・解体炉）、カテゴリ・ティア・標準価格に基づく素材還元計算式、希少素材ドロップ確率（魔導の粉、エレメント精導石、増築用資材等）、`playerDisassemblyLogDomain` MongoDBコレクション構造、API仕様（`POST /api/v1/objects/disassemble`, `POST /api/v1/objects/disassemble/preview`）、ならびに詳細なエラーハンドリングテーブルを定義。あわせて [Objects ドメインモデル](./features/domain_models/Objects.md) に分解補助アイテムおよび還元素材アイテム（`disassembly_kit`, `magic_powder`, `elemental_essence_fire`, `elemental_essence_frost`, `elemental_essence_lightning`）を追加、[Objects-MongoDB.md](./features/domain_models/Objects-MongoDB.md) に `playerDisassemblyLogDomain` スキーマを定義、[標準メタデータ仕様](./features/Standard-Metadata-Specification.md) にエフェクト ID (`DISASSEMBLE_ITEM`) を追記、[README.md](./README.md) および [ドメインモデル一覧](./features/domain_models/Index.md) を更新。
+
+### [x] 倉庫システムの照会API仕様およびMongoDB永続化仕様の不足情報追加
+- **概要**: 確実に実装するのに不足していた、倉庫システムにおける倉庫状態・保管アイテム照会API（`GET /api/v1/storage/{playerId}`）の具体例（リクエスト/レスポンスJSON構造・エラーマッピング）、および `playerStorageDomain` 拡張プロパティ（`expansionStage`, `updateDate`）、操作ログ用 `storageLogDomain` MongoDBコレクション構造、推奨複合インデックス、TTL（90日間）自動データクリーンアップ戦略の追加。
+- **解決策**: [倉庫システム仕様](./features/Storage-System.md) にて倉庫情報照会API（`GET /api/v1/storage/{playerId}`）の仕様を追記し、[倉庫システム MongoDBデータ構造](./features/domain_models/Storage-MongoDB.md) にて `playerStorageDomain` 拡張スキーマ、`storageLogDomain` スキーマ、推奨インデックス、および TTL クリーンアップ設計を策定。
