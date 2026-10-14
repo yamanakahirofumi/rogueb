@@ -61,7 +61,7 @@
         - `remainingTurns` (Integer)
         - `value` (Integer)
     - `traits` (Array): 個体固有の特性（パッシブ能力）のリスト。
-    - `metadata` (Object): 個体固有の動的データ（Map<String, Object>）。
+    - `metadata` (Object): 個体固有の動的データ（Map<String, Object>）。ニックネームや繁殖クールタイム期限日時（`breedingCooldownExpiration`）等を含む。
     - `ownerId` (String): 所有しているプレイヤーのID。
     - `isWild` (Boolean): 野生状態かどうかを示すフラグ。
     - `loyalty` (Integer): プレイヤーに対する忠誠度。

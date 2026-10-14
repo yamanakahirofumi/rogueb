@@ -86,7 +86,7 @@
     - `inheritedStatus`: 継承されたステータス補正（Map<String, Integer>）. 繁殖および融合によってベース個体に加算されたステータス補正値を保持します（融合の場合、種族の Lv 1 基本ステータスの 50% が上限キャップとなります）。
     - `statusEffects`: 付与されている状態異常 (`StatusEffectDomain`) のリスト.
     - `traits`: 個体固有の特性（パッシブ能力）のリスト（繁殖や融合等によって固有に継承・獲得した特性。最大 **2 つ**に制限）。種族固有の標準特性（`MonsterDomain.traits`）はこれに含めず、実行時に動的に合算して総活性特性を適用します。詳細は [モンスター特性システム](../Monster-Trait-System.md) を参照。
-    - `metadata`: 個体固有の動的データ（Map<String, Object>）。ニックネームや特殊な成長記録などに使用.
+    - `metadata`: 個体固有の動的データ（Map<String, Object>）。ニックネームや特殊な成長記録、繁殖クールタイム終了日時（`breedingCooldownExpiration`）などに使用.
         - 予約済みキーの詳細は **[標準メタデータ仕様](../Standard-Metadata-Specification.md)** を参照してください.
     - `ownerId`: 所有しているプレイヤーの ID（捕獲済みの場合）.
     - `isWild`: 野生状態かどうかを示すフラグ（`state` が `WILD` の場合のみ `true`）.
