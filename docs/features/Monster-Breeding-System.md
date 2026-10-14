@@ -215,13 +215,82 @@ sequenceDiagram
 }
 ```
 
+#### 7.1.3 卵一覧・孵化進捗照会 API (`GET /api/v1/monsters/eggs/{userId}`)
+指定したプレイヤーが所持している卵アイテムの一覧およびそれぞれの孵化進捗状況を取得します。
+
+- **Endpoint**: `GET /api/v1/monsters/eggs/{userId}`
+- **Response Body (JSON - 成功時)**:
+```json
+{
+  "userId": "player_uuid_12345",
+  "totalEggs": 2,
+  "eggs": [
+    {
+      "instanceId": "egg_instance_999",
+      "typeId": "egg",
+      "name": "スライムの卵",
+      "childTypeId": "slime",
+      "parentAId": "monster_instance_001",
+      "parentBId": "monster_instance_002",
+      "incubationSteps": 500,
+      "currentSteps": 500,
+      "remainingSteps": 0,
+      "isReadyToHatch": true
+    },
+    {
+      "instanceId": "egg_instance_1000",
+      "typeId": "egg",
+      "name": "ドラゴンの卵",
+      "childTypeId": "dragon",
+      "parentAId": "monster_instance_003",
+      "parentBId": "monster_instance_004",
+      "incubationSteps": 1200,
+      "currentSteps": 450,
+      "remainingSteps": 750,
+      "isReadyToHatch": false
+    }
+  ]
+}
+```
+
+#### 7.1.4 モンスター繁殖状態・クールタイム照会 API (`GET /api/v1/monsters/{instanceId}/breeding-status`)
+指定したモンスター個体の現在のレベル要件達成状況および繁殖クールタイム状態を照会します。
+
+- **Endpoint**: `GET /api/v1/monsters/{instanceId}/breeding-status`
+- **Response Body (JSON - 成功時)**:
+```json
+{
+  "instanceId": "monster_instance_001",
+  "monsterTypeId": "slime",
+  "level": 15,
+  "isLevelRequirementMet": true,
+  "isCooldownActive": false,
+  "canBreed": true,
+  "cooldownExpiration": null
+}
+```
+
+- **Response Body (JSON - クールタイム中時)**:
+```json
+{
+  "instanceId": "monster_instance_002",
+  "monsterTypeId": "wolf",
+  "level": 12,
+  "isLevelRequirementMet": true,
+  "isCooldownActive": true,
+  "canBreed": false,
+  "cooldownExpiration": "2026-03-31T12:00:00Z"
+}
+```
+
 ### 7.2 エラーハンドリング (Error Handling)
 処理の過程で異常が検出された場合、システムは適切なエラーレスポンスを返却します。
 
-#### 繁殖 API (`/breed`) のエラーハンドリング
+#### 共通・繁殖 API (`/breed`) のエラーハンドリング
 | エラーコード | 発生条件 | レスポンス HTTP ステータス | 戻り値のメッセージ例 |
 | :--- | :--- | :---: | :--- |
-| `MONSTER_NOT_FOUND` | 指定された `parentAMonsterInstanceId` または `parentBMonsterInstanceId` のモンスターが存在しない。 | 404 Not Found | 指定された親モンスターが見つかりません。 |
+| `USER_NOT_FOUND` | 指定された `userId` のプレイヤーが存在しない。 | 404 Not Found | 指定されたプレイヤーが見つかりません。 |
+| `MONSTER_NOT_FOUND` | 指定された `parentAMonsterInstanceId`, `parentBMonsterInstanceId` または `instanceId` のモンスターが存在しない。 | 404 Not Found | 指定された親モンスターが見つかりません。 |
 | `SAME_MONSTER_SELECTED` | 親 A と親 B に同一のモンスターインスタンス ID が指定された。 | 400 Bad Request | 繁殖には2体の異なるモンスターを指定する必要があります。 |
 | `INSUFFICIENT_LEVEL` | いずれかの親モンスターのレベルが 10 未満。 | 400 Bad Request | 繁殖を行うには両親のレベルが10以上である必要があります。 |
 | `BREEDING_COOLDOWN` | 指定された親モンスターが 24 時間の再繁殖クールタイム中である。 | 400 Bad Request | 指定された親モンスターは現在クールタイム中です。 |
@@ -229,6 +298,7 @@ sequenceDiagram
 | `INSUFFICIENT_CATALYST` | プレイヤーのインベントリに「繁殖のお香 (`breeding_incense`)」が存在しない。 | 400 Bad Request | 繁殖に必要な触媒アイテム（繁殖のお香）が不足しています。 |
 | `INSUFFICIENT_GOLD` | 繁殖に必要なゴールドが不足している。 | 400 Bad Request | 所持ゴールドが不足しています。 |
 | `INVENTORY_FULL` | プレイヤーのインベントリが上限に達しており、卵アイテムを受け取れない。 | 400 Bad Request | インベントリが満杯のため卵を受け取れません。 |
+| `UNAUTHORIZED_BREEDING_OPERATOR` | 自分以外のプレイヤーが所有するモンスターの繁殖・照会を試みた。 | 403 Forbidden | 対象のモンスターに対する操作権限がありません。 |
 
 #### 孵化 API (`/hatch`) のエラーハンドリング
 | エラーコード | 発生条件 | レスポンス HTTP ステータス | 戻り値のメッセージ例 |

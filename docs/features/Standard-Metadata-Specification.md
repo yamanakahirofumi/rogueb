@@ -48,6 +48,7 @@
 | `parentAId` | String | 親 A のインスタンス ID | UUID 形式 |
 | `parentBId` | String | 親 B のインスタンス ID | UUID 形式 |
 | `typeId` | String | 卵から生まれる種族 ID | `slime`, `dragon` 等 |
+| `breedingCooldownExpiration` | String | 繁殖クールタイム終了日時 | ISO-8601 形式の文字列。[モンスター繁殖システム](./Monster-Breeding-System.md) 参照。 |
 
 ### 3.2 個体データ
 | キー | 型 | 意味 | 有効範囲 / 例 |
