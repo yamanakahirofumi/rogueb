@@ -33,6 +33,10 @@
 | `setId` | String | 所属するセット装備 ID | `dragon_slayer_set` 等。[セット装備システム](./Equipment-Set-System.md) 参照。 |
 | `setPieceType` | String | セット内での部位カテゴリ | `WEAPON`, `ARMOR`, `RING` 等 |
 | `enchantments` | Array | 付与されているエンチャントのリスト | オブジェクトの配列。[アイテムエンチャントシステム](./Item-Enchantment-System.md) 参照。 |
+| `tombstoneId` | String | 関連付けられた墓標 ID | UUID 形式。[ダンジョン救助システム](./Dungeon-Rescue-System.md) 参照。 |
+| `fallenPlayerId` | String | 倒没したプレイヤー ID | プレイヤー ID 形式 |
+| `rescueStatus` | String | 救助・墓標状態 | `ACTIVE`, `IN_RESCUE`, `RESCUED`, `EXPIRED` |
+| `recoveryRate` | Double | 遺品・ゴールド還元率 | 0.5 〜 1.0 |
 | `meta_effects` | Array | 標準化エフェクトのリスト | オブジェクトの配列。詳細は後述。 |
 
 ---
@@ -139,6 +143,9 @@
 | `PLEDGE_MONSTER` | - | - | モンスターとの親愛の誓い（親愛解放）処理 |
 | `SYNTHESIZE_ITEM` | - | - | ポータブル調合具または錬金炉によるアイテムの調合・錬金処理 |
 | `DISASSEMBLE_ITEM` | - | - | アイテムの解体・素材還元（分解キット・解体炉）処理 |
+| `RESCUE_PLAYER` | - | - | 墓標における無戦闘・即時救助完了処理 |
+| `PACIFY_GUARDIAN` | - | - | 墓標を守るガーディアンの鎮魂および還元率上昇処理 |
+| `CLAIM_TOMBSTONE` | - | - | 墓標の解錠および遺品・還元物の配送処理 |
 
 ---
 

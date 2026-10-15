@@ -90,7 +90,19 @@
     - `updatedAt` (Date): 最終更新日時。
     - `_class` (String): Spring Data MongoDBが使用するクラス情報。
 
-## 8. インデックス推奨事項
+## 8. `rescueRequestDomain` コレクション
+- **説明:** 倒没したプレイヤーからの救助要請および救助受諾状態を保持します。詳細は [ダンジョン救助・墓標システム](../Dungeon-Rescue-System.md) を参照。
+- **フィールド:**
+    - `_id` (String): 救助要請の一意な ID (`requestId`)。
+    - `tombstoneId` (String): 関連付けられた墓標 ID。
+    - `fallenPlayerId` (String): 倒没者のプレイヤー ID。
+    - `rescuerPlayerId` (String): 受諾した救助者のプレイヤー ID (未受諾時は null)。
+    - `status` (String): 要請状態 (`PENDING`, `ACCEPTED`, `COMPLETED`, `FAILED`, `EXPIRED`)。
+    - `requestedAt` (Date): 要請発行日時。
+    - `completedAt` (Date): 完了日時。
+    - `_class` (String): Spring Data MongoDBが使用するクラス情報。
+
+## 9. インデックス推奨事項
 
 ### `playerDomain`
 - `{"name": 1}`: プレイヤー名によるユニーク検索に必須。
@@ -116,3 +128,8 @@
 
 ### `playerTitleDomain`
 - `{"userId": 1}`: ユニークインデックス。ユーザーごとの所有称号および装着状態照会・更新用。
+
+### `rescueRequestDomain`
+- `{"fallenPlayerId": 1, "status": 1}`: 倒没者のアクティブな救助要請を検索するために使用します。
+- `{"rescuerPlayerId": 1, "status": 1}`: 救助者が受諾中のミッションを検索するために使用します。
+- `{"status": 1, "requestedAt": -1}`: 公開救助掲示板の最新一覧取得用。
