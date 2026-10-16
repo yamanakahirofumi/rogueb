@@ -55,8 +55,24 @@ Dungeonモジュールは、ダンジョンの構造、内容、状態の管理�
     - `monsterList`: フロアに存在するモンスターのリスト (`MonsterCoordinateDomain`のリスト)。
     - `trapList`: フロアに存在するトラップのリスト (`TrapCoordinateDomain`のリスト)。
     - `shopList`: フロアに存在するショップのリスト（`EconomicSystem` モジュールの `ShopDomain` への参照情報）。
+    - `tombstoneList`: フロアに配置されている墓標のリスト (`TombstoneDomain` のリスト)。詳細は [ダンジョン救助・墓標システム](../Dungeon-Rescue-System.md) を参照。
     - `activeEnvironmentalAnomaly`: 現在フロアに発生している広域環境異変 (`EnvironmentalAnomalyDomain`)。詳細は [ダンジョン環境異変システム](../Dungeon-Environmental-Anomaly-System.md) を参照。
     - `tiles`: フロアのマップレイアウトを表す2Dリスト（`Tile`オブジェクト）。
+
+### `TombstoneDomain`
+- **説明:** ダンジョン内でプレイヤーが倒脱した際に配置される墓標エンティティ。所持品およびゴールド（80%分）を封印保存し、救助者の守護霊撃破・アクセスによって解封されます。
+- **主要なプロパティ:**
+    - `tombstoneId`: 墓標の一意な識別子。
+    - `dungeonId`: 設置されたダンジョンID。
+    - `floorLevel`: 設置された階層レベル。
+    - `position`: 墓標の座標 (`Coordinate`)。
+    - `ownerUserId`: 倒脱したプレイヤーのユーザーID。
+    - `sealedItems`: 封印保護されている所持アイテムリスト (`ThingInstance` のリスト)。
+    - `sealedGold`: 封印保護されている所持ゴールド（80%分）。
+    - `guardianMonsterIds`: 墓標周囲を守護する守護霊モンスターのインスタンスIDリスト。
+    - `createdAt`: 設置日時。
+    - `expiresAt`: 墓標の有効期限（生成から72時間）。
+    - `isRescued`: 救助完了フラグ。
 
 ### `ObjectCoordinateDomain`
 - **ファイル:** `Dungeon/src/main/java/net/hero/rogueb/dungeon/domain/ObjectCoordinateDomain.java`
