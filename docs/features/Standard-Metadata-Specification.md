@@ -55,6 +55,9 @@
 | `nickname` | String | 個体に付けられたニックネーム | 最大 16 文字 |
 | `loyalty` | Integer | 忠誠度 | 0 〜 255。[モンスター忠誠度システム](./Monster-Loyalty-System.md) 参照。 |
 | `isPledged` | Boolean | 親愛（誓い）状態フラグ | `true` / `false`。[モンスター親愛システム](./Monster-Affection-System.md) 参照。 |
+| `tombstoneId` | String | 紐づく墓標 ID | `ts_uuid_001` 等。[ダンジョン救助システム](./Dungeon-Rescue-System.md) 参照。 |
+| `rescuedBy` | String | 救助者のユーザー ID | `user_67890` 等。[ダンジョン救助システム](./Dungeon-Rescue-System.md) 参照。 |
+| `rescueStatus` | String | 救助ステータス | `PENDING`, `IN_PROGRESS`, `COMPLETED` 等 |
 | `pledgedAt` | String | 親愛の誓い完了日時 | ISO-8601 形式の文字列 |
 | `currentTactic` | String | 現在アクティブな作戦指示コード | `FULL_POWER`, `SAVE_RESOURCES`, `SAFETY_FIRST`, `FOLLOW_ME`, `FREE_ACTION`, `STAY_WAIT`。[モンスター作戦指示システム](./Monster-Tactical-Directives-System.md) 参照。 |
 | `fusionCount` | Integer | 融合（合体進化）回数 | 0 〜 5。[モンスター融合システム](./Monster-Fusion-System.md) 参照。 |
@@ -139,6 +142,8 @@
 | `PLEDGE_MONSTER` | - | - | モンスターとの親愛の誓い（親愛解放）処理 |
 | `SYNTHESIZE_ITEM` | - | - | ポータブル調合具または錬金炉によるアイテムの調合・錬金処理 |
 | `DISASSEMBLE_ITEM` | - | - | アイテムの解体・素材還元（分解キット・解体炉）処理 |
+| `RESCUE_PLAYER` | `requestId` | String | 指定された救助要請に対する救助完了・解封アクション処理 |
+| `PACIFY_GUARDIAN_SPIRIT` | `multiplier` | Double | 供物のお香等による墓標守護霊の弱体化・沈静化補正 (例: 0.70) |
 
 ---
 

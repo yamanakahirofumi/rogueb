@@ -211,6 +211,10 @@ Objectsモジュールは、武器、防具、ポーション、指輪など、�
 | `elemental_essence_lightning` | 雷のエレメント精導石 | `MATERIAL` | Wind | 1500 | 2 | 500 | `*` | 雷/風属性分解素材 |
 | `trait_orb` | 特性オーブ | `OTHER` | None | 4000 | 3 | 200 | `o` | [特性の抽出](../Monster-Trait-Extraction-System.md)で抽出された個体特性を保持する球体 |
 | `skill_scroll` | 秘伝の書 | `SCROLL` | None | 3500 | 3 | 200 | `?` | [スキル・魔法](../Skill-And-Magic-System.md)を習得させるための秘伝の巻物 |
+| `rescue_scroll` | 救助の巻物 | `SCROLL` | None | 1000 | 2 | 500 | `?` | [ダンジョン救助](../Dungeon-Rescue-System.md)で使用する。受託中の救助階層へワープ |
+| `offering_incense` | 供物のお香 | `MATERIAL` | Holy | 1500 | 2 | 300 | `*` | [ダンジョン救助](../Dungeon-Rescue-System.md)で使用する。墓標の守護霊を沈静化し弱体化 |
+| `tombstone_key` | 墓標の鍵 | `MATERIAL` | None | 3000 | 3 | 200 | `*` | [ダンジョン救助](../Dungeon-Rescue-System.md)で使用する。特殊封印された墓標の解呪用 |
+| `merit_certificate` | 功績証 | `OTHER` | None | 2000 | 2 | 500 | `"` | [ダンジョン救助](../Dungeon-Rescue-System.md)で救助達成時に獲得できる証明書 |
 
 ## 5. API仕様 (API Specifications)
 

@@ -86,6 +86,19 @@ PlayerOperationsモジュールはこのサービスを利用して、プレイ�
     - `unlockedTitleIds`: 解禁済み称号IDのリスト。
     - `equippedTitleId`: 現在装着中のアクティブ称号ID（未装着時は null）。
 
+### `RescueRequestDomain`
+- **説明:** 倒脱したプレイヤーが発行した救助要請を管理するエンティティ。詳細は [ダンジョン救助・墓標システム仕様](../Dungeon-Rescue-System.md) を参照してください。
+- **主要なプロパティ:**
+    - `requestId`: 救助要請の一意な識別子。
+    - `tombstoneId`: 対象の墓標ID。
+    - `ownerUserId`: 被救助者のユーザーID。
+    - `rescuerUserId`: 救助を受託したプレイヤーのユーザーID（未受託時は null）。
+    - `dungeonId`: 該当ダンジョンID。
+    - `floorLevel`: 該当階層レベル。
+    - `status`: 救助ステータス (`PENDING`, `IN_PROGRESS`, `COMPLETED`, `EXPIRED`, `CANCELLED`)。
+    - `requestedAt`: 要請日時。
+    - `completedAt`: 救助完了日時。
+
 ### `StatusEffectDomain` (値オブジェクト)
 - **説明:** プレイヤーやモンスターに付与される状態異常を定義します。
 - **プロパティ:**
