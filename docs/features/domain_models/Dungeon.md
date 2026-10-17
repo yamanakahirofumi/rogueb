@@ -54,6 +54,7 @@ Dungeonモジュールは、ダンジョンの構造、内容、状態の管理�
     - `goldList`: フロアに存在する金の山のリスト (`GoldCoordinateDomain`のリスト)。
     - `monsterList`: フロアに存在するモンスターのリスト (`MonsterCoordinateDomain`のリスト)。
     - `trapList`: フロアに存在するトラップのリスト (`TrapCoordinateDomain`のリスト)。
+    - `tombstoneList`: フロアに存在する墓標のリスト (`TombstoneCoordinateDomain`のリスト)。詳細は [ダンジョン救助・墓標システム](../Dungeon-Rescue-System.md) を参照。
     - `shopList`: フロアに存在するショップのリスト（`EconomicSystem` モジュールの `ShopDomain` への参照情報）。
     - `activeEnvironmentalAnomaly`: 現在フロアに発生している広域環境異変 (`EnvironmentalAnomalyDomain`)。詳細は [ダンジョン環境異変システム](../Dungeon-Environmental-Anomaly-System.md) を参照。
     - `tiles`: フロアのマップレイアウトを表す2Dリスト（`Tile`オブジェクト）。
