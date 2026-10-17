@@ -61,6 +61,8 @@
 | `preEvolutionId` | String | 直前の進化前種族 ID | `slime` 等。[モンスター退化システム](./Monster-Degeneration-System.md) 参照。 |
 | `lastTraitEnhancement` | Object | 最終特性強化日時および履歴情報 | タイムスタンプ・強化対象メタデータ。[モンスター特性強化システム](./Monster-Trait-Enhancement-System.md) 参照。 |
 | `traits` | Array | 装備中の個体特性オブジェクトの配列 | 各要素は `traitId`, `level`, `type` 等のマップ。[モンスター特性システム](./Monster-Trait-System.md) 参照。 |
+| `tombstoneId` | String | ダンジョンフロア内に存在する墓標エンティティの識別ID | `"tomb_887123_fl5"`。[ダンジョン救助・墓標システム](./Dungeon-Rescue-System.md) 参照。 |
+| `rescueStatus` | String | 救助依頼の処理状態 | `"PENDING"`, `"ACCEPTED"`, `"COMPLETED"`, `"FAILED"`, `"EXPIRED"`。[ダンジョン救助・墓標システム](./Dungeon-Rescue-System.md) 参照。 |
 | `inheritanceData` | Object | 未知の種族を持ち込む際の継承データ | 種族基本ステータス、外見、特性等 |
 
 ---
@@ -139,6 +141,8 @@
 | `PLEDGE_MONSTER` | - | - | モンスターとの親愛の誓い（親愛解放）処理 |
 | `SYNTHESIZE_ITEM` | - | - | ポータブル調合具または錬金炉によるアイテムの調合・錬金処理 |
 | `DISASSEMBLE_ITEM` | - | - | アイテムの解体・素材還元（分解キット・解体炉）処理 |
+| `RESCUE_PLAYER` | - | - | 墓標の浄化および倒脱プレイヤーの遺品・ゴールド回収・転送処理 |
+| `PURIFY_TOMBSTONE` | - | - | 供養の香等による墓標の特例開錠・浄化処理 |
 
 ---
 

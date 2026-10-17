@@ -65,6 +65,9 @@
         - `position` (Object): 座標 (`Coordinate`)。
         - `trapId` (Integer): トラップの種別 ID（[トラップシステム](../Trap-System.md) の ID に対応）。
         - `isRevealed` (Boolean): 露出フラグ。
+    - `tombstoneList` (Array): フロア上の墓標のリスト (`TombstoneCoordinateDomain`オブジェクトの配列)。詳細は [ダンジョン救助・墓標システム](../Dungeon-Rescue-System.md) を参照。
+        - `position` (Object): 座標 (`Coordinate`)。
+        - `tombstoneId` (String): 墓標のID。
     - `activeEnvironmentalAnomaly` (Object): フロア全体に及ぶ広域環境異変データ。詳細は [ダンジョン環境異変システム](../Dungeon-Environmental-Anomaly-System.md) を参照。
         - `anomalyId` (String): `solar_flare`, `freezing_blizzard`, `mana_surge`, `miasma_storm`, `supergravity`
         - `name` (String): 表示名称
@@ -77,7 +80,24 @@
         - `pointType` (String): タイルの種類 (`Wall`, `UpStairs`, `downStairs`, `floor`)。
     - `_class` (String): Spring Data MongoDBが使用するクラス情報。
 
-## 3. `dungeonPlayerDomain` コレクション
+## 3. `playerTombstoneDomain` コレクション
+- **説明:** 倒脱プレイヤーの墓標データを保持します。詳細は [ダンジョン救助・墓標システム](../Dungeon-Rescue-System.md) を参照。
+- **フィールド:**
+    - `_id` (String): ドキュメントの一意なID (`tombstoneId`)。
+    - `dungeonId` (String): ダンジョンID。
+    - `floorLevel` (Integer): 発生階層。
+    - `position` (Object): 座標 (`x`, `y`, `z`)。
+    - `ownerUserId` (String): 倒脱したプレイヤーのユーザーID。
+    - `ownerPlayerName` (String): 倒脱したプレイヤーの表示名。
+    - `forfeitedItems` (Array): 没収アイテム一覧 (`ThingInstanceDomain`)。
+    - `forfeitedGold` (Long): 没収ゴールド量。
+    - `guardianMonsterTypeId` (String): ガーディアン精霊の種族ID。
+    - `status` (String): 状態 (`ACTIVE`, `IN_PROGRESS`, `PURIFIED`, `EXPIRED`)。
+    - `createdAt` (Date): 作成日時。
+    - `expiresAt` (Date): 有効期限日時。
+    - `_class` (String): Spring Data MongoDBが使用するクラス情報。
+
+## 4. `dungeonPlayerDomain` コレクション
 - **説明:** `DungeonPlayerDomain`クラスに対応します。プレイヤーのダンジョン内での現在の階層情報を保持します。
 - **フィールド:**
     - `_id` (String): ドキュメントの一意なID。
@@ -86,7 +106,7 @@
     - `level` (Integer): 現在の階層レベル。
     - `_class` (String): Spring Data MongoDBが使用するクラス情報（例: `net.hero.rogueb.dungeon.domain.DungeonPlayerDomain`）。
 
-## 4. インデックス推奨事項
+## 5. インデックス推奨事項
 
 ### `dungeonDomain`
 - `{"name": 1}`: ダンジョンを名前で検索する場合。
@@ -95,6 +115,11 @@
 ### `floorDomain`
 - `{"dungeonId": 1, "level": 1}`: 特定のダンジョンの特定の階層を検索するために必須です。
 - `{"userId": 1, "dungeonId": 1}`: ユーザーごとのダンジョンインスタンスを管理する場合に使用します。
+
+### `playerTombstoneDomain`
+- `{"ownerUserId": 1, "status": 1}`: 倒脱プレイヤーの現在の有効な墓標を検索するために使用します。
+- `{"dungeonId": 1, "floorLevel": 1, "status": 1}`: フロア上のアクティブな墓標を検索・表示するために使用します。
+- `{"expiresAt": 1}` (TTLインデックス): 有効期限切れドキュメントの自動クリーンアップに利用します。
 
 ### `dungeonPlayerDomain`
 - `{"playerId": 1}`: プレイヤーの現在の滞在ダンジョンを特定するために使用します。

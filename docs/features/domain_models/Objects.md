@@ -209,6 +209,9 @@ Objectsモジュールは、武器、防具、ポーション、指輪など、�
 | `elemental_essence_fire` | 火のエレメント精導石 | `MATERIAL` | Fire | 1500 | 2 | 500 | `*` | 火属性分解素材 |
 | `elemental_essence_frost` | 氷のエレメント精導石 | `MATERIAL` | Water | 1500 | 2 | 500 | `*` | 氷/水属性分解素材 |
 | `elemental_essence_lightning` | 雷のエレメント精導石 | `MATERIAL` | Wind | 1500 | 2 | 500 | `*` | 雷/風属性分解素材 |
+| `rescue_scroll` | 救助の巻物 | `SCROLL` | None | 1500 | 2 | 500 | `?` | ダンジョン倒脱時にNPC救助隊を即座に手配して生還する |
+| `offering_incense` | 供養の香 | `OTHER` | Holy | 800 | 2 | 500 | `*` | ガーディアン精霊と戦わずに墓標を開錠・浄化する |
+| `tombstone_key` | 墓標の鍵 | `OTHER` | None | 1200 | 2 | 300 | `*` | 封印された高度な墓標を開錠するための鍵 |
 | `trait_orb` | 特性オーブ | `OTHER` | None | 4000 | 3 | 200 | `o` | [特性の抽出](../Monster-Trait-Extraction-System.md)で抽出された個体特性を保持する球体 |
 | `skill_scroll` | 秘伝の書 | `SCROLL` | None | 3500 | 3 | 200 | `?` | [スキル・魔法](../Skill-And-Magic-System.md)を習得させるための秘伝の巻物 |
 
