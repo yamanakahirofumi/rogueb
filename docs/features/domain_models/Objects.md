@@ -211,6 +211,9 @@ Objectsモジュールは、武器、防具、ポーション、指輪など、�
 | `elemental_essence_lightning` | 雷のエレメント精導石 | `MATERIAL` | Wind | 1500 | 2 | 500 | `*` | 雷/風属性分解素材 |
 | `trait_orb` | 特性オーブ | `OTHER` | None | 4000 | 3 | 200 | `o` | [特性の抽出](../Monster-Trait-Extraction-System.md)で抽出された個体特性を保持する球体 |
 | `skill_scroll` | 秘伝の書 | `SCROLL` | None | 3500 | 3 | 200 | `?` | [スキル・魔法](../Skill-And-Magic-System.md)を習得させるための秘伝の巻物 |
+| `rescue_scroll` | 救助の巻物 | `SCROLL` | None | 1200 | 2 | 500 | `?` | [ダンジョン救助](../Dungeon-Rescue-System.md)で墓標の存在するフロアへ直接テレポートする |
+| `offering_incense` | 供養の香 | `OTHER` | Holy | 2500 | 2 | 300 | `*` | [ダンジョン救助](../Dungeon-Rescue-System.md)で守護霊を鎮静化させ戦闘なしで救助を完了する |
+| `tombstone_key` | 墓標のカギ | `OTHER` | Holy | 5000 | 3 | 100 | `k` | [ダンジョン救助](../Dungeon-Rescue-System.md)で強力に封印された墓標を一発解錠する |
 
 ## 5. API仕様 (API Specifications)
 

@@ -101,6 +101,20 @@ Dungeonモジュールは、ダンジョンの構造、内容、状態の管理�
     - `playerId`: プレイヤーのID。
     - `level`: プレイヤーが現在滞在しているフロアのレベル。
 
+### `TombstoneDomain`
+- **説明:** ダンジョン内でプレイヤーが倒伏した際に生成される墓標エンティティ。詳細は [ダンジョン救助・墓標システム](../Dungeon-Rescue-System.md) を参照。
+- **主要なプロパティ:**
+    - `tombstoneId`: 墓標の一意な識別子。
+    - `dungeonId`: 墓標が設置されたダンジョンの ID。
+    - `floorLevel`: 設置されたフロアの階層。
+    - `position`: 墓標の座標 (`Coordinate2D`)。
+    - `ownerUserId`: 倒伏したプレイヤーのユーザー ID。
+    - `storedItems`: 保管されている所持アイテムのリスト (`ThingInstance` のリスト)。
+    - `storedGold`: 保管されている所持ゴールド。
+    - `guardianSpiritType`: 憑依している守護霊モンスターの種族 ID。
+    - `isGuarded`: 守護霊が存在するかどうかのフラグ。
+    - `createdAt`: 墓標が生成された日時。
+
 ---
 
 ## 3. 値オブジェクトとフィールド
