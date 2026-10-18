@@ -33,6 +33,8 @@
 | `setId` | String | 所属するセット装備 ID | `dragon_slayer_set` 等。[セット装備システム](./Equipment-Set-System.md) 参照。 |
 | `setPieceType` | String | セット内での部位カテゴリ | `WEAPON`, `ARMOR`, `RING` 等 |
 | `enchantments` | Array | 付与されているエンチャントのリスト | オブジェクトの配列。[アイテムエンチャントシステム](./Item-Enchantment-System.md) 参照。 |
+| `tombstoneId` | String | 倒伏時の墓標 ID | UUID 形式。[ダンジョン救助](./Dungeon-Rescue-System.md) 参照。 |
+| `rescueRequestId` | String | 関連付けられた救助依頼 ID | UUID 形式。[ダンジョン救助](./Dungeon-Rescue-System.md) 参照。 |
 | `meta_effects` | Array | 標準化エフェクトのリスト | オブジェクトの配列。詳細は後述。 |
 
 ---
@@ -139,6 +141,8 @@
 | `PLEDGE_MONSTER` | - | - | モンスターとの親愛の誓い（親愛解放）処理 |
 | `SYNTHESIZE_ITEM` | - | - | ポータブル調合具または錬金炉によるアイテムの調合・錬金処理 |
 | `DISASSEMBLE_ITEM` | - | - | アイテムの解体・素材還元（分解キット・解体炉）処理 |
+| `RESCUE_PLAYER` | - | - | 墓標の浄化および倒伏プレイヤーの救助実行処理 |
+| `LOCATE_TOMBSTONE` | - | - | 現在フロア内の墓標位置の察知・案内効果 |
 
 ---
 
