@@ -16,6 +16,7 @@
   - **[ダンジョン独自ルール詳細仕様](../Dungeon-Custom-Rule-Specification.md)**: ランク S で設定可能な独自ルールの技術的定義。
   - **[ダンジョン環境異変システム](../Dungeon-Environmental-Anomaly-System.md)**: フロア全体に及ぶ天候・環境異変（太陽フレア、絶対零度等）と効果・制御に関する仕様。
   - **[トラップシステム](../Trap-System.md)**: ダンジョン内の罠の種類、効果、配置に関する仕様。
+  - **[ダンジョン救助・墓標システム](../Dungeon-Rescue-System.md)**: プレイヤー倒伏時の墓標生成、救助要請、遺品回収およびガーディアン戦に関する仕様。
 
 - **[Worldモジュール](./World.md)**
   - 利用可能なダンジョンを発見し、高レベルのワールド情報を提供するサービスです。
@@ -74,7 +75,7 @@
 ### データベース構造
 
 - **[Dungeonモジュール (MongoDB)](./Dungeon-MongoDB.md)**
-  - `dungeon`および`floor`コレクションのスキーマ情報。
+  - `dungeon`, `floor`, および `playerTombstoneDomain` コレクションのスキーマ情報。
 
 - **[Worldモジュール (RDB)](./World.md#3-データベース構造-rdb)**
   - ワールド情報およびサービス管理のためのリレーショナルデータベース構造。
@@ -86,7 +87,7 @@
   - `monsterDomain`, `monsterInstanceDomain`, および `expeditionInstanceDomain` コレクションのスキーマ情報。
 
 - **[BookOfAdventureモジュール (MongoDB)](./Book-Of-Adventure-MongoDB.md)**
-  - `playerDomain`, `playerKnowledgeDomain`, `playerMonsterEncyclopediaDomain`, `playerAchievementDomain`, および `playerTitleDomain` コレクションのスキーマ情報。
+  - `playerDomain`, `playerKnowledgeDomain`, `playerMonsterEncyclopediaDomain`, `playerAchievementDomain`, `playerTitleDomain`, および `rescueRequestDomain` コレクションのスキーマ情報。
 
 - **[EconomicSystemモジュール (MongoDB)](./Economic-System-MongoDB.md)**
   - `itemCirculationDomain`, `shopDomain`, `transactionHistoryDomain` コレクションのスキーマ情報。
