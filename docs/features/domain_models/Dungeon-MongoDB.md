@@ -86,7 +86,23 @@
     - `level` (Integer): 現在の階層レベル。
     - `_class` (String): Spring Data MongoDBが使用するクラス情報（例: `net.hero.rogueb.dungeon.domain.DungeonPlayerDomain`）。
 
-## 4. インデックス推奨事項
+## 4. `playerTombstoneDomain` コレクション
+- **説明:** `TombstoneDomain`クラスに対応します。ダンジョン内に設置された墓標の情報を保持します。詳細は [ダンジョン救助＆墓標システム](../Dungeon-Rescue-System.md) を参照。
+- **フィールド:**
+    - `_id` (String): 墓標の一意なID (`tombstoneId`)。
+    - `ownerUserId` (String): 倒伏したプレイヤーのユーザー ID。
+    - `dungeonId` (String): ダンジョン ID。
+    - `floorLevel` (Integer): 階層レベル。
+    - `position` (Object): 座標 (`Coordinate` オブジェクト)。
+    - `sealedItems` (Array): 封印されている遺留品アイテムのインスタンスリスト。
+    - `sealedGold` (Integer): 封印されている遺留金。
+    - `guardianMonsterId` (String): ガーディアン精霊の種族 ID。
+    - `status` (String): `SEALED`, `IN_RESCUE`, `RESCUED`, `EXPIRED`
+    - `createdAt` (Long): 生成タイムスタンプ。
+    - `expiresAt` (Long): 有効期限タイムスタンプ。
+    - `_class` (String): Spring Data MongoDB クラス情報。
+
+## 5. インデックス推奨事項
 
 ### `dungeonDomain`
 - `{"name": 1}`: ダンジョンを名前で検索する場合。
@@ -99,3 +115,8 @@
 ### `dungeonPlayerDomain`
 - `{"playerId": 1}`: プレイヤーの現在の滞在ダンジョンを特定するために使用します。
 - `{"dungeonId": 1}`: 特定のダンジョンにいるプレイヤーを一覧表示するために使用します。
+
+### `playerTombstoneDomain`
+- `{"ownerUserId": 1, "status": 1}`: プレイヤーの倒伏墓標の状態判定に使用。
+- `{"dungeonId": 1, "floorLevel": 1, "status": 1}`: 救助探索時のフロア内墓標生成・照会に使用。
+- `{"expiresAt": 1}`: 期限切れ墓標の自動クリーンアップ/風化処理用 TTL インデックス。
