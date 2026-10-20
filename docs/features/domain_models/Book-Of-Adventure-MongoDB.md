@@ -90,7 +90,18 @@
     - `updatedAt` (Date): 最終更新日時。
     - `_class` (String): Spring Data MongoDBが使用するクラス情報。
 
-## 8. インデックス推奨事項
+## 8. `playerAlchemyRecipeDomain` コレクション
+- **説明:** `PlayerAlchemyRecipeDomain`クラスに対応します。プレイヤーごとの解禁済み調合・錬金レシピIDセットおよび各種試行統計・最終更新日時を保持します。
+- **フィールド:**
+    - `_id` (String): ユーザーID（通常は1ユーザー1ドキュメント）。
+    - `userId` (String): ユーザーID。
+    - `unlockedRecipeIds` (Array): 解禁済みレシピIDの配列。
+    - `totalSynthesisCount` (Integer): 累計調合試行回数。
+    - `totalSuccessCount` (Integer): 累計調合成功回数。
+    - `updatedAt` (Date): 最終更新日時。
+    - `_class` (String): Spring Data MongoDBが使用するクラス情報（例: `net.hero.rogueb.bookofadventure.domain.PlayerAlchemyRecipeDomain`）。
+
+## 9. インデックス推奨事項
 
 ### `playerDomain`
 - `{"name": 1}`: プレイヤー名によるユニーク検索に必須。
@@ -116,3 +127,6 @@
 
 ### `playerTitleDomain`
 - `{"userId": 1}`: ユニークインデックス。ユーザーごとの所有称号および装着状態照会・更新用。
+
+### `playerAlchemyRecipeDomain`
+- `{"userId": 1}`: ユニークインデックス。ユーザーごとの解禁済み錬金レシピおよび統計データの高速照会・更新用。
