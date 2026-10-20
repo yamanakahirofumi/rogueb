@@ -49,6 +49,7 @@
 - [モンスター図鑑システム](features/Monster-Encyclopedia-System.md)：各種モンスター種族の遭遇・討伐・獲得記録、段階的情報開示、およびコンプリート報酬に関する仕様
 - [モンスター化・PKシステム](features/Monster-PK-System.md)：プレイヤーによるモンスター化変身と乱入・PKの仕組みに関する仕様
 - [ダンジョン構築・運営システム](features/Dungeon-Construction-System.md)：建築資材、建築モード、および管理者介入に関する仕様
+- [ダンジョン救助＆墓標システム](features/Dungeon-Rescue-System.md)：プレイヤー倒伏時の墓標生成、救助依頼、ガーディアン戦および遺留品回収に関する仕様
 - [ダンジョン生成システム](features/Dungeon-Generation-System.md)：自動生成アルゴリズム、シード値、および通過可能性の保証に関する仕様
 - [ダンジョンランクシステム](features/Dungeon-Rank-System.md)：ダンジョンの成長、経験値、およびランク別の特典に関する仕様
 - [ダンジョン独自ルール詳細仕様](features/Dungeon-Custom-Rule-Specification.md)：ダンジョンランク S で設定可能な独自ルールの技術的定義に関する仕様

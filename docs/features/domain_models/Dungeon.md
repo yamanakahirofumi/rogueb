@@ -92,6 +92,21 @@ Dungeonモジュールは、ダンジョンの構造、内容、状態の管理�
     - `trapId`: トラップの種別 ID。
     - `isRevealed`: トラップが露出しているかどうかを示すフラグ。
 
+### `TombstoneDomain`
+- **説明:** ダンジョン内でプレイヤーが倒伏した際に生成される墓標エンティティ。詳細は [ダンジョン救助＆墓標システム](../Dungeon-Rescue-System.md) を参照。
+- **主要なプロパティ:**
+    - `id`: 墓標の一意な識別子 (`tombstoneId`)。
+    - `ownerUserId`: 倒伏したプレイヤーのユーザー ID。
+    - `dungeonId`: 倒伏が発生したダンジョンの ID。
+    - `floorLevel`: 倒伏が発生した階層レベル。
+    - `position`: 墓標が配置された座標 (`Coordinate`)。
+    - `sealedItems`: 封印・保管されている遺留品アイテムリスト (`List<ThingInstanceDomain>`)。
+    - `sealedGold`: 封印・保管されている遺留金 (Integer)。
+    - `guardianMonsterId`: 墓標を守護するガーディアン精霊の種族 ID。
+    - `status`: 墓標の状態 (`SEALED`, `IN_RESCUE`, `RESCUED`, `EXPIRED`)。
+    - `createdAt`: 生成日時タイムスタンプ。
+    - `expiresAt`: 有効期限タイムスタンプ (48時間)。
+
 ### `DungeonPlayerDomain`
 - **ファイル:** `Dungeon/src/main/java/net/hero/rogueb/dungeon/domain/DungeonPlayerDomain.java`
 - **説明:** 特定のダンジョンにおけるプレイヤーの現在の状態（主に滞在フロア）を管理します。

@@ -60,6 +60,8 @@
 | `fusionCount` | Integer | 融合（合体進化）回数 | 0 〜 5。[モンスター融合システム](./Monster-Fusion-System.md) 参照。 |
 | `preEvolutionId` | String | 直前の進化前種族 ID | `slime` 等。[モンスター退化システム](./Monster-Degeneration-System.md) 参照。 |
 | `lastTraitEnhancement` | Object | 最終特性強化日時および履歴情報 | タイムスタンプ・強化対象メタデータ。[モンスター特性強化システム](./Monster-Trait-Enhancement-System.md) 参照。 |
+| `tombstoneId` | String | 関連付けられた倒伏墓標の ID | `TombstoneDomain` 参照。[ダンジョン救助＆墓標システム](./Dungeon-Rescue-System.md) 参照。 |
+| `rescueRequestId` | String | 関連付けられた救助リクエストの ID | `RescueRequestDomain` 参照。[ダンジョン救助＆墓標システム](./Dungeon-Rescue-System.md) 参照。 |
 | `traits` | Array | 装備中の個体特性オブジェクトの配列 | 各要素は `traitId`, `level`, `type` 等のマップ。[モンスター特性システム](./Monster-Trait-System.md) 参照。 |
 | `inheritanceData` | Object | 未知の種族を持ち込む際の継承データ | 種族基本ステータス、外見、特性等 |
 
@@ -139,6 +141,8 @@
 | `PLEDGE_MONSTER` | - | - | モンスターとの親愛の誓い（親愛解放）処理 |
 | `SYNTHESIZE_ITEM` | - | - | ポータブル調合具または錬金炉によるアイテムの調合・錬金処理 |
 | `DISASSEMBLE_ITEM` | - | - | アイテムの解体・素材還元（分解キット・解体炉）処理 |
+| `RESCUE_PLAYER` | - | - | 倒伏したプレイヤーの墓標を解放・救助する処理 |
+| `SUMMON_GUARDIAN` | - | - | 墓標を守護するガーディアン精霊を召喚・配置する処理 |
 
 ---
 

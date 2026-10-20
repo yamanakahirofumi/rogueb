@@ -78,6 +78,22 @@ PlayerOperationsモジュールはこのサービスを利用して、プレイ�
     - `isCompleted`: 達成フラグ。
     - `isClaimed`: 報酬受領フラグ。
 
+### `RescueRequestDomain`
+- **説明:** 救助掲示板で管理される救助リクエストデータ。詳細は [ダンジョン救助＆墓標システム](../Dungeon-Rescue-System.md) を参照。
+- **主要なプロパティ:**
+    - `rescueRequestId`: リクエストの一意な ID。
+    - `tombstoneId`: 関連付けられた `TombstoneDomain` の ID。
+    - `requesterUserId`: 救助を依頼した倒伏プレイヤーの ID。
+    - `helperUserId`: 救助を受託・実行する救助プレイヤーの ID（未受託時は空文字）。
+    - `dungeonId`: 倒伏ダンジョンの ID。
+    - `floorLevel`: 倒伏階層レベル。
+    - `rewardGold`: 報酬金 (Integer)。
+    - `privacyType`: 公開設定 (`PUBLIC`, `GUILD_ONLY`, `FRIEND_ONLY`, `PASSCODE`)。
+    - `passcode`: 非公開用パスフレーズ。
+    - `status`: リクエスト状態 (`PENDING`, `IN_PROGRESS`, `COMPLETED`, `EXPIRED`)。
+    - `createdAt`: 発行日時タイムスタンプ。
+    - `expiresAt`: 有効期限タイムスタンプ (48時間)。
+
 ### `PlayerTitleDomain`
 - **説明:** プレイヤーが所有する解禁済み称号およびアクティブ（装着中）称号の設定状況を管理します。
 - **主要なプロパティ:**
