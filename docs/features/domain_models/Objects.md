@@ -211,6 +211,10 @@ Objectsモジュールは、武器、防具、ポーション、指輪など、�
 | `elemental_essence_lightning` | 雷のエレメント精導石 | `MATERIAL` | Wind | 1500 | 2 | 500 | `*` | 雷/風属性分解素材 |
 | `trait_orb` | 特性オーブ | `OTHER` | None | 4000 | 3 | 200 | `o` | [特性の抽出](../Monster-Trait-Extraction-System.md)で抽出された個体特性を保持する球体 |
 | `skill_scroll` | 秘伝の書 | `SCROLL` | None | 3500 | 3 | 200 | `?` | [スキル・魔法](../Skill-And-Magic-System.md)を習得させるための秘伝の巻物 |
+| `rescue_scroll` | 救助の巻物 | `SCROLL` | None | 500 | 1 | 1000 | `?` | [ダンジョン救助](../Dungeon-Rescue-System.md)に使用する救助掲示板呼び出し用巻物 |
+| `offering_incense` | 供養の線香 | `OTHER` | None | 800 | 2 | 500 | `*` | [ダンジョン救助](../Dungeon-Rescue-System.md)で墓標を安全に回収するための線香 |
+| `tombstone_key` | 墓標の鍵 | `OTHER` | None | 1500 | 3 | 200 | `*` | [ダンジョン救助](../Dungeon-Rescue-System.md)で解錠に必要な鍵 |
+| `rescue_medal` | 救助メダル | `OTHER` | None | 0 | 1 | 99999 | `$` | [ダンジョン救助](../Dungeon-Rescue-System.md)成功時に獲得できる専用硬貨 |
 
 ## 5. API仕様 (API Specifications)
 
@@ -344,3 +348,4 @@ ObjectsモジュールのAPI実行時にエラーが発生した場合、以下�
 - **ダンジョン環境異変システム**: [ダンジョン環境異変システム](../Dungeon-Environmental-Anomaly-System.md) として策定・追加済み。
 - **ダンジョン錬金・アイテム調合システム**: [ダンジョン錬金・アイテム調合システム](../Item-Synthesis-Alchemy-System.md) として策定・追加済み。
 - **アイテム分解・リサイクルシステム**: [アイテム分解・リサイクルシステム](../Item-Disassembly-System.md) として策定・追加済み。
+- **ダンジョン救助・墓標システム**: [ダンジョン救助・墓標システム](../Dungeon-Rescue-System.md) として策定・追加済み。

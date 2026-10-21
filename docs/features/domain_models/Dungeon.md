@@ -77,6 +77,17 @@ Dungeonモジュールは、ダンジョンの構造、内容、状態の管理�
     - `position`: ショップの座標 (`Coordinate`)。
     - `shopId`: ショップの一意な識別子。
 
+### `TombstoneDomain`
+- **説明:** フロア上に生成されたプレイヤーの倒伏墓標のデータ構造。詳細は [ダンジョン救助・墓標システム](../Dungeon-Rescue-System.md) を参照。
+- **プロパティ:**
+    - `tombstoneId`: 墓標の一意な識別子。
+    - `dungeonId`: ダンジョン ID。
+    - `floorLevel`: 階層レベル。
+    - `position`: 墓標の座標 (`Coordinate2D`)。
+    - `ownerUserId`: 倒伏した所有プレイヤーの ID。
+    - `storedItems`: 保管されているアイテムのリスト。
+    - `storedGold`: 保管されているゴールド。
+
 ### `GoldCoordinateDomain`
 - **ファイル:** `Dungeon/src/main/java/net/hero/rogueb/dungeon/domain/GoldCoordinateDomain.java`
 - **説明:** フロア上の金の山の位置と量を保持します。

@@ -34,6 +34,9 @@
 | `setPieceType` | String | セット内での部位カテゴリ | `WEAPON`, `ARMOR`, `RING` 等 |
 | `enchantments` | Array | 付与されているエンチャントのリスト | オブジェクトの配列。[アイテムエンチャントシステム](./Item-Enchantment-System.md) 参照。 |
 | `meta_effects` | Array | 標準化エフェクトのリスト | オブジェクトの配列。詳細は後述。 |
+| `tombstoneId` | String | 紐づく墓標エンティティ ID | UUID 形式。[ダンジョン救助システム](./Dungeon-Rescue-System.md) 参照。 |
+| `rescueRequestId` | String | 紐づく救助要請 ID | UUID 形式。[ダンジョン救助システム](./Dungeon-Rescue-System.md) 参照。 |
+| `rescuedBy` | String | 救助を実行したユーザー ID | ユーザー UUID |
 
 ---
 
@@ -139,6 +142,8 @@
 | `PLEDGE_MONSTER` | - | - | モンスターとの親愛の誓い（親愛解放）処理 |
 | `SYNTHESIZE_ITEM` | - | - | ポータブル調合具または錬金炉によるアイテムの調合・錬金処理 |
 | `DISASSEMBLE_ITEM` | - | - | アイテムの解体・素材還元（分解キット・解体炉）処理 |
+| `RESCUE_PLAYER` | - | - | 墓標の回収および倒伏プレイヤーの救助・遺品返還処理 |
+| `LOCATE_TOMBSTONE` | - | - | フロア内の墓標位置および状態の探知・露出処理 |
 
 ---
 
