@@ -139,6 +139,9 @@
 | `PLEDGE_MONSTER` | - | - | モンスターとの親愛の誓い（親愛解放）処理 |
 | `SYNTHESIZE_ITEM` | - | - | ポータブル調合具または錬金炉によるアイテムの調合・錬金処理 |
 | `DISASSEMBLE_ITEM` | - | - | アイテムの解体・素材還元（分解キット・解体炉）処理 |
+| `RESCUE_PLAYER` | - | - | 倒伏したプレイヤーの墓標安全確保・遠隔救助処理 |
+| `PACIFY_GUARDIAN_SPIRIT` | `reductionRatio` | Double | 墓標を守る守護霊の攻撃力・防御力低下処理 |
+| `UNLOCK_TOMBSTONE` | - | - | 守護霊戦を回避し、即時に墓標の封印を解錠する処理 |
 
 ---
 
