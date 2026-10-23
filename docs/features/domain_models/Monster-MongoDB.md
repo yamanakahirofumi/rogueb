@@ -96,6 +96,7 @@
 
 ### `monsterInstanceDomain`
 - `{"ownerId": 1}`: プレイヤーが所持するモンスターを検索する場合に必須。
+- `{"ownerId": 1, "state": 1}`: プレイヤーの手持ちパーティ（`PARTY`）や倉庫保管中（`STORAGE`）の個体を状態別に高速抽出するための推奨複合インデックス。
 - `{"isWild": 1}`: 野生モンスターのみを抽出する場合に使用します。
 
 ### `expeditionInstanceDomain`

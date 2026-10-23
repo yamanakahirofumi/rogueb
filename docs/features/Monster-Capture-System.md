@@ -51,6 +51,11 @@
 3. **成功時**:
    - モンスターがマップから消失します。
    - `MonsterInstanceDomain` の `ownerId` がプレイヤーの ID に更新され、`isWild` が `false` になります。
+   - **初期配置状態 (`state`) の決定**:
+     - プレイヤーの手持ちアクティブパーティ（`PARTY`）の所持数が上限（最大 3 体）未満の場合、`state` は `PARTY` に設定されます。
+     - アクティブパーティが満杯の場合、`state` は自動的に `STORAGE`（預かり所）に設定されます。
+   - **捕獲メタデータの記録**:
+     - `MonsterInstanceDomain.metadata` に捕獲日時 (`capturedAt`: ISO-8601形式)、捕獲者ID (`capturedBy`), および使用した捕獲アイテム種別ID (`captureItemTypeId`) が自動的に記録されます。
    - プレイヤーの所持モンスターリスト（`BookOfAdventure`）に追加されます。
 4. **失敗時**:
    - 捕獲用アイテムは消費されます。
@@ -117,14 +122,20 @@ sequenceDiagram
 {
   "success": true,
   "result": "SUCCESS",
-  "message": "スライムの捕獲に成功した！",
+  "message": "スライムの捕獲に成功した！手持ちパーティに追加されました。",
   "capturedMonster": {
     "instanceId": "monster_uuid_67890",
     "monsterId": "slime",
     "level": 5,
     "loyalty": 50,
     "isWild": false,
-    "ownerId": "player_uuid_12345"
+    "state": "PARTY",
+    "ownerId": "player_uuid_12345",
+    "metadata": {
+      "capturedAt": "2026-03-31T12:00:00Z",
+      "capturedBy": "player_uuid_12345",
+      "captureItemTypeId": "capture_capsule"
+    }
   }
 }
 ```
