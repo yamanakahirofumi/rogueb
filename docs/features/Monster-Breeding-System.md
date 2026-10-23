@@ -173,7 +173,63 @@ sequenceDiagram
 }
 ```
 
-#### 7.1.2 卵の孵化 API (`POST /api/v1/monsters/hatch`)
+#### 7.1.2 所持卵一覧・孵化進捗照会 API (`GET /api/v1/monsters/eggs/{userId}`)
+指定したプレイヤーがインベントリまたは倉庫等に所持している卵アイテムの一覧およびそれぞれの蓄積歩数・孵化可能フラグを取得します。
+
+- **Endpoint**: `GET /api/v1/monsters/eggs/{userId}`
+- **Response Body (JSON - 成功時 200 OK)**:
+```json
+{
+  "userId": "player_uuid_12345",
+  "eggs": [
+    {
+      "instanceId": "egg_instance_999",
+      "typeId": "egg",
+      "name": "スライムの卵",
+      "childTypeId": "slime",
+      "currentSteps": 500,
+      "incubationSteps": 500,
+      "isReadyToHatch": true,
+      "parentAId": "monster_instance_001",
+      "parentBId": "monster_instance_002"
+    },
+    {
+      "instanceId": "egg_instance_1000",
+      "typeId": "egg",
+      "name": "ドラゴンの卵",
+      "childTypeId": "dragon",
+      "currentSteps": 1200,
+      "incubationSteps": 5000,
+      "isReadyToHatch": false,
+      "parentAId": "monster_instance_003",
+      "parentBId": "monster_instance_004"
+    }
+  ]
+}
+```
+
+#### 7.1.3 個体繁殖状態・クールタイム照会 API (`GET /api/v1/monsters/{instanceId}/breeding-status`)
+指定されたモンスター個体（`instanceId`）が繁殖可能条件（レベル10以上、クールタイム経過等）を満たしているかを照会します。
+
+- **Endpoint**: `GET /api/v1/monsters/{instanceId}/breeding-status`
+- **Response Body (JSON - 成功時 200 OK)**:
+```json
+{
+  "monsterInstanceId": "monster_instance_001",
+  "monsterId": "slime",
+  "level": 15,
+  "canBreed": false,
+  "isCoolingDown": true,
+  "lastBreedingTime": "2026-03-30T12:00:00Z",
+  "cooldownExpiration": "2026-03-31T12:00:00Z",
+  "remainingCooldownSeconds": 3600,
+  "reasonsForInability": [
+    "再繁殖クールタイム中（解除まであと 3600 秒）"
+  ]
+}
+```
+
+#### 7.1.4 卵の孵化 API (`POST /api/v1/monsters/hatch`)
 歩数条件を満たした卵アイテムを孵化させ、新しいモンスター個体を生成するエンドポイントです。
 
 - **Endpoint**: `POST /api/v1/monsters/hatch`
