@@ -211,6 +211,10 @@ Objectsモジュールは、武器、防具、ポーション、指輪など、�
 | `elemental_essence_lightning` | 雷のエレメント精導石 | `MATERIAL` | Wind | 1500 | 2 | 500 | `*` | 雷/風属性分解素材 |
 | `trait_orb` | 特性オーブ | `OTHER` | None | 4000 | 3 | 200 | `o` | [特性の抽出](../Monster-Trait-Extraction-System.md)で抽出された個体特性を保持する球体 |
 | `skill_scroll` | 秘伝の書 | `SCROLL` | None | 3500 | 3 | 200 | `?` | [スキル・魔法](../Skill-And-Magic-System.md)を習得させるための秘伝の巻物 |
+| `rescue_scroll` | 救助の巻物 | `SCROLL` | Holy | 1500 | 2 | 500 | `?` | [ダンジョン救助](../Dungeon-Rescue-System.md)出撃時に消費する聖なる巻物 |
+| `offering_incense` | 供物のお香 | `MATERIAL` | Holy | 800 | 2 | 500 | `*` | 墓標の解呪・鎮魂を容易にする触媒香 |
+| `tombstone_key` | 墓標の鍵 | `OTHER` | Holy | 2500 | 3 | 200 | `k` | 封印された墓標の強力な結界を直接解呪する鍵 |
+| `token_of_gratitude` | 感謝の印 | `OTHER` | Holy | 5000 | 4 | 100 | `*` | 救助成功時にレスキュアーへ贈られる名誉の証 |
 
 ## 5. API仕様 (API Specifications)
 
