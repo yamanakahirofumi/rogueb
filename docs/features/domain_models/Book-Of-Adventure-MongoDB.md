@@ -90,11 +90,30 @@
     - `updatedAt` (Date): 最終更新日時。
     - `_class` (String): Spring Data MongoDBが使用するクラス情報。
 
-## 8. インデックス推奨事項
+## 8. `playerIntrusionLogDomain` コレクション
+- **説明:** `PlayerIntrusionLogDomain`クラスに対応します。モンスター化乱入・PKセッションの実行ログ、獲得対価、賞金精算結果を永続化・保持します。
+- **フィールド:**
+    - `_id` (ObjectId): MongoDB内部ID。
+    - `intrusionId` (String): 一意な乱入セッションID（例: `intrude_772189`）。
+    - `attackerPlayerId` (String): 乱入（モンスター化）を実行したプレイヤーID。
+    - `targetPlayerId` (String): 乱入対象となったプレイヤーID。
+    - `dungeonId` (String): 乱入が発生したダンジョンID。
+    - `floor` (Integer): 乱入が発生した階層。
+    - `monsterInstanceId` (String): 変身に使用したモンスターインスタンスID。
+    - `result` (String): 乱入・PK結果 (`PK_SUCCESS`, `ATTACKER_DEFEATED`, `EXPIRED`, `ATONED`)。
+    - `gainedExp` (Long): 乱入者が獲得した経験値。
+    - `gainedGold` (Integer): 乱入者が獲得したゴールド。
+    - `bountyPaid` (Integer): 支払い（精算）された賞金額。
+    - `startedAt` (Date): 乱入開始日時 (UTC)。
+    - `endedAt` (Date): 乱入終了・精算日時 (UTC)。
+    - `_class` (String): Spring Data MongoDBが使用するクラス情報。
+
+## 9. インデックス推奨事項
 
 ### `playerDomain`
 - `{"name": 1}`: プレイヤー名によるユニーク検索に必須。
 - `{"namespace": 1}`: ワールド内や特定の領域のプレイヤーを一覧する場合。
+- `{"bounty": -1, "totalPkCount": -1}`: 指名手配リスト (`GET /api/v1/pk/wanted-list`) の賞金・撃破数順ランキング検索用。
 
 ### `playerObjectDomain`
 - `{"playerId": 1}`: プレイヤーの所持アイテムを検索するために必須。
@@ -116,3 +135,7 @@
 
 ### `playerTitleDomain`
 - `{"userId": 1}`: ユニークインデックス。ユーザーごとの所有称号および装着状態照会・更新用。
+
+### `playerIntrusionLogDomain`
+- `{"attackerPlayerId": 1}`: 攻撃側プレイヤーの乱入履歴検索用。
+- `{"targetPlayerId": 1}`: 被害側プレイヤーのPK被害履歴検索用。
