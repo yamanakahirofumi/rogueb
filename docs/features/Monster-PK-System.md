@@ -316,3 +316,18 @@ sequenceDiagram
 
 ## 10. 今後の拡張 (Future Extensions)
 - **進化系モンスター**: 特定のプレイヤーを倒し続けることで、変身できるモンスターがより強力な種族へ進化する機能。
+
+## 11. MongoDB 永続化仕様 (MongoDB Persistence Specification)
+モンスター化・乱入・指名手配および賞金分配データの永続化に関する設計方針とデータ構造を定義します。詳細は [BookOfAdventure MongoDB構造](./domain_models/Book-Of-Adventure-MongoDB.md) および [Monster MongoDB構造](./domain_models/Monster-MongoDB.md) を参照してください。
+
+### 11.1 永続化コレクション
+- **`playerDomain` コレクション**:
+  - 各プレイヤーの `totalPkCount`（累計撃破数）、`currentKillStreak`（現在の連続撃破数）、`bounty`（現在の賞金総額）を保持します。
+  - 指名手配リスト照会（`GET /api/v1/pk/wanted-list`）を高速化するため、複合降順インデックス `{"bounty": -1, "totalPkCount": -1}` が適用されます。
+- **`playerIntrusionLogDomain` コレクション**:
+  - 乱入・PKセッションおよび戦闘結果の監査ログを保持します。
+  - 乱入実行日時、攻撃側プレイヤーID、ターゲットプレイヤーID、選択モンスターインスタンスID、結果（`PK_SUCCESS`, `ATTACKER_DEFEATED`, `EXPIRED`, `ATONED`）、獲得経験値・ゴールド、支払賞金額等を記録します。
+
+### 11.2 セッション状態管理とインデックス戦略
+- 乱入中状態は `PlayerDomain.currentStatus.isMonsterized` および `MonsterInstanceDomain.metadata` 内の `isMonsterized`, `intrusionId` でインメモリ・リアルタイム管理されます。
+- `playerIntrusionLogDomain` には `{"attackerPlayerId": 1}` および `{"targetPlayerId": 1}` インデックスを設定し、個人ごとの乱入・被害履歴照会を最適化します。

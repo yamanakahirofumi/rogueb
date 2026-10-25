@@ -86,7 +86,7 @@
   - `monsterDomain`, `monsterInstanceDomain`, および `expeditionInstanceDomain` コレクションのスキーマ情報。
 
 - **[BookOfAdventureモジュール (MongoDB)](./Book-Of-Adventure-MongoDB.md)**
-  - `playerDomain`, `playerKnowledgeDomain`, `playerMonsterEncyclopediaDomain`, `playerAchievementDomain`, および `playerTitleDomain` コレクションのスキーマ情報。
+  - `playerDomain`, `playerKnowledgeDomain`, `playerMonsterEncyclopediaDomain`, `playerAchievementDomain`, `playerTitleDomain`, および `playerIntrusionLogDomain` コレクションのスキーマ情報。
 
 - **[EconomicSystemモジュール (MongoDB)](./Economic-System-MongoDB.md)**
   - `itemCirculationDomain`, `shopDomain`, `transactionHistoryDomain` コレクションのスキーマ情報。
