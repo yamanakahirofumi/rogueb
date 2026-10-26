@@ -73,10 +73,15 @@
 - **拠点の NPC**: 「懐き具合」を診断してくれる NPC が、正確な数値を教えてくれる場合があります。
 
 ## 6. データ構造
-`MonsterInstanceDomain` に以下のフィールドを追加します。
+`MonsterInstanceDomain` ドメインモデルおよび MongoDB の `monsterInstanceDomain` コレクションにおいて、以下のフィールドを定義・保持します。
 
-- `loyalty`: Integer（0 〜 255）
-- `lastLoyaltyUpdate`: Long（最終忠誠度更新タイムスタンプ）
+- `loyalty` (Integer): 忠誠度数値（範囲: 0 〜 255）。初期値は捕獲時 50、孵化時 120。
+- `lastLoyaltyUpdate` (Long): 最終忠誠度更新タイムスタンプ（Unix Epoch 秒）。放置による減少計算（Lazy Calculation）や連続給餌制限に使用。
+
+### 6.1 MongoDB 永続化および検索最適化仕様
+- **永続化先コレクション**: `monsterInstanceDomain`
+- **インデックス設計**: プレイヤーが所持するモンスターの忠誠度順ソート、最高忠誠度個体の検索、および親愛システム解放条件（`loyalty >= 255`）判定のパフォーマンス最適化のため、複合インデックス `{"ownerId": 1, "loyalty": -1}` の設定を推奨とします。
+- **データ更新タイミング**: 忠誠度の変動（給餌、レベルアップ、戦闘勝利、戦闘不能、Lazy Calculation適用）が発生した際に `loyalty` と `lastLoyaltyUpdate` を同時にアトミック更新します。
 
 ## 7. API 仕様
 

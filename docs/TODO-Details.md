@@ -442,3 +442,7 @@ AIによる生成が困難な、感性やバランス調整が必要な事項で
 ### [x] Displayモジュールのドメインモデル仕様・API仕様およびエラーハンドリングの追加
 - **概要**: 確実に実装するのに不足していた、Displayモジュール（描画レイヤー構造、ビューポート座標、Fog of War、環境異変オーバーレイ、リアルタイムSSEストリーミング）のドメインモデル仕様および具体的なAPI仕様・エラーコードマッピングの追加。
 - **解決策**: [Displayモジュール ドメインモデル](./features/domain_models/Display.md) を新規作成し、`DisplayData` 多層レイヤー構造（`GROUND`, `TRAP`, `OBJECT`, `MONSTER`, `PLAYER`, `EFFECT`, `OVERLAY`）、`FieldOverlayDomain`、`FogOfWarDomain`（`UNEXPLORED`, `EXPLORED`, `VISIBLE`）、`ViewportCoordinateDomain`、REST/SSE API仕様（`GET /api/v1/display/fields/{userId}`, `GET /api/v1/display/overlay/{userId}`, `GET /api/v1/display/stream/{userId}`）、ならびに詳細なエラーハンドリングテーブル（`PLAYER_NOT_FOUND`, `VIEWPORT_OUT_OF_BOUNDS`, `DUNGEON_NOT_ACTIVE`, `STREAM_CONNECTION_FAILED`, `UNAUTHORIZED_DISPLAY_REQUEST`）を定義。あわせて [Objects ドメインモデル](./features/domain_models/Objects.md) に不足していた消費アイテム（`trait_orb`, `skill_scroll`）を追記、[README.md](./README.md) および [ドメインモデル一覧](./features/domain_models/Index.md) を更新。
+
+### [x] モンスター忠誠度システムのMongoDB永続化仕様およびインデックス推奨事項の追加
+- **概要**: 確実に実装するのに不足していた、モンスター忠誠度システム (`loyalty`, `lastLoyaltyUpdate`) のMongoDB永続化仕様、データ更新タイミング（アトミック更新）、および複合インデックス (`{"ownerId": 1, "loyalty": -1}`) の追加。
+- **解決策**: [モンスター忠誠度システム仕様](./features/Monster-Loyalty-System.md) のデータ構造セクションにMongoDB永続化仕様・インデックス要件を追記し、[Monsterモジュール MongoDBデータ構造](./features/domain_models/Monster-MongoDB.md) の `monsterInstanceDomain` に複合インデックス推奨事項 `{"ownerId": 1, "loyalty": -1}` を定義。
