@@ -96,6 +96,7 @@
 
 ### `monsterInstanceDomain`
 - `{"ownerId": 1}`: プレイヤーが所持するモンスターを検索する場合に必須。
+- `{"ownerId": 1, "loyalty": -1}`: プレイヤー所有個体の忠誠度順ソート、最高忠誠度個体の抽出、親愛・進化条件判定を高速化。
 - `{"isWild": 1}`: 野生モンスターのみを抽出する場合に使用します。
 
 ### `expeditionInstanceDomain`
