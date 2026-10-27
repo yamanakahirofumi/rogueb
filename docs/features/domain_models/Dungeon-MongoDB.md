@@ -77,7 +77,23 @@
         - `pointType` (String): タイルの種類 (`Wall`, `UpStairs`, `downStairs`, `floor`)。
     - `_class` (String): Spring Data MongoDBが使用するクラス情報。
 
-## 3. `dungeonPlayerDomain` コレクション
+## 3. `playerTombstoneDomain` コレクション
+- **説明:** 倒伏したプレイヤーの墓標データを保持します。詳細は [ダンジョン救助・墓標システム](../Dungeon-Rescue-System.md) を参照。
+- **フィールド:**
+    - `_id` (String): 墓標のユニーク ID (`tombstoneId`)。
+    - `tombstoneId` (String): 墓標 ID。
+    - `dungeonId` (String): 倒伏が発生したダンジョン ID。
+    - `floorLevel` (Integer): 倒伏が発生した階層レベル。
+    - `coordinate` (Object): 墓標の設置座標 (`x`, `y`)。
+    - `collapsedUserId` (String): 倒伏したユーザー ID。
+    - `collapsedUserName` (String): 倒伏したユーザー名。
+    - `encapsulatedItems` (Array): カプセル化された保護アイテムの配列 (`ThingInstance`)。
+    - `encapsulatedGold` (Integer): カプセル化された保護ゴールド数。
+    - `status` (String): 墓標ステータス (`WAITING_RESCUE`, `RESCUE_IN_PROGRESS`, `RESCUED`, `ABANDONED`, `EXPIRED`)。
+    - `createdAt` (String): ISO-8601 形式の生成日時。
+    - `expiresAt` (String): ISO-8601 形式の有効期限日時（生成から48時間）。
+
+## 4. `dungeonPlayerDomain` コレクション
 - **説明:** `DungeonPlayerDomain`クラスに対応します。プレイヤーのダンジョン内での現在の階層情報を保持します。
 - **フィールド:**
     - `_id` (String): ドキュメントの一意なID。
@@ -95,6 +111,11 @@
 ### `floorDomain`
 - `{"dungeonId": 1, "level": 1}`: 特定のダンジョンの特定の階層を検索するために必須です。
 - `{"userId": 1, "dungeonId": 1}`: ユーザーごとのダンジョンインスタンスを管理する場合に使用します。
+
+### `playerTombstoneDomain`
+- `{"tombstoneId": 1}`: 墓標 ID による直接照会用。
+- `{"dungeonId": 1, "floorLevel": 1}`: 階層別の墓標存在チェック用。
+- `{"collapsedUserId": 1, "status": 1}`: ユーザー別アクティブ墓標検索用。
 
 ### `dungeonPlayerDomain`
 - `{"playerId": 1}`: プレイヤーの現在の滞在ダンジョンを特定するために使用します。

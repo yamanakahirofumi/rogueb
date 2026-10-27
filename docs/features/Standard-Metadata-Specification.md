@@ -33,6 +33,9 @@
 | `setId` | String | 所属するセット装備 ID | `dragon_slayer_set` 等。[セット装備システム](./Equipment-Set-System.md) 参照。 |
 | `setPieceType` | String | セット内での部位カテゴリ | `WEAPON`, `ARMOR`, `RING` 等 |
 | `enchantments` | Array | 付与されているエンチャントのリスト | オブジェクトの配列。[アイテムエンチャントシステム](./Item-Enchantment-System.md) 参照。 |
+| `tombstoneId` | String | 紐づく墓標エンティティ ID | UUID 形式。[ダンジョン救助・墓標システム](./Dungeon-Rescue-System.md) 参照。 |
+| `rescueStatus` | String | 救助ステータス | `WAITING_RESCUE`, `RESCUING`, `RESCUED` |
+| `rescuerUserId` | String | 救助を担当したユーザー ID | UUID 形式 |
 | `meta_effects` | Array | 標準化エフェクトのリスト | オブジェクトの配列。詳細は後述。 |
 
 ---
@@ -139,6 +142,8 @@
 | `PLEDGE_MONSTER` | - | - | モンスターとの親愛の誓い（親愛解放）処理 |
 | `SYNTHESIZE_ITEM` | - | - | ポータブル調合具または錬金炉によるアイテムの調合・錬金処理 |
 | `DISASSEMBLE_ITEM` | - | - | アイテムの解体・素材還元（分解キット・解体炉）処理 |
+| `RESCUE_PLAYER` | - | - | 倒伏プレイヤーの墓標解放・救助処理 |
+| `SUMMON_GUARDIAN_SPIRIT` | `count` | Integer | 墓標守護霊（ガーディアン・スピリット）の召喚数 |
 
 ---
 
