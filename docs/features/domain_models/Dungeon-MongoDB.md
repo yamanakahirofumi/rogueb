@@ -77,7 +77,22 @@
         - `pointType` (String): タイルの種類 (`Wall`, `UpStairs`, `downStairs`, `floor`)。
     - `_class` (String): Spring Data MongoDBが使用するクラス情報。
 
-## 3. `dungeonPlayerDomain` コレクション
+## 3. `playerTombstoneDomain` コレクション
+- **説明:** ダンジョンフロア上に動的に配置された墓標エンティティの情報を永続化します。詳細は [ダンジョン救助・墓標システム](../Dungeon-Rescue-System.md) を参照してください。
+- **フィールド:**
+    - `_id` (String): ドキュメントの一意なID（`tombstoneId`）。
+    - `dungeonId` (String): ダンジョンID。
+    - `floorLevel` (Integer): 配置されている階層レベル。
+    - `position` (Object): 座標 (`Coordinate` オブジェクト)。
+    - `victimUserId` (String): 倒伏したプレイヤーの ID。
+    - `createdAt` (Date): 倒伏・墓標生成日時。
+    - `expiresAt` (Date): 救助期限日時（通常は生成から72時間後）。
+    - `status` (String): 墓標の状態 (`ACTIVE`, `RESCUED`, `EXPIRED`, `ABANDONED`)。
+    - `lostItemIds` (Array): 退避されたロストアイテムインスタンス ID の配列。
+    - `lostGold` (Integer): 退避されたロストゴールド量。
+    - `_class` (String): Spring Data MongoDBが使用するクラス情報（例: `net.hero.rogueb.dungeon.domain.PlayerTombstoneDomain`）。
+
+## 4. `dungeonPlayerDomain` コレクション
 - **説明:** `DungeonPlayerDomain`クラスに対応します。プレイヤーのダンジョン内での現在の階層情報を保持します。
 - **フィールド:**
     - `_id` (String): ドキュメントの一意なID。
@@ -86,7 +101,7 @@
     - `level` (Integer): 現在の階層レベル。
     - `_class` (String): Spring Data MongoDBが使用するクラス情報（例: `net.hero.rogueb.dungeon.domain.DungeonPlayerDomain`）。
 
-## 4. インデックス推奨事項
+## 5. インデックス推奨事項
 
 ### `dungeonDomain`
 - `{"name": 1}`: ダンジョンを名前で検索する場合。
@@ -95,6 +110,11 @@
 ### `floorDomain`
 - `{"dungeonId": 1, "level": 1}`: 特定のダンジョンの特定の階層を検索するために必須です。
 - `{"userId": 1, "dungeonId": 1}`: ユーザーごとのダンジョンインスタンスを管理する場合に使用します。
+
+### `playerTombstoneDomain`
+- `{"dungeonId": 1, "floorLevel": 1, "status": 1}`: ダンジョンフロア上のアクティブな墓標検索を高速化する複合インデックス。
+- `{"victimUserId": 1, "status": 1}`: 倒伏プレイヤー自身の墓標状態照会用。
+- `{"expiresAt": 1}`: 期限切れ墓標の自動クリーンアップ（風化処理）用。
 
 ### `dungeonPlayerDomain`
 - `{"playerId": 1}`: プレイヤーの現在の滞在ダンジョンを特定するために使用します。

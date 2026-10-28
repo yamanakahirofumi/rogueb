@@ -25,6 +25,10 @@
 | `isIdentified` | Boolean | 識別済みかどうか | `true` / `false` |
 | `charges` | Integer | 残り使用回数（杖等で使用） | 0 〜 99 |
 | `maxCharges` | Integer | 最大使用回数（杖等で使用） | 1 〜 99 |
+| `isTombstone` | Boolean | 墓標エンティティ識別フラグ | `true` / `false` |
+| `victimUserId` | String | 倒伏プレイヤーのユーザー ID | UUID 形式 |
+| `rescueRequestId` | String | 紐づく救助要請 ID | `res_req_88192` 等 |
+| `deathFloor` | Integer | 倒伏が発生したフロア階層 | 1 〜 99 |
 
 ### 2.2 特殊効果・カテゴリキー
 | キー | 型 | 意味 | 有効範囲 / 例 |
@@ -139,6 +143,9 @@
 | `PLEDGE_MONSTER` | - | - | モンスターとの親愛の誓い（親愛解放）処理 |
 | `SYNTHESIZE_ITEM` | - | - | ポータブル調合具または錬金炉によるアイテムの調合・錬金処理 |
 | `DISASSEMBLE_ITEM` | - | - | アイテムの解体・素材還元（分解キット・解体炉）処理 |
+| `TRIGGER_RESCUE` | `requestId` | String | 指定した救助要請の受諾・救助探索突入 |
+| `RECOVER_LOST_ITEMS` | `rate` | Double | 墓標からのロストアイテム・ゴールド回収処理 (0.7 - 1.0) |
+| `SUMMON_GUARDIAN_SPIRIT` | `level` | Integer | 墓標を守護する守護霊モンスターの召喚 |
 
 ---
 
