@@ -80,7 +80,19 @@
     - `completedAt` (Date): 達成日時。
     - `_class` (String): Spring Data MongoDBが使用するクラス情報。
 
-## 7. `playerTitleDomain` コレクション
+## 7. `rescueRequestDomain` コレクション
+- **説明:** 倒伏プレイヤーによる救助要請および救助者とのマッチング・完了結果を永続化します。詳細は [ダンジョン救助・墓標システム](../Dungeon-Rescue-System.md) を参照してください。
+- **フィールド:**
+    - `_id` (String): 一意なリクエスト ID (`requestId`)。
+    - `tombstoneId` (String): 対応する墓標の ID。
+    - `victimUserId` (String): 倒伏プレイヤーの ID。
+    - `rescuerUserId` (String): 救助者の ID (未マッチング時は null)。
+    - `status` (String): 救助ステータス (`PENDING`, `IN_PROGRESS`, `SUCCESS`, `FAILED`, `CANCELLED`)。
+    - `requestedAt` (Date): 要請発行日時。
+    - `completedAt` (Date): 処理完了日時。
+    - `_class` (String): Spring Data MongoDBが使用するクラス情報。
+
+## 8. `playerTitleDomain` コレクション
 - **説明:** `PlayerTitleDomain`クラスに対応します。プレイヤーごとの解禁済み称号リストおよび現在装着中のアクティブ称号を保持します。
 - **フィールド:**
     - `_id` (String): ユーザーID（通常は1ユーザー1ドキュメント）。
@@ -90,7 +102,7 @@
     - `updatedAt` (Date): 最終更新日時。
     - `_class` (String): Spring Data MongoDBが使用するクラス情報。
 
-## 8. インデックス推奨事項
+## 9. インデックス推奨事項
 
 ### `playerDomain`
 - `{"name": 1}`: プレイヤー名によるユニーク検索に必須。
@@ -113,6 +125,11 @@
 ### `playerAchievementDomain`
 - `{"userId": 1}`: ユーザーごとの実績進捗一覧検索用。
 - `{"userId": 1, "achievementId": 1}`: ユニーク複合インデックス。特定実績の進捗更新・受領判定用。
+
+### `rescueRequestDomain`
+- `{"status": 1, "requestedAt": -1}`: アクティブな救助要請一覧の最新順検索を高速化する複合インデックス。
+- `{"victimUserId": 1}`: 特定の倒伏プレイヤーの救助要請履歴・状態照会用。
+- `{"rescuerUserId": 1}`: 救助者ごとの受諾済みミッション照会用。
 
 ### `playerTitleDomain`
 - `{"userId": 1}`: ユニークインデックス。ユーザーごとの所有称号および装着状態照会・更新用。
