@@ -65,6 +65,15 @@
         - `position` (Object): 座標 (`Coordinate`)。
         - `trapId` (Integer): トラップの種別 ID（[トラップシステム](../Trap-System.md) の ID に対応）。
         - `isRevealed` (Boolean): 露出フラグ。
+    - `tombstoneList` (Array): フロア上の墓標のリスト (`TombstoneDomain` オブジェクトの配列)。詳細は [ダンジョン救助・墓標システム](../Dungeon-Rescue-System.md) を参照。
+        - `tombstoneId` (String): 墓標 ID
+        - `ownerUserId` (String): 所有プレイヤー ID
+        - `ownerCharacterName` (String): キャラクター名
+        - `position` (Object): 座標 (`Coordinate`)
+        - `createdAt` (Long): 生成日時
+        - `expiresAt` (Long): 失効日時
+        - `status` (String): `WAITING`, `IN_PROGRESS`, `RESCUED`, `EXPIRED`
+        - `forfeitedGold` (Integer): 保管ゴールド
     - `activeEnvironmentalAnomaly` (Object): フロア全体に及ぶ広域環境異変データ。詳細は [ダンジョン環境異変システム](../Dungeon-Environmental-Anomaly-System.md) を参照。
         - `anomalyId` (String): `solar_flare`, `freezing_blizzard`, `mana_surge`, `miasma_storm`, `supergravity`
         - `name` (String): 表示名称
