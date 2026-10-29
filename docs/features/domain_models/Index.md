@@ -15,6 +15,7 @@
   - **[ダンジョンランクシステム](../Dungeon-Rank-System.md)**: ダンジョンの成長、経験値、およびランク別の特典に関する仕様。
   - **[ダンジョン独自ルール詳細仕様](../Dungeon-Custom-Rule-Specification.md)**: ランク S で設定可能な独自ルールの技術的定義。
   - **[ダンジョン環境異変システム](../Dungeon-Environmental-Anomaly-System.md)**: フロア全体に及ぶ天候・環境異変（太陽フレア、絶対零度等）と効果・制御に関する仕様。
+  - **[ダンジョン救助・墓標システム](../Dungeon-Rescue-System.md)**: 倒伏時の墓標形成、救助依頼、ガーディアン戦、および遺品復旧に関する仕様。
   - **[トラップシステム](../Trap-System.md)**: ダンジョン内の罠の種類、効果、配置に関する仕様。
 
 - **[Worldモジュール](./World.md)**
@@ -61,6 +62,7 @@
   - プレイヤーの状態、キャラクター情報の永続化を担当します。
   - **[モンスター図鑑システム](../Monster-Encyclopedia-System.md)**: プレイヤー個別のモンスター図鑑進捗およびマイルストーン報酬受取管理。
   - **[プレイヤー称号・実績システム](../Player-Title-Achievement-System.md)**: 各領域の実績トラッキング、称号解禁および装着によるパッシブ効果の適用。
+  - **[ダンジョン救助・墓標システム](../Dungeon-Rescue-System.md)**: 救助依頼 (`RescueRequestDomain`) の作成・管理・完了処理。
 
 - **[EconomicSystemモジュール](./Economic-System.md)**
   - アイテムの流通量、動的な価格計算、およびショップ管理を担当します。
@@ -86,7 +88,7 @@
   - `monsterDomain`, `monsterInstanceDomain`, および `expeditionInstanceDomain` コレクションのスキーマ情報。
 
 - **[BookOfAdventureモジュール (MongoDB)](./Book-Of-Adventure-MongoDB.md)**
-  - `playerDomain`, `playerKnowledgeDomain`, `playerMonsterEncyclopediaDomain`, `playerAchievementDomain`, および `playerTitleDomain` コレクションのスキーマ情報。
+  - `playerDomain`, `playerKnowledgeDomain`, `playerMonsterEncyclopediaDomain`, `playerAchievementDomain`, `playerTitleDomain`, および `rescueRequestDomain` コレクションのスキーマ情報。
 
 - **[EconomicSystemモジュール (MongoDB)](./Economic-System-MongoDB.md)**
   - `itemCirculationDomain`, `shopDomain`, `transactionHistoryDomain` コレクションのスキーマ情報。

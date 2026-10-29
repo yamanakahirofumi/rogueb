@@ -54,6 +54,7 @@ Dungeonモジュールは、ダンジョンの構造、内容、状態の管理�
     - `goldList`: フロアに存在する金の山のリスト (`GoldCoordinateDomain`のリスト)。
     - `monsterList`: フロアに存在するモンスターのリスト (`MonsterCoordinateDomain`のリスト)。
     - `trapList`: フロアに存在するトラップのリスト (`TrapCoordinateDomain`のリスト)。
+    - `tombstoneList`: フロアに存在するプレイヤーの墓標のリスト (`TombstoneDomain` のリスト)。詳細は [ダンジョン救助・墓標システム](../Dungeon-Rescue-System.md) を参照。
     - `shopList`: フロアに存在するショップのリスト（`EconomicSystem` モジュールの `ShopDomain` への参照情報）。
     - `activeEnvironmentalAnomaly`: 現在フロアに発生している広域環境異変 (`EnvironmentalAnomalyDomain`)。詳細は [ダンジョン環境異変システム](../Dungeon-Environmental-Anomaly-System.md) を参照。
     - `tiles`: フロアのマップレイアウトを表す2Dリスト（`Tile`オブジェクト）。
@@ -91,6 +92,18 @@ Dungeonモジュールは、ダンジョンの構造、内容、状態の管理�
     - `position`: トラップの座標 (`Coordinate`)。
     - `trapId`: トラップの種別 ID。
     - `isRevealed`: トラップが露出しているかどうかを示すフラグ。
+
+### `TombstoneDomain`
+- **説明:** 倒伏したプレイヤーの記憶残渣および没収品を保管する墓標エンティティ。詳細は [ダンジョン救助・墓標システム](../Dungeon-Rescue-System.md) を参照。
+- **プロパティ:**
+    - `tombstoneId`: 墓標の一意な ID。
+    - `ownerUserId`: 倒伏したプレイヤーのユーザー ID。
+    - `ownerCharacterName`: 倒伏したプレイヤーの文字名。
+    - `position`: 墓標の座標 (`Coordinate`)。
+    - `createdAt`: 生成タイムスタンプ。
+    - `expiresAt`: 失効タイムスタンプ (72時間)。
+    - `status`: 状態 (`WAITING`, `IN_PROGRESS`, `RESCUED`, `EXPIRED`)。
+    - `forfeitedGold`: 保管ゴールド。
 
 ### `DungeonPlayerDomain`
 - **ファイル:** `Dungeon/src/main/java/net/hero/rogueb/dungeon/domain/DungeonPlayerDomain.java`

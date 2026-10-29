@@ -53,6 +53,7 @@
 - [ダンジョンランクシステム](features/Dungeon-Rank-System.md)：ダンジョンの成長、経験値、およびランク別の特典に関する仕様
 - [ダンジョン独自ルール詳細仕様](features/Dungeon-Custom-Rule-Specification.md)：ダンジョンランク S で設定可能な独自ルールの技術的定義に関する仕様
 - [ダンジョン環境異変システム](features/Dungeon-Environmental-Anomaly-System.md)：フロア全体に及ぶ天候・環境異変（太陽フレア、絶対零度等）と効果・制御に関する仕様
+- [ダンジョン救助・墓標システム](features/Dungeon-Rescue-System.md)：倒伏時の墓標形成、救助依頼、ガーディアン戦、および遺品復旧に関する仕様
 - [世界間連携システム](features/World-Interoperability-System.md)：トラストネットワーク、クロスワールド・マイグレーション、および未知のアイテムの持ち込みに関する仕様
 
 ### 2.1 主要ドメインモデル
