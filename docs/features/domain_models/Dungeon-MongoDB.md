@@ -65,6 +65,11 @@
         - `position` (Object): 座標 (`Coordinate`)。
         - `trapId` (Integer): トラップの種別 ID（[トラップシステム](../Trap-System.md) の ID に対応）。
         - `isRevealed` (Boolean): 露出フラグ。
+    - `tombstoneList` (Array): フロア上のプレイヤー墓碑リスト (`TombstoneCoordinateDomain`オブジェクトの配列)。詳細は [ダンジョン救助システム](../Dungeon-Rescue-System.md) を参照。
+        - `position` (Object): 座標 (`Coordinate`)。
+        - `tombstoneId` (String): 墓碑 ID。
+        - `ownerUserId` (String): 倒伏プレイヤーの ID。
+        - `isPurified` (Boolean): 浄化済みフラグ。
     - `activeEnvironmentalAnomaly` (Object): フロア全体に及ぶ広域環境異変データ。詳細は [ダンジョン環境異変システム](../Dungeon-Environmental-Anomaly-System.md) を参照。
         - `anomalyId` (String): `solar_flare`, `freezing_blizzard`, `mana_surge`, `miasma_storm`, `supergravity`
         - `name` (String): 表示名称
@@ -86,7 +91,24 @@
     - `level` (Integer): 現在の階層レベル。
     - `_class` (String): Spring Data MongoDBが使用するクラス情報（例: `net.hero.rogueb.dungeon.domain.DungeonPlayerDomain`）。
 
-## 4. インデックス推奨事項
+## 4. `playerTombstoneDomain` コレクション
+- **説明:** `TombstoneDomain`クラスに対応します。ダンジョン内で倒れたプレイヤーの墓碑データおよび保護された遺品を永続化します。詳細は [ダンジョン救助システム](../Dungeon-Rescue-System.md) を参照。
+- **フィールド:**
+    - `_id` (String): ドキュメントの一意なID（`tombstoneId`）。
+    - `rescueRequestId` (String): 紐づく救助要請ID。
+    - `dungeonId` (String): ダンジョンID。
+    - `floorLevel` (Integer): 倒伏階層。
+    - `position` (Object): 倒伏タイルの座標 (`Coordinate`)。
+    - `ownerUserId` (String): 倒れたプレイヤーのID。
+    - `ownerPlayerName` (String): 倒れたプレイヤー名。
+    - `causeOfDeath` (String): 死因文字列。
+    - `sealedGold` (Integer): 保護されたゴールド。
+    - `sealedItemCount` (Integer): 保護されたアイテム個数。
+    - `isPurified` (Boolean): 浄化・解放済みフラグ。
+    - `createdAt` (Long): 生成日時タイムスタンプ。
+    - `_class` (String): Spring Data MongoDBが使用するクラス情報。
+
+## 5. インデックス推奨事項
 
 ### `dungeonDomain`
 - `{"name": 1}`: ダンジョンを名前で検索する場合。
@@ -99,3 +121,8 @@
 ### `dungeonPlayerDomain`
 - `{"playerId": 1}`: プレイヤーの現在の滞在ダンジョンを特定するために使用します。
 - `{"dungeonId": 1}`: 特定のダンジョンにいるプレイヤーを一覧表示するために使用します。
+
+### `playerTombstoneDomain`
+- `{"dungeonId": 1, "floorLevel": 1}`: 特定フロアの墓碑を検索するために使用します。
+- `{"rescueRequestId": 1}`: ユニークインデックス。救助要請から紐づく墓標を即座に参照するために使用します。
+- `{"ownerUserId": 1}`: 特定プレイヤーの墓碑履歴を検索するために使用します。
