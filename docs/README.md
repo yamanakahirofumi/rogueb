@@ -48,6 +48,7 @@
 - [モンスター作戦指示システム](features/Monster-Tactical-Directives-System.md)：仲間モンスターへの戦術指示（作戦）切替、思考アルゴリズム、および忠誠度による指示遵守判定に関する仕様
 - [モンスター図鑑システム](features/Monster-Encyclopedia-System.md)：各種モンスター種族の遭遇・討伐・獲得記録、段階的情報開示、およびコンプリート報酬に関する仕様
 - [モンスター化・PKシステム](features/Monster-PK-System.md)：プレイヤーによるモンスター化変身と乱入・PKの仕組みに関する仕様
+- [ダンジョン救助・墓標システム](features/Dungeon-Rescue-System.md)：力尽きたプレイヤーの救助要請、フロア墓標生成、守護霊バトル、および遺品回収に関する仕様
 - [ダンジョン構築・運営システム](features/Dungeon-Construction-System.md)：建築資材、建築モード、および管理者介入に関する仕様
 - [ダンジョン生成システム](features/Dungeon-Generation-System.md)：自動生成アルゴリズム、シード値、および通過可能性の保証に関する仕様
 - [ダンジョンランクシステム](features/Dungeon-Rank-System.md)：ダンジョンの成長、経験値、およびランク別の特典に関する仕様
