@@ -33,6 +33,9 @@
 | `setId` | String | 所属するセット装備 ID | `dragon_slayer_set` 等。[セット装備システム](./Equipment-Set-System.md) 参照。 |
 | `setPieceType` | String | セット内での部位カテゴリ | `WEAPON`, `ARMOR`, `RING` 等 |
 | `enchantments` | Array | 付与されているエンチャントのリスト | オブジェクトの配列。[アイテムエンチャントシステム](./Item-Enchantment-System.md) 参照。 |
+| `tombstoneId` | String | 遺品が封印されていた墓標の ID | `tomb_usr_...`。[ダンジョン救助・墓標システム](./Dungeon-Rescue-System.md) 参照。 |
+| `rescueRequestId` | String | 救助成功により回収・贈呈された救助要請 ID | `res_req_...`。[ダンジョン救助・墓標システム](./Dungeon-Rescue-System.md) 参照。 |
+| `rescuedBy` | String | このアイテムを回収・救助してくれたプレイヤー ID | `usr_...`。[ダンジョン救助・墓標システム](./Dungeon-Rescue-System.md) 参照。 |
 | `meta_effects` | Array | 標準化エフェクトのリスト | オブジェクトの配列。詳細は後述。 |
 
 ---
@@ -139,6 +142,8 @@
 | `PLEDGE_MONSTER` | - | - | モンスターとの親愛の誓い（親愛解放）処理 |
 | `SYNTHESIZE_ITEM` | - | - | ポータブル調合具または錬金炉によるアイテムの調合・錬金処理 |
 | `DISASSEMBLE_ITEM` | - | - | アイテムの解体・素材還元（分解キット・解体炉）処理 |
+| `RESCUE_PLAYER` | - | - | 遭難プレイヤーへの即時到達・蘇生処理（救助達成） |
+| `PURIFY_TOMBSTONE` | - | - | 墓標の守護英霊を鎮静・成仏させ遺品を無血回収する処理 |
 
 ---
 
