@@ -65,6 +65,11 @@
         - `position` (Object): 座標 (`Coordinate`)。
         - `trapId` (Integer): トラップの種別 ID（[トラップシステム](../Trap-System.md) の ID に対応）。
         - `isRevealed` (Boolean): 露出フラグ。
+    - `tombstoneList` (Array): フロア上の墓標のリスト (`TombstoneCoordinateDomain`オブジェクトの配列)。詳細は [ダンジョン救助・墓標システム](../Dungeon-Rescue-System.md) を参照。
+        - `position` (Object): 座標 (`Coordinate`)。
+        - `tombstoneId` (String): 墓標の一意なID。
+        - `deceasedUserId` (String): 倒伏したプレイヤーのユーザーID。
+        - `isGuardianDefeated` (Boolean): 守護英霊撃破フラグ。
     - `activeEnvironmentalAnomaly` (Object): フロア全体に及ぶ広域環境異変データ。詳細は [ダンジョン環境異変システム](../Dungeon-Environmental-Anomaly-System.md) を参照。
         - `anomalyId` (String): `solar_flare`, `freezing_blizzard`, `mana_surge`, `miasma_storm`, `supergravity`
         - `name` (String): 表示名称
@@ -95,6 +100,7 @@
 ### `floorDomain`
 - `{"dungeonId": 1, "level": 1}`: 特定のダンジョンの特定の階層を検索するために必須です。
 - `{"userId": 1, "dungeonId": 1}`: ユーザーごとのダンジョンインスタンスを管理する場合に使用します。
+- `{"tombstoneList.tombstoneId": 1}`: 特定の墓標が配置されている階層・ダンジョンを逆引き検索する場合に使用します。
 
 ### `dungeonPlayerDomain`
 - `{"playerId": 1}`: プレイヤーの現在の滞在ダンジョンを特定するために使用します。

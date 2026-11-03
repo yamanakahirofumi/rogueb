@@ -36,6 +36,10 @@ AIによる生成が困難な、感性やバランス調整が必要な事項で
 ## 6. 完了済み事項
 これまでに検討が完了し、仕様が策定された事項です。
 
+### [x] ダンジョン救助・墓標システムの新機能提案および詳細仕様策定
+- **概要**: ダンジョン探索中にプレイヤーが倒伏（HP 0）した際の救済メカニズム、非同期マルチプレイヤー協力プレイ、および墓標エンティティ・守護英霊戦を通じた遺品回収を可能とする「ダンジョン救助・墓標システム」の設計と仕様の策定。
+- **解決策**: [ダンジョン救助・墓標システム仕様](./features/Dungeon-Rescue-System.md) を新規作成し、救助要請ライフサイクル（要請・受諾・救助突入・蘇生）、墓標（`Tombstone`）エンティティ仕様（碑文、封印遺品、守護英霊戦）、専用救助アイテム（`rescue_scroll`, `offering_incense`, `tombstone_key`）、モジュール間連携シーケンス、API仕様（`POST /api/v1/dungeons/rescue/request`, `GET /api/v1/dungeons/rescue/requests`, `POST /api/v1/dungeons/rescue/{requestId}/accept`, `POST /api/v1/dungeons/rescue/{requestId}/complete`, `GET /api/v1/dungeons/tombstones/{tombstoneId}`, `POST /api/v1/dungeons/tombstones/{tombstoneId}/recover`）、ならびに詳細なエラーハンドリングテーブル（`RESCUE_REQUEST_NOT_FOUND`, `RESCUE_ALREADY_ACCEPTED`, `CANNOT_RESCUE_SELF`, `TOMBSTONE_NOT_FOUND`, `GUARDIAN_BATTLE_ACTIVE`, `INSUFFICIENT_KEY_ITEM` 等）を定義。あわせて [Dungeon ドメインモデル](./features/domain_models/Dungeon.md) および [Dungeon MongoDB構造](./features/domain_models/Dungeon-MongoDB.md) に `tombstoneList` / `TombstoneCoordinateDomain` を追加、[BookOfAdventure ドメインモデル](./features/domain_models/Book-Of-Adventure.md) および [BookOfAdventure MongoDB構造](./features/domain_models/Book-Of-Adventure-MongoDB.md) に `RescueRequestDomain` / `rescueRequestDomain` を追加、[Objects ドメインモデル](./features/domain_models/Objects.md) および [標準メタデータ仕様](./features/Standard-Metadata-Specification.md) に救助アイテム・メタデータキー・エフェクトIDを追加、[README.md](./README.md) および [ドメインモデル一覧](./features/domain_models/Index.md) を更新。
+
 ### [x] モンスター進化システムおよびモンスター融合システムの照会・プレビューAPI仕様の追加
 - **概要**: 確実に実装するのに不足していた、モンスター進化システムにおける進化候補・条件達成状況照会API（`GET /api/v1/monsters/{instanceId}/evolution-options`）および、モンスター融合システムにおける融合結果プレビュー・必要コスト照会API（`POST /api/v1/monsters/fuse/preview`）の具体的なリクエスト・レスポンスJSON構造およびエラーハンドリング仕様の追加。
 - **解決策**: [モンスター進化システム仕様](./features/Monster-Evolution-System.md) にて進化候補・条件達成状況照会APIを定義し、[モンスター融合システム仕様](./features/Monster-Fusion-System.md) にて融合プレビューAPIを定義。また、未所有個体操作時のエラーコード `UNAUTHORIZED_MONSTER_OPERATOR` を各エラーマッピング表に追加。

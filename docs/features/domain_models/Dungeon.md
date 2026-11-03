@@ -54,6 +54,7 @@ Dungeonモジュールは、ダンジョンの構造、内容、状態の管理�
     - `goldList`: フロアに存在する金の山のリスト (`GoldCoordinateDomain`のリスト)。
     - `monsterList`: フロアに存在するモンスターのリスト (`MonsterCoordinateDomain`のリスト)。
     - `trapList`: フロアに存在するトラップのリスト (`TrapCoordinateDomain`のリスト)。
+    - `tombstoneList`: フロアに存在する墓標のリスト (`TombstoneCoordinateDomain`のリスト)。詳細は [ダンジョン救助・墓標システム](../Dungeon-Rescue-System.md) を参照。
     - `shopList`: フロアに存在するショップのリスト（`EconomicSystem` モジュールの `ShopDomain` への参照情報）。
     - `activeEnvironmentalAnomaly`: 現在フロアに発生している広域環境異変 (`EnvironmentalAnomalyDomain`)。詳細は [ダンジョン環境異変システム](../Dungeon-Environmental-Anomaly-System.md) を参照。
     - `tiles`: フロアのマップレイアウトを表す2Dリスト（`Tile`オブジェクト）。
@@ -91,6 +92,14 @@ Dungeonモジュールは、ダンジョンの構造、内容、状態の管理�
     - `position`: トラップの座標 (`Coordinate`)。
     - `trapId`: トラップの種別 ID。
     - `isRevealed`: トラップが露出しているかどうかを示すフラグ。
+
+### `TombstoneCoordinateDomain` (値オブジェクト)
+- **説明:** フロア上の墓標の位置と状態を保持します。詳細は [ダンジョン救助・墓標システム](../Dungeon-Rescue-System.md) を参照。
+- **プロパティ:**
+    - `position`: 墓標の座標 (`Coordinate`)。
+    - `tombstoneId`: 墓標の一意な識別子。
+    - `deceasedUserId`: 倒伏したプレイヤーのユーザーID。
+    - `isGuardianDefeated`: 墓標の守護英霊が討伐されたかどうかを示すフラグ。
 
 ### `DungeonPlayerDomain`
 - **ファイル:** `Dungeon/src/main/java/net/hero/rogueb/dungeon/domain/DungeonPlayerDomain.java`
