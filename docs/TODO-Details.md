@@ -36,6 +36,10 @@ AIによる生成が困難な、感性やバランス調整が必要な事項で
 ## 6. 完了済み事項
 これまでに検討が完了し、仕様が策定された事項です。
 
+### [x] ダンジョン救助・墓標システムの新機能提案および詳細仕様策定
+- **概要**: プレイヤーがダンジョン内で倒伏した（HP 0）際の全ロスト体験をソーシャルな協力プレイへと転換し、他プレイヤーによる救助依頼（レスキューシステム）、墓標（Tombstone）生成、守護怨霊バトル、墓標解放と遺品・ゴールド回収、謝礼報酬を可能にする「ダンジョン救助・墓標システム」の設計と仕様の策定。
+- **解決策**: [ダンジョン救助・墓標システム仕様](./features/Dungeon-Rescue-System.md) を新規作成し、倒伏と墓標生成メカニズム、救助掲示板と潜入ルール、守護怨霊・墓標浄化戦、救助ライフサイクル（`PENDING`, `IN_PROGRESS`, `RESCUED`, `EXPIRED`, `CANCELLED`）、`TombstoneDomain` および `RescueRequestDomain` ドメインモデル、専用消費アイテム（`rescue_scroll`, `offering_incense`, `tombstone_key`）、シーケンスフロー、API仕様（`GET /api/v1/rescue/requests`, `POST /api/v1/rescue/requests`, `POST /api/v1/rescue/requests/{requestId}/accept`, `POST /api/v1/rescue/tombstones/{tombstoneId}/purify`, `POST /api/v1/rescue/requests/{requestId}/claim`）、ならびに包括的なエラーハンドリングを定義。あわせて [Dungeon ドメインモデル](./features/domain_models/Dungeon.md)、[Dungeon MongoDB構造](./features/domain_models/Dungeon-MongoDB.md)、[BookOfAdventure ドメインモデル](./features/domain_models/Book-Of-Adventure.md)、[BookOfAdventure MongoDB構造](./features/domain_models/Book-Of-Adventure-MongoDB.md)、[Objects ドメインモデル](./features/domain_models/Objects.md)、[標準メタデータ仕様](./features/Standard-Metadata-Specification.md)、[README.md](./README.md)、および [ドメインモデル一覧](./features/domain_models/Index.md) を更新。
+
 ### [x] モンスター進化システムおよびモンスター融合システムの照会・プレビューAPI仕様の追加
 - **概要**: 確実に実装するのに不足していた、モンスター進化システムにおける進化候補・条件達成状況照会API（`GET /api/v1/monsters/{instanceId}/evolution-options`）および、モンスター融合システムにおける融合結果プレビュー・必要コスト照会API（`POST /api/v1/monsters/fuse/preview`）の具体的なリクエスト・レスポンスJSON構造およびエラーハンドリング仕様の追加。
 - **解決策**: [モンスター進化システム仕様](./features/Monster-Evolution-System.md) にて進化候補・条件達成状況照会APIを定義し、[モンスター融合システム仕様](./features/Monster-Fusion-System.md) にて融合プレビューAPIを定義。また、未所有個体操作時のエラーコード `UNAUTHORIZED_MONSTER_OPERATOR` を各エラーマッピング表に追加。
