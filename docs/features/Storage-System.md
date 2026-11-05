@@ -11,7 +11,9 @@
     - `id`: 倉庫の一意な識別子。
     - `playerId`: この倉庫を所有するプレイヤーの ID。
     - `objectIdList`: 倉庫に保管されているアイテムのインスタンス ID リスト。
-    - `limitSize`: 倉庫に保管可能なアイテムの最大数（初期値: 50）。
+    - `limitSize`: 倉庫に保管可能なアイテムの最大数（初期値: 50、最大値: 200）。
+    - `expansionStage`: 現在の倉庫拡張段階（0〜5。初期値: 0）。
+    - `updateDate`: 倉庫の最終更新日時（UTC）。
 
 ## 3. 機能仕様
 
@@ -93,7 +95,33 @@ sequenceDiagram
 
 ### 7.1 APIエンドポイントとJSON構造
 
-#### 7.1.1 アイテム入庫 API
+#### 7.1.1 倉庫情報照会 API
+指定されたプレイヤーの現在の倉庫状態（保管アイテム一覧、容量、拡張段階等）を取得します。
+
+- **Endpoint**: `GET /api/v1/storage/{playerId}`
+- **Path Parameter**:
+    - `playerId` (String): 対象プレイヤーのID。
+
+- **Response Body (JSON - 成功時)**:
+```json
+{
+  "success": true,
+  "result": "SUCCESS",
+  "storage": {
+    "playerId": "player_uuid_12345",
+    "limitSize": 80,
+    "currentSize": 12,
+    "expansionStage": 1,
+    "objectIdList": [
+      "item_instance_11111",
+      "item_instance_99999"
+    ],
+    "updateDate": "2026-10-15T09:30:00Z"
+  }
+}
+```
+
+#### 7.1.2 アイテム入庫 API
 インベントリから倉庫へアイテムを移動します。
 
 - **Endpoint**: `POST /api/v1/storage/deposit`
@@ -123,7 +151,7 @@ sequenceDiagram
 }
 ```
 
-#### 7.1.2 アイテム出庫 API
+#### 7.1.3 アイテム出庫 API
 倉庫からインベントリへアイテムを移動します。
 
 - **Endpoint**: `POST /api/v1/storage/withdraw`
@@ -152,7 +180,7 @@ sequenceDiagram
 }
 ```
 
-#### 7.1.3 倉庫拡張 API
+#### 7.1.4 倉庫拡張 API
 ゴールドと増築用資材を消費して倉庫の最大容量を拡張（+30枠）します。
 
 - **Endpoint**: `POST /api/v1/storage/expand`
@@ -173,9 +201,11 @@ sequenceDiagram
     "playerId": "player_uuid_12345",
     "limitSize": 80,
     "currentSize": 11,
+    "expansionStage": 1,
     "objectIdList": [
       "item_instance_11111"
-    ]
+    ],
+    "updateDate": "2026-10-15T10:00:00Z"
   },
   "costSpent": {
     "gold": 5000,
