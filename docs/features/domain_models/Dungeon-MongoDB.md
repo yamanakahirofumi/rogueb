@@ -72,6 +72,18 @@
         - `remainingTurns` (Integer): 残りターン数 (-1 は階層永続)
         - `triggeredBy` (String): `NATURAL`, `MANAGER_INTERVENTION`, `PLAYER_ITEM`
         - `modifiers` (Map): パラメータ補正のマップ
+    - `tombstoneList` (Array): フロア上のプレイヤー墓標のリスト (`TombstoneCoordinateDomain`オブジェクトの配列)。詳細は [ダンジョン救助・墓標システム](../Dungeon-Rescue-System.md) を参照。
+        - `position` (Object): 座標 (`Coordinate`)。
+        - `tombstoneId` (String): 墓標の一意なID。
+        - `rescueRequestId` (String): 関連する救助要請のID。
+        - `victimUserId` (String): 倒れたプレイヤーのID。
+        - `victimUserName` (String): 倒れたプレイヤーの名称。
+        - `lostGold` (Long): 保管遺品ゴールド。
+        - `preservedItemInstanceIds` (Array): 保管遺品アイテムインスタンスIDリスト。
+        - `guardianMonsterInstanceId` (String): 守護ガーディアンモンスターのインスタンスID。
+        - `isPurified` (Boolean): 浄化・救助完了フラグ。
+        - `createdAt` (Long): 生成タイムスタンプ。
+        - `expiresAt` (Long): 有効期限タイムスタンプ。
     - `tiles` (Array): 2次元のタイル情報（`Tile2D` オブジェクトの配列の配列）。
         - `display` (String): 表示文字（例: `#`, `.`）。
         - `pointType` (String): タイルの種類 (`Wall`, `UpStairs`, `downStairs`, `floor`)。
