@@ -61,6 +61,14 @@
     - `shopList` (Array): フロア上のショップのリスト。
         - `position` (Object): 座標 (`Coordinate`)。
         - `shopId` (String): ショップの ID。
+    - `tombstoneList`: フロア上の墓標のリスト (`TombstoneCoordinateDomain`オブジェクトの配列)。詳細は [ダンジョン救助・墓標システム](../Dungeon-Rescue-System.md) を参照。
+        - `position` (Object): 座標 (`Coordinate`)。
+        - `tombstoneId` (String): 墓標の一意な ID。
+        - `rescueRequestId` (String): 救助要請 ID。
+        - `victimUserId` (String): 倒伏プレイヤー ID。
+        - `lostGold` (Integer): 封印されたゴールド。
+        - `lostItemInstanceIds` (Array): 封印されたアイテムインスタンス ID の配列。
+        - `isPurified` (Boolean): 浄化フラグ。
     - `trapList` (Array): フロア上のトラップのリスト (`TrapCoordinateDomain`オブジェクトの配列)。
         - `position` (Object): 座標 (`Coordinate`)。
         - `trapId` (Integer): トラップの種別 ID（[トラップシステム](../Trap-System.md) の ID に対応）。
