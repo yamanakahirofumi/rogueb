@@ -316,3 +316,40 @@ sequenceDiagram
 
 ## 10. 今後の拡張 (Future Extensions)
 - **進化系モンスター**: 特定のプレイヤーを倒し続けることで、変身できるモンスターがより強力な種族へ進化する機能。
+
+---
+
+## 11. MongoDB 永続化仕様 (MongoDB Persistence Specification)
+モンスター化・PKシステムにおいて発生する乱入セッション、変身状態、および戦闘・決着の監査ログは、MongoDB の専用コレクションに永続化されます。詳細は [BookOfAdventure MongoDBデータ構造](./domain_models/Book-Of-Adventure-MongoDB.md) を参照してください。
+
+### 11.1 コレクション定義 (`playerIntrusionLogDomain`)
+- **コレクション名**: `playerIntrusionLogDomain`
+- **概要**: モンスター化によるダンジョン乱入の開始から決着（PK成功、撃破、制限時間切れ、離脱等）までのライフサイクルを記録・管理します。
+
+| フィールド | 型 | 必須 | 説明 |
+| :--- | :--- | :---: | :--- |
+| `_id` | ObjectId | Yes | ドキュメントの一意な識別子。 |
+| `intrusionId` | String | Yes | 一意な乱入セッションID（例: `intrude_772189`）。 |
+| `intruderUserId` | String | Yes | 乱入者（モンスター化プレイヤー）のユーザーID。 |
+| `targetDungeonId` | String | Yes | 乱入先ダンジョンのID。 |
+| `targetFloor` | Integer | Yes | 乱入先フロアの階層レベル。 |
+| `targetUserId` | String | Yes | 乱入ターゲットのプレイヤーID。 |
+| `transformedMonsterInstanceId` | String | Yes | 変身に使用されたモンスター個体ID。 |
+| `monsterTypeId` | String | Yes | 変身したモンスターの種族ID（例: `high_demon`）。 |
+| `status` | String | Yes | セッション状態 (`ACTIVE`, `PK_SUCCESS`, `INTRUDER_DEFEATED`, `EXPIRED`, `CANCELLED`)。 |
+| `bountyAtIntrusion` | Integer | Yes | 乱入時点でのターゲットまたは乱入者の賞金額。 |
+| `goldCost` | Integer | Yes | 乱入に支払われたコスト（ゴールド）。 |
+| `startTime` | Date | Yes | 乱入開始日時 (UTC)。 |
+| `endTime` | Date | No | 乱入終了日時 (UTC)。 |
+| `result` | Object | No | 決着詳細データ（獲得経験値、獲得ゴールド、没収アイテムIDリスト等）。 |
+| `_class` | String | Yes | Spring Data MongoDB が使用するクラス識別子。 |
+
+### 11.2 インデックス要件
+指名手配犯一覧クエリ、乱入中セッションの高速検証、およびプレイヤー別履歴照会のため、以下のインデックスを推奨します。
+
+| コレクション | インデックスキー | ユニーク | 用途・効果 |
+| :--- | :--- | :---: | :--- |
+| `playerDomain` | `{"bounty": -1, "totalPkCount": -1}` | No | 指名手配リスト (`GET /api/v1/pk/wanted-list`) の賞金・撃破数順高速ソート照会。 |
+| `playerIntrusionLogDomain` | `{"intrusionId": 1}` | **Yes** | 乱入セッションの一意な特定。 |
+| `playerIntrusionLogDomain` | `{"intruderUserId": 1, "status": 1}` | No | プレイヤーの進行中乱入セッション有無チェックおよび二重乱入防止。 |
+| `playerIntrusionLogDomain` | `{"targetUserId": 1, "status": 1}` | No | 対象プレイヤーに対する同時乱入制限の判定。 |
