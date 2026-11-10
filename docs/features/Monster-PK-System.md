@@ -316,3 +316,37 @@ sequenceDiagram
 
 ## 10. 今後の拡張 (Future Extensions)
 - **進化系モンスター**: 特定のプレイヤーを倒し続けることで、変身できるモンスターがより強力な種族へ進化する機能。
+
+---
+
+## 11. MongoDB 永続化仕様 (MongoDB Persistence Specification)
+モンスター化・PKシステムにおける乱入セッションおよび戦闘結果の監査ログは、[BookOfAdventureモジュール](./domain_models/Book-Of-Adventure.md) の `playerIntrusionLogDomain` コレクションに永続化されます。詳細は [BookOfAdventure MongoDB構造](./domain_models/Book-Of-Adventure-MongoDB.md) を参照してください。
+
+### 11.1 `playerIntrusionLogDomain` コレクション構造
+- **コレクション名**: `playerIntrusionLogDomain`
+- **説明**: プレイヤーによる他者ダンジョンフロアへの乱入履歴、戦闘結果、報酬・ペナルティを記録します。
+- **フィールド**:
+  - `_id` (String): 一意な乱入ログID（通常は `intrusionId` と同一）。
+  - `intrusionId` (String): 乱入セッションID（例: `intrude_772189`）。
+  - `monsterizerPlayerId` (String): 乱入を実行したプレイヤーID。
+  - `targetPlayerId` (String): 乱入対象となったプレイヤーID。
+  - `targetDungeonId` (String): 乱入先のダンジョンID。
+  - `targetFloor` (Integer): 乱入先の階層レベル。
+  - `monsterInstanceId` (String): 変身に使用したモンスター個体の `instanceId`。
+  - `monsterTypeId` (String): 変身モンスターの種族ID。
+  - `result` (String): 乱入結果 (`PK_SUCCESS`, `MONSTERIZER_DEFEATED`, `EXPIRED`, `TARGET_ESCAPED`)。
+  - `bountyGained` (Integer): 獲得した賞金額（ゴールド）。
+  - `expGained` (Integer): 獲得した経験値。
+  - `forfeitedItems` (Array): 没収・獲得した戦利品アイテムIDの配列。
+  - `durationSubSteps` (Integer): 乱入継続歩数。
+  - `timestamp` (Date): 乱入実行日時。
+  - `_class` (String): Spring Data MongoDB が使用するクラス情報。
+
+### 11.2 インデックス推奨事項
+- `{"monsterizerPlayerId": 1, "timestamp": -1}`: 乱入者ごとの実行履歴照会用。
+- `{"targetPlayerId": 1, "timestamp": -1}`: 被乱入者ごとの被撃破・防衛履歴照会用。
+- `{"intrusionId": 1}`: 乱入セッションIDによる一意検索用ユニークインデックス。
+
+### 11.3 指名手配リスト照会用インデックス（`playerDomain`）
+指名手配リスト照会 API（`GET /api/v1/pk/wanted-list`）を高速化するため、[BookOfAdventureモジュール](./domain_models/Book-Of-Adventure-MongoDB.md) の `playerDomain` コレクションに以下の複合インデックスを設定します。
+- `{"bounty": -1, "totalPkCount": -1}`: 賞金額降順および撃破数降順での手配者ランキング・一覧取得用。

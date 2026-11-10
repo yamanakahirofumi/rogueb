@@ -61,6 +61,9 @@
 | `preEvolutionId` | String | 直前の進化前種族 ID | `slime` 等。[モンスター退化システム](./Monster-Degeneration-System.md) 参照。 |
 | `lastTraitEnhancement` | Object | 最終特性強化日時および履歴情報 | タイムスタンプ・強化対象メタデータ。[モンスター特性強化システム](./Monster-Trait-Enhancement-System.md) 参照。 |
 | `traits` | Array | 装備中の個体特性オブジェクトの配列 | 各要素は `traitId`, `level`, `type` 等のマップ。[モンスター特性システム](./Monster-Trait-System.md) 参照。 |
+| `isMonsterized` | Boolean | プレイヤーが変身中（モンスター化）の個体であるか | `true` / `false`。[モンスター化・PKシステム](./Monster-PK-System.md) 参照。 |
+| `monsterizerPlayerId` | String | 変身しているプレイヤーのユーザー ID | UUID 形式。[モンスター化・PKシステム](./Monster-PK-System.md) 参照。 |
+| `intrusionId` | String | 参加中の乱入セッション ID | `intrude_772189` 等。[モンスター化・PKシステム](./Monster-PK-System.md) 参照。 |
 | `inheritanceData` | Object | 未知の種族を持ち込む際の継承データ | 種族基本ステータス、外見、特性等 |
 
 ---
@@ -139,6 +142,9 @@
 | `PLEDGE_MONSTER` | - | - | モンスターとの親愛の誓い（親愛解放）処理 |
 | `SYNTHESIZE_ITEM` | - | - | ポータブル調合具または錬金炉によるアイテムの調合・錬金処理 |
 | `DISASSEMBLE_ITEM` | - | - | アイテムの解体・素材還元（分解キット・解体炉）処理 |
+| `MONSTERIZE_TRANSFORM` | `monsterInstanceId` | String | 所持モンスターへの一時的な変身処理。[モンスター化・PKシステム](./Monster-PK-System.md) 参照。 |
+| `INTRUDE_DUNGEON` | `targetDungeonId`, `targetFloor`, `targetPlayerId` | String, Integer, String | 他プレイヤーのダンジョンフロアへの乱入処理。[モンスター化・PKシステム](./Monster-PK-System.md) 参照。 |
+| `PAY_ATONEMENT` | `paymentGold` | Integer | 指名手配および撃破数の贖罪リセット処理。[モンスター化・PKシステム](./Monster-PK-System.md) 参照。 |
 
 ---
 
