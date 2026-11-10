@@ -36,6 +36,10 @@ AIによる生成が困難な、感性やバランス調整が必要な事項で
 ## 6. 完了済み事項
 これまでに検討が完了し、仕様が策定された事項です。
 
+### [x] モンスター化・PKシステムのMongoDB永続化仕様およびメタデータ・エフェクトIDの追加
+- **概要**: 確実に実装するのに不足していた、モンスター化・PKシステムにおける乱入セッションおよび戦闘結果の永続化仕様（`playerIntrusionLogDomain` コレクション構造および推奨インデックス）、指名手配リスト取得を高速化する `playerDomain` の複合インデックス仕様（`{"bounty": -1, "totalPkCount": -1}`）、モンスター個体インスタンスで利用する予約済みメタデータキー（`isMonsterized`, `monsterizerPlayerId`, `intrusionId`）、ならびに変身・乱入・贖罪に対応する標準化エフェクト ID（`MONSTERIZE_TRANSFORM`, `INTRUDE_DUNGEON`, `PAY_ATONEMENT`）の追加。
+- **解決策**: [モンスター化・PKシステム仕様](./features/Monster-PK-System.md) に「11. MongoDB 永続化仕様」を追加して `playerIntrusionLogDomain` スキーマ・インデックスおよび `playerDomain` インデックス仕様を明記し、[BookOfAdventureモジュール MongoDBデータ構造](./features/domain_models/Book-Of-Adventure-MongoDB.md) に `playerIntrusionLogDomain` コレクション定義およびインデックス推奨事項を反映。あわせて [標準メタデータ仕様](./features/Standard-Metadata-Specification.md) に予約済みメタデータキーおよび標準化エフェクト ID を定義。
+
 ### [x] モンスター進化システムおよびモンスター融合システムの照会・プレビューAPI仕様の追加
 - **概要**: 確実に実装するのに不足していた、モンスター進化システムにおける進化候補・条件達成状況照会API（`GET /api/v1/monsters/{instanceId}/evolution-options`）および、モンスター融合システムにおける融合結果プレビュー・必要コスト照会API（`POST /api/v1/monsters/fuse/preview`）の具体的なリクエスト・レスポンスJSON構造およびエラーハンドリング仕様の追加。
 - **解決策**: [モンスター進化システム仕様](./features/Monster-Evolution-System.md) にて進化候補・条件達成状況照会APIを定義し、[モンスター融合システム仕様](./features/Monster-Fusion-System.md) にて融合プレビューAPIを定義。また、未所有個体操作時のエラーコード `UNAUTHORIZED_MONSTER_OPERATOR` を各エラーマッピング表に追加。
