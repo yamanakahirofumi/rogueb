@@ -86,6 +86,24 @@ PlayerOperationsモジュールはこのサービスを利用して、プレイ�
     - `unlockedTitleIds`: 解禁済み称号IDのリスト。
     - `equippedTitleId`: 現在装着中のアクティブ称号ID（未装着時は null）。
 
+### `PlayerIntrusionLogDomain`
+- **説明:** プレイヤーが実行したモンスター化乱入（PK）のセッション情報、成否、報酬獲得、および経過ログを保持します。詳細は [モンスター化・PKシステム仕様](../Monster-PK-System.md) を参照してください。
+- **主要なプロパティ:**
+    - `id` / `intrusionId`: 乱入セッションの一意な識別子。
+    - `monsterizerPlayerId`: モンスター化して乱入したプレイヤーの ID。
+    - `targetPlayerId`: 乱入対象となったプレイヤーの ID。
+    - `targetDungeonId`: 乱入先のダンジョン ID。
+    - `targetFloor`: 乱入先のフロア階層。
+    - `monsterInstanceId`: 変身に使用されたモンスターインスタンス ID。
+    - `monsterTypeId`: 変身したモンスターの種族 ID。
+    - `goldCost`: 乱入時に消費されたゴールド。
+    - `status`: 乱入の結果ステータス（`IN_PROGRESS`, `PK_SUCCESS`, `MONSTERIZER_DEFEATED`, `TIME_EXPIRED`, `TARGET_ESCAPED`）。
+    - `rewardExp`: PK成功時に獲得した経験値。
+    - `rewardGold`: PK成功時に獲得したゴールド。
+    - `forfeitedItems`: ターゲットから獲得したアイテムのインスタンス ID リスト。
+    - `durationSubSteps`: 乱入開始から終了までの経過歩数（subSteps）。
+    - `createdAt`: 乱入開始日時。
+
 ### `StatusEffectDomain` (値オブジェクト)
 - **説明:** プレイヤーやモンスターに付与される状態異常を定義します。
 - **プロパティ:**

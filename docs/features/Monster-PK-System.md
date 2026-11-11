@@ -316,3 +316,73 @@ sequenceDiagram
 
 ## 10. 今後の拡張 (Future Extensions)
 - **進化系モンスター**: 特定のプレイヤーを倒し続けることで、変身できるモンスターがより強力な種族へ進化する機能。
+
+---
+
+## 11. MongoDB 永続化仕様 (MongoDB Persistence Specification)
+
+モンスター化およびPKシステムにおける統計データ、賞金・指名手配状態、ならびに乱入・撃破履歴の永続化仕様を定義します。
+
+### 11.1 コレクション構成
+モンスター化・PK関連データは、`BookOfAdventure` モジュールによって MongoDB に永続化されます。詳細は [BookOfAdventureモジュール MongoDBデータ構造](./domain_models/Book-Of-Adventure-MongoDB.md) を参照してください。
+
+1. **`playerDomain` コレクション**:
+   - プレイヤーごとのPK統計値（`totalPkCount`: 累計撃破数、`currentKillStreak`: 現在の連続撃破数、`bounty`: 現在の賞金額）を保持。
+   - 指名手配リスト照会（`GET /api/v1/pk/wanted-list`）は本コレクションに対するソートクエリで実現されます。
+2. **`playerIntrusionLogDomain` コレクション**:
+   - プレイヤーが実行した乱入（Intrusion）の開始、終了、成否、撃破対象、および獲得報酬/喪失コストのログを保持します。
+
+### 11.2 `playerIntrusionLogDomain` コレクション構造
+- **コレクション名**: `playerIntrusionLogDomain`
+- **モジュール**: `BookOfAdventure`
+
+#### ドキュメント構造 (JSON 表現)
+```json
+{
+  "_id": "intrude_772189",
+  "intrusionId": "intrude_772189",
+  "monsterizerPlayerId": "usr_998231",
+  "targetPlayerId": "usr_104822",
+  "targetDungeonId": "dungeon_abyss_01",
+  "targetFloor": 5,
+  "monsterInstanceId": "mon_inst_88712",
+  "monsterTypeId": "high_demon",
+  "goldCost": 2500,
+  "status": "PK_SUCCESS",
+  "rewardExp": 1200,
+  "rewardGold": 500,
+  "forfeitedItems": [
+    "item_inst_potion_01"
+  ],
+  "durationSubSteps": 124,
+  "createdAt": "2026-03-31T12:00:00Z",
+  "_class": "net.hero.rogueb.bookofadventure.domain.PlayerIntrusionLogDomain"
+}
+```
+
+#### 各フィールドの説明
+| フィールド | 型 | 説明 |
+| :--- | :--- | :--- |
+| `_id` / `intrusionId` | String | 乱入セッションの一意な識別子。 |
+| `monsterizerPlayerId` | String | モンスター化して乱入したプレイヤーの ID。 |
+| `targetPlayerId` | String | 乱入対象となったプレイヤーの ID。 |
+| `targetDungeonId` | String | 乱入先のダンジョン ID。 |
+| `targetFloor` | Integer | 乱入先のフロア階層。 |
+| `monsterInstanceId` | String | 変身に使用されたモンスターインスタンス ID。 |
+| `monsterTypeId` | String | 変身したモンスターの種族 ID。 |
+| `goldCost` | Integer | 乱入時に消費されたゴールド。 |
+| `status` | String | 乱入の結果ステータス（`IN_PROGRESS`, `PK_SUCCESS`, `MONSTERIZER_DEFEATED`, `TIME_EXPIRED`, `TARGET_ESCAPED`）。 |
+| `rewardExp` | Long | PK成功時に獲得した経験値。 |
+| `rewardGold` | Integer | PK成功時に獲得したゴールド。 |
+| `forfeitedItems` | Array<String> | ターゲットから獲得したアイテムのインスタンス ID 配列。 |
+| `durationSubSteps` | Integer | 乱入開始から終了までの経過歩数（subSteps）。 |
+| `createdAt` | Date | 乱入開始日時。 |
+| `_class` | String | Spring Data MongoDB が使用する完全修飾クラス名。 |
+
+### 11.3 インデックス推奨事項と肥大化対策
+| コレクション | インデックスキー | 種類 | 目的・用途 |
+| :--- | :--- | :---: | :--- |
+| `playerDomain` | `{"bounty": -1, "totalPkCount": -1}` | 複合 | 指名手配リスト照会（`GET /api/v1/pk/wanted-list`）の高速ランキング取得。 |
+| `playerIntrusionLogDomain` | `{"monsterizerPlayerId": 1, "createdAt": -1}` | 複合 | 乱入者ごとの過去乱入履歴照会。 |
+| `playerIntrusionLogDomain` | `{"targetPlayerId": 1, "createdAt": -1}` | 複合 | 被乱入プレイヤーの防衛・被害ログ照会。 |
+| `playerIntrusionLogDomain` | `{"createdAt": 1}` | TTL | 乱入履歴の自動クリーンアップ（90日保持後に自動削除）。 |
