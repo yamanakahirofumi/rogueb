@@ -90,11 +90,32 @@
     - `updatedAt` (Date): 最終更新日時。
     - `_class` (String): Spring Data MongoDBが使用するクラス情報。
 
-## 8. インデックス推奨事項
+## 8. `playerIntrusionLogDomain` コレクション
+- **説明:** `PlayerIntrusionLogDomain`クラスに対応します。プレイヤーによるモンスター化乱入・PKセッションの実行ログおよび結果を保持します。詳細は [モンスター化・PKシステム仕様](../Monster-PK-System.md) を参照してください。
+- **フィールド:**
+    - `_id` (String): 乱入セッションの一意な識別子（UUIDまたは `intrude_` 接頭辞付きID）。
+    - `intrusionId` (String): 乱入セッションID。
+    - `monsterizerPlayerId` (String): モンスター化乱入を実行したプレイヤーID。
+    - `targetPlayerId` (String): 乱入対象となったプレイヤーID。
+    - `targetDungeonId` (String): 乱入先のダンジョンID。
+    - `targetFloor` (Integer): 乱入先のフロア階層。
+    - `monsterInstanceId` (String): 変身に使用されたモンスターインスタンスID。
+    - `monsterTypeId` (String): 変身したモンスターの種族ID。
+    - `goldCost` (Integer): 乱入時に消費されたゴールド。
+    - `status` (String): 乱入の結果ステータス（`IN_PROGRESS`, `PK_SUCCESS`, `MONSTERIZER_DEFEATED`, `TIME_EXPIRED`, `TARGET_ESCAPED`）。
+    - `rewardExp` (Long): PK成功時に獲得した経験値。
+    - `rewardGold` (Integer): PK成功時に獲得したゴールド。
+    - `forfeitedItems` (Array): ターゲットから獲得したアイテムのインスタンスID配列。
+    - `durationSubSteps` (Integer): 乱入開始から終了までの経過歩数（subSteps）。
+    - `createdAt` (Date): 乱入開始日時。
+    - `_class` (String): Spring Data MongoDBが使用するクラス情報。
+
+## 9. インデックス推奨事項
 
 ### `playerDomain`
 - `{"name": 1}`: プレイヤー名によるユニーク検索に必須。
 - `{"namespace": 1}`: ワールド内や特定の領域のプレイヤーを一覧する場合。
+- `{"bounty": -1, "totalPkCount": -1}`: 指名手配リスト照会（`GET /api/v1/pk/wanted-list`）の高速ランキング取得に必須。
 
 ### `playerObjectDomain`
 - `{"playerId": 1}`: プレイヤーの所持アイテムを検索するために必須。
@@ -116,3 +137,8 @@
 
 ### `playerTitleDomain`
 - `{"userId": 1}`: ユニークインデックス。ユーザーごとの所有称号および装着状態照会・更新用。
+
+### `playerIntrusionLogDomain`
+- `{"monsterizerPlayerId": 1, "createdAt": -1}`: 乱入者ごとの過去乱入履歴照会用複合インデックス。
+- `{"targetPlayerId": 1, "createdAt": -1}`: 被乱入プレイヤーの防衛・被害ログ照会用複合インデックス。
+- `{"createdAt": 1}`: TTL インデックス。乱入履歴の自動クリーンアップ（90日保持後に自動削除）。
